@@ -1,0 +1,54 @@
+build {
+    dependsOn project(":hammer-core").tasks.getByName("build")
+}
+
+dependencies {
+    // Hammer
+    implementation project(path: ":hammer-core", configuration: "namedElements")
+
+    // Adventure
+    modApi("net.kyori:adventure-platform-fabric:${adventureVersion}") {
+        exclude(group: "net.fabricmc")
+    }
+
+    include("net.kyori:adventure-platform-fabric:${adventureVersion}") {
+        exclude(group: "net.fabricmc")
+    }
+
+    // Adventure
+    modApi("net.kyori:adventure-text-serializer-gson:${legacyAdventureVersion}") {
+        exclude(module: "adventure-bom")
+        exclude(module: "adventure-api")
+        exclude(module: "gson")
+    }
+
+    include("net.kyori:adventure-text-serializer-gson:${legacyAdventureVersion}") {
+        exclude(module: "adventure-bom")
+        exclude(module: "adventure-api")
+        exclude(module: "gson")
+    }
+
+    modApi("net.kyori:adventure-text-serializer-legacy:${legacyAdventureVersion}") {
+        exclude(module: "adventure-bom")
+        exclude(module: "adventure-api")
+    }
+
+    include("net.kyori:adventure-text-serializer-legacy:${legacyAdventureVersion}") {
+        exclude(module: "adventure-bom")
+        exclude(module: "adventure-api")
+    }
+
+    modApi("net.kyori:adventure-text-serializer-legacy:${legacyAdventureVersion}") {
+        exclude(module: "adventure-bom")
+        exclude(module: "adventure-api")
+    }
+
+    include("net.kyori:adventure-text-serializer-legacy:${legacyAdventureVersion}") {
+        exclude(module: "adventure-bom")
+        exclude(module: "adventure-api")
+    }
+}
+
+jar {
+    baseName("hammer-adventure")
+}

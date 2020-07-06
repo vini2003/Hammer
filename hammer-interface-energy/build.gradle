@@ -1,0 +1,14 @@
+dependencies {
+    // Hammer
+    implementation project(path: ":hammer-core", configuration: "namedElements")
+
+    // Hammer Interface
+    implementation project(path: ":hammer-interface", configuration: "namedElements")
+
+    // Energy
+    modApi "teamreborn:energy:${energyVersion}"
+}
+
+jar {
+    baseName("hammer-interface-energy")
+}

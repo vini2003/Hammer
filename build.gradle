@@ -1,0 +1,113 @@
+plugins {
+    // Fabric Loom
+    id "fabric-loom" apply false
+
+    // Maven Publish
+    id "maven-publish"
+
+	// Kotlin
+	id "org.jetbrains.kotlin.jvm"
+
+	// KotlinX Serialization
+	id "org.jetbrains.kotlin.plugin.serialization"
+}
+
+subprojects {
+	apply plugin: "fabric-loom"
+	apply plugin: "maven-publish"
+	apply plugin: "org.jetbrains.kotlin.jvm"
+	apply plugin: "org.jetbrains.kotlin.plugin.serialization"
+
+	group = projectGroup
+	version = projectVersion
+
+	java {
+		sourceCompatibility = JavaVersion.VERSION_17
+		targetCompatibility = JavaVersion.VERSION_17
+
+		withSourcesJar()
+	}
+
+	repositories {
+		// vini2003
+		maven {
+			name = "vini2003"
+			url = "https://maven.vini2003.dev/releases"
+		}
+
+		// Fabric
+		maven {
+			name = "FabricMC"
+			url = "https://maven.fabricmc.net/"
+		}
+	}
+
+	configurations.all {
+		exclude(module: "colonel")
+	}
+
+	dependencies {
+		// Minecraft
+		minecraft("com.mojang:minecraft:${minecraftVersion}")
+
+		// Yarn
+		mappings("net.fabricmc:yarn:${yarnVersion}:v2")
+
+		// Fabric Loader
+		modImplementation("net.fabricmc:fabric-loader:${fabricLoaderVersion}")
+
+		// Fabric API
+		modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
+
+		// Fabric Language Kotlin
+		modImplementation("net.fabricmc:fabric-language-kotlin:${fabricLanguageKotlinVersion}")
+
+		// KotlinX Serialization Json
+		modImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinxSerializationJsonVersion}")
+		include("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinxSerializationJsonVersion}")
+
+		// KotlinX Serialization Protobuf
+		modImplementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:${kotlinxSerializationProtoBufVersion}")
+		include("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:${kotlinxSerializationProtoBufVersion}")
+	}
+
+	compileKotlin {
+		kotlinOptions {
+			jvmTarget = "1.8"
+		}
+	}
+
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				artifactId = archivesBaseName
+				groupId = projectGroup
+				version = projectVersion
+
+				artifact(remapJar) {
+					builtBy remapJar
+				}
+
+				artifact(sourcesJar) {
+					builtBy remapSourcesJar
+				}
+			}
+		}
+
+		repositories {
+			maven {
+				name = "vini2003"
+				url = "https://maven.vini2003.dev/releases"
+
+				credentials {
+					username = System.getenv("MVN_USERNAME")
+					password = System.getenv("MVN_TOKEN")
+				}
+
+				authentication {
+					basic(BasicAuthentication)
+				}
+			}
+		}
+	}
+}

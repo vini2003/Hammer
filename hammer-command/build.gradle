@@ -1,0 +1,8 @@
+dependencies {
+    // Hammer
+    implementation project(path: ":hammer-core", configuration: "namedElements")
+}
+
+jar {
+    baseName("hammer-command")
+}

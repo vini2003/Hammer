@@ -1,0 +1,16 @@
+{
+  "text.hammer.discord": "Discord",
+  "text.hammer.empty": "Empty",
+  "command.hammer.heal.self": "Healed self",
+  "command.hammer.heal.other": "Healed %s",
+  "command.hammer.satiate.self": "Satiated self",
+  "command.hammer.satiate.other": "Satiated %s",
+  "command.hammer.freeze.self": "Froze self",
+  "command.hammer.freeze.other": "Froze %s",
+  "command.hammer.unfreeze.self": "Unfroze self",
+  "command.hammer.unfreeze.other": "Unfroze %s",
+  "command.hammer.fly_speed.self": "Set own fly speed to %s",
+  "command.hammer.fly_speed.other": "Set %s fly speed to %s",
+  "command.hammer.walk_speed.self": "Set own walk speed to %s",
+  "command.hammer.walk_speed.other": "Set %s walk speed to %s"
+}

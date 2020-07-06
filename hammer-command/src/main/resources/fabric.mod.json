@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"id": "hammer-command",
+	"version": "0.6.5",
+	"name": "Hammer Command",
+	"description": "A library module.",
+	"authors": [
+		"vini2003"
+	],
+	"contact": {
+		"email": "contact@vini2003.dev"
+	},
+	"license": "MIT",
+	"icon": "assets/hammer/icon.png",
+	"environment": "*",
+	"depends": {
+		"fabricloader": ">=0.12.9",
+		"fabric": ">=0.44.0+1.18",
+		"minecraft": ">=1.18"
+	}
+}

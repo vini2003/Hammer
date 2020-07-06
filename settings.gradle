@@ -1,0 +1,48 @@
+pluginManagement {
+    repositories {
+        // Fabric
+        maven {
+            name = "FabricMC"
+            url = "https://maven.fabricmc.net"
+        }
+
+        // Architectury
+        maven {
+            name = "Architectury"
+            url = "https://maven.architectury.dev"
+        }
+
+        // Forge
+        maven {
+            name = "Forge"
+            url = "https://files.minecraftforge.net/maven/"
+        }
+
+        // Plugin Portal
+        gradlePluginPortal()
+    }
+
+    plugins {
+        id "fabric-loom" version loomVersion
+
+        id "org.jetbrains.kotlin.jvm" version kotlinVersion
+
+        id "org.jetbrains.kotlin.plugin.serialization" version kotlinxSerilizationVersion
+    }
+}
+
+rootProject.name = "hammer"
+
+include "hammer-core"
+include "hammer-command"
+include "hammer-adventure"
+include "hammer-chat"
+include "hammer-border"
+include "hammer-permission"
+include "hammer-interaction"
+include "hammer-gravity"
+include "hammer-interface"
+include "hammer-interface-energy"
+include "hammer-util"
+
+include "hammer-all"

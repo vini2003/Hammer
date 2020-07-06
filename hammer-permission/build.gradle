@@ -1,0 +1,17 @@
+dependencies {
+    // Hammer
+    implementation project(path: ":hammer-core", configuration: "namedElements")
+
+    // Hammer Adventure
+    implementation project(path: ":hammer-adventure", configuration: "namedElements")
+
+    // Hammer Command
+    implementation project(path: ":hammer-command", configuration: "namedElements")
+
+    // LuckPerms
+    modApi "net.luckperms:api:${luckPermsVersion}"
+}
+
+jar {
+    baseName("hammer-permission")
+}

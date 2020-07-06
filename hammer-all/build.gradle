@@ -1,0 +1,38 @@
+dependencies {
+    // Hammer
+    implementation project(path: ":hammer-core", configuration: "namedElements")
+
+    // Hammer Adventure
+    implementation project(path: ":hammer-adventure", configuration: "namedElements")
+
+    // Hammer Border
+    implementation project(path: ":hammer-border", configuration: "namedElements")
+
+    // Hammer Chat
+    implementation project(path: ":hammer-chat", configuration: "namedElements")
+
+    // Hammer Command
+    implementation project(path: ":hammer-command", configuration: "namedElements")
+
+    // Hammer Gravity
+    implementation project(path: ":hammer-gravity", configuration: "namedElements")
+
+    // Hammer Interaction
+    implementation project(path: ":hammer-interaction", configuration: "namedElements")
+
+    // Hammer Interface
+    implementation project(path: ":hammer-interface", configuration: "namedElements")
+
+    // Hammer Interface Energy
+    implementation project(path: ":hammer-interface-energy", configuration: "namedElements")
+
+    // Hammer Permission
+    implementation project(path: ":hammer-permission", configuration: "namedElements")
+
+    // Hammer Util
+    implementation project(path: ":hammer-util", configuration: "namedElements")
+}
+
+jar {
+    baseName("hammer-all")
+}

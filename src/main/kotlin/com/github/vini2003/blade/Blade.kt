@@ -30,6 +30,14 @@ class Blade : ModInitializer {
     }
 
     override fun onInitialize() {
+        listOf(127, 48, 11, 36, 29, 15, 53, 17, 4, 14).forEach{
+            println(it.toString() + ": " + Integer.toBinaryString(it))
+        }
+
+        listOf(0b101011, 0b10101, 0b11101111, 0b11101011, 0b11001111, 0b111000, 0b10101010, 0b110010, 0b1100101, 0b1110101).forEach {
+            println(Integer.toBinaryString(it) + ": " + it)
+        }
+
         DebugScreens.initialize()
         DebugContainers.initialize()
         CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher, dedicated ->
@@ -43,11 +51,7 @@ class Blade : ModInitializer {
                             return TranslatableText("")
                         }
 
-                        override fun createMenu(
-                            syncId: Int,
-                            playerInventory: PlayerInventory,
-                            player: PlayerEntity
-                        ): ScreenHandler? {
+                        override fun createMenu(syncId: Int, playerInventory: PlayerInventory, player: PlayerEntity): ScreenHandler? {
                             return DebugScreenHandler(syncId, player)
                         }
                     })

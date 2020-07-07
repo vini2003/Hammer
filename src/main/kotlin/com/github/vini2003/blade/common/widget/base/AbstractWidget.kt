@@ -2,14 +2,13 @@ package com.github.vini2003.blade.common.widget.base
 
 import com.github.vini2003.blade.client.utilities.Drawings
 import com.github.vini2003.blade.client.utilities.Layers
+import com.github.vini2003.blade.common.utilities.Styles
 import com.github.vini2003.blade.common.utilities.Positions
 import com.github.vini2003.blade.client.utilities.Texts
-import com.github.vini2003.blade.common.data.Position
-import com.github.vini2003.blade.common.data.Positioned
-import com.github.vini2003.blade.common.data.Size
-import com.github.vini2003.blade.common.data.Sized
+import com.github.vini2003.blade.common.data.*
 import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
+import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
@@ -20,6 +19,8 @@ abstract class AbstractWidget : Positioned, Sized {
 
     var original: OriginalWidgetCollection? = null;
     var immediate: WidgetCollection? = null;
+
+    var style = "default"
 
     var hidden: Boolean = false
         get() {
@@ -54,6 +55,12 @@ abstract class AbstractWidget : Positioned, Sized {
     override fun setSize(size: Size) {
         this.size = size
         onLayoutChanged()
+    }
+
+    fun style(): Style {
+        return Styles.get(style).let {
+            if (it == Style.EMPTY) if (parent == null) Style.EMPTY else parent!!.style() else it
+        }
     }
 
     open fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
@@ -178,16 +185,13 @@ abstract class AbstractWidget : Positioned, Sized {
         if (!wasFocused && focused) onFocusGained()
     }
 
-    /**
-     * The tooltip is drawn to the TOOLTIP layer.
-     * The tooltip text is drawn immediately, as such,
-     * we must render it after the widget, and render
-     * the text after rendering the tooltip itself.
-     */
     fun drawTooltip(matrices: MatrixStack, provider: VertexConsumerProvider) {
         val list = getTooltip()
 
         if (list.isEmpty()) return
+
+        RenderSystem.pushMatrix()
+        RenderSystem.translatef(0F, 0F, 256F) // Translate above all ItemStacks rendered, which go up to Z 200.
 
         val width = Texts.width( list.maxBy { Texts.width(it) }!! )
 
@@ -196,16 +200,19 @@ abstract class AbstractWidget : Positioned, Sized {
         val x: Float = Positions.mouseX + 8F
         var y: Float = Positions.mouseY - 14F
 
-        Drawings.drawTooltip(matrices, provider, Layers.getTooltip(), x, y, width.toFloat() + 1, height.toFloat() + 1)
+        Drawings.drawTooltip(matrices, provider, Layers.getTooltip(), x, y + 1, width.toFloat() - 1, height.toFloat() - 1, style().asColor("tooltip.shadow_start"), style().asColor("tooltip.shadow_end"), style().asColor("tooltip.background_start"), style().asColor("tooltip.background_end"), style().asColor("tooltip.outline_start"), style().asColor("tooltip.outline_end"))
 
-        if (provider is VertexConsumerProvider.Immediate) {
-            provider.draw(Layers.getTooltip())
-        }
+        RenderSystem.pushMatrix()
+        RenderSystem.translatef(0F, 0F, 256F) // Translate above the tooltip rendered, which happens at Z 256.
 
         list.forEach{
             y += 1
-            Drawings.getTextRenderer()?.drawWithShadow(matrices, it, x + 1, y, 0xFFFFFF)
+            Drawings.getTextRenderer()?.drawWithShadow(matrices, it, x, y, style().asColor("tooltip.text").toInt()) // 0xFCFCFC
         }
+
+        RenderSystem.popMatrix()
+
+        RenderSystem.popMatrix()
     }
 
     fun isWithin(x: Float, y: Float): Boolean {

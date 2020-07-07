@@ -16,7 +16,11 @@ minecraft {
 
 
 repositories {
-    maven { url = "http://maven.fabricmc.net/" }
+    maven {
+        name = "Fabric"
+        url = "https://maven.fabricmc.net/"
+    }
+    mavenCentral()
 }
 
 dependencies {
@@ -39,7 +43,13 @@ dependencies {
     modImplementation "io.github.prospector:modmenu:${modmenu_version}"
 
     // RoughlyEnoughItems
-    modImplementation ("me.shedaniel:RoughlyEnoughItems:${rei_version}")
+    modImplementation "me.shedaniel:RoughlyEnoughItems:${rei_version}"
+
+    // Jankson
+    modCompile "blue.endless:jankson:${jankson_version}"
+    include "blue.endless:jankson:${jankson_version}"
+
+
 }
 
 processResources {

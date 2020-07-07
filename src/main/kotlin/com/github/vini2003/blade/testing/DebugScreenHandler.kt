@@ -30,7 +30,8 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 
         val item: ItemWidget = ItemWidget()
 
-        item.setPosition(Position({256F}, {16F}))
+        item.setPosition(Position({256F}, { 16F}))
+        item.setSize(Size({16F}, {16F}))
         item.stack = ItemStack(Items.RED_WOOL)
 
         addWidget(slot)

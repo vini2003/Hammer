@@ -1,6 +1,5 @@
 package com.github.vini2003.blade.common.widget.base
 
-import com.github.vini2003.blade.client.utilities.Colors
 import com.github.vini2003.blade.client.utilities.Drawings
 import com.github.vini2003.blade.client.utilities.Layers
 import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
@@ -48,8 +47,9 @@ class SlotWidget(private val slot: Int, private val inventory: Int) : AbstractWi
 
     override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
         if (hidden) return
-        super.drawWidget(matrices, provider)
 
-        Drawings.drawBeveledPanel(matrices, provider, Layers.getFlat(), getPosition().x - 1 - ((getSize().width - 18F) / 2), getPosition().y - 1 - ((getSize().height - 18F) / 2), getSize().width, getSize().height, Colors.SLOT_TOP_LEFT, Colors.SLOT_BACKGROUND, Colors.SLOT_BOTTOM_RIGHT)
+        Drawings.drawBeveledPanel(matrices, provider, Layers.getFlat(), getPosition().x - 1 - ((getSize().width - 18F) / 2), getPosition().y - 1 - ((getSize().height - 18F) / 2), getSize().width, getSize().height, style().asColor("slot.top_left"), style().asColor("slot.background"), style().asColor("slot.bottom_right"))
+
+        super.drawWidget(matrices, provider)
     }
 }

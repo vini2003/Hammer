@@ -18,5 +18,16 @@ class Color(val r: Float, val g: Float, val b: Float, val a: Float) {
         fun default(): Color {
             return Color(1F, 1F, 1F, 1F)
         }
+
+        fun redGreenBlue(r: Int, g: Int, b: Int, a: Int): Int {
+            var i = (r shl 8) + g
+            i = (i shl 8) + b
+            i = i + a shl 24
+            return i
+        }
+    }
+
+    fun toInt(): Int {
+        return redGreenBlue((r * 255F).toInt(), (g * 255F).toInt(), (b * 255F).toInt(), (a * 255F).toInt())
     }
 }

@@ -105,17 +105,17 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     override fun render(matrices: MatrixStack?, mouseX: Int, mouseY: Int, delta: Float) {
         val provider: VertexConsumerProvider.Immediate = Instances.getClientInstance().bufferBuilders.effectVertexConsumers
 
-        handler.getWidgets().forEach {
+        handler.getWidgets().forEach{
             it.drawWidget(matrices!!, provider)
         }
+
+        super.render(matrices, mouseX, mouseY, delta)
+
+        super.drawMouseoverTooltip(matrices, mouseX, mouseY)
 
         provider.draw(Layers.getFlat())
         provider.draw(Layers.getTooltip())
         provider.draw()
-
-        drawMouseoverTooltip(matrices, mouseX, mouseY)
-
-        super.render(matrices, mouseX, mouseY, delta)
     }
 
     override fun resize(client: MinecraftClient?, width: Int, height: Int) {

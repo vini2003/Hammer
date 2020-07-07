@@ -121,17 +121,21 @@ class Drawings {
             consumer.vertex(matrices.peek().model, x, y, z).color(color.r, color.g, color.b, color.a).texture(u0, v0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().normal, 0F, 0F, 0F).next()
         }
 
-        fun drawTooltip(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, width: Float, height: Float) {
-            drawGradientQuad(matrices, provider, layer, x - 3, y - 4, x + width + 3, y - 3, 16F, Colors.TOOLTIP_SHADOW_START, Colors.TOOLTIP_SHADOW_START) // Border - top
-            drawGradientQuad(matrices, provider, layer, x - 3, y + height + 3, x + width + 3, y + height + 4, 16F, Colors.TOOLTIP_SHADOW_END, Colors.TOOLTIP_SHADOW_END) // Border - bottom
-            drawGradientQuad(matrices, provider, layer, x - 3, y - 3, x + width + 3, y + height + 3, 16F, Colors.TOOLTIP_BACKGROUND_START, Colors.TOOLTIP_BACKGROUND_END) // Body
-            drawGradientQuad(matrices, provider, layer, x - 4, y - 3, x - 3, y + height + 3, 16F, Colors.TOOLTIP_SHADOW_START, Colors.TOOLTIP_SHADOW_END) // Border - left
-            drawGradientQuad(matrices, provider, layer, x + width + 3, y - 3, x + width + 4, y + height + 3, 16F, Colors.TOOLTIP_SHADOW_START, Colors.TOOLTIP_SHADOW_END) // Border - right
+        fun drawTooltip(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, width: Float, height: Float, shadowStart: Color, shadowEnd: Color, backgroundStart: Color, backgroundEnd: Color, outlineStart: Color, outlineEnd: Color ) {
+            drawTooltip(matrices, provider, layer, x, y, 256F, width, height, shadowStart, shadowEnd, backgroundStart, backgroundEnd, outlineStart, outlineEnd)
+        }
 
-            drawGradientQuad(matrices, provider, layer, x - 3, y - 3 + 1, x - 3 + 1, y + height + 3 - 1, 16F, Colors.TOOLTIP_OUTLINE_START, Colors.TOOLTIP_OUTLINE_END) // Outline - left
-            drawGradientQuad(matrices, provider, layer, x + width + 2, y - 3 + 1, x + width + 3, y + height + 3 - 1, 16F, Colors.TOOLTIP_OUTLINE_START, Colors.TOOLTIP_OUTLINE_END) // Outline - right
-            drawGradientQuad(matrices, provider, layer, x - 3, y - 3, x + width + 3, y - 3 + 1, 16F, Colors.TOOLTIP_OUTLINE_START, Colors.TOOLTIP_OUTLINE_START) // Outline - top
-            drawGradientQuad(matrices, provider, layer, x - 3, y + height + 2, x + width + 3, y + height + 3, 16F, Colors.TOOLTIP_OUTLINE_END, Colors.TOOLTIP_OUTLINE_END) // Outline - bottom
+        fun drawTooltip(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, z: Float, width: Float, height: Float, shadowStart: Color, shadowEnd: Color, backgroundStart: Color, backgroundEnd: Color, outlineStart: Color, outlineEnd: Color ) {
+            drawGradientQuad(matrices, provider, layer, x - 3, y - 4, x + width + 3, y - 3, z, shadowStart, shadowStart) // Border - top
+            drawGradientQuad(matrices, provider, layer, x - 3, y + height + 3, x + width + 3, y + height + 4, z, shadowEnd, shadowEnd) // Border - bottom
+            drawGradientQuad(matrices, provider, layer, x - 3, y - 3, x + width + 3, y + height + 3, z, backgroundStart, backgroundEnd) // Body
+            drawGradientQuad(matrices, provider, layer, x - 4, y - 3, x - 3, y + height + 3, z, shadowStart, shadowEnd) // Border - left
+            drawGradientQuad(matrices, provider, layer, x + width + 3, y - 3, x + width + 4, y + height + 3, z, shadowStart, shadowEnd) // Border - right
+
+            drawGradientQuad(matrices, provider, layer, x - 3, y - 3 + 1, x - 3 + 1, y + height + 3 - 1, z, outlineStart, outlineEnd) // Outline - left
+            drawGradientQuad(matrices, provider, layer, x + width + 2, y - 3 + 1, x + width + 3, y + height + 3 - 1, z, outlineStart, outlineEnd) // Outline - right
+            drawGradientQuad(matrices, provider, layer, x - 3, y - 3, x + width + 3, y - 3 + 1, z, outlineStart, outlineStart) // Outline - top
+            drawGradientQuad(matrices, provider, layer, x - 3, y + height + 2, x + width + 3, y + height + 3, z, outlineEnd, outlineEnd) // Outline - bottom
         }
 
         fun getTextureManager(): TextureManager? {

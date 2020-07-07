@@ -1,29 +1,28 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "blade",
   "version": "${version}",
 
-  "name": "Example Mod",
+  "name": "Blade",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
-    "Me!"
+    "vini2003"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/vini2003/blade"
   },
 
-  "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "license": "LGPLv3",
+  "icon": "assets/blade/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleModKt::init"
+      "com.github.vini2003.blade.Blade"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "blade.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.8.7",

@@ -1,93 +1,53 @@
 package com.github.vini2003.blade.common.widget.base
 
 import com.github.vini2003.blade.client.utilities.Colors
-import com.github.vini2003.blade.client.utilities.Delays
 import com.github.vini2003.blade.client.utilities.Drawings
+import com.github.vini2003.blade.client.utilities.Layers
+import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
+import com.github.vini2003.blade.common.widget.WidgetCollection
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.item.ItemStack
-import java.util.function.Predicate
+import net.minecraft.screen.ScreenHandler
+import net.minecraft.screen.slot.Slot
+import org.apache.commons.lang3.reflect.FieldUtils
 
-class SlotWidget(public val slot: Int, public val inventory: Int) : AbstractWidget() {
-    companion object {
-        const val LEFT = 0
-        const val RIGHT = 1
-        const val MIDDLE = 2
+class SlotWidget(private val slot: Int, private val inventory: Int) : AbstractWidget() {
+    private lateinit var backendSlot: Slot
 
-        var draggedButton: Int = -1
-        var dragged: Set<SlotWidget> = emptySet()
-    }
+    override fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
+        super.onAdded(original, immediate)
+        backendSlot = Slot(original.getInventory(inventory), slot, 0, 0);
 
-    private val insertionFilters: List<Predicate<ItemStack>> = emptyList()
-
-    var skip: Boolean = false
-    var disabled: Boolean = false
-    var whitelist = false
-
-    var previewStack: ItemStack = ItemStack.EMPTY
-
-    override fun onMouseDragged(x: Float, y: Float, button: Int, deltaX: Double, deltaY: Double) {
-        super.onMouseDragged(x, y, button, deltaX, deltaY)
-
-        if (!focused) return
-
-        if (button != draggedButton) {
-            draggedButton = button
-            dragged = emptySet()
+        if (original is ScreenHandler) {
+            original.slots.add(backendSlot)
         }
-
-        dragged.plus(this)
     }
 
-    override fun onMouseReleased(x: Float, y: Float, button: Int) {
-        if (button == MIDDLE || disabled || !focused) return
+    override fun onRemoved(original: OriginalWidgetCollection, immediate: WidgetCollection) {
+        super.onRemoved(original, immediate)
 
-        val slotNumbers: IntArray = dragged.map { it.slot }.toIntArray()
-        val inventoryNumbers: IntArray = dragged.map { it.slot }.toIntArray()
-
-        val dragging = dragged.isNotEmpty() && Delays.interval() > Delays.delay()
-        val cursorEmpty = origin
-
-        super.onMouseReleased(x, y, button)
-    }
-
-    fun getStack(): ItemStack {
-        return origin?.getInventory(inventory)?.getStack(slot) ?: ItemStack.EMPTY
-    }
-
-    fun setStack(stack: ItemStack) {
-        origin?.getInventory(inventory)?.setStack(slot, stack)
-    }
-
-    fun canInsert(stack: ItemStack): Boolean {
-        if (disabled) return false
-
-        return if (whitelist) {
-            insertionFilters.find { predicate -> predicate.test(stack) } != null
-        } else {
-            insertionFilters.find { predicate -> predicate.test(stack) } == null
+        if (original is ScreenHandler) {
+            original.slots.remove(backendSlot)
         }
+    }
+
+    override fun onLayoutChanged() {
+        super.onLayoutChanged()
+
+        val xField = FieldUtils.getField(Slot::class.java, "x")
+        val yField = FieldUtils.getField(Slot::class.java, "y")
+
+        xField.isAccessible = true
+        yField.isAccessible = true
+
+        xField.set(backendSlot, getPosition().x.toInt())
+        yField.set(backendSlot, getPosition().y.toInt())
     }
 
     override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
         if (hidden) return
         super.drawWidget(matrices, provider)
 
-        val x: Float = getPosition().x
-        val y: Float = getPosition().y
-
-        val sX: Float = getSize().width
-        val sY: Float = getSize().height
-
-        Drawings.drawBeveledPanel(matrices, provider, x, y, sX, sY, Colors.SLOT_TOP_LEFT, Colors.SLOT_BACKGROUND, Colors.SLOT_BOTTOM_RIGHT)
-
-        val drawStack = if (previewStack.isEmpty) getStack() else previewStack
-
-        Drawings.getItemRenderer()?.renderInGui(drawStack, ((1 + x) + ((sX - 18) / 2)).toInt(), ((1 + y) + ((sY - 18) / 2)).toInt());
-        Drawings.getItemRenderer()?.renderGuiItemOverlay(Drawings.getTextRenderer(), drawStack, x.toInt(), y.toInt(), if (drawStack.count == 1) "" else drawStack.count.toString());
-
-        if (focused) {
-            Drawings.drawQuad(matrices, provider, x + 1, y + 1, sX - 2, sY - 2, Colors.SLOT_OVERLAY);
-        }
+        Drawings.drawBeveledPanel(matrices, provider, Layers.getFlat(), getPosition().x - 1 - ((getSize().width - 18F) / 2), getPosition().y - 1 - ((getSize().height - 18F) / 2), getSize().width, getSize().height, Colors.SLOT_TOP_LEFT, Colors.SLOT_BACKGROUND, Colors.SLOT_BOTTOM_RIGHT)
     }
 }

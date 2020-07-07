@@ -1,6 +1,7 @@
 package com.github.vini2003.blade.common.widget.base
 
 import com.github.vini2003.blade.client.utilities.Drawings
+import com.github.vini2003.blade.client.utilities.Layers
 import com.github.vini2003.blade.common.utilities.Positions
 import com.github.vini2003.blade.client.utilities.Texts
 import com.github.vini2003.blade.common.data.Position
@@ -9,6 +10,7 @@ import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.data.Sized
 import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
+import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
@@ -17,7 +19,8 @@ abstract class AbstractWidget : Positioned, Sized {
     private var position: Position = Position({0F}, {0F})
     private var size: Size = Size({0F}, {0F})
 
-    var origin: OriginalWidgetCollection? = null;
+    var original: OriginalWidgetCollection? = null;
+    var immediate: WidgetCollection? = null;
 
     var hidden: Boolean = false
         get() {
@@ -50,6 +53,16 @@ abstract class AbstractWidget : Positioned, Sized {
 
     override fun setSize(size: Size) {
         this.size = size
+    }
+
+    open fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
+        this.original = original
+        this.immediate = immediate
+    }
+
+    open fun onRemoved(original: OriginalWidgetCollection, immediate: WidgetCollection) {
+        this.original = null
+        this.immediate = null
     }
 
     open fun onMouseMoved(x: Float, y: Float) {
@@ -142,7 +155,7 @@ abstract class AbstractWidget : Positioned, Sized {
         }
     }
 
-    fun getTooltip(): List<Text> {
+    open fun getTooltip(): List<Text> {
         return emptyList()
     }
 
@@ -156,6 +169,12 @@ abstract class AbstractWidget : Positioned, Sized {
         size.recalculate()
     }
 
+    /**
+     * The tooltip is drawn to the TOOLTIP layer.
+     * The tooltip text is drawn immediately, as such,
+     * we must render it after the widget, and render
+     * the text after rendering the tooltip itself.
+     */
     fun drawTooltip(matrices: MatrixStack, provider: VertexConsumerProvider) {
         val list = getTooltip()
 
@@ -168,11 +187,15 @@ abstract class AbstractWidget : Positioned, Sized {
         val x: Float = Positions.mouseX + 8F
         var y: Float = Positions.mouseY - height / 2F
 
-        Drawings.drawTooltip(matrices, provider, x, y, width.toFloat() + 7 + 7, height.toFloat() + 7 + 7);
+        Drawings.drawTooltip(matrices, provider, Layers.getTooltip(), x, y, width.toFloat() + 1, height.toFloat() + 1)
+
+        if (provider is VertexConsumerProvider.Immediate) {
+            provider.draw(Layers.getTooltip())
+        }
 
         list.forEach{
-            y += 7
-            Drawings.getTextRenderer()?.draw(matrices, it, x + 7, y, 0xFFFFFF)
+            y += 1
+            Drawings.getTextRenderer()?.draw(matrices, it, x + 1, y, 0xFFFFFF)
         }
     }
 

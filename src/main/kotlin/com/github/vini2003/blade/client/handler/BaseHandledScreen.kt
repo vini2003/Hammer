@@ -1,15 +1,32 @@
 package com.github.vini2003.blade.client.handler
 
 import com.github.vini2003.blade.client.utilities.Instances
+import com.github.vini2003.blade.client.utilities.Layers
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
+import com.github.vini2003.blade.common.utilities.Positions
+import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.text.Text
 
-class BaseHandledScreen(handler: BaseScreenHandler, inventory: PlayerInventory, title: Text) : HandledScreen<BaseScreenHandler>(handler, inventory, title) {
+open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, inventory: PlayerInventory, title: Text) : HandledScreen<T>(handler as T, inventory, title) {
+    override fun init(client: MinecraftClient?, width: Int, height: Int) {
+        super.init(client, width, height)
+
+        x = 0
+        y = 0
+
+        this.width = width
+        this.height = height
+
+        this.backgroundWidth = width
+        this.backgroundHeight = height
+    }
+
     override fun drawBackground(matrices: MatrixStack?, delta: Float, mouseX: Int, mouseY: Int) {
+
     }
 
     override fun isClickOutsideBounds(mouseX: Double, mouseY: Double, left: Int, top: Int, button: Int): Boolean {
@@ -38,6 +55,17 @@ class BaseHandledScreen(handler: BaseScreenHandler, inventory: PlayerInventory, 
         }
 
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
+    }
+
+    override fun mouseMoved(mouseX: Double, mouseY: Double) {
+        handler.getWidgets().forEach{
+            it.onMouseMoved(mouseX.toFloat(), mouseY.toFloat())
+        }
+
+        Positions.mouseX = mouseX.toFloat()
+        Positions.mouseY = mouseY.toFloat()
+
+        super.mouseMoved(mouseX, mouseY)
     }
 
     override fun mouseScrolled(mouseX: Double, mouseY: Double, deltaY: Double): Boolean {
@@ -79,6 +107,18 @@ class BaseHandledScreen(handler: BaseScreenHandler, inventory: PlayerInventory, 
             it.drawWidget(matrices!!, provider)
         }
 
+        provider.draw(Layers.getFlat())
+        provider.draw(Layers.getTooltip())
+        provider.draw()
+
         super.render(matrices, mouseX, mouseY, delta)
+    }
+
+    override fun resize(client: MinecraftClient?, width: Int, height: Int) {
+        super.resize(client, width, height)
+
+        handler.getWidgets().forEach{
+            it.onLayoutChanged()
+        }
     }
 }

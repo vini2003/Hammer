@@ -7,9 +7,9 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-archivesBaseName = project.archives_base_name
+archivesBaseName = project.mod_name + "-" + project.mod_version + "+" + project.mod_target
 version = project.mod_version
-group = project.maven_group
+group = project.mod_group
 
 minecraft {
 }
@@ -20,18 +20,26 @@ repositories {
 }
 
 dependencies {
-    //to change the versions see the gradle.properties file
+    // Minecraft
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
+
+    // Yarn
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    // Fabric Loader
+    modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
 
+    // Fabric API
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    // Fabric Language Kotlin
     modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
 
-    // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-    // You may need to force-disable transitiveness on them.
+    // ModMenu
+    modImplementation "io.github.prospector:modmenu:${modmenu_version}"
+
+    // RoughlyEnoughItems
+    modImplementation ("me.shedaniel:RoughlyEnoughItems:${rei_version}")
 }
 
 processResources {

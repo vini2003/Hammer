@@ -5,8 +5,11 @@ import com.github.vini2003.blade.common.data.Position
 import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import com.github.vini2003.blade.common.widget.base.ButtonWidget
+import com.github.vini2003.blade.common.widget.base.ItemWidget
 import com.github.vini2003.blade.common.widget.base.SlotWidget
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.item.ItemStack
+import net.minecraft.item.Items
 import net.minecraft.screen.ScreenHandlerType
 
 class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(DebugContainers.DEBUG_HANDLER, syncId, player) {
@@ -25,8 +28,15 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
         button.setPosition(Position({32F}, {16F}))
         button.setSize(Size({80F}, {16F}))
 
+        val item: ItemWidget = ItemWidget()
+
+        item.setPosition(Position({256F}, {16F}))
+        item.stack = ItemStack(Items.RED_WOOL)
+
         addWidget(slot)
 
         addWidget(button)
+
+        addWidget(item)
     }
 }

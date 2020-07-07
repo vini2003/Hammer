@@ -10,7 +10,6 @@ import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.data.Sized
 import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
-import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
@@ -45,6 +44,7 @@ abstract class AbstractWidget : Positioned, Sized {
 
     override fun setPosition(position: Position) {
         this.position = position
+        onLayoutChanged()
     }
 
     override fun getSize(): Size {
@@ -53,6 +53,7 @@ abstract class AbstractWidget : Positioned, Sized {
 
     override fun setSize(size: Size) {
         this.size = size
+        onLayoutChanged()
     }
 
     open fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
@@ -66,11 +67,7 @@ abstract class AbstractWidget : Positioned, Sized {
     }
 
     open fun onMouseMoved(x: Float, y: Float) {
-        val wasFocused = focused;
-        focused = isWithin(x, y)
-
-        if (wasFocused && !focused) onFocusReleased()
-        if (!wasFocused && focused) onFocusGained()
+        focus(x, y)
 
         if (this is WidgetCollection) {
             this.getWidgets().forEach {
@@ -167,6 +164,18 @@ abstract class AbstractWidget : Positioned, Sized {
     open fun onLayoutChanged() {
         position.recalculate()
         size.recalculate()
+
+        focus(Positions.mouseX, Positions.mouseY)
+
+        parent?.onLayoutChanged()
+    }
+
+    fun focus(x: Float, y: Float) {
+        val wasFocused = focused;
+        focused = isWithin(x, y)
+
+        if (wasFocused && !focused) onFocusReleased()
+        if (!wasFocused && focused) onFocusGained()
     }
 
     /**
@@ -185,7 +194,7 @@ abstract class AbstractWidget : Positioned, Sized {
         val height = list.sumBy { Texts.height() }
 
         val x: Float = Positions.mouseX + 8F
-        var y: Float = Positions.mouseY - height / 2F
+        var y: Float = Positions.mouseY - 14F
 
         Drawings.drawTooltip(matrices, provider, Layers.getTooltip(), x, y, width.toFloat() + 1, height.toFloat() + 1)
 
@@ -195,7 +204,7 @@ abstract class AbstractWidget : Positioned, Sized {
 
         list.forEach{
             y += 1
-            Drawings.getTextRenderer()?.draw(matrices, it, x + 1, y, 0xFFFFFF)
+            Drawings.getTextRenderer()?.drawWithShadow(matrices, it, x + 1, y, 0xFFFFFF)
         }
     }
 

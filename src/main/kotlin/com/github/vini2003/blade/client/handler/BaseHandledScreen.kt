@@ -4,6 +4,8 @@ import com.github.vini2003.blade.client.utilities.Instances
 import com.github.vini2003.blade.client.utilities.Layers
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import com.github.vini2003.blade.common.utilities.Positions
+import com.github.vini2003.blade.common.widget.base.ItemWidget
+import com.github.vini2003.blade.common.widget.base.SlotWidget
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.render.VertexConsumerProvider
@@ -30,7 +32,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun isClickOutsideBounds(mouseX: Double, mouseY: Double, left: Int, top: Int, button: Int): Boolean {
-        return false
+        return handler.getWidgets().find { widget -> widget.isWithin(mouseX.toFloat(), mouseY.toFloat()) } == null
     }
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
@@ -101,7 +103,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun render(matrices: MatrixStack?, mouseX: Int, mouseY: Int, delta: Float) {
-        val provider: VertexConsumerProvider.Immediate = Instances.getClientInstance().bufferBuilders.entityVertexConsumers
+        val provider: VertexConsumerProvider.Immediate = Instances.getClientInstance().bufferBuilders.effectVertexConsumers
 
         handler.getWidgets().forEach {
             it.drawWidget(matrices!!, provider)
@@ -110,6 +112,8 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
         provider.draw(Layers.getFlat())
         provider.draw(Layers.getTooltip())
         provider.draw()
+
+        drawMouseoverTooltip(matrices, mouseX, mouseY)
 
         super.render(matrices, mouseX, mouseY, delta)
     }

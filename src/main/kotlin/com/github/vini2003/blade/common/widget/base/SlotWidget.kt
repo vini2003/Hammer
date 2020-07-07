@@ -12,7 +12,7 @@ import net.minecraft.screen.slot.Slot
 import org.apache.commons.lang3.reflect.FieldUtils
 
 class SlotWidget(private val slot: Int, private val inventory: Int) : AbstractWidget() {
-    private lateinit var backendSlot: Slot
+    private var backendSlot: Slot? = null
 
     override fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
         super.onAdded(original, immediate)
@@ -33,6 +33,8 @@ class SlotWidget(private val slot: Int, private val inventory: Int) : AbstractWi
 
     override fun onLayoutChanged() {
         super.onLayoutChanged()
+
+        if (backendSlot == null) return
 
         val xField = FieldUtils.getField(Slot::class.java, "x")
         val yField = FieldUtils.getField(Slot::class.java, "y")

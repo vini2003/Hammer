@@ -1,0 +1,16 @@
+{
+  "templates": {
+
+  },
+  "entries": {
+    "tooltip.background_start": 0xf0140617,
+    "tooltip.background_end": 0xf0120412,
+    "tooltip.outline_start": 0x50270460,
+    "tooltip.outline_end": 0x50190333,
+    "tooltip.shadow_start": 0xf0140617,
+    "tooltip.shadow_end": 0xf0120418,
+
+    "slot.top_left": 0xff373737,
+    "slot.background": 0xff8B8B8B
+  }
+}

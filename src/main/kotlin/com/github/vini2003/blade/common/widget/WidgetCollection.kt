@@ -8,9 +8,4 @@ interface WidgetCollection {
 
     fun addWidget(widget: AbstractWidget)
     fun removeWidget(widget: AbstractWidget)
-
-
-
-
-
 }

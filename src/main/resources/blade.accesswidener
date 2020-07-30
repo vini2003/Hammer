@@ -1,0 +1,10 @@
+accessWidener v1 named
+
+accessible field net/minecraft/screen/slot/Slot index I
+mutable field net/minecraft/screen/slot/Slot index I
+accessible field net/minecraft/screen/slot/Slot inventory Lnet/minecraft/inventory/Inventory;
+mutable field net/minecraft/screen/slot/Slot inventory Lnet/minecraft/inventory/Inventory;
+accessible field net/minecraft/screen/slot/Slot x I
+mutable field net/minecraft/screen/slot/Slot x I
+accessible field net/minecraft/screen/slot/Slot y I
+mutable field net/minecraft/screen/slot/Slot y I

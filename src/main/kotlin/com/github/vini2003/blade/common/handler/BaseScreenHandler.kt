@@ -4,8 +4,11 @@ import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
 import com.github.vini2003.blade.common.widget.base.AbstractWidget
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventory
+import net.minecraft.item.ItemStack
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.ScreenHandlerType
+import net.minecraft.screen.slot.Slot
+import net.minecraft.screen.slot.SlotActionType
 
 open class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId: Int, private val player: PlayerEntity) : ScreenHandler(type, syncId), OriginalWidgetCollection {
     private val widgets: MutableList<AbstractWidget> = mutableListOf()
@@ -20,7 +23,7 @@ open class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId:
         widgets.add(widget)
         widget.onAdded(this, this)
 
-        widgets.forEach{
+        widgets.forEach{ _ ->
             widget.onLayoutChanged()
         }
     }
@@ -29,7 +32,7 @@ open class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId:
         widgets.remove(widget)
         widget.onRemoved(this, this)
 
-        widgets.forEach{
+        widgets.forEach{ _ ->
             widget.onLayoutChanged()
         }
     }
@@ -39,7 +42,7 @@ open class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId:
     }
 
     override fun addInventory(inventoryNumber: Int, inventory: Inventory) {
-        inventories.put(inventoryNumber, inventory)
+        inventories[inventoryNumber] = inventory
     }
 
     override fun getPlayer(): PlayerEntity {
@@ -48,5 +51,19 @@ open class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId:
 
     override fun canUse(player: PlayerEntity?): Boolean {
         return true
+    }
+
+    public override fun addSlot(slot: Slot?): Slot {
+        return super.addSlot(slot)
+    }
+
+    fun removeSlot(slot: Slot?) {
+        val id = slot!!.id
+        slots.remove(slot)
+        slots.forEach {
+            if (it.id >= id) {
+                --it.id
+            }
+        }
     }
 }

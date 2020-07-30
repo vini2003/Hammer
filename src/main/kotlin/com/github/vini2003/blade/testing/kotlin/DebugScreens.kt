@@ -1,8 +1,8 @@
-package com.github.vini2003.blade.testing
+package com.github.vini2003.blade.testing.kotlin
 
+import com.github.vini2003.blade.testing.kotlin.DebugContainers
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry
 import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.screen.ScreenHandler
 import net.minecraft.text.Text
 
 class DebugScreens {

@@ -12,8 +12,8 @@ version = project.mod_version
 group = project.mod_group
 
 minecraft {
+    accessWidener = file("src/main/resources/blade.accesswidener")
 }
-
 
 repositories {
     maven {
@@ -46,10 +46,8 @@ dependencies {
     modImplementation "me.shedaniel:RoughlyEnoughItems:${rei_version}"
 
     // Jankson
-    modCompile "blue.endless:jankson:${jankson_version}"
+    modImplementation "blue.endless:jankson:${jankson_version}"
     include "blue.endless:jankson:${jankson_version}"
-
-
 }
 
 processResources {

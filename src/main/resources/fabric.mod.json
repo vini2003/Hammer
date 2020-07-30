@@ -24,6 +24,7 @@
   "mixins": [
     "blade.mixins.json"
   ],
+  "accessWidener": "blade.accesswidener",
   "depends": {
     "fabricloader": ">=0.8.7",
     "fabric": "*",

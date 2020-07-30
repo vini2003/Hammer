@@ -12,6 +12,5 @@ class PanelWidget : AbstractWidget() {
         Drawings.drawPanel(matrices, provider, Layers.getFlat(), getPosition().x, getPosition().y, getSize().width, getSize().height, style().asColor("panel.shadow"), style().asColor("panel.background"), style().asColor("panel.highlight"), style().asColor("panel.outline"))
 
         super.drawWidget(matrices, provider)
-
     }
 }

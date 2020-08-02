@@ -27,7 +27,7 @@ class ItemWidget : AbstractWidget() {
         RenderSystem.pushMatrix()
         RenderSystem.translatef(0F, 0F, -256F)
 
-        Drawings.getItemRenderer()?.renderInGui(stack, getPosition().x.toInt(), getPosition().y.toInt())
+        Drawings.getItemRenderer()?.renderInGui(stack, position.x.toInt(), position.y.toInt())
 
         RenderSystem.popMatrix()
 

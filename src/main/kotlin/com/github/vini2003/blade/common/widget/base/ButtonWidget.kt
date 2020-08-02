@@ -51,12 +51,12 @@ class ButtonWidget(private val clickAction: (ButtonWidget) -> Unit) : AbstractWi
 
         val texture = if (disabled) textureOff else if (focused) textureOnFocus else textureOn
 
-        texture.draw(matrices, provider, getPosition().x, getPosition().y, getSize().width, getSize().height)
+        texture.draw(matrices, provider, position.x, position.y, size.width, size.height)
 
         if (provider is VertexConsumerProvider.Immediate) provider.draw()
 
         label?.let {
-            Drawings.getTextRenderer()?.drawWithShadow(matrices, label, getPosition().x + (getSize().width / 2 - Texts.width(label!!) / 2), getPosition().y + (getSize().height / 2 - Texts.height() / 2), color("button.label").toInt()) // 0xFCFCFC
+            Drawings.getTextRenderer()?.drawWithShadow(matrices, label, position.x + (size.width / 2 - Texts.width(label!!) / 2), position.y + (size.height / 2 - Texts.height() / 2), color("button.label").toInt()) // 0xFCFCFC
         }
 
         super.drawWidget(matrices, provider)

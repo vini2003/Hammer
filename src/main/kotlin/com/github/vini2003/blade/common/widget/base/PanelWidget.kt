@@ -9,7 +9,7 @@ class PanelWidget : AbstractWidget() {
     override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
         if (hidden) return
 
-        Drawings.drawPanel(matrices, provider, Layers.flat(), getPosition().x, getPosition().y, getSize().width, getSize().height, style().asColor("panel.shadow"), style().asColor("panel.background"), style().asColor("panel.highlight"), style().asColor("panel.outline"))
+        Drawings.drawPanel(matrices, provider, Layers.flat(), position.x, position.y, size.width, size.height, style().asColor("panel.shadow"), style().asColor("panel.background"), style().asColor("panel.highlight"), style().asColor("panel.outline"))
 
         super.drawWidget(matrices, provider)
     }

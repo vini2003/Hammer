@@ -18,8 +18,16 @@ import net.minecraft.util.Identifier
 import java.util.*
 
 abstract class AbstractWidget : Positioned, Sized {
-    private var position: Position = Position({0F}, {0F})
-    private var size: Size = Size({0F}, {0F})
+    override var position: Position = Position({0F}, {0F})
+        set(value) {
+            field = value
+            onLayoutChanged()
+        }
+    override var size: Size = Size({0F}, {0F})
+        set(value) {
+            field = value
+            onLayoutChanged()
+        }
 
     var original: OriginalWidgetCollection? = null;
     var immediate: WidgetCollection? = null;
@@ -46,24 +54,6 @@ abstract class AbstractWidget : Positioned, Sized {
         }
 
     var parent: AbstractWidget? = null
-
-    override fun getPosition(): Position {
-        return position
-    }
-
-    override fun setPosition(position: Position) {
-        this.position = position
-        onLayoutChanged()
-    }
-
-    override fun getSize(): Size {
-        return size
-    }
-
-    override fun setSize(size: Size) {
-        this.size = size
-        onLayoutChanged()
-    }
 
     fun style(): Style {
         return Styles.get(style).let {

@@ -13,10 +13,10 @@ class Scissors(provider: VertexConsumerProvider?, x: Int, y: Int, width: Int, he
     private var top = 0
     private var bottom = 0
 
-    constructor(provider: VertexConsumerProvider?, element: AbstractWidget) : this(provider, (element.getPosition().x * MinecraftClient.getInstance().window.scaleFactor).toInt(),
-            (MinecraftClient.getInstance().window.height - (element.getPosition().y + element.getSize().height) * MinecraftClient.getInstance().window.scaleFactor).toInt(),
-            (element.getSize().width * MinecraftClient.getInstance().window.scaleFactor).toInt(),
-            (element.getSize().height* MinecraftClient.getInstance().window.scaleFactor).toInt()) {
+    constructor(provider: VertexConsumerProvider?, element: AbstractWidget) : this(provider, (element.position.x * MinecraftClient.getInstance().window.scaleFactor).toInt(),
+            (MinecraftClient.getInstance().window.height - (element.position.y + element.size.height) * MinecraftClient.getInstance().window.scaleFactor).toInt(),
+            (element.size.width * MinecraftClient.getInstance().window.scaleFactor).toInt(),
+            (element.size.height* MinecraftClient.getInstance().window.scaleFactor).toInt()) {
     }
 
     private fun resume() {

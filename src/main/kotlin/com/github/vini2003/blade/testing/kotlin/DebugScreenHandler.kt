@@ -20,36 +20,36 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 
         val slot = SlotWidget(0, player.inventory)
 
-        slot.setPosition(Position({16F}, {16F}))
-        slot.setSize(Size({36F}, {36F}))
+        slot.position = (Position({16F}, {16F}))
+        slot.size = (Size({36F}, {36F}))
 
         val topButton = ButtonWidget {
         }
 
-        topButton.setPosition(Position({slot.getPosition().x + slot.getSize().width + 18F}, {slot.getPosition().y}))
-        topButton.setSize(Size({120F}, {16F}))
+        topButton.position = (Position({slot.position.x + slot.size.width + 18F}, {slot.position.y}))
+        topButton.size = (Size({120F}, {16F}))
         topButton.label = LiteralText("I am NinePatch,")
 
         val bottomButton = ButtonWidget {
         }
 
-        bottomButton.setPosition(Position({slot.getPosition().x + slot.getSize().width + 18F}, {topButton.getPosition().y + topButton.getSize().height + 1}))
-        bottomButton.setSize(Size({160F}, {16F}))
+        bottomButton.position = (Position({slot.position.x + slot.size.width + 18F}, {topButton.position.y + topButton.size.height + 1}))
+        bottomButton.size = (Size({160F}, {16F}))
         bottomButton.label = LiteralText("or something.")
 
         val item = ItemWidget()
 
-        item.setPosition(Position({256F}, {16F}))
-        item.setSize(Size({16F}, {16F}))
+        item.position = (Position({256F}, {16F}))
+        item.size = (Size({16F}, {16F}))
         item.stack = ItemStack(Items.RED_WOOL)
 
-        val inv = SimpleInventory(1024)
-        for (i in 0 until inv.size()) inv.setStack(i, ItemStack(Registry.ITEM.getRandom(player.world.random), player.world.random.nextInt(Integer.MAX_VALUE)))
+        val inventory = SimpleInventory(4096)
+        for (i in 0 until inventory.size()) inventory.setStack(i, ItemStack(Registry.ITEM.getRandom(player.world.random), player.world.random.nextInt(64)))
 
-        val slots = SlotListWidget(16, 12, 1024, inv)
+        val slots = SlotListWidget(inventory)
 
-        slots.setPosition(Position({slot.getPosition().x}, {slot.getPosition().y + slot.getSize().width + 2}))
-        slots.setSize(Size({17 * 18F}, {12 * 18F}))
+        slots.position = (Position({slot.position.x}, {slot.position.y + slot.size.width + 2}))
+        slots.size = (Size({17 * 18F}, {11 * 18F}))
 
         addWidget(slot)
 

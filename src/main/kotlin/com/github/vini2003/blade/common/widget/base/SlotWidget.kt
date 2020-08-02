@@ -45,17 +45,17 @@ class SlotWidget(private val slot: Int, private val inventory: Inventory) : Abst
     }
 
     private fun slotX(): Int {
-        return (getPosition().x + (if (getSize().width <= 18) 1F else getSize().width / 2F - 9F)).toInt()
+        return (position.x + (if (size.width <= 18) 1F else size.width / 2F - 9F)).toInt()
     }
 
     private fun slotY(): Int {
-        return (getPosition().y + (if (getSize().height <= 18) 1F else getSize().height / 2F - 9F)).toInt()
+        return (position.y + (if (size.height <= 18) 1F else size.height / 2F - 9F)).toInt()
     }
 
     override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
         if (hidden) return
 
-        texture.draw(matrices, provider, getPosition().x, getPosition().y, getSize().width, getSize().height)
+        texture.draw(matrices, provider, position.x, position.y, size.width, size.height)
 
         super.drawWidget(matrices, provider)
     }

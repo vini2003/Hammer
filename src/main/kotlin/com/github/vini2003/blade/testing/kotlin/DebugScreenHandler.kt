@@ -5,6 +5,7 @@ import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import com.github.vini2003.blade.common.widget.base.ButtonWidget
 import com.github.vini2003.blade.common.widget.base.ItemWidget
+import com.github.vini2003.blade.common.widget.base.SlotListWidget
 import com.github.vini2003.blade.common.widget.base.SlotWidget
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.SimpleInventory
@@ -45,10 +46,10 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
         val inv = SimpleInventory(1024)
         for (i in 0 until inv.size()) inv.setStack(i, ItemStack(Registry.ITEM.getRandom(player.world.random), player.world.random.nextInt(Integer.MAX_VALUE)))
 
-        //val slots = SlotListWidget(16, 12, 1024, inv)
+        val slots = SlotListWidget(16, 12, 1024, inv)
 
-        //slots.setPosition(Position({32F}, {32F}))
-        //slots.setSize(Size({17 * 18F}, {12 * 18F}))
+        slots.setPosition(Position({slot.getPosition().x}, {slot.getPosition().y + slot.getSize().width + 2}))
+        slots.setSize(Size({17 * 18F}, {12 * 18F}))
 
         addWidget(slot)
 
@@ -57,6 +58,6 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 
         addWidget(item)
 
-        //addWidget(slots)
+        addWidget(slots)
     }
 }

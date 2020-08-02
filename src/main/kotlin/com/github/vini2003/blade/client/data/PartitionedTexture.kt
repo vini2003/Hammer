@@ -48,13 +48,13 @@ class PartitionedTexture(
         val p6H = height * (parts[6].vE - parts[6].vS) / scaleHeight
 
         val p4W = width * (parts[4].uE - parts[4].uS) / scaleWidth
-        val p4H = height * (parts[4].vE - parts[4].vS)
+        val p4H = height * (parts[4].vE + parts[4].vS) - p0H - p1H
 
         val p5W = width * (parts[5].uE - parts[5].uS) / scaleWidth
-        val p5H = height * (parts[5].vE - parts[5].vS)
+        val p5H = height * (parts[5].vE + parts[5].vS) - p0H - p1H
 
         val p8W = width * (parts[8].uE + parts[8].uS) - p0W - p1W
-        val p8H = height * (parts[8].vE - parts[8].vS)
+        val p8H = height * (parts[8].vE + parts[8].vS) - p0H - p1H
 
         val p2W = width * (parts[2].uE - parts[2].uS) / scaleWidth
         val p2H = height * (parts[2].vE - parts[2].vS) / scaleHeight

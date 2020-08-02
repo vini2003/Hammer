@@ -1,7 +1,10 @@
 package com.github.vini2003.blade.common.widget.base
 
+import com.github.vini2003.blade.Blade
+import com.github.vini2003.blade.client.data.PartitionedTexture
 import com.github.vini2003.blade.client.utilities.Drawings
 import com.github.vini2003.blade.client.utilities.Layers
+import com.github.vini2003.blade.common.data.Color
 import com.github.vini2003.blade.common.data.Position
 import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.data.geometry.Rectangle
@@ -20,6 +23,10 @@ class SlotListWidget(
         private val maximumSlots: Int,
         private val inventory: Inventory
 ) : AbstractWidget(), WidgetCollection {
+    var textureScrollbar = PartitionedTexture(Blade.identifier("textures/widget/scrollbar.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.16666666666666666667F)
+    var textureScroller = PartitionedTexture(Blade.identifier("textures/widget/scroller.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
+    var textureScrollerFocus = PartitionedTexture(Blade.identifier("textures/widget/scroller_focus.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
+
     private val widgets = mutableListOf<AbstractWidget>()
 
     private var row = 0
@@ -173,15 +180,16 @@ class SlotListWidget(
 
     override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
         super.drawWidget(matrices, provider)
-
-        Drawings.drawBeveledPanel(matrices, provider, Layers.flat(), getPosition().x + getSize().width - 1F - 18F, getPosition().y - 1, 18F, getSize().height, color("slot_list.top_left"), color("slot_list.background"), color("slot_list.bottom_right"))
+        
+        Drawings.drawQuad(matrices, provider, Layers.flat(), getPosition().x + getSize().width - 18F, getPosition().y - 1, 18F, getSize().height, Color.default())
+        textureScrollbar.draw(matrices, provider, getPosition().x + getSize().width - 18F, getPosition().y - 1, 18F, getSize().height)
 
         val scrollerFocus = scrollerRectangle().isWithin(Positions.mouseX, Positions.mouseY)
 
         if (scrollerFocus || scrollerHeld) {
-            Drawings.drawBeveledPanel(matrices, provider, Layers.flat(), getPosition().x + getSize().width - 18F, scrollerY() - 1, 16F, scrollerHeight(), color("slot_list.scroller.focused.top_left"), color("slot_list.scroller.focused.background"), color("slot_list.scroller.focused.bottom_right"))
+            textureScrollerFocus.draw(matrices, provider, getPosition().x + getSize().width - 18F + 1F, scrollerY() - 1, 16F, scrollerHeight())
         } else {
-            Drawings.drawBeveledPanel(matrices, provider, Layers.flat(), getPosition().x + getSize().width  - 18F, scrollerY() - 1, 16F, scrollerHeight(), color("slot_list.scroller.unfocused.top_left"), color("slot_list.scroller.unfocused.background"), color("slot_list.scroller.unfocused.bottom_right"))
+            textureScroller.draw(matrices, provider, getPosition().x + getSize().width  - 18F + 1F, scrollerY() - 1, 16F, scrollerHeight())
         }
     }
 }

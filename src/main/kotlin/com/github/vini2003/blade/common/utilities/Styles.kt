@@ -1,28 +1,35 @@
 package com.github.vini2003.blade.common.utilities
 
-import blue.endless.jankson.Jankson
-import blue.endless.jankson.JsonElement
-import blue.endless.jankson.JsonObject
-import blue.endless.jankson.JsonPrimitive
 import com.github.vini2003.blade.common.data.Style
+import com.google.gson.Gson
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonPrimitive
+import com.google.gson.stream.JsonReader
 import net.minecraft.resource.ResourceManager
 import java.lang.Exception
 import java.lang.RuntimeException
+import java.nio.charset.Charset
+import java.nio.file.Files
 
 class Styles {
     companion object {
         private val entries: MutableMap<String, Style> = mutableMapOf()
 
-        private val jankson: Jankson = Jankson.builder().build();
+        private val jankson: Gson = Gson()
 
         fun get(name: String): Style {
             return entries.getOrDefault(name, Style.EMPTY)
         }
 
         fun load(manager: ResourceManager) {
-            manager.findResources("style") { string -> string.endsWith(".style.json5") }.forEach {
+            manager.findResources("style") { string -> string.endsWith(".style.json") }.forEach {
                 try {
-                    load(it.path.replaceFirst("style/", "").replaceFirst("\\.style\\.json5", ""), jankson.load(manager.getResource(it).inputStream))
+                    val reader = manager.getResource(it).inputStream.bufferedReader(Charset.defaultCharset())
+
+                    val jsonObject = JsonObject()
+
+                    load(it.path.replaceFirst("style/", "").replaceFirst(".style.json", ""), jankson.fromJson(reader, jsonObject.javaClass))
                 } catch (exception: Exception) {
                     System.err.println(exception.message)
                 }
@@ -30,8 +37,8 @@ class Styles {
         }
 
         fun load(name: String, data: JsonObject) {
-            val templates: JsonObject? = data.getObject("templates")
-            val entries: JsonObject? = data.getObject("entries")
+            val templates: JsonObject? = data.getAsJsonObject("templates")
+            val entries: JsonObject? = data.getAsJsonObject("entries")
 
             if (templates == null || entries == null) {
                 throw RuntimeException("Invalid JSON parsed for Blade theme!")
@@ -39,8 +46,8 @@ class Styles {
 
             val mapped: MutableMap<String, JsonElement> = mutableMapOf()
 
-            entries.forEach {
-                mapped[it.key] = if (it.key.startsWith("$")) (templates[it.key.replace("$", "")] as JsonPrimitive).value as JsonElement else it.value
+            entries.entrySet().forEach {
+                mapped[it.key] = if (it.key.startsWith("$")) (templates[it.key.replace("$", "")]).asJsonPrimitive as JsonElement else it.value
             }
 
             Styles.entries[name] = Style(mapped)

@@ -6,12 +6,16 @@ import com.github.vini2003.blade.common.utilities.Styles
 import com.github.vini2003.blade.common.utilities.Positions
 import com.github.vini2003.blade.client.utilities.Texts
 import com.github.vini2003.blade.common.data.*
+import com.github.vini2003.blade.common.handler.BaseScreenHandler
+import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
 import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
+import net.minecraft.util.Identifier
+import java.util.*
 
 abstract class AbstractWidget : Positioned, Sized {
     private var position: Position = Position({0F}, {0F})
@@ -21,6 +25,10 @@ abstract class AbstractWidget : Positioned, Sized {
     var immediate: WidgetCollection? = null;
 
     var style = "default"
+    val hash = Objects.hash(javaClass.name + "_" + position.x + "_" + position.y + "_" + size.width + "_" + size.height)
+    var handler: BaseScreenHandler? = null
+
+    val synchronize: MutableSet<Identifier> = mutableSetOf()
 
     var hidden: Boolean = false
         get() {
@@ -63,14 +71,20 @@ abstract class AbstractWidget : Positioned, Sized {
         }
     }
 
+    fun color(property: String): Color {
+        return style().asColor(property)
+    }
+
     open fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
         this.original = original
         this.immediate = immediate
+        this.handler = original.getHandler()
     }
 
     open fun onRemoved(original: OriginalWidgetCollection, immediate: WidgetCollection) {
         this.original = null
         this.immediate = null
+        this.handler = null
     }
 
     open fun onMouseMoved(x: Float, y: Float) {
@@ -80,6 +94,10 @@ abstract class AbstractWidget : Positioned, Sized {
             this.getWidgets().forEach {
                 it.onMouseMoved(x, y)
             }
+        }
+
+        if (handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_MOVE)) {
+            Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofMouseMove(handler!!.syncId, hash, x, y))
         }
     }
 
@@ -91,6 +109,10 @@ abstract class AbstractWidget : Positioned, Sized {
                 it.onMouseClicked(x, y, button)
             }
         }
+
+        if (handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_CLICK)) {
+            Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofMouseClick(handler!!.syncId, hash, x, y, button))
+        }
     }
 
     open fun onMouseReleased(x: Float, y: Float, button: Int) {
@@ -101,6 +123,9 @@ abstract class AbstractWidget : Positioned, Sized {
                 it.onMouseReleased(x, y, button)
             }
         }
+        if (handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_RELEASE)) {
+            Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofMouseRelease(handler!!.syncId, hash, x, y, button))
+        }
     }
 
     open fun onMouseDragged(x: Float, y: Float, button: Int, deltaX: Double, deltaY: Double) {
@@ -108,6 +133,10 @@ abstract class AbstractWidget : Positioned, Sized {
             this.getWidgets().forEach{
                 it.onMouseDragged(x, y, button, deltaX, deltaY)
             }
+        }
+
+        if (handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_DRAG)) {
+            Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofMouseDrag(handler!!.syncId, hash, x, y, button, deltaX, deltaY))
         }
     }
 
@@ -117,6 +146,10 @@ abstract class AbstractWidget : Positioned, Sized {
                 it.onMouseScrolled(x, y, deltaY)
             }
         }
+
+        if (handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_SCROLL)) {
+            Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofMouseScroll(handler!!.syncId, hash, x, y, deltaY))
+        }
     }
 
     open fun onKeyPressed(keyCode: Int, scanCode: Int, keyModifiers: Int) {
@@ -125,13 +158,21 @@ abstract class AbstractWidget : Positioned, Sized {
                 it.onKeyPressed(keyCode, scanCode, keyModifiers)
             }
         }
+
+        if (handler != null && handler!!.client && synchronize.contains(Networks.KEY_PRESS)) {
+            Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofKeyPress(handler!!.syncId, hash, keyCode, scanCode, keyModifiers))
+        }
     }
 
-    open fun onKeyReleased(keyCode: Int, character: Int, keyModifier: Int) {
+    open fun onKeyReleased(keyCode: Int, character: Int, keyModifiers: Int) {
         if (this is WidgetCollection) {
             this.getWidgets().forEach {
-                it.onKeyReleased(keyCode, character, keyModifier)
+                it.onKeyReleased(keyCode, character, keyModifiers)
             }
+        }
+
+        if (handler != null && handler!!.client && synchronize.contains(Networks.KEY_RELEASE)) {
+            Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofKeyRelease(handler!!.syncId, hash, keyCode, character, keyModifiers))
         }
     }
 
@@ -141,6 +182,10 @@ abstract class AbstractWidget : Positioned, Sized {
                 it.onCharTyped(character, keyCode)
             }
         }
+
+        if (handler != null && handler!!.client && synchronize.contains(Networks.CHAR_TYPE)) {
+            Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofCharType(handler!!.syncId, hash, character, keyCode))
+        }
     }
 
     open fun onFocusGained() {
@@ -149,6 +194,10 @@ abstract class AbstractWidget : Positioned, Sized {
                 it.onFocusGained()
             }
         }
+
+        if (handler != null && handler!!.client && synchronize.contains(Networks.FOCUS_GAIN)) {
+            Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofFocusGain(handler!!.syncId, hash))
+        }
     }
 
     open fun onFocusReleased() {
@@ -156,6 +205,10 @@ abstract class AbstractWidget : Positioned, Sized {
             this.getWidgets().forEach{
                 it.onFocusReleased()
             }
+        }
+
+        if (handler != null && handler!!.client && synchronize.contains(Networks.FOCUS_RELEASE)) {
+            Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofFocusRelease(handler!!.syncId, hash))
         }
     }
 
@@ -200,7 +253,7 @@ abstract class AbstractWidget : Positioned, Sized {
         val x: Float = Positions.mouseX + 8F
         var y: Float = Positions.mouseY - 14F
 
-        Drawings.drawTooltip(matrices, provider, Layers.getTooltip(), x, y + 1, width.toFloat() - 1, height.toFloat() - 1, style().asColor("tooltip.shadow_start"), style().asColor("tooltip.shadow_end"), style().asColor("tooltip.background_start"), style().asColor("tooltip.background_end"), style().asColor("tooltip.outline_start"), style().asColor("tooltip.outline_end"))
+        Drawings.drawTooltip(matrices, provider, Layers.tooltip(), x, y + 1, width.toFloat() - 1, height.toFloat() - 1, style().asColor("tooltip.shadow_start"), style().asColor("tooltip.shadow_end"), style().asColor("tooltip.background_start"), style().asColor("tooltip.background_end"), style().asColor("tooltip.outline_start"), style().asColor("tooltip.outline_end"))
 
         RenderSystem.pushMatrix()
         RenderSystem.translatef(0F, 0F, 256F) // Translate above the tooltip rendered, which happens at Z 256.

@@ -11,8 +11,8 @@ class Color(val r: Float, val g: Float, val b: Float, val a: Float) {
             return Color(r, g, b, a)
         }
 
-        fun of(int: Int): Color {
-            return Color((int shr 24 and 0xFF) / 255F, (int shr 16 and 0xFF) / 255F, (int shr 8 and 0xFF) / 255F, (int and 0xFF) / 255F)
+        fun of(color: Int): Color {
+            return Color((color shr 24 and 0xFF) / 255F, (color shr 16 and 0xFF) / 255F, (color shr 8 and 0xFF) / 255F, (color and 0xFF) / 255F)
         }
 
         fun default(): Color {

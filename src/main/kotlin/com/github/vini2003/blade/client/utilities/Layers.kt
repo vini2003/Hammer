@@ -65,11 +65,11 @@ class Layers : RenderLayer {
                 .build(false)
         )
 
-        fun getFlat(): RenderLayer {
+        fun flat(): RenderLayer {
             return INTERRFACE
         }
 
-        fun getTooltip(): RenderLayer {
+        fun tooltip(): RenderLayer {
             return TOOLTIP
         }
     }

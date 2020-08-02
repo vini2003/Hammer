@@ -4,8 +4,6 @@ import com.github.vini2003.blade.client.utilities.Instances
 import com.github.vini2003.blade.client.utilities.Layers
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import com.github.vini2003.blade.common.utilities.Positions
-import com.github.vini2003.blade.common.widget.base.ItemWidget
-import com.github.vini2003.blade.common.widget.base.SlotWidget
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.render.VertexConsumerProvider
@@ -109,13 +107,15 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
             it.drawWidget(matrices!!, provider)
         }
 
+        provider.draw(Layers.flat())
+        provider.draw(Layers.tooltip())
+        provider.draw()
+
         super.render(matrices, mouseX, mouseY, delta)
 
         super.drawMouseoverTooltip(matrices, mouseX, mouseY)
 
-        provider.draw(Layers.getFlat())
-        provider.draw(Layers.getTooltip())
-        provider.draw()
+
     }
 
     override fun resize(client: MinecraftClient?, width: Int, height: Int) {

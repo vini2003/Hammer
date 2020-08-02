@@ -1,7 +1,8 @@
 package com.github.vini2003.blade.common.data
 
-import blue.endless.jankson.JsonElement
-import blue.endless.jankson.JsonPrimitive
+import com.google.common.primitives.Longs
+import com.google.gson.JsonElement
+import com.google.gson.JsonPrimitive
 import java.util.function.Function
 
 class Style(private var properties: MutableMap<String, JsonElement>) {
@@ -12,28 +13,28 @@ class Style(private var properties: MutableMap<String, JsonElement>) {
 
         init {
             registerDeserializer(Color::class.java, Function<JsonElement, Color> {
-                Color.of(JsonPrimitive(it).asInt(Int.MAX_VALUE))
+                Color.of(it.asString)
             })
             registerDeserializer(Byte::class.java, Function<JsonElement, Byte> {
-                JsonPrimitive(it).asByte(Byte.MAX_VALUE)
+                it.asByte
             })
             registerDeserializer(Short::class.java, Function<JsonElement, Short> {
-                JsonPrimitive(it).asShort(Short.MAX_VALUE)
+                it.asShort
             })
             registerDeserializer(Int::class.java, Function<JsonElement, Int> {
-                JsonPrimitive(it).asInt(Int.MAX_VALUE)
+                it.asInt
             })
             registerDeserializer(Long::class.java, Function<JsonElement, Long> {
-                JsonPrimitive(it).asLong(Long.MAX_VALUE)
+                it.asLong
             })
             registerDeserializer(Float::class.java, Function<JsonElement, Float> {
-                JsonPrimitive(it).asFloat(Float.MAX_VALUE)
+                it.asFloat
             })
             registerDeserializer(Double::class.java, Function<JsonElement, Double> {
-                JsonPrimitive(it).asDouble(Double.MAX_VALUE)
+                it.asDouble
             })
             registerDeserializer(String::class.java, Function<JsonElement, String> {
-                JsonPrimitive(it).asString()
+                it.asString
             })
         }
 

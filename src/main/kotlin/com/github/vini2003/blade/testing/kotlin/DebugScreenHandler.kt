@@ -5,12 +5,12 @@ import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import com.github.vini2003.blade.common.widget.base.ButtonWidget
 import com.github.vini2003.blade.common.widget.base.ItemWidget
-import com.github.vini2003.blade.common.widget.base.SlotListWidget
 import com.github.vini2003.blade.common.widget.base.SlotWidget
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.SimpleInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
+import net.minecraft.text.LiteralText
 import net.minecraft.util.registry.Registry
 
 class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(DebugContainers.DEBUG_HANDLER, syncId, player) {
@@ -22,12 +22,19 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
         slot.setPosition(Position({16F}, {16F}))
         slot.setSize(Size({36F}, {36F}))
 
-        val button = ButtonWidget {
-            if (it.focused) print("I was clicked!")
+        val topButton = ButtonWidget {
         }
 
-        button.setPosition(Position({32F}, {16F}))
-        button.setSize(Size({80F}, {16F}))
+        topButton.setPosition(Position({slot.getPosition().x + slot.getSize().width + 18F}, {slot.getPosition().y}))
+        topButton.setSize(Size({120F}, {16F}))
+        topButton.label = LiteralText("I am NinePatch,")
+
+        val bottomButton = ButtonWidget {
+        }
+
+        bottomButton.setPosition(Position({slot.getPosition().x + slot.getSize().width + 18F}, {topButton.getPosition().y + topButton.getSize().height + 1}))
+        bottomButton.setSize(Size({160F}, {16F}))
+        bottomButton.label = LiteralText("or something.")
 
         val item = ItemWidget()
 
@@ -45,7 +52,8 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 
         addWidget(slot)
 
-        addWidget(button)
+        addWidget(topButton)
+        addWidget(bottomButton)
 
         addWidget(item)
 

@@ -5,6 +5,7 @@ import com.github.vini2003.blade.client.data.PartitionedTexture
 import com.github.vini2003.blade.client.utilities.Drawings
 import com.github.vini2003.blade.client.utilities.Layers
 import com.github.vini2003.blade.client.utilities.Texts
+import com.github.vini2003.blade.common.data.Color
 import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
@@ -42,10 +43,13 @@ class ButtonWidget(private val clickAction: (ButtonWidget) -> Unit) : AbstractWi
 
         val texture = if (disabled) textureOff else textureOn
 
+        Drawings.drawQuad(matrices, provider, Layers.flat(), getPosition().x, getPosition().y, 0F, getSize().width, getSize().height, Color.default())
         texture.draw(matrices, provider, getPosition().x, getPosition().y, getSize().width, getSize().height)
 
+        if (provider is VertexConsumerProvider.Immediate) provider.draw()
+
         label?.let {
-            Drawings.getTextRenderer()?.draw(matrices, label, getPosition().x + getSize().width / 2 - Texts.width(label!!), getPosition().y + getSize().height / 2 - Texts.height(), style().asColor("button.label").toInt()) // 0xFCFCFC
+            Drawings.getTextRenderer()?.drawWithShadow(matrices, label, getPosition().x + (getSize().width / 2 - Texts.width(label!!) / 2), getPosition().y + (getSize().height / 2 - Texts.height() / 2), color("button.label").toInt()) // 0xFCFCFC
         }
 
         super.drawWidget(matrices, provider)

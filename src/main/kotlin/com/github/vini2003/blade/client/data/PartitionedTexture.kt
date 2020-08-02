@@ -35,17 +35,17 @@ class PartitionedTexture(
     }
 
     fun draw(matrices: MatrixStack, provider: VertexConsumerProvider, x: Float, y: Float, width: Float, height: Float) {
-        val scaleWidth = width  / originalWidth
+        val scaleWidth = width / originalWidth
         val scaleHeight = height / originalHeight
 
         val p0W = width * (parts[0].uE - parts[0].uS) / scaleWidth
         val p0H = height * (parts[0].vE - parts[0].vS) / scaleHeight
 
-        val p6W = width * (parts[6].uE - parts[6].uS)
-        val p6H = height * (parts[6].vE - parts[6].vS) / scaleHeight
-
         val p1W = width * (parts[1].uE - parts[1].uS) / scaleWidth
         val p1H = height * (parts[1].vE - parts[1].vS) / scaleHeight
+
+        val p6W = width * (parts[6].uE + parts[6].uS) - p0W - p1W
+        val p6H = height * (parts[6].vE - parts[6].vS) / scaleHeight
 
         val p4W = width * (parts[4].uE - parts[4].uS) / scaleWidth
         val p4H = height * (parts[4].vE - parts[4].vS)
@@ -53,18 +53,17 @@ class PartitionedTexture(
         val p5W = width * (parts[5].uE - parts[5].uS) / scaleWidth
         val p5H = height * (parts[5].vE - parts[5].vS)
 
-        val p8W = width * (parts[8].uE - parts[8].uS) / scaleWidth
+        val p8W = width * (parts[8].uE + parts[8].uS) - p0W - p1W
         val p8H = height * (parts[8].vE - parts[8].vS)
-
 
         val p2W = width * (parts[2].uE - parts[2].uS) / scaleWidth
         val p2H = height * (parts[2].vE - parts[2].vS) / scaleHeight
 
-        val p7W = width * (parts[7].uE - parts[7].uS)
-        val p7H = height * (parts[7].vE - parts[7].vS) / scaleHeight
-
         val p3W = width * (parts[3].uE - parts[3].uS) / scaleWidth
         val p3H = height * (parts[3].vE - parts[3].vS) / scaleHeight
+
+        val p7W = width * (parts[7].uE + parts[7].uS) - p2W - p3W
+        val p7H = height * (parts[7].vE - parts[7].vS) / scaleHeight
 
         parts[0].let {
             Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x, y, 0F, p0W, p0H, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
@@ -79,27 +78,27 @@ class PartitionedTexture(
         }
 
         parts[4].let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x, y + p1H, 0F, p4W, p4H - p0H, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x, y + p1H, 0F, p4W, p4H, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
         }
 
         parts[5].let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + p4W + p6W, y + p1H, 0F, p5W, p5H - p0H, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + p4W + p6W, y + p1H, 0F, p5W, p5H, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
         }
 
         parts[8].let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + p0W, y + p0H, 0F, p6W, p8H - p0H, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + p0W, y + p0H, 0F, p8W, p8H, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
         }
 
         parts[2].let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x, y + p8H, 0F, p2W, p2H, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x, y + p8H + p0H, 0F, p2W, p2H, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
         }
 
         parts[7].let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + p0W, y + p8H, 0F, p7W, p7H, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + p0W, y + p8H + p0H, 0F, p7W, p7H, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
         }
 
         parts[3].let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + p0W + p7W, y + p8H, 0F, p3W, p3H, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + p0W + p7W, y + p8H + p0H, 0F, p3W, p3H, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
         }
     }
 

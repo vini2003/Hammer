@@ -22,7 +22,6 @@ class Color(val r: Float, val g: Float, val b: Float, val a: Float) {
         fun redGreenBlue(r: Int, g: Int, b: Int, a: Int): Int {
             var i = (r shl 8) + g
             i = (i shl 8) + b
-            i = i + a shl 24
             return i
         }
     }

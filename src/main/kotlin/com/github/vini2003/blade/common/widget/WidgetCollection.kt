@@ -6,6 +6,11 @@ import net.minecraft.inventory.Inventory
 interface WidgetCollection {
     fun getWidgets(): Collection<AbstractWidget>
 
-    fun addWidget(widget: AbstractWidget)
-    fun removeWidget(widget: AbstractWidget)
+    fun addWidget(widget: AbstractWidget) {
+        if (this is AbstractWidget) this.onLayoutChanged()
+    }
+
+    fun removeWidget(widget: AbstractWidget) {
+        if (this is AbstractWidget) this.onLayoutChanged()
+    }
 }

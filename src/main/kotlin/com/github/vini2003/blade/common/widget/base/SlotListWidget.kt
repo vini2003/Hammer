@@ -16,6 +16,7 @@ import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.inventory.Inventory
 import kotlin.math.floor
+import kotlin.math.max
 import kotlin.math.min
 
 class SlotListWidget(
@@ -35,6 +36,12 @@ class SlotListWidget(
     private var heightInSlots: Int = 0
     private var maximumSlots: Int = 0
 
+    private var updateScrollerRectangle: Boolean = false
+    private var updateScrollbarRectangle: Boolean = false
+
+    private var scrollerRectangleCached: Rectangle = Rectangle.empty()
+    private var scrollbarRectangleCached: Rectangle = Rectangle.empty()
+
     private val bottomRow: Int
         get() = maximumSlots - heightInSlots
 
@@ -42,16 +49,32 @@ class SlotListWidget(
         get() = inventory.size() / widthInSlots
 
     private val scrollerHeight: Float
-        get() = min(size.height - 2, heightInSlots.toFloat() / totalRows.toFloat() * size.height)
+        get() = min(size.height - 2, heightInSlots.toFloat() / totalRows.toFloat() * (size.height - 2))
 
     private val scrollerY: Float
-        get() = min((row.toFloat() / totalRows.toFloat()) * size.height + position.y + 1, position.y + size.height - scrollerHeight - 1)
+        get() = max(position.y + 2, min(position.y + size.height - scrollerHeight, row.toFloat() / totalRows.toFloat() * size.height + position.y + 1))
 
     private val scrollerRectangle: Rectangle
-        get() = Rectangle(Position({ position.x + size.width  - 1 - 16F }, { scrollerY - 4F }), Size({ 16F }, { scrollerHeight + 8F }))
+        get() {
+            return if (updateScrollerRectangle) {
+                scrollerRectangleCached = Rectangle(Position({ position.x + size.width - 1 - 16F }, { scrollerY - 1}), Size({ 16F }, { scrollerHeight }))
+                updateScrollerRectangle = false
+                return scrollerRectangleCached
+            } else {
+                scrollerRectangleCached
+            }
+        }
 
     private val scrollbarRectangle: Rectangle
-        get() = Rectangle(Position({ position.x + size.width - 1 - 16F }, { position.y + 1 }), Size({ 16F }, { size.height - 1 }))
+        get() {
+            return if (updateScrollbarRectangle) {
+                scrollbarRectangleCached = Rectangle(Position({ position.x + size.width - 1 - 16F }, { position.y + 1 }), Size({ 16F }, { size.height - 2 }))
+                updateScrollbarRectangle = false
+                return scrollbarRectangleCached
+            } else {
+                scrollbarRectangleCached
+            }
+        }
 
     override fun getWidgets(): Collection<AbstractWidget> {
         return widgets
@@ -64,6 +87,8 @@ class SlotListWidget(
         widgets.forEach { _ ->
             widget.onLayoutChanged()
         }
+
+        super.addWidget(widget)
     }
 
     override fun removeWidget(widget: AbstractWidget) {
@@ -73,6 +98,15 @@ class SlotListWidget(
         widgets.forEach { _ ->
             widget.onLayoutChanged()
         }
+
+        super.removeWidget(widget)
+    }
+
+    override fun onLayoutChanged() {
+        super.onLayoutChanged()
+
+        updateScrollerRectangle = true
+        updateScrollbarRectangle = true
     }
 
     override fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
@@ -142,7 +176,11 @@ class SlotListWidget(
 
     override fun onMouseScrolled(x: Float, y: Float, deltaY: Double) {
         if (handler!!.client) {
-            super.onMouseScrolled(x, y, deltaY)
+            if (focused || scrollerHeld) {
+                super.onMouseScrolled(x, y, deltaY)
+            } else {
+                return
+            }
         }
 
         if (deltaY > 0 && row > 0) {
@@ -176,12 +214,14 @@ class SlotListWidget(
                 }
             }
         }
+
+        updateScrollerRectangle = true
+        updateScrollbarRectangle = true
     }
 
     override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
         super.drawWidget(matrices, provider)
 
-        Drawings.drawQuad(matrices, provider, Layers.flat(), position.x + size.width - 18F, position.y, 18F, size.height, Color.default())
         textureScrollbar.draw(matrices, provider, position.x + size.width - 18F, position.y, 18F, size.height)
 
         val scrollerFocus = scrollerRectangle.isWithin(Positions.mouseX, Positions.mouseY)

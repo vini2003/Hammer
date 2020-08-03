@@ -36,17 +36,6 @@ class PartitionedTexture(
         val topRightWidth = width * (topRight.uE - topRight.uS) / scaleWidth
         val topRightHeight = height * (topRight.vE - topRight.vS) / scaleHeight
 
-        val middleTopWidth = width * (middleTop.uE + middleTop.uS) - topLeftWidth - topRightWidth
-        val middleTopHeight = height * (middleTop.vE - middleTop.vS) / scaleHeight
-
-        val middleLeftWidth = width * (middleLeft.uE - middleLeft.uS) / scaleWidth
-        val middleLeftHeight = height * (middleLeft.vE + middleLeft.vS) - topLeftHeight - topRightHeight
-
-        val middleRightWidth = width * (middleRight.uE - middleRight.uS) / scaleWidth
-        val middleRightHeight = height * (middleRight.vE + middleRight.vS) - topLeftHeight - topRightHeight
-
-        val centerWidth = width * (center.uE + center.uS) - topLeftWidth - topRightWidth
-        val centerHeight = height * (center.vE + center.vS) - topLeftHeight - topRightHeight
 
         val bottomLeftWidth = width * (bottomLeft.uE - bottomLeft.uS) / scaleWidth
         val bottomLeftHeight = height * (bottomLeft.vE - bottomLeft.vS) / scaleHeight
@@ -54,43 +43,70 @@ class PartitionedTexture(
         val bottomRightWidth = width * (bottomRight.uE - bottomRight.uS) / scaleWidth
         val bottomRightHeight = height * (bottomRight.vE - bottomRight.vS) / scaleHeight
 
+
+        val middleTopWidth = width * (middleTop.uE + middleTop.uS) - topLeftWidth - topRightWidth
+        val middleTopHeight = height * (middleTop.vE - middleTop.vS) / scaleHeight
+
         val middleBottomWidth = width * (middleBottom.uE + middleBottom.uS) - bottomLeftWidth - bottomRightWidth
         val middleBottomHeight = height * (middleBottom.vE - middleBottom.vS) / scaleHeight
 
+
+        val middleLeftWidth = width * (middleLeft.uE - middleLeft.uS) / scaleWidth
+        var middleLeftHeight = height * (middleLeft.vE + middleLeft.vS) - topLeftHeight - topRightHeight
+
+        val middleRightWidth = width * (middleRight.uE - middleRight.uS) / scaleWidth
+        var middleRightHeight = height * (middleRight.vE + middleRight.vS) - topLeftHeight - topRightHeight
+
+
+        val centerWidth = width * (center.uE + center.uS) - topLeftWidth - topRightWidth
+        var centerHeight = height * (center.vE + center.vS) - topLeftHeight - topRightHeight
+
+
+        val heightMultiplier = height / (topLeftHeight + middleLeftHeight + bottomLeftHeight)
+
+        middleLeftHeight *= heightMultiplier
+        middleRightHeight *= heightMultiplier
+        centerHeight *= heightMultiplier
+
+
+        val layer = Layers.get(texture)
+        
+        val color = Color.default()
+
         topLeft.let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x, y, 0F, topLeftWidth, topLeftHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, layer, x, y, 0F, topLeftWidth, topLeftHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
         }
 
         middleTop.let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + topLeftWidth, y, 0F, middleTopWidth, middleTopHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth, y, 0F, middleTopWidth, middleTopHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
         }
 
         topRight.let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + topLeftWidth + middleTopWidth, y, 0F, topRightWidth, topRightHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth + middleTopWidth, y, 0F, topRightWidth, topRightHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
         }
 
         middleLeft.let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x, y + topRightHeight, 0F, middleLeftWidth, middleLeftHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, layer, x, y + topRightHeight, 0F, middleLeftWidth, middleLeftHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
         }
 
         middleRight.let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + middleLeftWidth + middleTopWidth, y + topRightHeight, 0F, middleRightWidth, middleRightHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, layer, x + middleLeftWidth + middleTopWidth, y + topRightHeight, 0F, middleRightWidth, middleRightHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
         }
 
         center.let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + topLeftWidth, y + topLeftHeight, 0F, centerWidth, centerHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth, y + topLeftHeight, 0F, centerWidth, centerHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
         }
 
         bottomLeft.let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x, y + centerHeight + topLeftHeight, 0F, bottomLeftWidth, bottomLeftHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, layer, x, y + centerHeight + topLeftHeight, 0F, bottomLeftWidth, bottomLeftHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
         }
 
         middleBottom.let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + topLeftWidth, y + centerHeight + topLeftHeight, 0F, middleBottomWidth, middleBottomHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth, y + centerHeight + topLeftHeight, 0F, middleBottomWidth, middleBottomHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
         }
 
         bottomRight.let {
-            Drawings.drawTexturedQuad(matrices, provider, Layers.get(texture), x + topLeftWidth + middleBottomWidth, y + centerHeight + topLeftHeight, 0F, bottomRightWidth, bottomRightHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, Color.default(), texture)
+            Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth + middleBottomWidth, y + centerHeight + topLeftHeight, 0F, bottomRightWidth, bottomRightHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
         }
     }
 

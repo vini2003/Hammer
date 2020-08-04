@@ -3,6 +3,7 @@ package com.github.vini2003.blade.client.handler
 import com.github.vini2003.blade.client.utilities.Instances
 import com.github.vini2003.blade.client.utilities.Layers
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
+import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.utilities.Positions
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.ingame.HandledScreen
@@ -23,6 +24,10 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
 
         this.backgroundWidth = width
         this.backgroundHeight = height
+
+        handler.initialize(width, height)
+
+        Networks.toServer(Networks.INITIALIZE, Networks.ofInitialize(handler.syncId, width, height))
     }
 
     override fun drawBackground(matrices: MatrixStack?, delta: Float, mouseX: Int, mouseY: Int) {
@@ -34,7 +39,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        handler.widgets.forEach{
+        handler.widgets.forEach {
             it.onMouseClicked(mouseX.toFloat(), mouseY.toFloat(), button)
         }
 
@@ -42,7 +47,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        handler.widgets.forEach{
+        handler.widgets.forEach {
             it.onMouseReleased(mouseX.toFloat(), mouseY.toFloat(), button)
         }
 
@@ -50,7 +55,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
-        handler.widgets.forEach{
+        handler.widgets.forEach {
             it.onMouseDragged(mouseX.toFloat(), mouseY.toFloat(), button, deltaX, deltaY)
         }
 
@@ -58,7 +63,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun mouseMoved(mouseX: Double, mouseY: Double) {
-        handler.widgets.forEach{
+        handler.widgets.forEach {
             it.onMouseMoved(mouseX.toFloat(), mouseY.toFloat())
         }
 
@@ -69,7 +74,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun mouseScrolled(mouseX: Double, mouseY: Double, deltaY: Double): Boolean {
-        handler.widgets.forEach{
+        handler.widgets.forEach {
             it.onMouseScrolled(mouseX.toFloat(), mouseY.toFloat(), deltaY)
         }
 
@@ -77,7 +82,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun keyPressed(keyCode: Int, scanCode: Int, keyModifiers: Int): Boolean {
-        handler.widgets.forEach{
+        handler.widgets.forEach {
             it.onKeyPressed(keyCode, scanCode, keyModifiers)
         }
 
@@ -85,7 +90,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun keyReleased(keyCode: Int, scanCode: Int, keyModifiers: Int): Boolean {
-        handler.widgets.forEach{
+        handler.widgets.forEach {
             it.onKeyReleased(keyCode, scanCode, keyModifiers)
         }
 
@@ -93,7 +98,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun charTyped(character: Char, keyCode: Int): Boolean {
-        handler.widgets.forEach{
+        handler.widgets.forEach {
             it.onCharTyped(character, keyCode)
         }
 
@@ -103,8 +108,12 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     override fun render(matrices: MatrixStack?, mouseX: Int, mouseY: Int, delta: Float) {
         val provider: VertexConsumerProvider.Immediate = Instances.getClientInstance().bufferBuilders.effectVertexConsumers
 
-        handler.widgets.forEach{
-            it.drawWidget(matrices!!, provider)
+        handler.widgets.forEach {
+            it.drawWidget(matrices!!, provider).also { _ ->
+                if (it.focused) {
+                    renderTooltip(matrices, it.getTooltip(), mouseX, mouseY)
+                }
+            }
         }
 
         provider.draw()
@@ -114,21 +123,16 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
         super.render(matrices, mouseX, mouseY, delta)
 
         super.drawMouseoverTooltip(matrices, mouseX, mouseY)
-
-        handler.widgets.find {
-            it.focused
-        }.let {
-            if (it != null) {
-                renderTooltip(matrices, it.getTooltip(), x, y)
-            }
-        }
     }
 
     override fun resize(client: MinecraftClient?, width: Int, height: Int) {
         super.resize(client, width, height)
 
-        handler.widgets.forEach{
-            it.onLayoutChanged()
-        }
+        handler!!.widgets.clear()
+        handler.slots.clear()
+
+        handler.initialize(width, height)
+
+        Networks.toServer(Networks.INITIALIZE, Networks.ofInitialize(handler.syncId, width, height))
     }
 }

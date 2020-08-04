@@ -12,7 +12,9 @@ import net.minecraft.text.LiteralText
 import net.minecraft.util.registry.Registry
 
 class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(DebugContainers.DEBUG_HANDLER, syncId, player) {
-    init {
+    override fun initialize(width: Int, height: Int) {
+        val player = getPlayer()
+
         addInventory(0, player.inventory)
 
         val slot = SlotWidget(0, player.inventory)

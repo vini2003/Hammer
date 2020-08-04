@@ -16,6 +16,7 @@ import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 class Networks {
     companion object {
+        val INITIALIZE = Blade.identifier("initialize")
 
         val WIDGET_UPDATE = Blade.identifier("update")
         val MOUSE_MOVE = Blade.identifier("mouse_move")
@@ -44,6 +45,24 @@ class Networks {
                     }
                 }
             }
+
+            ServerSidePacketRegistry.INSTANCE.register(INITIALIZE) { context, buf ->
+                val syncId = buf.readInt()
+
+                buf.retain()
+
+                context.taskQueue.execute {
+                    context.player.server!!.playerManager.playerList.forEach { it ->
+                        if (it.currentScreenHandler.syncId == syncId && it.currentScreenHandler is BaseScreenHandler) {
+                            (it.currentScreenHandler as BaseScreenHandler).also {
+                                it.slots.clear()
+                                it.widgets.clear()
+                                it.initialize(buf.readInt(), buf.readInt())
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         fun initialize() {
@@ -51,6 +70,14 @@ class Networks {
 
         fun toServer(id: Identifier, buf: PacketByteBuf) {
             ClientSidePacketRegistry.INSTANCE.sendToServer(id, buf)
+        }
+
+        fun ofInitialize(syncId: Int, width: Int, height: Int): PacketByteBuf {
+            val buf = PacketByteBuf(Unpooled.buffer())
+            buf.writeInt(syncId)
+            buf.writeInt(width)
+            buf.writeInt(height)
+            return buf
         }
 
         fun ofMouseMove(syncId: Int, hash: Int, x: Float, y: Float): PacketByteBuf {

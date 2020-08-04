@@ -17,9 +17,15 @@ class SlotWidget(private val slot: Int, private val inventory: Inventory) : Abst
 
     var texture = PartitionedTexture(Blade.identifier("textures/widget/slot.png"), 18F, 18F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F)
 
+    private val slotX: Int
+        get() = (position.x + (if (size.width <= 18) 1F else size.width / 2F - 9F)).toInt()
+
+    private val slotY: Int
+        get() = (position.y + (if (size.height <= 18) 1F else size.height / 2F - 9F)).toInt()
+
     override fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
         super.onAdded(original, immediate)
-        backendSlot = SafeSlot(inventory, slot, slotX(), slotY())
+        backendSlot = SafeSlot(inventory, slot, slotX, slotY)
         backendSlot!!.index = slot
 
         if (original is BaseScreenHandler) {
@@ -40,18 +46,9 @@ class SlotWidget(private val slot: Int, private val inventory: Inventory) : Abst
 
         if (backendSlot == null) return
 
-        backendSlot!!.x = slotX()
-        backendSlot!!.y = slotY()
+        backendSlot!!.x = slotX
+        backendSlot!!.y = slotY
     }
-
-    private fun slotX(): Int {
-        return (position.x + (if (size.width <= 18) 1F else size.width / 2F - 9F)).toInt()
-    }
-
-    private fun slotY(): Int {
-        return (position.y + (if (size.height <= 18) 1F else size.height / 2F - 9F)).toInt()
-    }
-
     override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
         if (hidden) return
 

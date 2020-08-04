@@ -18,6 +18,10 @@ open class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId:
 
     val client = player.world.isClient
 
+    open fun initialize(width: Int, height: Int) {
+
+    }
+
     override fun addWidget(widget: AbstractWidget) {
         widgets.add(widget)
         widget.onAdded(this, this)

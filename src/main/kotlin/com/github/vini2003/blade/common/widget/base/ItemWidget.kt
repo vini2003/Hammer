@@ -24,18 +24,8 @@ class ItemWidget : AbstractWidget() {
     override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
         if (hidden) return
 
-        RenderSystem.pushMatrix()
-        RenderSystem.translatef(0F, 0F, -256F)
-
         Drawings.getItemRenderer()?.renderInGui(stack, position.x.toInt(), position.y.toInt())
 
-        RenderSystem.popMatrix()
-
-        RenderSystem.pushMatrix()
-        RenderSystem.translatef(0F, 0F, 256F)
-
         super.drawWidget(matrices, provider)
-
-        RenderSystem.popMatrix()
     }
 }

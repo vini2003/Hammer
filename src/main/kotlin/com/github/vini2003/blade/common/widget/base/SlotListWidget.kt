@@ -216,7 +216,7 @@ class SlotListWidget(
     }
 
     override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
-        super.drawWidget(matrices, provider)
+        if (hidden) return
 
         textureScrollbar.draw(matrices, provider, position.x + size.width - 18F, position.y, 18F, size.height)
 

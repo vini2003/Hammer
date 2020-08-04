@@ -17,7 +17,5 @@ class PanelWidget : AbstractWidget(), WidgetCollection {
         if (hidden) return
 
         texture.draw(matrices, provider, position.x, position.y, size.width, size.height)
-
-        super.drawWidget(matrices, provider)
     }
 }

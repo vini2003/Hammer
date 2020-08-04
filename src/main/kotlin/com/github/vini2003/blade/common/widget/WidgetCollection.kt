@@ -8,10 +8,12 @@ interface WidgetCollection {
     val widgets: ArrayList<AbstractWidget>
 
     fun addWidget(widget: AbstractWidget) {
+        widgets.add(widget)
         if (this is AbstractWidget) this.onLayoutChanged()
     }
 
     fun removeWidget(widget: AbstractWidget) {
+        widgets.remove(widget)
         if (this is AbstractWidget) this.onLayoutChanged()
     }
 }

@@ -1,7 +1,6 @@
 package com.github.vini2003.blade.client.utilities
 
 import com.github.vini2003.blade.common.data.Color
-import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.RenderLayer
@@ -139,15 +138,15 @@ class Drawings {
         }
 
         fun getTextureManager(): TextureManager? {
-            return Instances.getClientInstance().textureManager
+            return Instances.client().textureManager
         }
 
         fun getItemRenderer(): ItemRenderer? {
-            return Instances.getClientInstance().itemRenderer
+            return Instances.client().itemRenderer
         }
 
         fun getTextRenderer(): TextRenderer? {
-            return Instances.getClientInstance().textRenderer
+            return Instances.client().textRenderer
         }
     }
 }

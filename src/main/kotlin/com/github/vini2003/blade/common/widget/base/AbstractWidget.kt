@@ -45,7 +45,7 @@ abstract class AbstractWidget : Positioned, Sized {
 
     var focused: Boolean = false
         get() {
-            return (if (parent == null) field else field && !parent!!.hidden)
+            return (if (parent == null) field && !hidden else field && !parent!!.hidden)
         }
 
     var held: Boolean = false

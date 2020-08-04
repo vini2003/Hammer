@@ -5,11 +5,11 @@ import net.minecraft.text.Text
 class Texts {
     companion object {
         fun width(text: Text): Int {
-            return Instances.getClientInstance().textRenderer.getWidth(text)
+            return Instances.client().textRenderer.getWidth(text)
         }
 
         fun height(): Int {
-            return Instances.getClientInstance().textRenderer.fontHeight
+            return Instances.client().textRenderer.fontHeight
         }
     }
 }

@@ -4,20 +4,15 @@ import com.github.vini2003.blade.Blade
 import com.github.vini2003.blade.client.data.PartitionedTexture
 import com.github.vini2003.blade.client.utilities.Drawings
 import com.github.vini2003.blade.client.utilities.Instances
-import com.github.vini2003.blade.client.utilities.Layers
 import com.github.vini2003.blade.client.utilities.Texts
-import com.github.vini2003.blade.common.data.Color
 import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.sound.PositionedSoundInstance
-import net.minecraft.client.sound.SoundInstance
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.sound.SoundEvents
 import net.minecraft.text.Text
-import net.minecraft.util.Identifier
 
 class ButtonWidget(private val clickAction: (ButtonWidget) -> Unit) : AbstractWidget() {
     var textureOn = PartitionedTexture(Blade.identifier("textures/widget/button_on.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.16666666666666666667F)
@@ -35,15 +30,17 @@ class ButtonWidget(private val clickAction: (ButtonWidget) -> Unit) : AbstractWi
     }
 
     override fun onMouseClicked(x: Float, y: Float, button: Int) {
-        clickAction.invoke(this)
+        if (focused) {
+            clickAction.invoke(this)
 
-        playSound()
+            playSound()
+        }
 
         super.onMouseClicked(x, y, button)
     }
 
     fun playSound() {
-        Instances.getClientInstance().soundManager.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F))
+        Instances.client().soundManager.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F))
     }
 
     override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
@@ -58,7 +55,5 @@ class ButtonWidget(private val clickAction: (ButtonWidget) -> Unit) : AbstractWi
         label?.let {
             Drawings.getTextRenderer()?.drawWithShadow(matrices, label, position.x + (size.width / 2 - Texts.width(label!!) / 2), position.y + (size.height / 2 - Texts.height() / 2), color("button.label").toInt()) // 0xFCFCFC
         }
-
-        super.drawWidget(matrices, provider)
     }
 }

@@ -106,7 +106,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun render(matrices: MatrixStack?, mouseX: Int, mouseY: Int, delta: Float) {
-        val provider: VertexConsumerProvider.Immediate = Instances.getClientInstance().bufferBuilders.effectVertexConsumers
+        val provider: VertexConsumerProvider.Immediate = Instances.client().bufferBuilders.effectVertexConsumers
 
         handler.widgets.forEach {
             it.drawWidget(matrices!!, provider).also { _ ->

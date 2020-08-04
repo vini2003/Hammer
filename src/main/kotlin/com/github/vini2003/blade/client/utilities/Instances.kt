@@ -9,7 +9,7 @@ class Instances {
             return FabricLoader.getInstance().gameInstance
         }
 
-        fun getClientInstance(): MinecraftClient {
+        fun client(): MinecraftClient {
             return MinecraftClient.getInstance()
         }
     }

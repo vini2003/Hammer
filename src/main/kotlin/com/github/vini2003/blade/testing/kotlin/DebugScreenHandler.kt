@@ -3,10 +3,7 @@ package com.github.vini2003.blade.testing.kotlin
 import com.github.vini2003.blade.common.data.Position
 import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
-import com.github.vini2003.blade.common.widget.base.ButtonWidget
-import com.github.vini2003.blade.common.widget.base.ItemWidget
-import com.github.vini2003.blade.common.widget.base.SlotListWidget
-import com.github.vini2003.blade.common.widget.base.SlotWidget
+import com.github.vini2003.blade.common.widget.base.*
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.SimpleInventory
 import net.minecraft.item.ItemStack
@@ -50,6 +47,12 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 
         slots.position = (Position({slot.position.x}, {slot.position.y + slot.size.width + 2}))
         slots.size = (Size({17 * 18F}, {11 * 18F}))
+
+        val panel = PanelWidget()
+        panel.size = Size({128F}, {128F})
+        panel.position = Position({0F}, {0F})
+
+        addWidget(panel)
 
         addWidget(slot)
 

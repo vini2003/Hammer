@@ -26,7 +26,7 @@ class SlotListWidget(
     var textureScroller = PartitionedTexture(Blade.identifier("textures/widget/scroller.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
     var textureScrollerFocus = PartitionedTexture(Blade.identifier("textures/widget/scroller_focus.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
 
-    private val widgets = mutableListOf<AbstractWidget>()
+    override val widgets: ArrayList<AbstractWidget> = ArrayList()
 
     private var row = 0
 
@@ -75,10 +75,6 @@ class SlotListWidget(
                 scrollbarRectangleCached
             }
         }
-
-    override fun getWidgets(): Collection<AbstractWidget> {
-        return widgets
-    }
 
     override fun addWidget(widget: AbstractWidget) {
         widgets.add(widget)

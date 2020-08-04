@@ -12,15 +12,11 @@ import net.minecraft.screen.slot.Slot
 import net.minecraft.util.Identifier
 
 open class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId: Int, private val player: PlayerEntity) : ScreenHandler(type, syncId), OriginalWidgetCollection {
-    private val widgets: MutableList<AbstractWidget> = mutableListOf()
+    override val widgets: ArrayList<AbstractWidget> = ArrayList()
 
     private val inventories = mutableMapOf<Int, Inventory>()
 
     val client = player.world.isClient
-
-    override fun getWidgets(): Collection<AbstractWidget> {
-        return widgets
-    }
 
     override fun addWidget(widget: AbstractWidget) {
         widgets.add(widget)

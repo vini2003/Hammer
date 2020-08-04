@@ -30,11 +30,11 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun isClickOutsideBounds(mouseX: Double, mouseY: Double, left: Int, top: Int, button: Int): Boolean {
-        return handler.getWidgets().find { widget -> widget.isWithin(mouseX.toFloat(), mouseY.toFloat()) } == null
+        return handler.widgets.find { widget -> widget.isWithin(mouseX.toFloat(), mouseY.toFloat()) } == null
     }
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        handler.getWidgets().forEach{
+        handler.widgets.forEach{
             it.onMouseClicked(mouseX.toFloat(), mouseY.toFloat(), button)
         }
 
@@ -42,7 +42,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        handler.getWidgets().forEach{
+        handler.widgets.forEach{
             it.onMouseReleased(mouseX.toFloat(), mouseY.toFloat(), button)
         }
 
@@ -50,7 +50,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
-        handler.getWidgets().forEach{
+        handler.widgets.forEach{
             it.onMouseDragged(mouseX.toFloat(), mouseY.toFloat(), button, deltaX, deltaY)
         }
 
@@ -58,7 +58,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun mouseMoved(mouseX: Double, mouseY: Double) {
-        handler.getWidgets().forEach{
+        handler.widgets.forEach{
             it.onMouseMoved(mouseX.toFloat(), mouseY.toFloat())
         }
 
@@ -69,7 +69,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun mouseScrolled(mouseX: Double, mouseY: Double, deltaY: Double): Boolean {
-        handler.getWidgets().forEach{
+        handler.widgets.forEach{
             it.onMouseScrolled(mouseX.toFloat(), mouseY.toFloat(), deltaY)
         }
 
@@ -77,7 +77,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun keyPressed(keyCode: Int, scanCode: Int, keyModifiers: Int): Boolean {
-        handler.getWidgets().forEach{
+        handler.widgets.forEach{
             it.onKeyPressed(keyCode, scanCode, keyModifiers)
         }
 
@@ -85,7 +85,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun keyReleased(keyCode: Int, scanCode: Int, keyModifiers: Int): Boolean {
-        handler.getWidgets().forEach{
+        handler.widgets.forEach{
             it.onKeyReleased(keyCode, scanCode, keyModifiers)
         }
 
@@ -93,7 +93,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     }
 
     override fun charTyped(character: Char, keyCode: Int): Boolean {
-        handler.getWidgets().forEach{
+        handler.widgets.forEach{
             it.onCharTyped(character, keyCode)
         }
 
@@ -103,25 +103,31 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
     override fun render(matrices: MatrixStack?, mouseX: Int, mouseY: Int, delta: Float) {
         val provider: VertexConsumerProvider.Immediate = Instances.getClientInstance().bufferBuilders.effectVertexConsumers
 
-        handler.getWidgets().forEach{
+        handler.widgets.forEach{
             it.drawWidget(matrices!!, provider)
         }
 
+        provider.draw()
         provider.draw(Layers.flat())
         provider.draw(Layers.tooltip())
-        provider.draw()
 
         super.render(matrices, mouseX, mouseY, delta)
 
         super.drawMouseoverTooltip(matrices, mouseX, mouseY)
 
-
+        handler.widgets.find {
+            it.focused
+        }.let {
+            if (it != null) {
+                renderTooltip(matrices, it.getTooltip(), x, y)
+            }
+        }
     }
 
     override fun resize(client: MinecraftClient?, width: Int, height: Int) {
         super.resize(client, width, height)
 
-        handler.getWidgets().forEach{
+        handler.widgets.forEach{
             it.onLayoutChanged()
         }
     }

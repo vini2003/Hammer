@@ -3,7 +3,9 @@ package com.github.vini2003.blade.testing.kotlin
 import com.github.vini2003.blade.common.data.Position
 import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
-import com.github.vini2003.blade.common.widget.base.*
+import com.github.vini2003.blade.common.widget.base.ButtonWidget
+import com.github.vini2003.blade.common.widget.base.SlotWidget
+import com.github.vini2003.blade.common.widget.base.TabWidget
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Items
 import net.minecraft.text.LiteralText
@@ -11,29 +13,29 @@ import net.minecraft.text.Text
 import net.minecraft.util.registry.Registry
 
 class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(DebugContainers.DEBUG_HANDLER, syncId, player) {
-    override fun initialize(width: Int, height: Int) {
-        val player = getPlayer()
+	override fun initialize(width: Int, height: Int) {
+		val player = getPlayer()
 
 // addInventory(0, player.inventory)
 
- val slot = SlotWidget(0, player.inventory)
+		val slot = SlotWidget(0, player.inventory)
 
- slot.position = (Position({16F}, {16F}))
- slot.size = (Size({36F}, {36F}))
+		slot.position = (Position({ 16F }, { 16F }))
+		slot.size = (Size({ 36F }, { 36F }))
 
- val topButton = ButtonWidget {
- }
+		val topButton = ButtonWidget {
+		}
 
- topButton.position = (Position({24F}, {70F}))
- topButton.size = (Size({120F}, {16F}))
- topButton.label = LiteralText("I am NinePatch,")
+		topButton.position = (Position({ 24F }, { 70F }))
+		topButton.size = (Size({ 120F }, { 16F }))
+		topButton.label = LiteralText("I am NinePatch,")
 
- val bottomButton = ButtonWidget {
- }
+		val bottomButton = ButtonWidget {
+		}
 
- bottomButton.position = (Position({24F}, {70F}))
- bottomButton.size = (Size({160F}, {16F}))
- bottomButton.label = LiteralText("or something.")
+		bottomButton.position = (Position({ 24F }, { 70F }))
+		bottomButton.size = (Size({ 160F }, { 16F }))
+		bottomButton.label = LiteralText("or something.")
 
 // val item = ItemWidget()
 
@@ -57,40 +59,40 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 // bar.size = Size({128F}, {128F})
 // bar.position = Position({ 64F }, { 64F })
 
-        val tabs = TabWidget()
-        tabs.size = Size({259F}, {128F})
-        tabs.position = Position({18F}, {18F})
+		val tabs = TabWidget()
+		tabs.size = Size({ 259F }, { 128F })
+		tabs.position = Position({ 18F }, { 18F })
 
-        val firstTab = tabs.addTab(Items.RED_CONCRETE)
+		val firstTab = tabs.addTab(Items.RED_CONCRETE)
 
-        for (i in 1..8) {
-            tabs.addTab(Registry.ITEM.getRandom(player.world.random)) {
-                listOf<Text>(LiteralText(i.toString()))
-            }
-        }
+		for (i in 1..8) {
+			tabs.addTab(Registry.ITEM.getRandom(player.world.random)) {
+				listOf<Text>(LiteralText(i.toString()))
+			}
+		}
 
-        tabs.addTab(Items.BLUE_CONCRETE).also {
-            it.addWidget(topButton)
-        }
+		tabs.addTab(Items.BLUE_CONCRETE).also {
+			it.addWidget(topButton)
+		}
 
-        addWidget(tabs)
+		addWidget(tabs)
 
-        firstTab.also {
-            it.addWidget(bottomButton)
-            it.addWidget(slot)
-        }
+		firstTab.also {
+			it.addWidget(bottomButton)
+			it.addWidget(slot)
+		}
 
-        //addWidget(panel)
+		//addWidget(panel)
 
-      // addWidget(slot)
+		// addWidget(slot)
 
-       // addWidget(topButton)
-      //  addWidget(bottomButton)
+		// addWidget(topButton)
+		//  addWidget(bottomButton)
 
-       // addWidget(item)
+		// addWidget(item)
 
-     //   addWidget(slots)
+		//   addWidget(slots)
 
-      //  addWidget(bar)
-    }
+		//  addWidget(bar)
+	}
 }

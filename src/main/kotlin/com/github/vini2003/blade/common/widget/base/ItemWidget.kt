@@ -8,17 +8,17 @@ import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
 
 class ItemWidget(var stack: ItemStack = ItemStack.EMPTY) : AbstractWidget() {
-    override fun getTooltip(): List<Text> {
-        if (stack.isEmpty) return emptyList()
+	override fun getTooltip(): List<Text> {
+		if (stack.isEmpty) return emptyList()
 
-        return stack.getTooltip(null) {
-            Instances.client().options.advancedItemTooltips
-        }
-    }
+		return stack.getTooltip(null) {
+			Instances.client().options.advancedItemTooltips
+		}
+	}
 
-    override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
-        if (hidden) return
+	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
+		if (hidden) return
 
-        Drawings.getItemRenderer()?.renderInGui(stack, position.x.toInt(), position.y.toInt())
-    }
+		Drawings.getItemRenderer()?.renderInGui(stack, position.x.toInt(), position.y.toInt())
+	}
 }

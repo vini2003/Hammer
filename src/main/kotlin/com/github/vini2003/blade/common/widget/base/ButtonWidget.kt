@@ -15,45 +15,45 @@ import net.minecraft.sound.SoundEvents
 import net.minecraft.text.Text
 
 class ButtonWidget(private val clickAction: (ButtonWidget) -> Unit) : AbstractWidget() {
-    var textureOn = PartitionedTexture(Blade.identifier("textures/widget/button_on.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.16666666666666666667F)
-    var textureOff = PartitionedTexture(Blade.identifier("textures/widget/button_off.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
-    var textureOnFocus = PartitionedTexture(Blade.identifier("textures/widget/button_on_focus.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
+	var textureOn = PartitionedTexture(Blade.identifier("textures/widget/button_on.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.16666666666666666667F)
+	var textureOff = PartitionedTexture(Blade.identifier("textures/widget/button_off.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
+	var textureOnFocus = PartitionedTexture(Blade.identifier("textures/widget/button_on_focus.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
 
-    var disabled: Boolean = false
+	var disabled: Boolean = false
 
-    var label: Text? = null
+	var label: Text? = null
 
-    override fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
-        super.onAdded(original, immediate)
+	override fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
+		super.onAdded(original, immediate)
 
-        synchronize.add(Networks.MOUSE_CLICK)
-    }
+		synchronize.add(Networks.MOUSE_CLICK)
+	}
 
-    override fun onMouseClicked(x: Float, y: Float, button: Int) {
-        if (focused) {
-            clickAction.invoke(this)
+	override fun onMouseClicked(x: Float, y: Float, button: Int) {
+		if (focused) {
+			clickAction.invoke(this)
 
-            playSound()
-        }
+			playSound()
+		}
 
-        super.onMouseClicked(x, y, button)
-    }
+		super.onMouseClicked(x, y, button)
+	}
 
-    fun playSound() {
-        Instances.client().soundManager.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F))
-    }
+	fun playSound() {
+		Instances.client().soundManager.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F))
+	}
 
-    override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
-        if (hidden) return
+	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
+		if (hidden) return
 
-        val texture = if (disabled) textureOff else if (focused) textureOnFocus else textureOn
+		val texture = if (disabled) textureOff else if (focused) textureOnFocus else textureOn
 
-        texture.draw(matrices, provider, position.x, position.y, size.width, size.height)
+		texture.draw(matrices, provider, position.x, position.y, size.width, size.height)
 
-        if (provider is VertexConsumerProvider.Immediate) provider.draw()
+		if (provider is VertexConsumerProvider.Immediate) provider.draw()
 
-        label?.let {
-            Drawings.getTextRenderer()?.drawWithShadow(matrices, label, position.x + (size.width / 2 - Texts.width(label!!) / 2), position.y + (size.height / 2 - Texts.height() / 2), color("button.label").toInt()) // 0xFCFCFC
-        }
-    }
+		label?.let {
+			Drawings.getTextRenderer()?.drawWithShadow(matrices, label, position.x + (size.width / 2 - Texts.width(label!!) / 2), position.y + (size.height / 2 - Texts.height() / 2), color("button.label").toInt()) // 0xFCFCFC
+		}
+	}
 }

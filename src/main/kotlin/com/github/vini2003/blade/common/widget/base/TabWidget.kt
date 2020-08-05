@@ -4,7 +4,6 @@ import com.github.vini2003.blade.Blade
 import com.github.vini2003.blade.client.data.PartitionedTexture
 import com.github.vini2003.blade.client.utilities.Drawings
 import com.github.vini2003.blade.client.utilities.Layers
-import com.github.vini2003.blade.common.data.Color
 import com.github.vini2003.blade.common.data.Position
 import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.data.geometry.Rectangle
@@ -13,7 +12,6 @@ import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.utilities.Positions
 import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
-import javafx.geometry.Pos
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.item.Item
@@ -98,7 +96,7 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 			var x = 0F
 
 			tabCollections.forEach { _ ->
-				tabRectangles.add(Rectangle(Position({position.x + x}, {position.y}), Size({26F}, {25F})))
+				tabRectangles.add(Rectangle(Position({ position.x + x }, { position.y }), Size({ 26F }, { 25F })))
 				x += 26F
 			}
 		}
@@ -145,13 +143,13 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 			if (selected == index) {
 				when (rectangle.position.x) {
 					position.x -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(leftActive), position.x + (26F * index), position.y, 25F, 29F, leftActive)
-					position.x + size.width - 25F -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(rightActive), position.x + (26F * index) , position.y, 25F, 28F, rightActive)
+					position.x + size.width - 25F -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(rightActive), position.x + (26F * index), position.y, 25F, 28F, rightActive)
 					else -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(middleActive), position.x + (26F * index), position.y, 25F, 28F, middleActive)
 				}
 			} else {
 				when (rectangle.position.x) {
 					position.x -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(leftInactive), position.x + (26F * index), position.y + 3F, 25F, 24F, leftInactive)
-					position.x + size.width - 25F -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(rightInactive), position.x + (26F * index) , position.y + 2F, 25F, 26F, rightInactive)
+					position.x + size.width - 25F -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(rightInactive), position.x + (26F * index), position.y + 2F, 25F, 26F, rightInactive)
 					else -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(middleInactive), position.x + (26F * index), position.y + 2F, 25F, 25F, middleInactive)
 				}
 			}

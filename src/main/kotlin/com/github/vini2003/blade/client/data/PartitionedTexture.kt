@@ -8,107 +8,107 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
 
 class PartitionedTexture(
-    private val texture: Identifier,
-    private val originalWidth: Float,
-    private val originalHeight: Float,
-    leftPadding: Float,
-    rightPadding: Float,
-    topPadding: Float,
-    bottomPadding: Float
+		private val texture: Identifier,
+		private val originalWidth: Float,
+		private val originalHeight: Float,
+		leftPadding: Float,
+		rightPadding: Float,
+		topPadding: Float,
+		bottomPadding: Float
 ) {
-    private val topLeft = Part(0F, 0F, leftPadding, topPadding)
-    private val topRight = Part(1F - rightPadding, 0F, 1F, topPadding)
-    private val bottomLeft = Part(0F, 1F - bottomPadding, leftPadding, 1F)
-    private val bottomRight = Part(1F - rightPadding, 1F - bottomPadding, 1F, 1F)
-    private val middleLeft = Part(0F, topPadding, leftPadding, 1F - bottomPadding)
-    private val middleRight = Part(1F - rightPadding, topPadding, 1F, 1F - bottomPadding)
-    private val middleTop = Part(leftPadding, 0F, 1F - rightPadding, topPadding)
-    private val middleBottom = Part(leftPadding, 1F - bottomPadding, 1F - rightPadding, 1F)
-    private val center = Part(leftPadding, topPadding, 1F - rightPadding, 1F - bottomPadding)
+	private val topLeft = Part(0F, 0F, leftPadding, topPadding)
+	private val topRight = Part(1F - rightPadding, 0F, 1F, topPadding)
+	private val bottomLeft = Part(0F, 1F - bottomPadding, leftPadding, 1F)
+	private val bottomRight = Part(1F - rightPadding, 1F - bottomPadding, 1F, 1F)
+	private val middleLeft = Part(0F, topPadding, leftPadding, 1F - bottomPadding)
+	private val middleRight = Part(1F - rightPadding, topPadding, 1F, 1F - bottomPadding)
+	private val middleTop = Part(leftPadding, 0F, 1F - rightPadding, topPadding)
+	private val middleBottom = Part(leftPadding, 1F - bottomPadding, 1F - rightPadding, 1F)
+	private val center = Part(leftPadding, topPadding, 1F - rightPadding, 1F - bottomPadding)
 
-    fun draw(matrices: MatrixStack, provider: VertexConsumerProvider, x: Float, y: Float, width: Float, height: Float) {
-        val scaleWidth = width / originalWidth
-        val scaleHeight = height / originalHeight
+	fun draw(matrices: MatrixStack, provider: VertexConsumerProvider, x: Float, y: Float, width: Float, height: Float) {
+		val scaleWidth = width / originalWidth
+		val scaleHeight = height / originalHeight
 
-        val topLeftWidth = width * (topLeft.uE - topLeft.uS) / scaleWidth
-        val topLeftHeight = height * (topLeft.vE - topLeft.vS) / scaleHeight
+		val topLeftWidth = width * (topLeft.uE - topLeft.uS) / scaleWidth
+		val topLeftHeight = height * (topLeft.vE - topLeft.vS) / scaleHeight
 
-        val topRightWidth = width * (topRight.uE - topRight.uS) / scaleWidth
-        val topRightHeight = height * (topRight.vE - topRight.vS) / scaleHeight
-
-
-        val bottomLeftWidth = width * (bottomLeft.uE - bottomLeft.uS) / scaleWidth
-        val bottomLeftHeight = height * (bottomLeft.vE - bottomLeft.vS) / scaleHeight
-
-        val bottomRightWidth = width * (bottomRight.uE - bottomRight.uS) / scaleWidth
-        val bottomRightHeight = height * (bottomRight.vE - bottomRight.vS) / scaleHeight
+		val topRightWidth = width * (topRight.uE - topRight.uS) / scaleWidth
+		val topRightHeight = height * (topRight.vE - topRight.vS) / scaleHeight
 
 
-        val middleTopWidth = width * (middleTop.uE + middleTop.uS) - topLeftWidth - topRightWidth
-        val middleTopHeight = height * (middleTop.vE - middleTop.vS) / scaleHeight
+		val bottomLeftWidth = width * (bottomLeft.uE - bottomLeft.uS) / scaleWidth
+		val bottomLeftHeight = height * (bottomLeft.vE - bottomLeft.vS) / scaleHeight
 
-        val middleBottomWidth = width * (middleBottom.uE + middleBottom.uS) - bottomLeftWidth - bottomRightWidth
-        val middleBottomHeight = height * (middleBottom.vE - middleBottom.vS) / scaleHeight
-
-
-        val middleLeftWidth = width * (middleLeft.uE - middleLeft.uS) / scaleWidth
-        var middleLeftHeight = height * (middleLeft.vE + middleLeft.vS) - topLeftHeight - topRightHeight
-
-        val middleRightWidth = width * (middleRight.uE - middleRight.uS) / scaleWidth
-        var middleRightHeight = height * (middleRight.vE + middleRight.vS) - topLeftHeight - topRightHeight
+		val bottomRightWidth = width * (bottomRight.uE - bottomRight.uS) / scaleWidth
+		val bottomRightHeight = height * (bottomRight.vE - bottomRight.vS) / scaleHeight
 
 
-        val centerWidth = width * (center.uE + center.uS) - topLeftWidth - topRightWidth
-        var centerHeight = height * (center.vE + center.vS) - topLeftHeight - topRightHeight
+		val middleTopWidth = width * (middleTop.uE + middleTop.uS) - topLeftWidth - topRightWidth
+		val middleTopHeight = height * (middleTop.vE - middleTop.vS) / scaleHeight
+
+		val middleBottomWidth = width * (middleBottom.uE + middleBottom.uS) - bottomLeftWidth - bottomRightWidth
+		val middleBottomHeight = height * (middleBottom.vE - middleBottom.vS) / scaleHeight
 
 
-        val heightMultiplier = height / (topLeftHeight + middleLeftHeight + bottomLeftHeight)
+		val middleLeftWidth = width * (middleLeft.uE - middleLeft.uS) / scaleWidth
+		var middleLeftHeight = height * (middleLeft.vE + middleLeft.vS) - topLeftHeight - topRightHeight
 
-        middleLeftHeight *= heightMultiplier
-        middleRightHeight *= heightMultiplier
-        centerHeight *= heightMultiplier
+		val middleRightWidth = width * (middleRight.uE - middleRight.uS) / scaleWidth
+		var middleRightHeight = height * (middleRight.vE + middleRight.vS) - topLeftHeight - topRightHeight
 
 
-        val layer = Layers.get(texture)
-        
-        val color = Color.default()
+		val centerWidth = width * (center.uE + center.uS) - topLeftWidth - topRightWidth
+		var centerHeight = height * (center.vE + center.vS) - topLeftHeight - topRightHeight
 
-        topLeft.let {
-            Drawings.drawTexturedQuad(matrices, provider, layer, x, y, 0F, topLeftWidth, topLeftHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
-        }
 
-        middleTop.let {
-            Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth, y, 0F, middleTopWidth, middleTopHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
-        }
+		val heightMultiplier = height / (topLeftHeight + middleLeftHeight + bottomLeftHeight)
 
-        topRight.let {
-            Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth + middleTopWidth, y, 0F, topRightWidth, topRightHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
-        }
+		middleLeftHeight *= heightMultiplier
+		middleRightHeight *= heightMultiplier
+		centerHeight *= heightMultiplier
 
-        middleLeft.let {
-            Drawings.drawTexturedQuad(matrices, provider, layer, x, y + topRightHeight, 0F, middleLeftWidth, middleLeftHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
-        }
 
-        middleRight.let {
-            Drawings.drawTexturedQuad(matrices, provider, layer, x + middleLeftWidth + middleTopWidth, y + topRightHeight, 0F, middleRightWidth, middleRightHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
-        }
+		val layer = Layers.get(texture)
 
-        center.let {
-            Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth, y + topLeftHeight, 0F, centerWidth, centerHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
-        }
+		val color = Color.default()
 
-        bottomLeft.let {
-            Drawings.drawTexturedQuad(matrices, provider, layer, x, y + centerHeight + topLeftHeight, 0F, bottomLeftWidth, bottomLeftHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
-        }
+		topLeft.let {
+			Drawings.drawTexturedQuad(matrices, provider, layer, x, y, 0F, topLeftWidth, topLeftHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
+		}
 
-        middleBottom.let {
-            Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth, y + centerHeight + topLeftHeight, 0F, middleBottomWidth, middleBottomHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
-        }
+		middleTop.let {
+			Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth, y, 0F, middleTopWidth, middleTopHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
+		}
 
-        bottomRight.let {
-            Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth + middleBottomWidth, y + centerHeight + topLeftHeight, 0F, bottomRightWidth, bottomRightHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
-        }
-    }
+		topRight.let {
+			Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth + middleTopWidth, y, 0F, topRightWidth, topRightHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
+		}
 
-    data class Part(val uS: Float, val vS: Float, val uE: Float, val vE: Float)
+		middleLeft.let {
+			Drawings.drawTexturedQuad(matrices, provider, layer, x, y + topRightHeight, 0F, middleLeftWidth, middleLeftHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
+		}
+
+		middleRight.let {
+			Drawings.drawTexturedQuad(matrices, provider, layer, x + middleLeftWidth + middleTopWidth, y + topRightHeight, 0F, middleRightWidth, middleRightHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
+		}
+
+		center.let {
+			Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth, y + topLeftHeight, 0F, centerWidth, centerHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
+		}
+
+		bottomLeft.let {
+			Drawings.drawTexturedQuad(matrices, provider, layer, x, y + centerHeight + topLeftHeight, 0F, bottomLeftWidth, bottomLeftHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
+		}
+
+		middleBottom.let {
+			Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth, y + centerHeight + topLeftHeight, 0F, middleBottomWidth, middleBottomHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
+		}
+
+		bottomRight.let {
+			Drawings.drawTexturedQuad(matrices, provider, layer, x + topLeftWidth + middleBottomWidth, y + centerHeight + topLeftHeight, 0F, bottomRightWidth, bottomRightHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)
+		}
+	}
+
+	data class Part(val uS: Float, val vS: Float, val uE: Float, val vE: Float)
 }

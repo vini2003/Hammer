@@ -8,20 +8,20 @@ import org.apache.logging.log4j.Level
 import java.util.function.Function
 
 class Validators {
-    companion object {
-        private val validators: Multimap<Class<*>, Function<AbstractWidget, Result<AbstractWidget>>> = HashMultimap.create()
+	companion object {
+		private val validators: Multimap<Class<*>, Function<AbstractWidget, Result<AbstractWidget>>> = HashMultimap.create()
 
-        fun register(klass: Class<*>, validator: Function<AbstractWidget, Result<AbstractWidget>>) {
-            validators.put(klass, validator)
-        }
+		fun register(klass: Class<*>, validator: Function<AbstractWidget, Result<AbstractWidget>>) {
+			validators.put(klass, validator)
+		}
 
-        fun validate(widget: AbstractWidget) {
-            validators[widget.javaClass]
-                .map { function -> function.apply(widget) }
-                .filter { entry -> entry.isFailure }
-                .forEach {
-                    Blade.LOGGER.log(Level.ERROR, it.exceptionOrNull()?.message)
-                }
-        }
-    }
+		fun validate(widget: AbstractWidget) {
+			validators[widget.javaClass]
+					.map { function -> function.apply(widget) }
+					.filter { entry -> entry.isFailure }
+					.forEach {
+						Blade.LOGGER.log(Level.ERROR, it.exceptionOrNull()?.message)
+					}
+		}
+	}
 }

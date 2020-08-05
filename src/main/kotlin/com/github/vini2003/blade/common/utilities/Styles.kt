@@ -4,57 +4,52 @@ import com.github.vini2003.blade.common.data.Style
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import com.google.gson.JsonPrimitive
-import com.google.gson.stream.JsonReader
 import net.minecraft.resource.ResourceManager
-import java.lang.Exception
-import java.lang.RuntimeException
 import java.nio.charset.Charset
-import java.nio.file.Files
 
 class Styles {
-    companion object {
-        private val entries: MutableMap<String, Style> = mutableMapOf()
+	companion object {
+		private val entries: MutableMap<String, Style> = mutableMapOf()
 
-        private val jankson: Gson = Gson()
+		private val jankson: Gson = Gson()
 
-        fun get(name: String): Style {
-            return entries.getOrDefault(name, Style.EMPTY)
-        }
+		fun get(name: String): Style {
+			return entries.getOrDefault(name, Style.EMPTY)
+		}
 
-        fun load(manager: ResourceManager) {
-            manager.findResources("style") { string -> string.endsWith(".style.json") }.forEach {
-                try {
-                    val reader = manager.getResource(it).inputStream.bufferedReader(Charset.defaultCharset())
+		fun load(manager: ResourceManager) {
+			manager.findResources("style") { string -> string.endsWith(".style.json") }.forEach {
+				try {
+					val reader = manager.getResource(it).inputStream.bufferedReader(Charset.defaultCharset())
 
-                    val jsonObject = JsonObject()
+					val jsonObject = JsonObject()
 
-                    load(it.path.replaceFirst("style/", "").replaceFirst(".style.json", ""), jankson.fromJson(reader, jsonObject.javaClass))
-                } catch (exception: Exception) {
-                    System.err.println(exception.message)
-                }
-            }
-        }
+					load(it.path.replaceFirst("style/", "").replaceFirst(".style.json", ""), jankson.fromJson(reader, jsonObject.javaClass))
+				} catch (exception: Exception) {
+					System.err.println(exception.message)
+				}
+			}
+		}
 
-        fun load(name: String, data: JsonObject) {
-            val templates: JsonObject? = data.getAsJsonObject("templates")
-            val entries: JsonObject? = data.getAsJsonObject("entries")
+		fun load(name: String, data: JsonObject) {
+			val templates: JsonObject? = data.getAsJsonObject("templates")
+			val entries: JsonObject? = data.getAsJsonObject("entries")
 
-            if (templates == null || entries == null) {
-                throw RuntimeException("Invalid JSON parsed for Blade theme!")
-            }
+			if (templates == null || entries == null) {
+				throw RuntimeException("Invalid JSON parsed for Blade theme!")
+			}
 
-            val mapped: MutableMap<String, JsonElement> = mutableMapOf()
+			val mapped: MutableMap<String, JsonElement> = mutableMapOf()
 
-            entries.entrySet().forEach {
-                mapped[it.key] = if (it.key.startsWith("$")) (templates[it.key.replace("$", "")]).asJsonPrimitive as JsonElement else it.value
-            }
+			entries.entrySet().forEach {
+				mapped[it.key] = if (it.key.startsWith("$")) (templates[it.key.replace("$", "")]).asJsonPrimitive as JsonElement else it.value
+			}
 
-            Styles.entries[name] = Style(mapped)
-        }
+			Styles.entries[name] = Style(mapped)
+		}
 
-        fun clear() {
-            entries.clear()
-        }
-    }
+		fun clear() {
+			entries.clear()
+		}
+	}
 }

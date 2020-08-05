@@ -7,16 +7,16 @@ import net.minecraft.network.PacketByteBuf
 import net.minecraft.screen.ScreenHandlerType
 
 class DebugContainers {
-    companion object {
-        val DEBUG_HANDLER: ScreenHandlerType<DebugScreenHandler> = ScreenHandlerRegistry.registerExtended(identifier("debug_handler")) { synchronizationID: Int, inventory: PlayerInventory, buffer: PacketByteBuf? ->
-            DebugScreenHandler(
-                synchronizationID,
-                inventory.player
-            )
-        }
+	companion object {
+		val DEBUG_HANDLER: ScreenHandlerType<DebugScreenHandler> = ScreenHandlerRegistry.registerExtended(identifier("debug_handler")) { synchronizationID: Int, inventory: PlayerInventory, buffer: PacketByteBuf? ->
+			DebugScreenHandler(
+					synchronizationID,
+					inventory.player
+			)
+		}
 
-        fun initialize() {
+		fun initialize() {
 
-        }
-    }
+		}
+	}
 }

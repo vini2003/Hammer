@@ -1,7 +1,9 @@
 package com.github.vini2003.blade
 
 import com.github.vini2003.blade.common.utilities.Networks
+import com.github.vini2003.blade.common.utilities.Resources
 import com.github.vini2003.blade.common.utilities.Styles
+import com.github.vini2003.blade.testing.kotlin.DebugCommands
 import com.github.vini2003.blade.testing.kotlin.DebugContainers
 import com.github.vini2003.blade.testing.kotlin.DebugScreenHandler
 import com.github.vini2003.blade.testing.kotlin.DebugScreens
@@ -24,57 +26,25 @@ import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Identifier
 import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 class Blade : ModInitializer {
     companion object {
+        @SuppressWarnings
         const val MOD_ID = "blade"
 
-        val LOGGER = LogManager.getLogger(MOD_ID)
+        val LOGGER: Logger = LogManager.getLogger(MOD_ID)
 
-        @JvmStatic
         fun identifier(string: String): Identifier {
             return Identifier(MOD_ID, string)
         }
     }
 
     override fun onInitialize() {
-        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(object : SimpleSynchronousResourceReloadListener {
-            private val id: Identifier = identifier("reload_listener")
-
-            override fun apply(manager: ResourceManager?) {
-                Styles.clear()
-                Styles.load(manager!!)
-            }
-
-            override fun getFabricId(): Identifier {
-                return id
-            }
-        })
-
-        DebugScreens.initialize()
-        DebugContainers.initialize()
-
+        Resources.initialize()
         Networks.initialize()
 
-        CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher, dedicated ->
-            val debugNode = CommandManager.literal("debug")
-                .executes { context: CommandContext<ServerCommandSource> ->
-                    context.source.player.openHandledScreen(object : ExtendedScreenHandlerFactory {
-                        override fun writeScreenOpeningData(player: ServerPlayerEntity, buffer: PacketByteBuf) {
-                        }
-
-                        override fun getDisplayName(): Text {
-                            return TranslatableText("")
-                        }
-
-                        override fun createMenu(syncId: Int, playerInventory: PlayerInventory, player: PlayerEntity): ScreenHandler? {
-                            return DebugScreenHandler(syncId, player)
-                        }
-                    })
-                    1
-                }.build()
-
-            dispatcher.root.addChild(debugNode)
-        })
+        DebugContainers.initialize()
+        DebugCommands.initialize()
     }
 }

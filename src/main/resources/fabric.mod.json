@@ -19,6 +19,9 @@
   "entrypoints": {
     "main": [
       "com.github.vini2003.blade.Blade"
+    ],
+    "client": [
+      "com.github.vini2003.blade.BladeClient"
     ]
   },
   "mixins": [

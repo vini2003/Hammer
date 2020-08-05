@@ -11,16 +11,12 @@ import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.screen.slot.Slot
 import net.minecraft.util.Identifier
 
-open class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId: Int, private val player: PlayerEntity) : ScreenHandler(type, syncId), OriginalWidgetCollection {
+abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId: Int, private val player: PlayerEntity) : ScreenHandler(type, syncId), OriginalWidgetCollection {
     override val widgets: ArrayList<AbstractWidget> = ArrayList()
-
-    private val inventories = mutableMapOf<Int, Inventory>()
 
     val client = player.world.isClient
 
-    open fun initialize(width: Int, height: Int) {
-
-    }
+    abstract fun initialize(width: Int, height: Int)
 
     override fun addWidget(widget: AbstractWidget) {
         widgets.add(widget)
@@ -61,14 +57,6 @@ open class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId:
                 return@forEach
             }
         }
-    }
-
-    override fun getInventory(inventoryNumber: Int): Inventory? {
-        return inventories[inventoryNumber]
-    }
-
-    override fun addInventory(inventoryNumber: Int, inventory: Inventory) {
-        inventories[inventoryNumber] = inventory
     }
 
     override fun getPlayer(): PlayerEntity {

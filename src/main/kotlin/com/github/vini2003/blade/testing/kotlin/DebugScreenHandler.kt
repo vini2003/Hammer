@@ -16,10 +16,10 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 
 // addInventory(0, player.inventory)
 
-// val slot = SlotWidget(0, player.inventory)
+ val slot = SlotWidget(0, player.inventory)
 
-// slot.position = (Position({16F}, {16F}))
-// slot.size = (Size({36F}, {36F}))
+ slot.position = (Position({16F}, {16F}))
+ slot.size = (Size({36F}, {36F}))
 
  val topButton = ButtonWidget {
  }
@@ -61,9 +61,7 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
         tabs.size = Size({259F}, {128F})
         tabs.position = Position({18F}, {18F})
 
-        tabs.addTab(Items.RED_CONCRETE).also {
-            it.addWidget(bottomButton)
-        }
+        val firstTab = tabs.addTab(Items.RED_CONCRETE)
 
         for (i in 1..8) {
             tabs.addTab(Registry.ITEM.getRandom(player.world.random)) {
@@ -76,6 +74,11 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
         }
 
         addWidget(tabs)
+
+        firstTab.also {
+            it.addWidget(bottomButton)
+            it.addWidget(slot)
+        }
 
         //addWidget(panel)
 

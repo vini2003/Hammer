@@ -17,6 +17,21 @@ class SlotWidget(private val slot: Int, private val inventory: Inventory) : Abst
 
     var texture = PartitionedTexture(Blade.identifier("textures/widget/slot.png"), 18F, 18F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F)
 
+    override var hidden: Boolean = false
+        set(value) {
+            field = value
+            if (backendSlot != null) {
+                if (value) {
+                    backendSlot!!.x = Int.MAX_VALUE
+                    backendSlot!!.y = Int.MAX_VALUE
+                } else {
+                    backendSlot!!.x = slotX
+                    backendSlot!!.y = slotY
+                }
+            }
+        }
+
+
     private val slotX: Int
         get() = (position.x + (if (size.width <= 18) 1F else size.width / 2F - 9F)).toInt()
 

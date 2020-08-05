@@ -48,6 +48,9 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 		super.onAdded(original, immediate)
 
 		tabCollections.forEachIndexed { index, collection ->
+			collection.original = original
+			collection.parent = this
+
 			if (index != 0) {
 				collection.widgets.forEach {
 					it.hidden = true

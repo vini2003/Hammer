@@ -38,22 +38,22 @@ abstract class AbstractWidget : Positioned, Sized {
 
     val synchronize: MutableSet<Identifier> = mutableSetOf()
 
-    var hidden: Boolean = false
+    open var hidden: Boolean = false
         get() {
             return (if (parent == null) field else field || parent!!.hidden)
         }
 
-    var focused: Boolean = false
+    open var focused: Boolean = false
         get() {
             return (if (parent == null) field && !hidden else field && !parent!!.hidden)
         }
 
-    var held: Boolean = false
+    open var held: Boolean = false
         get() {
             return (if (parent == null) field else field && !parent!!.hidden)
         }
 
-    var parent: AbstractWidget? = null
+    open var parent: AbstractWidget? = null
 
     fun style(): Style {
         return Styles.get(style).let {

@@ -12,14 +12,17 @@ import net.minecraft.util.Identifier
 
 class Drawings {
 	companion object {
+		@JvmStatic
 		fun drawQuad(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, sX: Float, sY: Float, color: Color) {
 			drawQuad(matrices, provider, layer, x, y, 0F, sX, sY, 0x00f000f0, color)
 		}
 
+		@JvmStatic
 		fun drawQuad(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, z: Float, sX: Float, sY: Float, color: Color) {
 			drawQuad(matrices, provider, layer, x, y, z, sX, sY, 0x00f000f0, color)
 		}
 
+		@JvmStatic
 		fun drawQuad(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, z: Float, sX: Float, sY: Float, light: Int, color: Color) {
 			val consumer = provider.getBuffer(layer)
 
@@ -29,18 +32,23 @@ class Drawings {
 			consumer.vertex(matrices.peek().model, x + sX, y, z).color(color.r, color.g, color.b, color.a).light(light).next()
 		}
 
+
+		@JvmStatic
 		fun drawGradientQuad(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, startX: Float, startY: Float, endX: Float, endY: Float, colorStart: Color, colorEnd: Color) {
 			drawGradientQuad(matrices, provider, layer, startX, startY, endX, endY, 0F, 0f, 0f, 1f, 1f, 0x00f000f0, colorStart, colorEnd, false)
 		}
 
+		@JvmStatic
 		fun drawGradientQuad(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, startX: Float, startY: Float, endX: Float, endY: Float, z: Float, colorStart: Color, colorEnd: Color) {
 			drawGradientQuad(matrices, provider, layer, startX, startY, endX, endY, z, 0f, 0f, 1f, 1f, 0x00f000f0, colorStart, colorEnd, false)
 		}
 
+		@JvmStatic
 		fun drawGradientQuad(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, startX: Float, startY: Float, endX: Float, endY: Float, z: Float, light: Int, colorStart: Color, colorEnd: Color) {
 			drawGradientQuad(matrices, provider, layer, startX, startY, endX, endY, z, 0f, 0f, 1f, 1f, light, colorStart, colorEnd, false)
 		}
 
+		@JvmStatic
 		fun drawGradientQuad(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, startX: Float, startY: Float, endX: Float, endY: Float, z: Float, uS: Float, vS: Float, uE: Float, vE: Float, light: Int, colorStart: Color, colorEnd: Color, textured: Boolean) {
 			val consumer = provider.getBuffer(layer)
 
@@ -50,10 +58,12 @@ class Drawings {
 			consumer.vertex(matrices.peek().model, endX, endY, z + 201).color(colorEnd.r, colorEnd.g, colorEnd.b, colorEnd.a).texture(uE, vE).light(light).normal(matrices.peek().normal, 0f, 1f, 0f).next()
 		}
 
+		@JvmStatic
 		fun drawPanel(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, sX: Float, sY: Float, shadow: Color, panel: Color, highlight: Color, outline: Color) {
 			drawPanel(matrices, provider, layer, x, y, 0F, sX, sY, shadow, panel, highlight, outline)
 		}
 
+		@JvmStatic
 		fun drawPanel(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, z: Float, sX: Float, sY: Float, shadow: Color, panel: Color, hilight: Color, outline: Color) {
 			drawQuad(matrices, provider, layer, x + 3, y + 3, z, sX - 6, sY - 6, 0x00F000F0, panel)
 			drawQuad(matrices, provider, layer, x + 2, y + 1, z, sX - 4, 2F, 0x00F000F0, hilight)
@@ -74,14 +84,17 @@ class Drawings {
 			drawQuad(matrices, provider, layer, x + sX - 2, y + sY - 2, z, 1F, 1F, 0x00F000F0, outline)
 		}
 
+		@JvmStatic
 		fun drawBeveledPanel(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, sX: Float, sY: Float, topLeft: Color, panel: Color, bottomRight: Color) {
 			drawBeveledPanel(matrices, provider, layer, x, y, 0F, sX, sY, 0x00F000F0, topLeft, panel, bottomRight)
 		}
 
+		@JvmStatic
 		fun drawBeveledPanel(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, z: Float, sX: Float, sY: Float, topLeft: Color, panel: Color, bottomRight: Color) {
 			drawBeveledPanel(matrices, provider, layer, x, y, z, sX, sY, 0x00F000F0, topLeft, panel, bottomRight)
 		}
 
+		@JvmStatic
 		fun drawBeveledPanel(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, z: Float, sX: Float, sY: Float, light: Int, topLeft: Color, panel: Color, bottomRight: Color) {
 			drawQuad(matrices, provider, layer, x, y, z, sX, sY, light, panel)
 			drawQuad(matrices, provider, layer, x, y, z, sX, 1F, light, topLeft)
@@ -90,25 +103,27 @@ class Drawings {
 			drawQuad(matrices, provider, layer, x, y + sY - 1, z, sX - 1, 1F, light, bottomRight)
 		}
 
+		@JvmStatic
 		fun drawTexturedQuad(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, sX: Float, sY: Float, texture: Identifier?) {
-			drawTexturedQuad(matrices, provider, layer, x, y, 0F, sX, sY, 0F, 0F, 1F, 1F, 0x00F000F0, Color.default(), texture)
+			drawTexturedQuad(matrices, provider, layer, x, y, 0F, sX, sY, 0F, 0F, 1F, 1F, 0x00F000F0, Color.standard(), texture)
 		}
 
+		@JvmStatic
 		fun drawTexturedQuad(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, z: Float, sX: Float, sY: Float, texture: Identifier?) {
-			drawTexturedQuad(matrices, provider, layer, x, y, z, sX, sY, 0F, 0F, 1F, 1F, 0x00F000F0, Color.default(), texture)
+			drawTexturedQuad(matrices, provider, layer, x, y, z, sX, sY, 0F, 0F, 1F, 1F, 0x00F000F0, Color.standard(), texture)
 		}
 
+		@JvmStatic
 		fun drawTexturedQuad(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, z: Float, sX: Float, sY: Float, color: Color, texture: Identifier?) {
 			drawTexturedQuad(matrices, provider, layer, x, y, z, sX, sY, 0F, 0F, 1F, 1F, 0x00F000F0, color, texture)
 		}
 
+		@JvmStatic
 		fun drawTexturedQuad(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, z: Float, sX: Float, sY: Float, light: Int, color: Color, texture: Identifier?) {
 			drawTexturedQuad(matrices, provider, layer, x, y, z, sX, sY, 0F, 0F, 1F, 1F, light, color, texture)
 		}
 
-		/**
-		 * Layers#getTexture
-		 */
+		@JvmStatic
 		fun drawTexturedQuad(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, z: Float, sX: Float, sY: Float, u0: Float, v0: Float, u1: Float, v1: Float, light: Int, color: Color, texture: Identifier?) {
 			getTextureManager()?.bindTexture(texture)
 
@@ -120,10 +135,12 @@ class Drawings {
 			consumer.vertex(matrices.peek().model, x, y, z).color(color.r, color.g, color.b, color.a).texture(u0, v0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().normal, 0F, 0F, 0F).next()
 		}
 
+		@JvmStatic
 		fun drawTooltip(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, width: Float, height: Float, shadowStart: Color, shadowEnd: Color, backgroundStart: Color, backgroundEnd: Color, outlineStart: Color, outlineEnd: Color) {
 			drawTooltip(matrices, provider, layer, x, y, 256F, width, height, shadowStart, shadowEnd, backgroundStart, backgroundEnd, outlineStart, outlineEnd)
 		}
 
+		@JvmStatic
 		fun drawTooltip(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, z: Float, width: Float, height: Float, shadowStart: Color, shadowEnd: Color, backgroundStart: Color, backgroundEnd: Color, outlineStart: Color, outlineEnd: Color) {
 			drawGradientQuad(matrices, provider, layer, x - 3, y - 4, x + width + 3, y - 3, z, shadowStart, shadowStart) // Border - top
 			drawGradientQuad(matrices, provider, layer, x - 3, y + height + 3, x + width + 3, y + height + 4, z, shadowEnd, shadowEnd) // Border - bottom
@@ -137,14 +154,17 @@ class Drawings {
 			drawGradientQuad(matrices, provider, layer, x - 3, y + height + 2, x + width + 3, y + height + 3, z, outlineEnd, outlineEnd) // Outline - bottom
 		}
 
+		@JvmStatic
 		fun getTextureManager(): TextureManager? {
 			return Instances.client().textureManager
 		}
 
+		@JvmStatic
 		fun getItemRenderer(): ItemRenderer? {
 			return Instances.client().itemRenderer
 		}
 
+		@JvmStatic
 		fun getTextRenderer(): TextRenderer? {
 			return Instances.client().textRenderer
 		}

@@ -185,7 +185,6 @@ class SlotListWidget(
 					val slot = it.backendSlot!!
 
 					if (slot.index - widthInSlots >= 0) {
-						slot.canInsert = true
 						slot.index = slot.index - widthInSlots
 					}
 				}
@@ -200,7 +199,6 @@ class SlotListWidget(
 					val slot = it.backendSlot!!
 
 					if (slot.index + widthInSlots <= inventory.size()) {
-						slot.canInsert = true
 						slot.index = slot.index + widthInSlots
 					}
 				}

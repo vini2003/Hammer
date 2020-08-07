@@ -2,6 +2,7 @@ package com.github.vini2003.blade.testing.kotlin
 
 import com.github.vini2003.blade.common.data.Position
 import com.github.vini2003.blade.common.data.Size
+import com.github.vini2003.blade.common.data.Slots
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import com.github.vini2003.blade.common.widget.base.ButtonWidget
 import com.github.vini2003.blade.common.widget.base.SlotWidget
@@ -36,6 +37,7 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 		bottomButton.position = (Position({ 24F }, { 70F }))
 		bottomButton.size = (Size({ 160F }, { 16F }))
 		bottomButton.label = LiteralText("or something.")
+
 
 // val item = ItemWidget()
 
@@ -81,6 +83,8 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 			it.addWidget(bottomButton)
 			it.addWidget(slot)
 		}
+
+		Slots.addPlayerInventory(Position({ 24F }, {110F}), Size({18F}, {18F}), tabs, player.inventory)
 
 		//addWidget(panel)
 

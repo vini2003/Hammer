@@ -5,8 +5,10 @@ import java.util.function.Function
 
 class Style(private var properties: MutableMap<String, JsonElement>) {
 	companion object {
+		@JvmStatic
 		val EMPTY: Style = Style(mutableMapOf())
 
+		@JvmStatic
 		private var deserializers: MutableMap<Class<*>, Function<JsonElement, *>> = mutableMapOf()
 
 		init {
@@ -46,7 +48,7 @@ class Style(private var properties: MutableMap<String, JsonElement>) {
 	}
 
 	fun asColor(property: String): Color {
-		return get(property, Color::class.java) ?: Color.default()
+		return get(property, Color::class.java) ?: Color.standard()
 	}
 
 	fun asByte(property: String): Byte {

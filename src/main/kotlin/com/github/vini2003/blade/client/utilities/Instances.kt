@@ -5,10 +5,12 @@ import net.minecraft.client.MinecraftClient
 
 class Instances {
 	companion object {
-		fun getInstance(): Any {
+		@JvmStatic
+		fun instance(): Any {
 			return FabricLoader.getInstance().gameInstance
 		}
 
+		@JvmStatic
 		fun client(): MinecraftClient {
 			return MinecraftClient.getInstance()
 		}

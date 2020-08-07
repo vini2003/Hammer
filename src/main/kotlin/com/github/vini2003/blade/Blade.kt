@@ -15,8 +15,10 @@ class Blade : ModInitializer {
 		@SuppressWarnings
 		const val MOD_ID = "blade"
 
+		@JvmStatic
 		val LOGGER: Logger = LogManager.getLogger(MOD_ID)
 
+		@JvmStatic
 		fun identifier(string: String): Identifier {
 			return Identifier(MOD_ID, string)
 		}

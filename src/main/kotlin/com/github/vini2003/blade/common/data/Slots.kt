@@ -10,13 +10,14 @@ import java.util.*
 
 class Slots {
 	companion object {
+		@JvmStatic
 		fun addPlayerInventory(position: Position, size: Size, parent: AbstractWidget, inventory: Inventory): Collection<SlotWidget>? {
 			val set: MutableCollection<SlotWidget> = addArray(position, size, parent, 9, 9, 3, inventory)
 			set.addAll(addArray(Position({position.x}, {position.y + size.height * 3 + 4}), size, parent, 0, 9, 1, inventory))
 			return set
 		}
 
-
+		@JvmStatic
 		fun addArray(position: Position, size: Size, parent: AbstractWidget, slotNumber: Int, arrayWidth: Int, arrayHeight: Int, inventory: Inventory): MutableCollection<SlotWidget> {
 			val set: MutableCollection<SlotWidget> = HashSet()
 			for (y in 0 until arrayHeight) {

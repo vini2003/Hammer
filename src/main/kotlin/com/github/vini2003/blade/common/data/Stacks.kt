@@ -6,6 +6,7 @@ import kotlin.math.min
 
 class Stacks {
 	companion object {
+		@JvmStatic
 		fun merge(originalStackA: ItemStack, originalStackB: ItemStack, maxA: Int, maxB: Int, consumer: (ItemStack, ItemStack) -> Unit) {
 			var stackA: ItemStack = originalStackA
 			var stackB: ItemStack = originalStackB
@@ -43,6 +44,7 @@ class Stacks {
 			consumer.invoke(stackA, stackB)
 		}
 
+		@JvmStatic
 		fun equal(stackA: ItemStack, stackB: ItemStack): Boolean {
 			return ItemStack.areEqual(stackA, stackB)
 		}

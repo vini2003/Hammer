@@ -19,6 +19,7 @@ class Layers : RenderLayer {
 	) : super(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction)
 
 	companion object {
+		@JvmStatic
 		fun get(texture: Identifier?): RenderLayer {
 			return of(
 					"entity_cutout",
@@ -33,6 +34,7 @@ class Layers : RenderLayer {
 			)
 		}
 
+		@JvmStatic
 		private val INTERRFACE: RenderLayer = of(
 				"blade_flat",
 				VertexFormats.POSITION_COLOR_LIGHT, 7, 256,
@@ -48,6 +50,7 @@ class Layers : RenderLayer {
 						.build(false)
 		)
 
+		@JvmStatic
 		private val TOOLTIP: RenderLayer = of(
 				"blade_tooltip",
 				VertexFormats.POSITION_COLOR_LIGHT, 7, 256,
@@ -63,10 +66,12 @@ class Layers : RenderLayer {
 						.build(false)
 		)
 
+		@JvmStatic
 		fun flat(): RenderLayer {
 			return INTERRFACE
 		}
 
+		@JvmStatic
 		fun tooltip(): RenderLayer {
 			return TOOLTIP
 		}

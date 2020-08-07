@@ -5,13 +5,13 @@ import com.github.vini2003.blade.client.data.PartitionedTexture
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
-import com.github.vini2003.blade.common.widget.wrapper.SafeSlot
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.inventory.Inventory
+import net.minecraft.screen.slot.Slot
 
 class SlotWidget(private val slot: Int, private val inventory: Inventory) : AbstractWidget() {
-	var backendSlot: SafeSlot? = null
+	var backendSlot: Slot? = null
 
 	var texture = PartitionedTexture(Blade.identifier("textures/widget/slot.png"), 18F, 18F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F)
 
@@ -38,7 +38,7 @@ class SlotWidget(private val slot: Int, private val inventory: Inventory) : Abst
 
 	override fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
 		super.onAdded(original, immediate)
-		backendSlot = SafeSlot(inventory, slot, slotX, slotY)
+		backendSlot = Slot(inventory, slot, slotX, slotY)
 		backendSlot!!.index = slot
 
 		if (original is BaseScreenHandler) {

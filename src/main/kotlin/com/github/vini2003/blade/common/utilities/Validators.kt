@@ -9,12 +9,15 @@ import java.util.function.Function
 
 class Validators {
 	companion object {
+		@JvmStatic
 		private val validators: Multimap<Class<*>, Function<AbstractWidget, Result<AbstractWidget>>> = HashMultimap.create()
 
+		@JvmStatic
 		fun register(klass: Class<*>, validator: Function<AbstractWidget, Result<AbstractWidget>>) {
 			validators.put(klass, validator)
 		}
 
+		@JvmStatic
 		fun validate(widget: AbstractWidget) {
 			validators[widget.javaClass]
 					.map { function -> function.apply(widget) }

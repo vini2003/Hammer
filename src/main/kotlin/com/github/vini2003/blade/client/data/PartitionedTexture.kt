@@ -71,7 +71,7 @@ class PartitionedTexture(
 
 		val layer = Layers.get(texture)
 
-		val color = Color.default()
+		val color = Color.standard()
 
 		topLeft.let {
 			Drawings.drawTexturedQuad(matrices, provider, layer, x, y, 0F, topLeftWidth, topLeftHeight, it.uS, it.vS, it.uE, it.vE, 0x00F000F0, color, texture)

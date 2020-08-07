@@ -8,6 +8,7 @@ import net.minecraft.screen.ScreenHandlerType
 
 class DebugContainers {
 	companion object {
+		@JvmStatic
 		val DEBUG_HANDLER: ScreenHandlerType<DebugScreenHandler> = ScreenHandlerRegistry.registerExtended(identifier("debug_handler")) { synchronizationID: Int, inventory: PlayerInventory, buffer: PacketByteBuf? ->
 			DebugScreenHandler(
 					synchronizationID,
@@ -15,6 +16,7 @@ class DebugContainers {
 			)
 		}
 
+		@JvmStatic
 		fun initialize() {
 
 		}

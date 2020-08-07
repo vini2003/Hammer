@@ -5,6 +5,7 @@ import com.github.vini2003.blade.common.data.Size
 
 class Rectangle(val position: Position, val size: Size) {
 	companion object {
+		@JvmStatic
 		fun empty(): Rectangle {
 			return Rectangle(Position({ 0F }, { 0F }), Size({ 0F }, { 0F }))
 		}

@@ -4,6 +4,8 @@ class Position(
 		private var xSupplier: () -> Float,
 		private var ySupplier: () -> Float
 ) {
+	constructor(x: Float, y: Float) : this({x}, {y})
+
 	var x = 0F
 	var y = 0F
 

@@ -15,6 +15,7 @@ import net.minecraft.text.TranslatableText
 
 class DebugCommands {
 	companion object {
+		@JvmStatic
 		fun initialize() {
 			CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { dispatcher, dedicated ->
 				val debugNode = CommandManager.literal("debug")

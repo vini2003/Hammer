@@ -62,6 +62,8 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 	override fun onLayoutChanged() {
 		super.onLayoutChanged()
 
+		widgets.clear()
+
 		tabCollections.forEach {
 			widgets.addAll(it.widgets)
 		}
@@ -119,7 +121,7 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 	override fun onMouseClicked(x: Float, y: Float, button: Int) {
 		super.onMouseClicked(x, y, button)
 
-		if (y < position.y + 25F) {
+		if (y < position.y + 25F && y > position.y && x > position.x && x < position.x + size.width) {
 			tabRectangles.forEachIndexed { index, rectangle ->
 				val hidden = !rectangle.isWithin(x, y)
 

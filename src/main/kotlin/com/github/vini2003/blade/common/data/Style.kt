@@ -44,7 +44,7 @@ class Style(private var properties: MutableMap<String, JsonElement>) {
 	}
 
 	fun <T> get(property: String, clazz: Class<T>): T? {
-		return properties[property]?.also { deserializers[clazz]?.apply(it) } as T
+		return properties[property]?.let { deserializers[clazz]?.apply(it) } as T
 	}
 
 	fun asColor(property: String): Color {

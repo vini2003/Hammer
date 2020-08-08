@@ -6,6 +6,10 @@ class Position(
 ) {
 	constructor(x: Float, y: Float) : this({x}, {y})
 
+	constructor(anchor: Position, x: Float, y: Float) : this({anchor.x + x}, {anchor.y + y})
+
+	constructor(of: Position) : this({of.x}, {of.y})
+
 	var x = 0F
 	var y = 0F
 

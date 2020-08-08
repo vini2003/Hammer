@@ -25,6 +25,18 @@ abstract class AbstractWidget : Positioned, Sized {
 			onLayoutChanged()
 		}
 
+	val x: Float
+		get() = position.x
+
+	val y: Float
+		get() = position.y
+
+	val width: Float
+		get() = size.width
+
+	val height: Float
+		get() = size.height
+
 	var original: OriginalWidgetCollection? = null
 	var immediate: WidgetCollection? = null
 

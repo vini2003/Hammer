@@ -6,6 +6,10 @@ class Size(
 ) {
 	constructor(width: Float, height: Float) : this({width}, {height})
 
+	constructor(anchor: Size, width: Float, height: Float) : this({anchor.width + width}, {anchor.height + height})
+
+	constructor(of: Size) : this({of.width}, {of.height})
+	
 	var width: Float = 0.0F
 	var height: Float = 0.0F
 

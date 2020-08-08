@@ -74,7 +74,7 @@ class SlotListWidget(
 
 	override fun addWidget(widget: AbstractWidget) {
 		widgets.add(widget)
-		original?.let { widget.onAdded(it, this) }
+		original?.also { widget.onAdded(it, this) }
 
 		widgets.forEach { _ ->
 			widget.onLayoutChanged()
@@ -85,7 +85,7 @@ class SlotListWidget(
 
 	override fun removeWidget(widget: AbstractWidget) {
 		widgets.remove(widget)
-		original?.let { widget.onRemoved(it, this) }
+		original?.also { widget.onRemoved(it, this) }
 
 		widgets.forEach { _ ->
 			widget.onLayoutChanged()

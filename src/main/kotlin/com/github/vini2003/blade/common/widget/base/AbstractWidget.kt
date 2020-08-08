@@ -52,7 +52,7 @@ abstract class AbstractWidget : Positioned, Sized {
 	open var parent: AbstractWidget? = null
 
 	fun style(): Style {
-		return Styles.get(style).let {
+		return Styles.get(style).also {
 			if (it == Style.EMPTY) if (parent == null) Style.EMPTY else parent!!.style() else it
 		}
 	}

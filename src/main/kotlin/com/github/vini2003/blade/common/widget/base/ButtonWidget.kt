@@ -52,7 +52,7 @@ class ButtonWidget(private val clickAction: (ButtonWidget) -> Unit) : AbstractWi
 
 		if (provider is VertexConsumerProvider.Immediate) provider.draw()
 
-		label?.let {
+		label?.also {
 			Drawings.getTextRenderer()?.drawWithShadow(matrices, label, position.x + (size.width / 2 - Texts.width(label!!) / 2), position.y + (size.height / 2 - Texts.height() / 2), color("button.label").toInt()) // 0xFCFCFC
 		}
 	}

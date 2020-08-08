@@ -9,7 +9,7 @@ interface WidgetCollection {
 		widgets.add(widget)
 		if (this is AbstractWidget) {
 			this.onLayoutChanged()
-			this.original?.let { widget.onAdded(it, this) }
+			this.original?.also { widget.onAdded(it, this) }
 		}
 	}
 
@@ -17,7 +17,7 @@ interface WidgetCollection {
 		widgets.remove(widget)
 		if (this is AbstractWidget) {
 			this.onLayoutChanged()
-			this.original?.let { widget.onRemoved(it, this) }
+			this.original?.also { widget.onRemoved(it, this) }
 		}
 	}
 }

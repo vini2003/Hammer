@@ -34,7 +34,7 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 		val bottomButton = ButtonWidget {
 		}
 
-		bottomButton.position = (Position({ 24F }, { 70F }))
+		bottomButton.position = (Position({ 24F }, { 88F }))
 		bottomButton.size = (Size({ 160F }, { 16F }))
 		bottomButton.label = LiteralText("or something.")
 

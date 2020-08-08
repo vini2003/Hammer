@@ -7,7 +7,7 @@ import com.github.vini2003.blade.client.utilities.Layers
 import com.github.vini2003.blade.common.data.Position
 import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.data.geometry.Rectangle
-import com.github.vini2003.blade.common.data.widget.Collection
+import com.github.vini2003.blade.common.data.widget.TabCollection
 import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.utilities.Positions
 import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
@@ -22,7 +22,7 @@ import net.minecraft.text.Text
 class TabWidget : AbstractWidget(), WidgetCollection {
 	private val tabRectangles: ArrayList<Rectangle> = ArrayList()
 
-	private val tabCollections: ArrayList<Collection> = ArrayList()
+	private val tabCollections: ArrayList<TabCollection> = ArrayList()
 
 	private val tabSymbols: ArrayList<ItemStack> = ArrayList()
 
@@ -30,7 +30,7 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 
 	override val widgets: ArrayList<AbstractWidget> = ArrayList()
 
-	private var selected: Int = 0
+	var selected: Int = 0
 
 	private val leftActive = Blade.identifier("textures/widget/tab_left_active.png")
 	private val middleActive = Blade.identifier("textures/widget/tab_middle_active.png")
@@ -41,6 +41,16 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 	private val rightInactive = Blade.identifier("textures/widget/tab_right_inactive.png")
 
 	var panel = PartitionedTexture(Blade.identifier("textures/widget/panel.png"), 18F, 18F, 0.25F, 0.25F, 0.25F, 0.25F)
+
+	override fun onLayoutChanged() {
+		super.onLayoutChanged()
+
+		widgets.clear()
+
+		tabCollections.forEach {
+			widgets.addAll(it.widgets)
+		}
+	}
 
 	override fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
 		super.onAdded(original, immediate)
@@ -57,16 +67,6 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 		}
 
 		synchronize.add(Networks.MOUSE_CLICK)
-	}
-
-	override fun onLayoutChanged() {
-		super.onLayoutChanged()
-
-		widgets.clear()
-
-		tabCollections.forEach {
-			widgets.addAll(it.widgets)
-		}
 	}
 
 	fun addTab(symbol: ItemStack): WidgetCollection {
@@ -86,7 +86,7 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 	}
 
 	fun addTab(symbol: ItemStack, tooltip: () -> List<Text>): WidgetCollection {
-		val collection = Collection()
+		val collection = TabCollection(tabCollections.size)
 
 		tabCollections.add(collection)
 		tabSymbols.add(symbol)

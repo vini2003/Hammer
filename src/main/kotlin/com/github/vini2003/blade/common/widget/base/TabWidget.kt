@@ -123,7 +123,7 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 	override fun onMouseClicked(x: Float, y: Float, button: Int) {
 		super.onMouseClicked(x, y, button)
 
-		if (y < position.y + 25F && y > position.y && x > position.x && x < position.x + size.width) {
+		if (tabRectangles.any { it.isWithin(x, y) }) {
 			tabRectangles.forEachIndexed { index, rectangle ->
 				val hidden = !rectangle.isWithin(x, y)
 

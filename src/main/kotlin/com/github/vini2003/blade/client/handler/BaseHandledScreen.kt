@@ -5,12 +5,18 @@ import com.github.vini2003.blade.client.utilities.Layers
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.utilities.Positions
+import com.github.vini2003.blade.common.widget.WidgetCollection
+import com.github.vini2003.blade.common.widget.base.AbstractWidget
+import com.google.common.collect.Lists
+import com.google.common.collect.Streams
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.text.Text
+import java.util.stream.Stream
+import kotlin.streams.toList
 
 open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, inventory: PlayerInventory, title: Text) : HandledScreen<T>(handler as T, inventory, title) {
 	override fun init(client: MinecraftClient?, width: Int, height: Int) {
@@ -109,10 +115,12 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
 		val provider: VertexConsumerProvider.Immediate = Instances.client().bufferBuilders.effectVertexConsumers
 
 		handler.widgets.forEach {
-			it.drawWidget(matrices!!, provider).also { _ ->
-				if (it.focused) {
-					renderTooltip(matrices, it.getTooltip(), mouseX, mouseY)
-				}
+			it.drawWidget(matrices!!, provider)
+		}
+
+		handler.allWidgets.forEach {
+			if (!it.hidden && it.focused) {
+				renderTooltip(matrices, it.getTooltip(), mouseX, mouseY)
 			}
 		}
 

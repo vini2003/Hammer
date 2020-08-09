@@ -3,7 +3,10 @@ package com.github.vini2003.blade.common.widget
 import com.github.vini2003.blade.common.widget.base.AbstractWidget
 
 interface WidgetCollection {
-	val widgets: ArrayList<AbstractWidget>
+	val widgets: MutableList<AbstractWidget>
+
+	val allWidgets: MutableList<AbstractWidget>
+		get() = (widgets + widgets.map { if (it is WidgetCollection) it.allWidgets else mutableListOf(it) }.flatten()).toMutableList()
 
 	fun addWidget(widget: AbstractWidget) {
 		widgets.add(widget)

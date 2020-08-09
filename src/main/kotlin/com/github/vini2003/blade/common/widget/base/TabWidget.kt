@@ -87,6 +87,8 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 
 	fun addTab(symbol: ItemStack, tooltip: () -> List<Text>): WidgetCollection {
 		val collection = TabCollection(tabCollections.size)
+		collection.original = original
+		collection.parent = this
 
 		tabCollections.add(collection)
 		tabSymbols.add(symbol)

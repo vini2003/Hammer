@@ -5,9 +5,12 @@ import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.data.Slots
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import com.github.vini2003.blade.common.widget.base.ButtonWidget
+import com.github.vini2003.blade.common.widget.base.SlotListWidget
 import com.github.vini2003.blade.common.widget.base.SlotWidget
 import com.github.vini2003.blade.common.widget.base.TabWidget
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.inventory.SimpleInventory
+import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
@@ -45,13 +48,13 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 // item.size = (Size({16F}, {16F}))
 // item.stack = ItemStack(Items.RED_WOOL)
 
-// val inventory = SimpleInventory(4096)
-// for (i in 0 until inventory.size()) inventory.setStack(i, ItemStack(Registry.ITEM.getRandom(player.world.random), player.world.random.nextInt(64)))
+ val inventory = SimpleInventory(4096)
+ for (i in 0 until inventory.size() / 4) inventory.setStack(i, ItemStack(Registry.ITEM.getRandom(player.world.random), player.world.random.nextInt(64)))
 
-////val slots = SlotListWidget(inventory)
+val slots = SlotListWidget(inventory)
 
-////slots.position = (Position({slot.position.x}, {slot.position.y + slot.size.width + 2}))
-////slots.size = (Size({17 * 18F}, {11 * 18F}))
+slots.position = (Position({slot.position.x}, {slot.position.y + slot.size.width + 2}))
+slots.size = (Size({17 * 18F}, {11 * 18F}))
 
 // val panel = PanelWidget()
 // panel.size = Size({128F}, {128F})
@@ -77,25 +80,24 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 			it.addWidget(topButton)
 		}
 
-		addWidget(tabs)
+		//addWidget(tabs)
 
 		firstTab.also {
-			it.addWidget(bottomButton)
-			it.addWidget(slot)
+		//	it.addWidget(bottomButton)
+		//	it.addWidget(slot)
 		}
 
 		Slots.addPlayerInventory(Position({ 24F }, {110F}), Size({18F}, {18F}), tabs, player.inventory)
 
 		//addWidget(panel)
 
-		// addWidget(slot)
+		//addWidget(slot)
 
 		// addWidget(topButton)
 		//  addWidget(bottomButton)
 
 		// addWidget(item)
-
-		//   addWidget(slots)
+		addWidget(slots)
 
 		//  addWidget(bar)
 	}

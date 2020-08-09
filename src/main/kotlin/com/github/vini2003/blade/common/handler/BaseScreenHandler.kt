@@ -1,13 +1,17 @@
 package com.github.vini2003.blade.common.handler
 
+import com.github.vini2003.blade.common.data.Stacks
 import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
 import com.github.vini2003.blade.common.widget.base.AbstractWidget
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.player.PlayerInventory
+import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.screen.slot.Slot
+import net.minecraft.screen.slot.SlotActionType
 import net.minecraft.util.Identifier
 
 abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId: Int, private val player: PlayerEntity) : ScreenHandler(type, syncId), OriginalWidgetCollection {
@@ -81,6 +85,41 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 			if (it.id >= id) {
 				--it.id
 			}
+		}
+	}
+
+	override fun onSlotClick(slotNumber: Int, button: Int, actionType: SlotActionType?, playerEntity: PlayerEntity?): ItemStack {
+		return when (actionType) {
+			SlotActionType.QUICK_MOVE -> {
+				if (slotNumber >= 0 && slotNumber < slots.size) {
+					val slot = slots[slotNumber]
+
+					if (slot != null && !slot.stack.isEmpty && slot.canTakeItems(playerEntity)) {
+						for (newSlotNumber in 0 until slotNumber) {
+							val newSlot = slots[newSlotNumber]
+
+							if (newSlot.inventory !is PlayerInventory && newSlot != slot && newSlot.inventory != slot.inventory) {
+								Stacks.merge(slot.stack, newSlot.stack, slot.stack.maxCount, newSlot.stack.maxCount) { stackA, stackB ->
+									slot.stack = stackA
+									newSlot.stack = stackB
+								}
+							}
+
+							if (newSlot.inventory is PlayerInventory && newSlot != slot && newSlot.inventory != slot.inventory) {
+								Stacks.merge(slot.stack, newSlot.stack, slot.stack.maxCount, newSlot.stack.maxCount) { stackA, stackB ->
+									slot.stack = stackA
+									newSlot.stack = stackB
+								}
+							}
+
+							if (slot.stack.isEmpty) break
+						}
+					}
+				}
+
+				return ItemStack.EMPTY
+			}
+			else -> super.onSlotClick(slotNumber, button, actionType, playerEntity)
 		}
 	}
 }

@@ -139,7 +139,7 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 	}
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
-		panel.draw(matrices, provider, position.x, position.y + 25F, size.width, size.height)
+		panel.draw(matrices, provider, position.x, position.y + 25F, size.width, size.height - 25F)
 
 		if (provider is VertexConsumerProvider.Immediate) provider.draw()
 

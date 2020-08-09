@@ -95,7 +95,7 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 					val slot = slots[slotNumber]
 
 					if (slot != null && !slot.stack.isEmpty && slot.canTakeItems(playerEntity)) {
-						for (newSlotNumber in 0 until slotNumber) {
+						for (newSlotNumber in 0 until slots.size) {
 							val newSlot = slots[newSlotNumber]
 
 							if (newSlot.inventory !is PlayerInventory && newSlot != slot && newSlot.inventory != slot.inventory) {

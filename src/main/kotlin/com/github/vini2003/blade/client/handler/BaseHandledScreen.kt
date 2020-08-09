@@ -45,7 +45,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
 	}
 
 	override fun isClickOutsideBounds(mouseX: Double, mouseY: Double, left: Int, top: Int, button: Int): Boolean {
-		return handler.widgets.find { widget -> widget.isWithin(mouseX.toFloat(), mouseY.toFloat()) } == null
+		return handler.widgets.any { widget -> !widget.isWithin(mouseX.toFloat(), mouseY.toFloat()) }
 	}
 
 	override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {

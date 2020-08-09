@@ -38,7 +38,7 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 	open fun handlePacket(id: Identifier, buf: PacketByteBuf) {
 		val hash = buf.readInt()
 
-		widgets.forEach {
+		allWidgets.forEach {
 			if (it.hash == hash) {
 				when (id) {
 					Networks.MOUSE_MOVE -> it.onMouseMoved(buf.readFloat(), buf.readFloat())

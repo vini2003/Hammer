@@ -40,6 +40,10 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
 
 	}
 
+	override fun drawForeground(matrices: MatrixStack?, mouseX: Int, mouseY: Int) {
+
+	}
+
 	override fun isClickOutsideBounds(mouseX: Double, mouseY: Double, left: Int, top: Int, button: Int): Boolean {
 		return handler.widgets.find { widget -> widget.isWithin(mouseX.toFloat(), mouseY.toFloat()) } == null
 	}

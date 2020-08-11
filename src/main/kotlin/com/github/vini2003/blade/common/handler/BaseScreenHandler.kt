@@ -1,9 +1,14 @@
 package com.github.vini2003.blade.common.handler
 
+import com.github.vini2003.blade.client.utilities.Instances
 import com.github.vini2003.blade.common.data.Stacks
 import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
 import com.github.vini2003.blade.common.widget.base.AbstractWidget
+import me.shedaniel.math.Rectangle
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
+import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.item.ItemStack
@@ -19,7 +24,48 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 
 	val client = player.world.isClient
 
+	var rectangle: Rectangle = Rectangle()
+
 	abstract fun initialize(width: Int, height: Int)
+
+	override fun onLayoutChanged() {
+		var minimumX = Float.MAX_VALUE
+		var minimumY = Float.MAX_VALUE
+		var maximumX = 0F
+		var maximumY = 0F
+
+		widgets.forEach {
+			if (it.x < minimumX) {
+				minimumX = it.x
+			}
+			if (it.x + it.width > maximumX) {
+				maximumX = it.x + it.width
+			}
+			if (it.y < minimumY) {
+				minimumY = it.y
+			}
+			if (it.y + it.height > maximumY) {
+				maximumY = it.y + it.height
+			}
+		}
+
+		rectangle = Rectangle(minimumX.toInt(), minimumY.toInt(), (maximumX - minimumX).toInt(), (maximumY - minimumY).toInt())
+
+		if (client) {
+			onLayoutChangedDelegate()
+		}
+	}
+	
+	@Environment(EnvType.CLIENT)
+	fun onLayoutChangedDelegate() {
+		val screen = Instances.client().currentScreen as HandledScreen<*>
+
+		screen.x = rectangle.minX
+		screen.y = rectangle.minY
+
+		screen.backgroundWidth = rectangle.width
+		screen.backgroundHeight = rectangle.height
+	}
 
 	override fun addWidget(widget: AbstractWidget) {
 		widgets.add(widget)

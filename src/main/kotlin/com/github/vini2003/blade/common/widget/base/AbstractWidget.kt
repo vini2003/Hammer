@@ -1,5 +1,6 @@
 package com.github.vini2003.blade.common.widget.base
 
+import com.github.vini2003.blade.client.utilities.Instances
 import com.github.vini2003.blade.common.data.*
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import com.github.vini2003.blade.common.utilities.Networks
@@ -225,6 +226,7 @@ abstract class AbstractWidget : Positioned, Sized {
 		focus(Positions.mouseX, Positions.mouseY)
 
 		parent?.onLayoutChanged()
+		original?.onLayoutChanged()
 	}
 
 	fun focus(x: Float, y: Float) {
@@ -237,5 +239,9 @@ abstract class AbstractWidget : Positioned, Sized {
 
 	fun isWithin(x: Float, y: Float): Boolean {
 		return x > position.x && x < position.x + size.width && y > position.y && y < position.y + size.height
+	}
+
+	fun irritater() {
+
 	}
 }

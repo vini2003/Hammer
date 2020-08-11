@@ -7,4 +7,6 @@ interface OriginalWidgetCollection : WidgetCollection {
 	fun getPlayer(): PlayerEntity
 
 	fun getHandler(): BaseScreenHandler
+
+	fun onLayoutChanged()
 }

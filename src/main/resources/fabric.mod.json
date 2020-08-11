@@ -22,6 +22,9 @@
     ],
     "client": [
       "com.github.vini2003.blade.BladeClient"
+    ],
+    "rei_plugins": [
+      "com.github.vini2003.blade.client.compatibility.RoughlyEnoughItemsPlugin"
     ]
   },
   "mixins": [

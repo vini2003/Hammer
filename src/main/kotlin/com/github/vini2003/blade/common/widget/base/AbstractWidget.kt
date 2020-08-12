@@ -1,6 +1,5 @@
 package com.github.vini2003.blade.common.widget.base
 
-import com.github.vini2003.blade.client.utilities.Instances
 import com.github.vini2003.blade.common.data.*
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import com.github.vini2003.blade.common.utilities.Networks
@@ -13,30 +12,15 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import java.util.*
+import kotlin.properties.Delegates
 
 abstract class AbstractWidget : Positioned, Sized {
-	override var position: Position = Position({ 0F }, { 0F })
-		set(value) {
-			field = value
-			onLayoutChanged()
-		}
-	override var size: Size = Size({ 0F }, { 0F })
-		set(value) {
-			field = value
-			onLayoutChanged()
-		}
-
-	val x: Float
-		get() = position.x
-
-	val y: Float
-		get() = position.y
-
-	val width: Float
-		get() = size.width
-
-	val height: Float
-		get() = size.height
+	override var position: Position by Delegates.observable(Position.of(0, 0)) { _, _, _ ->
+		onLayoutChanged()
+	}
+	override var size: Size by Delegates.observable(Size.of(0, 0)) { _, _, _ ->
+		onLayoutChanged()
+	}
 
 	var original: OriginalWidgetCollection? = null
 	var immediate: WidgetCollection? = null

@@ -19,20 +19,17 @@ import java.util.stream.Stream
 import kotlin.streams.toList
 
 open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, inventory: PlayerInventory, title: Text) : HandledScreen<T>(handler as T, inventory, title) {
-	override fun init(client: MinecraftClient?, width: Int, height: Int) {
-		super.init(client, width, height)
-
-		x = 0
-		y = 0
-
-		this.width = width
-		this.height = height
-
+	override fun init() {
+		handler.widgets.clear()
+		handler.slots.clear()
 		this.backgroundWidth = width
 		this.backgroundHeight = height
-
+		super.init()
 		handler.initialize(width, height)
-
+		handler.onLayoutChanged()
+		handler.allWidgets.forEach { 
+			it.onLayoutChanged()
+		}
 		Networks.toServer(Networks.INITIALIZE, Networks.ofInitialize(handler.syncId, width, height))
 	}
 
@@ -115,13 +112,13 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
 		return super.charTyped(character, keyCode)
 	}
 
-	override fun render(matrices: MatrixStack?, mouseX: Int, mouseY: Int, delta: Float) {
+	override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
 		super.renderBackground(matrices)
 
 		val provider: VertexConsumerProvider.Immediate = Instances.client().bufferBuilders.effectVertexConsumers
 
 		handler.widgets.forEach {
-			it.drawWidget(matrices!!, provider)
+			it.drawWidget(matrices, provider)
 		}
 
 		handler.allWidgets.forEach {
@@ -137,16 +134,5 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
 		super.render(matrices, mouseX, mouseY, delta)
 
 		super.drawMouseoverTooltip(matrices, mouseX, mouseY)
-	}
-
-	override fun resize(client: MinecraftClient?, width: Int, height: Int) {
-		super.resize(client, width, height)
-
-		handler!!.widgets.clear()
-		handler.slots.clear()
-
-		handler.initialize(width, height)
-
-		Networks.toServer(Networks.INITIALIZE, Networks.ofInitialize(handler.syncId, width, height))
 	}
 }

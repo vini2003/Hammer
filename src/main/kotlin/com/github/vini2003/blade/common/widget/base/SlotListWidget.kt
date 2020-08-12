@@ -2,7 +2,6 @@ package com.github.vini2003.blade.common.widget.base
 
 import com.github.vini2003.blade.Blade
 import com.github.vini2003.blade.client.data.PartitionedTexture
-import com.github.vini2003.blade.common.data.Position
 import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.data.geometry.Rectangle
 import com.github.vini2003.blade.common.utilities.Networks
@@ -16,7 +15,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 class SlotListWidget(
-		private val inventory: Inventory
+	private val inventory: Inventory
 ) : AbstractWidget(), WidgetCollection {
 	var textureScrollbar = PartitionedTexture(Blade.identifier("textures/widget/scrollbar.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.16666666666666666667F)
 	var textureScroller = PartitionedTexture(Blade.identifier("textures/widget/scroller.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
@@ -48,12 +47,12 @@ class SlotListWidget(
 		get() = min(size.height - 2, heightInSlots.toFloat() / totalRows.toFloat() * (size.height - 2))
 
 	private val scrollerY: Float
-		get() = max(position.y + 2, min(position.y + size.height - scrollerHeight, row.toFloat() / totalRows.toFloat() * size.height + position.y + 1))
+		get() = max(y + 2, min(y + size.height - scrollerHeight, row.toFloat() / totalRows.toFloat() * size.height + y + 1))
 
 	private val scrollerRectangle: Rectangle
 		get() {
 			return if (updateScrollerRectangle) {
-				scrollerRectangleCached = Rectangle(Position({ position.x + size.width - 1 - 16F }, { scrollerY - 1 }), Size({ 16F }, { scrollerHeight }))
+				scrollerRectangleCached = Rectangle(position.offset(size.width - 1 - 16F, -1), Size.of(16F, scrollerHeight))
 				updateScrollerRectangle = false
 				return scrollerRectangleCached
 			} else {
@@ -64,7 +63,7 @@ class SlotListWidget(
 	private val scrollbarRectangle: Rectangle
 		get() {
 			return if (updateScrollbarRectangle) {
-				scrollbarRectangleCached = Rectangle(Position({ position.x + size.width - 1 - 16F }, { position.y + 1 }), Size({ 16F }, { size.height - 2 }))
+				scrollbarRectangleCached = Rectangle(position.offset(size.width - 1 - 16F, -1), Size.of(16F, size.height - 2))
 				updateScrollbarRectangle = false
 				return scrollbarRectangleCached
 			} else {
@@ -115,8 +114,8 @@ class SlotListWidget(
 			for (w in 0 until widthInSlots) {
 				if ((inventory.size() >= h + w)) {
 					val slot = SlotWidget(0 + h * widthInSlots + w, inventory)
-					slot.position = Position({ position.x + w * 18F }, { position.y + h * 18F })
-					slot.size = Size({ 18F }, { 18F })
+					slot.position = position.offset(w * 18, h * 18)
+					slot.size = Size.of(18F, 18F)
 					widgets.add(slot)
 					immediate.addWidget(slot)
 				}

@@ -58,7 +58,7 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 	
 	@Environment(EnvType.CLIENT)
 	fun onLayoutChangedDelegate() {
-		val screen = Instances.client().currentScreen as HandledScreen<*>
+		val screen = Instances.client().currentScreen as? HandledScreen<*> ?: return
 
 		screen.x = rectangle.minX
 		screen.y = rectangle.minY

@@ -24,21 +24,21 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 
 		val slot = SlotWidget(0, player.inventory)
 
-		slot.position = (Position({ 16F }, { 16F }))
-		slot.size = (Size({ 36F }, { 36F }))
+		slot.position = Position.of(16, 16)
+		slot.size = Size.of(36, 36)
 
 		val topButton = ButtonWidget {
 		}
 
-		topButton.position = (Position({ 24F }, { 70F }))
-		topButton.size = (Size({ 120F }, { 16F }))
+		topButton.position = Position.of(24, 70)
+		topButton.size = Size.of(120, 16)
 		topButton.label = LiteralText("I am NinePatch,")
 
 		val bottomButton = ButtonWidget {
 		}
 
-		bottomButton.position = (Position({ 24F }, { 88F }))
-		bottomButton.size = (Size({ 160F }, { 16F }))
+		bottomButton.position = Position.of(24, 88)
+		bottomButton.size = Size.of(160, 16)
 		bottomButton.label = LiteralText("or something.")
 
 
@@ -48,13 +48,13 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 // item.size = (Size({16F}, {16F}))
 // item.stack = ItemStack(Items.RED_WOOL)
 
- val inventory = SimpleInventory(4096)
- for (i in 0 until inventory.size() / 4) inventory.setStack(i, ItemStack(Registry.ITEM.getRandom(player.world.random), player.world.random.nextInt(64)))
+		val inventory = SimpleInventory(4096)
+		for (i in 0 until inventory.size() / 4) inventory.setStack(i, ItemStack(Registry.ITEM.getRandom(player.world.random), player.world.random.nextInt(64)))
 
-val slots = SlotListWidget(inventory)
+		val slots = SlotListWidget(inventory)
 
-slots.position = (Position({slot.position.x}, {slot.position.y + slot.size.width + 2}))
-slots.size = (Size({17 * 18F}, {11 * 18F}))
+		slots.position = Position.of(slot, 0, slot.size.width + 2)
+		slots.size = Size.of(17 * 18F, 11 * 18F)
 
 // val panel = PanelWidget()
 // panel.size = Size({128F}, {128F})
@@ -65,8 +65,8 @@ slots.size = (Size({17 * 18F}, {11 * 18F}))
 // bar.position = Position({ 64F }, { 64F })
 
 		val tabs = TabWidget()
-		tabs.size = Size({ 259F }, { 128F })
-		tabs.position = Position({ 18F }, { 18F })
+		tabs.size = Size.of(259, 128)
+		tabs.position = Position.of(18F, 18F)
 
 		val firstTab = tabs.addTab(Items.RED_CONCRETE)
 
@@ -83,11 +83,11 @@ slots.size = (Size({17 * 18F}, {11 * 18F}))
 		//addWidget(tabs)
 
 		firstTab.also {
-		//	it.addWidget(bottomButton)
-		//	it.addWidget(slot)
+			//	it.addWidget(bottomButton)
+			//	it.addWidget(slot)
 		}
 
-		Slots.addPlayerInventory(Position({ 24F }, {110F}), Size({18F}, {18F}), tabs, player.inventory)
+		Slots.addPlayerInventory(Position.of(24F, 110F), Size.of(18F, 18F), tabs, player.inventory)
 
 		//addWidget(panel)
 

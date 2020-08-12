@@ -4,7 +4,6 @@ import com.github.vini2003.blade.Blade
 import com.github.vini2003.blade.client.data.PartitionedTexture
 import com.github.vini2003.blade.client.utilities.Drawings
 import com.github.vini2003.blade.client.utilities.Layers
-import com.github.vini2003.blade.common.data.Position
 import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.data.geometry.Rectangle
 import com.github.vini2003.blade.common.data.widget.TabCollection
@@ -20,15 +19,11 @@ import net.minecraft.text.Text
 
 
 class TabWidget : AbstractWidget(), WidgetCollection {
-	private val tabRectangles: ArrayList<Rectangle> = ArrayList()
-
-	private val tabCollections: ArrayList<TabCollection> = ArrayList()
-
-	private val tabSymbols: ArrayList<ItemStack> = ArrayList()
-
-	private val tabTooltips: ArrayList<() -> List<Text>> = ArrayList()
-
-	override val widgets: ArrayList<AbstractWidget> = ArrayList()
+	private val tabRectangles: MutableList<Rectangle> = mutableListOf()
+	private val tabCollections: MutableList<TabCollection> = mutableListOf()
+	private val tabSymbols: MutableList<ItemStack> = mutableListOf()
+	private val tabTooltips: MutableList<() -> List<Text>> = mutableListOf()
+	override val widgets : MutableList<AbstractWidget> = mutableListOf()
 
 	var selected: Int = 0
 
@@ -100,7 +95,7 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 			var x = 0F
 
 			tabCollections.forEach { _ ->
-				tabRectangles.add(Rectangle(Position({ position.x + x }, { position.y }), Size({ 26F }, { 25F })))
+				tabRectangles.add(Rectangle(position.offset(x, 0), Size.of(26F, 25F)))
 				x += 26F
 			}
 		}

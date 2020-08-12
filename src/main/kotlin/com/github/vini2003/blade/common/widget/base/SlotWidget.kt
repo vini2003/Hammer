@@ -17,8 +17,10 @@ import kotlin.properties.Delegates
 
 class SlotWidget(
 	private val slot: Int, private val inventory: Inventory,
-	private val slotProvider: (Inventory, Int, Int, Int) -> Slot = { inv, id, x, y -> Slot(inv, id, x, y) }
+	private val slotProvider: (Inventory, Int, Int, Int) -> Slot
 ) : AbstractWidget() {
+	constructor(slot: Int, inventory: Inventory) : this(slot, inventory, { inv, id, x, y -> Slot(inv, id, x, y) })
+	
 	var backendSlot: Slot? = null
 
 	var texture = PartitionedTexture(Blade.identifier("textures/widget/slot.png"), 18F, 18F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F)

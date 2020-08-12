@@ -17,12 +17,15 @@ interface Position : PositionHolder {
 		fun of(anchor: PositionHolder, x: Number, y: Number): Position = of({ x.toFloat() + anchor.x }, { y.toFloat() + anchor.y })
 
 		@JvmStatic
+		fun of(anchor: PositionHolder): Position = of(anchor, 0, 0)
+
+		@JvmStatic
 		fun absolute(anchor: PositionHolder): Position = of(anchor.x, anchor.y)
 	}
 
 	class ProviderPosition(
-			private var xSupplier: () -> Number,
-			private var ySupplier: () -> Number
+		private var xSupplier: () -> Number,
+		private var ySupplier: () -> Number
 	) : Position {
 		override var x = 0F
 		override var y = 0F
@@ -38,8 +41,8 @@ interface Position : PositionHolder {
 	}
 
 	data class SimplePosition(
-			override val x: Float = 0F,
-			override val y: Float = 0F
+		override val x: Float = 0F,
+		override val y: Float = 0F
 	) : Position
 }
 

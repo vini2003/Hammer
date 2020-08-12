@@ -15,12 +15,15 @@ interface Size : SizeHolder {
 		fun of(anchor: SizeHolder, width: Number, height: Number): Size = of({ width.toFloat() + anchor.width }, { height.toFloat() + anchor.height })
 
 		@JvmStatic
+		fun of(anchor: SizeHolder): Size = of(anchor, 0, 0)
+
+		@JvmStatic
 		fun absolute(anchor: SizeHolder): Size = of(anchor.width, anchor.height)
 	}
 
 	class ProviderSize(
-			private var widthSupplier: () -> Number,
-			private var heightSupplier: () -> Number
+		private var widthSupplier: () -> Number,
+		private var heightSupplier: () -> Number
 	) : Size {
 		override var width = 0F
 		override var height = 0F
@@ -36,8 +39,8 @@ interface Size : SizeHolder {
 	}
 
 	data class SimpleSize(
-			override val width: Float = 0F,
-			override val height: Float = 0F
+		override val width: Float = 0F,
+		override val height: Float = 0F
 	) : Size
 }
 

@@ -11,6 +11,8 @@ class TextWidget : AbstractWidget() {
 	var color = 4210752
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
+		if (hidden) return
+		
 		super.drawWidget(matrices, provider)
 
 		text?.also {

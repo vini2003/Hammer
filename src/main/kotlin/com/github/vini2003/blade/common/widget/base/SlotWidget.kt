@@ -15,13 +15,16 @@ import net.minecraft.inventory.Inventory
 import net.minecraft.screen.slot.Slot
 import kotlin.properties.Delegates
 
-class SlotWidget(private val slot: Int, private val inventory: Inventory) : AbstractWidget() {
+class SlotWidget(
+	private val slot: Int, private val inventory: Inventory,
+	private val slotProvider: (Inventory, Int, Int, Int) -> Slot = { inv, id, x, y -> Slot(inv, id, x, y) }
+) : AbstractWidget() {
 	var backendSlot: Slot? = null
 
 	var texture = PartitionedTexture(Blade.identifier("textures/widget/slot.png"), 18F, 18F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F)
 
-	override var hidden: Boolean by Delegates.observable(false) { _, _, _ -> 
-		updateSlotPosition() 
+	override var hidden: Boolean by Delegates.observable(false) { _, _, _ ->
+		updateSlotPosition()
 	}
 
 	fun updateSlotPosition() {
@@ -54,7 +57,7 @@ class SlotWidget(private val slot: Int, private val inventory: Inventory) : Abst
 
 	override fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
 		super.onAdded(original, immediate)
-		backendSlot = Slot(inventory, slot, slotX, slotY)
+		backendSlot = slotProvider(inventory, slot, slotX, slotY)
 		backendSlot!!.index = slot
 
 		if (original is BaseScreenHandler) {

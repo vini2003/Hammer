@@ -143,22 +143,24 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 					if (slot != null && !slot.stack.isEmpty && slot.canTakeItems(playerEntity)) {
 						for (newSlotNumber in 0 until slots.size) {
 							val newSlot = slots[newSlotNumber]
-
-							if (newSlot.inventory !is PlayerInventory && newSlot != slot && newSlot.inventory != slot.inventory) {
-								Stacks.merge(slot.stack, newSlot.stack, slot.stack.maxCount, newSlot.stack.maxCount) { stackA, stackB ->
-									slot.stack = stackA
-									newSlot.stack = stackB
+							
+							if (newSlot.canInsert(slot.stack)) {
+								if (newSlot.inventory !is PlayerInventory && newSlot != slot && newSlot.inventory != slot.inventory) {
+									Stacks.merge(slot.stack, newSlot.stack, slot.stack.maxCount, newSlot.stack.maxCount) { stackA, stackB ->
+										slot.stack = stackA
+										newSlot.stack = stackB
+									}
 								}
-							}
 
-							if (newSlot.inventory is PlayerInventory && newSlot != slot && newSlot.inventory != slot.inventory) {
-								Stacks.merge(slot.stack, newSlot.stack, slot.stack.maxCount, newSlot.stack.maxCount) { stackA, stackB ->
-									slot.stack = stackA
-									newSlot.stack = stackB
+								if (newSlot.inventory is PlayerInventory && newSlot != slot && newSlot.inventory != slot.inventory) {
+									Stacks.merge(slot.stack, newSlot.stack, slot.stack.maxCount, newSlot.stack.maxCount) { stackA, stackB ->
+										slot.stack = stackA
+										newSlot.stack = stackB
+									}
 								}
-							}
 
-							if (slot.stack.isEmpty) break
+								if (slot.stack.isEmpty) break
+							}
 						}
 					}
 				}

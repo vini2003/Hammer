@@ -9,6 +9,7 @@ import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.util.Identifier
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import java.util.function.Consumer
 
 class Blade : ModInitializer {
 	companion object {

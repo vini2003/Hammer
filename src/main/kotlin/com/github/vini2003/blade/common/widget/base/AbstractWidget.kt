@@ -7,6 +7,8 @@ import com.github.vini2003.blade.common.utilities.Positions
 import com.github.vini2003.blade.common.utilities.Styles
 import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
@@ -195,10 +197,12 @@ abstract class AbstractWidget : Positioned, Sized {
 		}
 	}
 
+	@Environment(EnvType.CLIENT)
 	open fun getTooltip(): List<Text> {
 		return emptyList()
 	}
 
+	@Environment(EnvType.CLIENT)
 	open fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
 		if (hidden) return
 	}

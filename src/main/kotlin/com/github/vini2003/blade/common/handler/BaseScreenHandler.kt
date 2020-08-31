@@ -116,10 +116,6 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 		return this
 	}
 
-	override fun canUse(player: PlayerEntity?): Boolean {
-		return true
-	}
-
 	public override fun addSlot(slot: Slot?): Slot {
 		return super.addSlot(slot)
 	}

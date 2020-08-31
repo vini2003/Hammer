@@ -101,4 +101,6 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 
 		//  addWidget(bar)
 	}
+
+	override fun canUse(player: PlayerEntity?): Boolean = true
 }

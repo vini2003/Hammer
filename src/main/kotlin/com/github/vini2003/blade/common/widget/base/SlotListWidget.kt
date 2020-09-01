@@ -2,6 +2,7 @@ package com.github.vini2003.blade.common.widget.base
 
 import com.github.vini2003.blade.Blade
 import com.github.vini2003.blade.client.data.PartitionedTexture
+import com.github.vini2003.blade.common.data.Position
 import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.data.geometry.Rectangle
 import com.github.vini2003.blade.common.utilities.Networks
@@ -52,7 +53,7 @@ class SlotListWidget(
 	private val scrollerRectangle: Rectangle
 		get() {
 			return if (updateScrollerRectangle) {
-				scrollerRectangleCached = Rectangle(position.offset(size.width - 1 - 16F, -1), Size.of(16F, scrollerHeight))
+				scrollerRectangleCached = Rectangle(Position.of({ position.x + size.width - 1 - 16F }, { scrollerY - 1 }), Size.of({ 16F }, { scrollerHeight }))
 				updateScrollerRectangle = false
 				return scrollerRectangleCached
 			} else {
@@ -63,7 +64,7 @@ class SlotListWidget(
 	private val scrollbarRectangle: Rectangle
 		get() {
 			return if (updateScrollbarRectangle) {
-				scrollbarRectangleCached = Rectangle(position.offset(size.width - 1 - 16F, -1), Size.of(16F, size.height - 2))
+				scrollbarRectangleCached = Rectangle(Position.of({ position.x + size.width - 1 - 16F }, { position.y + 1 }), Size.of({ 16F }, { size.height - 2 }))
 				updateScrollbarRectangle = false
 				return scrollbarRectangleCached
 			} else {

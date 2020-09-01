@@ -14,31 +14,25 @@ class HorizontalBarWidget(var maximum: () -> Float, var current: () -> Float, fo
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
 		if (hidden) return
-
-		val x = position.x
-		val y = position.y
-
-		val sX = size.width
-		val sY = size.height
-
+		
 		val rawHeight = Instances.client().window.height.toFloat()
 		val scale = Instances.client().window.scaleFactor.toFloat()
 
-		val sBGX: Float = sX / maximum.invoke() * current.invoke()
+		val sBGX: Float = width / maximum.invoke() * current.invoke()
 
 		var area: Scissors?
 
-		area = Scissors(provider, (x * scale).toInt(), (rawHeight - (y + sY) * scale).toInt(), (sX * scale).toInt(), (sY * scale).toInt())
+		area = Scissors(provider, (x * scale).toInt(), (rawHeight - (y + height) * scale).toInt(), (width * scale).toInt(), (height * scale).toInt())
 
-		background.draw(matrices, provider, x, y, sX, sY)
+		background.draw(matrices, provider, x, y, width, height)
 
 		area.destroy(provider)
 
-		area = Scissors(provider, (x * scale).toInt(), (rawHeight - (y + sY) * scale).toInt(), (sBGX * scale).toInt(), (sY * scale).toInt())
+		area = Scissors(provider, (x * scale).toInt(), (rawHeight - (y + height) * scale).toInt(), (sBGX * scale).toInt(), (height * scale).toInt())
 
-		foreground.draw(matrices, provider, x, y, sX, sY)
+		foreground.draw(matrices, provider, x, y, width, height)
 
-		foreground.draw(matrices, provider, x, y, sX, sY)
+		foreground.draw(matrices, provider, x, y, width, height)
 
 		area.destroy(provider)
 	}

@@ -16,12 +16,4 @@ class Rectangle(val position: PositionHolder, val size: SizeHolder) {
 	fun isWithin(x: Float, y: Float): Boolean {
 		return x > position.x && x < position.x + size.width && y > position.y && y < position.y + size.height
 	}
-
-	fun relativeHeight(y: Float): Float {
-		return (y - position.y) / size.height
-	}
-
-	fun relativeWidth(x: Float): Float {
-		return (x - position.x) / size.width
-	}
 }

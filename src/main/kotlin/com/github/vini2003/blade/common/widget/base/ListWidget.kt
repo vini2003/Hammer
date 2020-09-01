@@ -35,8 +35,8 @@ class ListWidget() : AbstractWidget(), WidgetCollection {
 
     private val scrollerY: Float
         get() {
-            val maxY = widgets.maxBy { it.y + it.height }!!.let { it.y + it.height }
-            val minY = widgets.minBy { it.y }!!.y
+            val maxY = widgets.maxBy { it.y + it.height }?.let { it.y + it.height } ?: 0
+            val minY = widgets.minBy { it.y }?.y ?: 0
 
             return max(y + 2, min(y + size.height - scrollerHeight, (abs(y - minY) / (maxY - minY) * (size.height + scrollerHeight) + y + 1)))
         }

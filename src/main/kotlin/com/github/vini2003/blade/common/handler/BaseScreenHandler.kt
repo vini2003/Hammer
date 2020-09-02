@@ -89,16 +89,17 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 		val hash = buf.readInt()
 
 		allWidgets.forEach {
+			val buffer = PacketByteBuf(buf.copy())
 			if (it.hash == hash) {
 				when (id) {
-					Networks.MOUSE_MOVE -> it.onMouseMoved(buf.readFloat(), buf.readFloat())
-					Networks.MOUSE_CLICK -> it.onMouseClicked(buf.readFloat(), buf.readFloat(), buf.readInt())
-					Networks.MOUSE_RELEASE -> it.onMouseReleased(buf.readFloat(), buf.readFloat(), buf.readInt())
-					Networks.MOUSE_DRAG -> it.onMouseDragged(buf.readFloat(), buf.readFloat(), buf.readInt(), buf.readDouble(), buf.readDouble())
-					Networks.MOUSE_SCROLL -> it.onMouseScrolled(buf.readFloat(), buf.readFloat(), buf.readDouble())
-					Networks.KEY_PRESS -> it.onKeyPressed(buf.readInt(), buf.readInt(), buf.readInt())
-					Networks.KEY_RELEASE -> it.onKeyReleased(buf.readInt(), buf.readInt(), buf.readInt())
-					Networks.CHAR_TYPE -> it.onCharTyped(buf.readChar(), buf.readInt())
+					Networks.MOUSE_MOVE -> it.onMouseMoved(buffer.readFloat(), buffer.readFloat())
+					Networks.MOUSE_CLICK -> it.onMouseClicked(buffer.readFloat(), buffer.readFloat(), buffer.readInt())
+					Networks.MOUSE_RELEASE -> it.onMouseReleased(buffer.readFloat(), buffer.readFloat(), buffer.readInt())
+					Networks.MOUSE_DRAG -> it.onMouseDragged(buffer.readFloat(), buffer.readFloat(), buffer.readInt(), buffer.readDouble(), buffer.readDouble())
+					Networks.MOUSE_SCROLL -> it.onMouseScrolled(buffer.readFloat(), buffer.readFloat(), buffer.readDouble())
+					Networks.KEY_PRESS -> it.onKeyPressed(buffer.readInt(), buffer.readInt(), buffer.readInt())
+					Networks.KEY_RELEASE -> it.onKeyReleased(buffer.readInt(), buffer.readInt(), buffer.readInt())
+					Networks.CHAR_TYPE -> it.onCharTyped(buffer.readChar(), buffer.readInt())
 					Networks.FOCUS_GAIN -> it.onFocusGained()
 					Networks.FOCUS_RELEASE -> it.onFocusReleased()
 				}

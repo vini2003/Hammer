@@ -50,13 +50,13 @@ class Networks {
 			ServerSidePacketRegistry.INSTANCE.register(WIDGET_UPDATE) { context, buf ->
 				val syncId = buf.readInt()
 				val id = buf.readIdentifier()
-
+				
 				buf.retain()
 
 				context.taskQueue.execute {
 					context.player.server!!.playerManager.playerList.forEach {
 						if (it.currentScreenHandler.syncId == syncId && it.currentScreenHandler is BaseScreenHandler) {
-							(it.currentScreenHandler as BaseScreenHandler).handlePacket(id, buf)
+							(it.currentScreenHandler as BaseScreenHandler).handlePacket(id, PacketByteBuf(buf.copy()))
 						}
 					}
 				}
@@ -64,6 +64,8 @@ class Networks {
 
 			ServerSidePacketRegistry.INSTANCE.register(INITIALIZE) { context, buf ->
 				val syncId = buf.readInt()
+				val width = buf.readInt()
+				val height = buf.readInt()
 
 				buf.retain()
 
@@ -73,7 +75,7 @@ class Networks {
 							(it.currentScreenHandler as BaseScreenHandler).also {
 								it.slots.clear()
 								it.widgets.clear()
-								it.initialize(buf.readInt(), buf.readInt())
+								it.initialize(width, height)
 							}
 						}
 					}

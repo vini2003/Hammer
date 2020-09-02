@@ -35,8 +35,8 @@ class ListWidget() : AbstractWidget(), WidgetCollection {
 
     private val scrollerY: Float
         get() {
-            val maxY = widgets.maxBy { it.y + it.height }?.let { it.y + it.height } ?: 0F
-            val minY = widgets.minBy { it.y }?.y ?: 0F
+            val maxY = widgets.asSequence().map { it.y + it.height }.maxOrNull() ?: 0F
+            val minY = widgets.asSequence().map { it.y }.minOrNull() ?: 0F
 
             return max(y + 2, min(y + size.height - scrollerHeight, (abs(y - minY) / (maxY - minY) * (size.height + scrollerHeight) + y + 1)))
         }
@@ -116,6 +116,20 @@ class ListWidget() : AbstractWidget(), WidgetCollection {
         scrollerHeld = false
     }
 
+	override fun onMouseDragged(x: Float, y: Float, button: Int, deltaX: Double, deltaY: Double) {
+		if (handler!!.client) {
+			super.onMouseDragged(x, y, button, deltaX, deltaY)
+		}
+
+		if (scrollerHeld) {
+			if (deltaY > 0) {
+				onMouseScrolled(x, y, -deltaY)
+			} else if (deltaY < 0) {
+				onMouseScrolled(x, y, -deltaY)
+			}
+		}
+	}
+
     override fun onMouseScrolled(x: Float, y: Float, deltaY: Double) {
         if (handler!!.client) {
             if (focused || scrollerHeld) {
@@ -125,27 +139,29 @@ class ListWidget() : AbstractWidget(), WidgetCollection {
             }
         }
 
-        if (deltaY > 0 && widgets.minBy { it.y }!!.y < this.y + 2) {
-            widgets.forEach {
-                it.y += deltaY.toFloat() * 2.5F
+		if (widgets.isNotEmpty()) {
+			if (deltaY > 0 && widgets.minByOrNull { it.y }!!.y < this.y + 2) {
+				widgets.forEach {
+					it.y += deltaY.toFloat() * 2.5F
 
-                it.onLayoutChanged()
-                this.onLayoutChanged()
+					it.onLayoutChanged()
+					this.onLayoutChanged()
 
-                if (it.y >= this.y + height) it.hidden = true
-                else if (it.y >= this.y) it.hidden = false
-            }
-        } else if (deltaY <= 0 && widgets.maxBy { it.y + it.height }!!.let { it.y + it.height } >= this.y + height - 2) {
-            widgets.forEach {
-                it.y += deltaY.toFloat() * 2.5F
+					if (it.y >= this.y + height) it.hidden = true
+					else if (it.y >= this.y) it.hidden = false
+				}
+			} else if (deltaY <= 0 && widgets.asSequence().map { it.y + it.height }.maxOrNull()!! >= this.y + height - 2) {
+				widgets.forEach {
+					it.y += deltaY.toFloat() * 2.5F
 
-                it.onLayoutChanged()
-                this.onLayoutChanged()
+					it.onLayoutChanged()
+					this.onLayoutChanged()
 
-                if (it.y >= this.y + height) it.hidden = true
-                else if (it.y >= this.y) it.hidden = false
-            }
-        }
+					if (it.y >= this.y + height) it.hidden = true
+					else if (it.y >= this.y) it.hidden = false
+				}
+			}
+		}
     }
 
     override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
@@ -164,9 +180,7 @@ class ListWidget() : AbstractWidget(), WidgetCollection {
         val rawHeight = Instances.client().window.height.toFloat()
         val scale = Instances.client().window.scaleFactor.toFloat()
 
-        var area: Scissors?
-
-        area = Scissors(provider, (x * scale).toInt(), (rawHeight - (y + height) * scale).toInt(), (width * scale).toInt(), (height * scale).toInt())
+        val area = Scissors(provider, (x * scale).toInt(), (rawHeight - (y + height) * scale).toInt(), (width * scale).toInt(), (height * scale).toInt())
 
         widgets.forEach {
             it.drawWidget(matrices, provider)

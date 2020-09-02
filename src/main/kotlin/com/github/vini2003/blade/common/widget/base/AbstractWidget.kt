@@ -78,7 +78,7 @@ abstract class AbstractWidget : Positioned, Sized {
 	open fun onMouseMoved(x: Float, y: Float) {
 		focus(x, y)
 
-		if (this is WidgetCollection) {
+		if (this is WidgetCollection && !(handler != null && !handler!!.client)) {
 			this.widgets.forEach {
 				it.onMouseMoved(x, y)
 			}
@@ -92,7 +92,7 @@ abstract class AbstractWidget : Positioned, Sized {
 	open fun onMouseClicked(x: Float, y: Float, button: Int) {
 		if (focused) held = true
 
-		if (this is WidgetCollection) {
+		if (this is WidgetCollection && !(handler != null && !handler!!.client)) {
 			this.widgets.forEach {
 				it.onMouseClicked(x, y, button)
 			}
@@ -106,7 +106,7 @@ abstract class AbstractWidget : Positioned, Sized {
 	open fun onMouseReleased(x: Float, y: Float, button: Int) {
 		held = false
 
-		if (this is WidgetCollection) {
+		if (this is WidgetCollection && !(handler != null && !handler!!.client)) {
 			this.widgets.forEach {
 				it.onMouseReleased(x, y, button)
 			}
@@ -117,7 +117,7 @@ abstract class AbstractWidget : Positioned, Sized {
 	}
 
 	open fun onMouseDragged(x: Float, y: Float, button: Int, deltaX: Double, deltaY: Double) {
-		if (this is WidgetCollection) {
+		if (this is WidgetCollection && !(handler != null && !handler!!.client)) {
 			this.widgets.forEach {
 				it.onMouseDragged(x, y, button, deltaX, deltaY)
 			}
@@ -129,7 +129,7 @@ abstract class AbstractWidget : Positioned, Sized {
 	}
 
 	open fun onMouseScrolled(x: Float, y: Float, deltaY: Double) {
-		if (this is WidgetCollection) {
+		if (this is WidgetCollection && !(handler != null && !handler!!.client)) {
 			this.widgets.forEach {
 				it.onMouseScrolled(x, y, deltaY)
 			}
@@ -141,7 +141,7 @@ abstract class AbstractWidget : Positioned, Sized {
 	}
 
 	open fun onKeyPressed(keyCode: Int, scanCode: Int, keyModifiers: Int) {
-		if (this is WidgetCollection) {
+		if (this is WidgetCollection && !(handler != null && !handler!!.client)) {
 			this.widgets.forEach {
 				it.onKeyPressed(keyCode, scanCode, keyModifiers)
 			}
@@ -153,7 +153,7 @@ abstract class AbstractWidget : Positioned, Sized {
 	}
 
 	open fun onKeyReleased(keyCode: Int, character: Int, keyModifiers: Int) {
-		if (this is WidgetCollection) {
+		if (this is WidgetCollection && !(handler != null && !handler!!.client)) {
 			this.widgets.forEach {
 				it.onKeyReleased(keyCode, character, keyModifiers)
 			}
@@ -165,7 +165,7 @@ abstract class AbstractWidget : Positioned, Sized {
 	}
 
 	open fun onCharTyped(character: Char, keyCode: Int) {
-		if (this is WidgetCollection) {
+		if (this is WidgetCollection && !(handler != null && !handler!!.client)) {
 			this.widgets.forEach {
 				it.onCharTyped(character, keyCode)
 			}
@@ -177,7 +177,7 @@ abstract class AbstractWidget : Positioned, Sized {
 	}
 
 	open fun onFocusGained() {
-		if (this is WidgetCollection) {
+		if (this is WidgetCollection && !(handler != null && !handler!!.client)) {
 			this.widgets.forEach {
 				it.onFocusGained()
 			}
@@ -189,7 +189,7 @@ abstract class AbstractWidget : Positioned, Sized {
 	}
 
 	open fun onFocusReleased() {
-		if (this is WidgetCollection) {
+		if (this is WidgetCollection && !(handler != null && !handler!!.client)) {
 			this.widgets.forEach {
 				it.onFocusReleased()
 			}

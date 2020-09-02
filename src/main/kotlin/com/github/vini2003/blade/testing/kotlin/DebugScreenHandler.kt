@@ -21,19 +21,13 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 
 		addWidget(panel)
 
-		val list = ListWidget()
-		list.position = Position.of(54, 54)
-		list.size = Size.of(84, 84)
-
-		addWidget(list)
-
-		for (i in 0..18) {
-			val button = ButtonWidget {}
-			button.position = Position.of(list, 4, 2 + 18 * i)
-			button.size = Size.of(18, 18)
-
-			list.addWidget(button)
+		val button = ButtonWidget {
+			println("What the fuck?")
 		}
+		button.position = Position.of(48, 48)
+		button.size = Size.of(18, 18)
+
+		addWidget(button)
 	}
 
 	override fun canUse(player: PlayerEntity?): Boolean = true

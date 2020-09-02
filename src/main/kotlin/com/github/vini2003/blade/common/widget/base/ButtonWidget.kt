@@ -30,7 +30,7 @@ class ButtonWidget(private val clickAction: (ButtonWidget) -> Unit) : AbstractWi
 	}
 
 	override fun onMouseClicked(x: Float, y: Float, button: Int) {
-		if (focused) {
+		if (focused || (!focused && handler != null && !handler!!.client)) {
 			clickAction.invoke(this)
 
 			playSound()

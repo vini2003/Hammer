@@ -84,7 +84,7 @@ abstract class AbstractWidget : Positioned, Sized {
 			}
 		}
 
-		if (handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_MOVE)) {
+		if (focused && handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_MOVE)) {
 			Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofMouseMove(handler!!.syncId, hash, x, y))
 		}
 	}
@@ -98,7 +98,7 @@ abstract class AbstractWidget : Positioned, Sized {
 			}
 		}
 
-		if (handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_CLICK)) {
+		if (focused && handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_CLICK)) {
 			Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofMouseClick(handler!!.syncId, hash, x, y, button))
 		}
 	}
@@ -111,7 +111,7 @@ abstract class AbstractWidget : Positioned, Sized {
 				it.onMouseReleased(x, y, button)
 			}
 		}
-		if (handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_RELEASE)) {
+		if (focused && handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_RELEASE)) {
 			Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofMouseRelease(handler!!.syncId, hash, x, y, button))
 		}
 	}
@@ -123,7 +123,7 @@ abstract class AbstractWidget : Positioned, Sized {
 			}
 		}
 
-		if (handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_DRAG)) {
+		if (focused && handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_DRAG)) {
 			Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofMouseDrag(handler!!.syncId, hash, x, y, button, deltaX, deltaY))
 		}
 	}
@@ -135,7 +135,7 @@ abstract class AbstractWidget : Positioned, Sized {
 			}
 		}
 
-		if (handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_SCROLL)) {
+		if (focused && handler != null && handler!!.client && synchronize.contains(Networks.MOUSE_SCROLL)) {
 			Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofMouseScroll(handler!!.syncId, hash, x, y, deltaY))
 		}
 	}
@@ -147,7 +147,7 @@ abstract class AbstractWidget : Positioned, Sized {
 			}
 		}
 
-		if (handler != null && handler!!.client && synchronize.contains(Networks.KEY_PRESS)) {
+		if (focused && handler != null && handler!!.client && synchronize.contains(Networks.KEY_PRESS)) {
 			Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofKeyPress(handler!!.syncId, hash, keyCode, scanCode, keyModifiers))
 		}
 	}
@@ -159,7 +159,7 @@ abstract class AbstractWidget : Positioned, Sized {
 			}
 		}
 
-		if (handler != null && handler!!.client && synchronize.contains(Networks.KEY_RELEASE)) {
+		if (focused && handler != null && handler!!.client && synchronize.contains(Networks.KEY_RELEASE)) {
 			Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofKeyRelease(handler!!.syncId, hash, keyCode, character, keyModifiers))
 		}
 	}
@@ -171,7 +171,7 @@ abstract class AbstractWidget : Positioned, Sized {
 			}
 		}
 
-		if (handler != null && handler!!.client && synchronize.contains(Networks.CHAR_TYPE)) {
+		if (focused && handler != null && handler!!.client && synchronize.contains(Networks.CHAR_TYPE)) {
 			Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofCharType(handler!!.syncId, hash, character, keyCode))
 		}
 	}
@@ -183,7 +183,7 @@ abstract class AbstractWidget : Positioned, Sized {
 			}
 		}
 
-		if (handler != null && handler!!.client && synchronize.contains(Networks.FOCUS_GAIN)) {
+		if (focused && handler != null && handler!!.client && synchronize.contains(Networks.FOCUS_GAIN)) {
 			Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofFocusGain(handler!!.syncId, hash))
 		}
 	}
@@ -195,7 +195,7 @@ abstract class AbstractWidget : Positioned, Sized {
 			}
 		}
 
-		if (handler != null && handler!!.client && synchronize.contains(Networks.FOCUS_RELEASE)) {
+		if (focused && handler != null && handler!!.client && synchronize.contains(Networks.FOCUS_RELEASE)) {
 			Networks.toServer(Networks.WIDGET_UPDATE, Networks.ofFocusRelease(handler!!.syncId, hash))
 		}
 	}

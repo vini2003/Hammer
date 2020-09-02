@@ -28,7 +28,10 @@ abstract class AbstractWidget : Positioned, Sized {
 	var immediate: WidgetCollection? = null
 
 	var style = "default"
-	val hash = Objects.hash(javaClass.name + "_" + position.x + "_" + position.y + "_" + size.width + "_" + size.height)
+
+	val hash
+			get() = Objects.hash(javaClass.name + "_" + position.x + "_" + position.y + "_" + size.width + "_" + size.height)
+
 	var handler: BaseScreenHandler? = null
 
 	val synchronize: MutableSet<Identifier> = mutableSetOf()

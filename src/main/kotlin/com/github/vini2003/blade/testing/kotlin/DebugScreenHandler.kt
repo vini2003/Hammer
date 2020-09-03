@@ -15,19 +15,24 @@ import net.minecraft.util.registry.Registry
 
 class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(DebugContainers.DEBUG_HANDLER, syncId, player) {
 	override fun initialize(width: Int, height: Int) {
-		val panel = PanelWidget()
-		panel.position = Position.of(48, 48)
-		panel.size = Size.of(96, 96)
+		val panelA = PanelWidget()
+		panelA.position = Position.of(48, 48)
+		panelA.size = Size.of(96, 96)
 
-		addWidget(panel)
+		addWidget(panelA)
 
-		val button = ButtonWidget {
-			println("What the fuck?")
-		}
-		button.position = Position.of(48, 48)
-		button.size = Size.of(18, 18)
+		val panelB = PanelWidget()
+		panelB.position = Position.of(48, 48)
+		panelB.size = Size.of(80, 96)
 
-		addWidget(button)
+		panelA.addWidget(panelB)
+
+		val panelC = PanelWidget()
+		panelC.position = Position.of(48, 48)
+		panelC.size = Size.of(64, 96)
+
+		panelA.addWidget(panelC)
+
 	}
 
 	override fun canUse(player: PlayerEntity?): Boolean = true

@@ -15,6 +15,9 @@ class PanelWidget : AbstractWidget(), WidgetCollection {
 		if (hidden) return
 
 		texture.draw(matrices, provider, position.x, position.y, size.width, size.height)
+
+		if (provider is VertexConsumerProvider.Immediate) provider.draw()
+
 		widgets.forEach { it.drawWidget(matrices, provider) }
 	}
 }

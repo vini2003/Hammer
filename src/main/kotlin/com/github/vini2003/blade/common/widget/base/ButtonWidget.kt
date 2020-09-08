@@ -19,7 +19,7 @@ class ButtonWidget(private val clickAction: (ButtonWidget) -> Unit) : AbstractWi
 	var textureOff = PartitionedTexture(Blade.identifier("textures/widget/button_off.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
 	var textureOnFocus = PartitionedTexture(Blade.identifier("textures/widget/button_on_focus.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
 
-	var disabled: Boolean = false
+	var disabled: () -> Boolean = { false }
 
 	var label: Text? = null
 
@@ -46,7 +46,7 @@ class ButtonWidget(private val clickAction: (ButtonWidget) -> Unit) : AbstractWi
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
 		if (hidden) return
 
-		val texture = if (disabled) textureOff else if (focused) textureOnFocus else textureOn
+		val texture = if (disabled()) textureOff else if (focused) textureOnFocus else textureOn
 
 		texture.draw(matrices, provider, position.x, position.y, size.width, size.height)
 

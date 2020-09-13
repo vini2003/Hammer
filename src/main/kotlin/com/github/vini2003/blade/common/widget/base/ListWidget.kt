@@ -4,11 +4,11 @@ import com.github.vini2003.blade.Blade
 import com.github.vini2003.blade.client.data.PartitionedTexture
 import com.github.vini2003.blade.client.utilities.Instances
 import com.github.vini2003.blade.client.utilities.Scissors
-import com.github.vini2003.blade.common.data.Position
-import com.github.vini2003.blade.common.data.Size
-import com.github.vini2003.blade.common.data.geometry.Rectangle
+import com.github.vini2003.blade.common.miscellaneous.Position
+import com.github.vini2003.blade.common.miscellaneous.Size
+import com.github.vini2003.blade.common.miscellaneous.Rectangle
 import com.github.vini2003.blade.common.utilities.Positions
-import com.github.vini2003.blade.common.widget.WidgetCollection
+import com.github.vini2003.blade.common.collection.base.WidgetCollection
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import kotlin.math.abs

@@ -1,10 +1,10 @@
-package com.github.vini2003.blade.common.data.widget
+package com.github.vini2003.blade.common.collection
 
-import com.github.vini2003.blade.common.widget.WidgetCollection
+import com.github.vini2003.blade.common.collection.base.WidgetCollection
 import com.github.vini2003.blade.common.widget.base.AbstractWidget
 import com.github.vini2003.blade.common.widget.base.TabWidget
 
-class TabCollection(private val number: Int) : AbstractWidget(), WidgetCollection {
+class TabWidgetCollection(private val number: Int) : AbstractWidget(), WidgetCollection {
 	override val widgets: MutableList<AbstractWidget> = mutableListOf()
 
 	override fun addWidget(widget: AbstractWidget) {

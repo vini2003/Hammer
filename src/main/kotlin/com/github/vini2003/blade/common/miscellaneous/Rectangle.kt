@@ -1,9 +1,4 @@
-package com.github.vini2003.blade.common.data.geometry
-
-import com.github.vini2003.blade.common.data.Position
-import com.github.vini2003.blade.common.data.PositionHolder
-import com.github.vini2003.blade.common.data.Size
-import com.github.vini2003.blade.common.data.SizeHolder
+package com.github.vini2003.blade.common.miscellaneous
 
 class Rectangle(val position: PositionHolder, val size: SizeHolder) {
 	companion object {

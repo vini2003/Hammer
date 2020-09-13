@@ -1,7 +1,9 @@
-package com.github.vini2003.blade.common.data
+package com.github.vini2003.blade.common.utilities
 
-import com.github.vini2003.blade.common.widget.WidgetCollection
-import com.github.vini2003.blade.common.widget.base.AbstractWidget
+import com.github.vini2003.blade.common.miscellaneous.Position
+import com.github.vini2003.blade.common.miscellaneous.PositionHolder
+import com.github.vini2003.blade.common.miscellaneous.Size
+import com.github.vini2003.blade.common.collection.base.WidgetCollection
 import com.github.vini2003.blade.common.widget.base.SlotWidget
 import net.minecraft.inventory.Inventory
 import java.util.*

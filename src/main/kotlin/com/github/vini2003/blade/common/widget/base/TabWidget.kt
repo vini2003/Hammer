@@ -4,13 +4,13 @@ import com.github.vini2003.blade.Blade
 import com.github.vini2003.blade.client.data.PartitionedTexture
 import com.github.vini2003.blade.client.utilities.Drawings
 import com.github.vini2003.blade.client.utilities.Layers
-import com.github.vini2003.blade.common.data.Size
-import com.github.vini2003.blade.common.data.geometry.Rectangle
-import com.github.vini2003.blade.common.data.widget.TabCollection
+import com.github.vini2003.blade.common.miscellaneous.Size
+import com.github.vini2003.blade.common.miscellaneous.Rectangle
+import com.github.vini2003.blade.common.collection.TabWidgetCollection
 import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.utilities.Positions
-import com.github.vini2003.blade.common.widget.HandledWidgetCollection
-import com.github.vini2003.blade.common.widget.WidgetCollection
+import com.github.vini2003.blade.common.collection.base.HandledWidgetCollection
+import com.github.vini2003.blade.common.collection.base.WidgetCollection
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.item.Item
@@ -20,7 +20,7 @@ import net.minecraft.text.Text
 
 open class TabWidget : AbstractWidget(), WidgetCollection {
 	private val tabRectangles: MutableList<Rectangle> = mutableListOf()
-	private val tabCollections: MutableList<TabCollection> = mutableListOf()
+	private val tabCollections: MutableList<TabWidgetCollection> = mutableListOf()
 	private val tabSymbols: MutableList<ItemStack> = mutableListOf()
 	private val tabTooltips: MutableList<() -> List<Text>> = mutableListOf()
 	override val widgets : MutableList<AbstractWidget> = mutableListOf()
@@ -81,7 +81,7 @@ open class TabWidget : AbstractWidget(), WidgetCollection {
 	}
 
 	fun addTab(symbol: ItemStack, tooltip: () -> List<Text>): WidgetCollection {
-		val collection = TabCollection(tabCollections.size)
+		val collection = TabWidgetCollection(tabCollections.size)
 		collection.handled = handled
 		collection.parent = this
 

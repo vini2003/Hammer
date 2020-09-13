@@ -1,6 +1,6 @@
 package com.github.vini2003.blade.client.utilities
 
-import com.github.vini2003.blade.common.data.Color
+import com.github.vini2003.blade.common.miscellaneous.Color
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.RenderLayer

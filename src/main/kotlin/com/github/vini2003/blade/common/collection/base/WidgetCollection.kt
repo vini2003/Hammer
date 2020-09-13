@@ -1,11 +1,11 @@
-package com.github.vini2003.blade.common.widget
+package com.github.vini2003.blade.common.collection.base
 
 import com.github.vini2003.blade.client.data.PartitionedTexture
-import com.github.vini2003.blade.common.data.Position
-import com.github.vini2003.blade.common.data.PositionHolder
-import com.github.vini2003.blade.common.data.Size
-import com.github.vini2003.blade.common.data.Slots
-import com.github.vini2003.blade.common.data.widget.TabCollection
+import com.github.vini2003.blade.common.collection.TabWidgetCollection
+import com.github.vini2003.blade.common.miscellaneous.Position
+import com.github.vini2003.blade.common.miscellaneous.PositionHolder
+import com.github.vini2003.blade.common.miscellaneous.Size
+import com.github.vini2003.blade.common.utilities.Slots
 import com.github.vini2003.blade.common.widget.base.*
 import net.minecraft.inventory.Inventory
 import net.minecraft.item.Item
@@ -297,11 +297,11 @@ interface WidgetCollection {
 		widget.apply(block)
 	}
 
-	fun TabWidget.tab(stack: ItemStack): TabCollection.() -> Unit {
+	fun TabWidget.tab(stack: ItemStack): TabWidgetCollection.() -> Unit {
 		return { addTab(stack) }
 	}
 
-	fun TabWidget.tab(stack: ItemStack, tooltipBlock: () -> List<Text>): TabCollection.() -> Unit {
+	fun TabWidget.tab(stack: ItemStack, tooltipBlock: () -> List<Text>): TabWidgetCollection.() -> Unit {
 		return { addTab(stack, tooltipBlock) }
 	}
 

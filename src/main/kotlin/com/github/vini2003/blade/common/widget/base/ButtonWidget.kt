@@ -6,8 +6,8 @@ import com.github.vini2003.blade.client.utilities.Drawings
 import com.github.vini2003.blade.client.utilities.Instances
 import com.github.vini2003.blade.client.utilities.Texts
 import com.github.vini2003.blade.common.utilities.Networks
-import com.github.vini2003.blade.common.widget.HandledWidgetCollection
-import com.github.vini2003.blade.common.widget.WidgetCollection
+import com.github.vini2003.blade.common.collection.base.HandledWidgetCollection
+import com.github.vini2003.blade.common.collection.base.WidgetCollection
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.sound.PositionedSoundInstance
 import net.minecraft.client.util.math.MatrixStack

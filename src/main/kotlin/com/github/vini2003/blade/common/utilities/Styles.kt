@@ -1,6 +1,6 @@
 package com.github.vini2003.blade.common.utilities
 
-import com.github.vini2003.blade.common.data.Style
+import com.github.vini2003.blade.common.miscellaneous.Style
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject

@@ -1,9 +1,7 @@
-package com.github.vini2003.blade.common.data
-
-import java.awt.Color.*
+package com.github.vini2003.blade.common.miscellaneous
 
 
-class Color(val r: Float, val g: Float, val b: Float, val a: Float) {
+data class Color(val r: Float, val g: Float, val b: Float, val a: Float) {
 	companion object {
 		@JvmStatic
 		fun of(string: String): Color {

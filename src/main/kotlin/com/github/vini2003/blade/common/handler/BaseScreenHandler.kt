@@ -1,9 +1,9 @@
 package com.github.vini2003.blade.common.handler
 
 import com.github.vini2003.blade.client.utilities.Instances
-import com.github.vini2003.blade.common.data.Stacks
+import com.github.vini2003.blade.common.utilities.Stacks
 import com.github.vini2003.blade.common.utilities.Networks
-import com.github.vini2003.blade.common.widget.HandledWidgetCollection
+import com.github.vini2003.blade.common.collection.base.HandledWidgetCollection
 import com.github.vini2003.blade.common.widget.base.AbstractWidget
 import me.shedaniel.math.Rectangle
 import net.fabricmc.api.EnvType

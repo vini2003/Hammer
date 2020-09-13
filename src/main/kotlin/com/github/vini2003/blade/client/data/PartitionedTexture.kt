@@ -2,7 +2,7 @@ package com.github.vini2003.blade.client.data
 
 import com.github.vini2003.blade.client.utilities.Drawings
 import com.github.vini2003.blade.client.utilities.Layers
-import com.github.vini2003.blade.common.data.Color
+import com.github.vini2003.blade.common.miscellaneous.Color
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier

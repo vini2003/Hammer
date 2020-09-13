@@ -1,4 +1,4 @@
-package com.github.vini2003.blade.common.data
+package com.github.vini2003.blade.common.miscellaneous
 
 interface Size : SizeHolder {
 	companion object {

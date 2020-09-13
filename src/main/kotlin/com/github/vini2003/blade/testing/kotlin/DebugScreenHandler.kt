@@ -1,10 +1,7 @@
 package com.github.vini2003.blade.testing.kotlin
 
-import com.github.vini2003.blade.common.data.Position
-import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import net.minecraft.entity.player.PlayerEntity
-import java.lang.Float.max
 
 class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(DebugContainers.DEBUG_HANDLER, syncId, player) {
 	override fun initialize(width: Int, height: Int) {

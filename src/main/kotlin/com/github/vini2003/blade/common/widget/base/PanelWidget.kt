@@ -2,7 +2,7 @@ package com.github.vini2003.blade.common.widget.base
 
 import com.github.vini2003.blade.Blade
 import com.github.vini2003.blade.client.data.PartitionedTexture
-import com.github.vini2003.blade.common.widget.WidgetCollection
+import com.github.vini2003.blade.common.collection.base.WidgetCollection
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 

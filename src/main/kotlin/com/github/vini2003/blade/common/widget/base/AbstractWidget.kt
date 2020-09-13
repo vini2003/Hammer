@@ -1,12 +1,12 @@
 package com.github.vini2003.blade.common.widget.base
 
-import com.github.vini2003.blade.common.data.*
+import com.github.vini2003.blade.common.miscellaneous.*
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.utilities.Positions
 import com.github.vini2003.blade.common.utilities.Styles
-import com.github.vini2003.blade.common.widget.HandledWidgetCollection
-import com.github.vini2003.blade.common.widget.WidgetCollection
+import com.github.vini2003.blade.common.collection.base.HandledWidgetCollection
+import com.github.vini2003.blade.common.collection.base.WidgetCollection
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.render.VertexConsumerProvider

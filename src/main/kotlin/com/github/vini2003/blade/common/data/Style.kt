@@ -12,30 +12,30 @@ class Style(private var properties: MutableMap<String, JsonElement>) {
 		private var deserializers: MutableMap<Class<*>, Function<JsonElement, *>> = mutableMapOf()
 
 		init {
-			registerDeserializer(Color::class.java, Function<JsonElement, Color> {
+			registerDeserializer(Color::class.java) {
 				Color.of(it.asString)
-			})
-			registerDeserializer(Byte::class.java, Function<JsonElement, Byte> {
+			}
+			registerDeserializer(Byte::class.java) {
 				it.asByte
-			})
-			registerDeserializer(Short::class.java, Function<JsonElement, Short> {
+			}
+			registerDeserializer(Short::class.java) {
 				it.asShort
-			})
-			registerDeserializer(Int::class.java, Function<JsonElement, Int> {
+			}
+			registerDeserializer(Int::class.java) {
 				it.asInt
-			})
-			registerDeserializer(Long::class.java, Function<JsonElement, Long> {
+			}
+			registerDeserializer(Long::class.java) {
 				it.asLong
-			})
-			registerDeserializer(Float::class.java, Function<JsonElement, Float> {
+			}
+			registerDeserializer(Float::class.java) {
 				it.asFloat
-			})
-			registerDeserializer(Double::class.java, Function<JsonElement, Double> {
+			}
+			registerDeserializer(Double::class.java) {
 				it.asDouble
-			})
-			registerDeserializer(String::class.java, Function<JsonElement, String> {
+			}
+			registerDeserializer(String::class.java) {
 				it.asString
-			})
+			}
 		}
 
 		fun <T> registerDeserializer(clazz: Class<T>, deserializer: Function<JsonElement, T>) {

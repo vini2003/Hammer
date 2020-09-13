@@ -156,7 +156,7 @@ interface WidgetCollection {
 	}
 
 	fun ButtonWidget.disabled(block: () -> Boolean) {
-		this.disabled = block.invoke()
+		this.disabled = block
 	}
 
 	fun ButtonWidget.textureOn(textureOn: PartitionedTexture) {

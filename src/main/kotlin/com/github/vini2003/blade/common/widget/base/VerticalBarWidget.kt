@@ -8,7 +8,7 @@ import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
 
-class VerticalBarWidget(var maximum: () -> Float = {100F}, var current: () -> Float = {0F}, foregroundId: Identifier = Blade.identifier("textures/widget/bar_foreground.png"), backgroundId: Identifier = Blade.identifier("textures/widget/bar_background.png")) : AbstractWidget() {
+open class VerticalBarWidget(var maximum: () -> Float = {100F}, var current: () -> Float = {0F}, foregroundId: Identifier = Blade.identifier("textures/widget/bar_foreground.png"), backgroundId: Identifier = Blade.identifier("textures/widget/bar_background.png")) : AbstractWidget() {
 	var foregroundTexture = PartitionedTexture(foregroundId, 18F, 18F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F)
 	var backgroundTexture = PartitionedTexture(backgroundId, 18F, 18F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F)
 

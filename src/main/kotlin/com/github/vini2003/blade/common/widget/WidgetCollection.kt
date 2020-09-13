@@ -25,7 +25,7 @@ interface WidgetCollection {
 		widgets.add(widget)
 		if (this is AbstractWidget) {
 			this.onLayoutChanged()
-			this.original?.also { widget.onAdded(it, this) }
+			this.handled?.also { widget.onAdded(it, this) }
 			widget.parent = this
 		}
 	}
@@ -34,7 +34,7 @@ interface WidgetCollection {
 		widgets.remove(widget)
 		if (this is AbstractWidget) {
 			this.onLayoutChanged()
-			this.original?.also { widget.onRemoved(it, this) }
+			this.handled?.also { widget.onRemoved(it, this) }
 			widget.parent = this
 		}
 	}

@@ -7,7 +7,7 @@ import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.data.geometry.Rectangle
 import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.utilities.Positions
-import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
+import com.github.vini2003.blade.common.widget.HandledWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
@@ -16,7 +16,7 @@ import net.minecraft.inventory.SimpleInventory
 import kotlin.math.max
 import kotlin.math.min
 
-class SlotListWidget(
+open class SlotListWidget(
 	var inventory: Inventory = SimpleInventory(0),
 	var widthInSlots: Int = 0,
 	var heightInSlots: Int = 0,
@@ -74,7 +74,7 @@ class SlotListWidget(
 
 	override fun addWidget(widget: AbstractWidget) {
 		widgets.add(widget)
-		original?.also { widget.onAdded(it, this) }
+		handled?.also { widget.onAdded(it, this) }
 
 		widgets.forEach { _ ->
 			widget.onLayoutChanged()
@@ -85,7 +85,7 @@ class SlotListWidget(
 
 	override fun removeWidget(widget: AbstractWidget) {
 		widgets.remove(widget)
-		original?.also { widget.onRemoved(it, this) }
+		handled?.also { widget.onRemoved(it, this) }
 
 		widgets.forEach { _ ->
 			widget.onLayoutChanged()
@@ -101,8 +101,8 @@ class SlotListWidget(
 		updateScrollbarRectangle = true
 	}
 
-	override fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
-		super.onAdded(original, immediate)
+	override fun onAdded(handled: HandledWidgetCollection, immediate: WidgetCollection) {
+		super.onAdded(handled, immediate)
 
 		synchronize.add(Networks.MOUSE_SCROLL)
 		synchronize.add(Networks.MOUSE_CLICK)

@@ -4,7 +4,7 @@ import com.github.vini2003.blade.Blade
 import com.github.vini2003.blade.client.data.PartitionedTexture
 import com.github.vini2003.blade.client.utilities.Instances
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
-import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
+import com.github.vini2003.blade.common.widget.HandledWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
@@ -15,7 +15,7 @@ import net.minecraft.inventory.Inventory
 import net.minecraft.screen.slot.Slot
 import kotlin.properties.Delegates
 
-class SlotWidget(
+open class SlotWidget(
 	var slot: Int,
 	var inventory: Inventory,
 	var slotProvider: (Inventory, Int, Int, Int) -> Slot
@@ -58,21 +58,21 @@ class SlotWidget(
 	private val slotY: Int
 		get() = (y + (if (size.height <= 18) 1F else size.height / 2F - 9F)).toInt()
 
-	override fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
-		super.onAdded(original, immediate)
+	override fun onAdded(handled: HandledWidgetCollection, immediate: WidgetCollection) {
+		super.onAdded(handled, immediate)
 		backendSlot = slotProvider(inventory, slot, slotX, slotY)
 		backendSlot!!.index = slot
 
-		if (original is BaseScreenHandler) {
-			original.addSlot(backendSlot)
+		if (handled is BaseScreenHandler) {
+			handled.addSlot(backendSlot)
 		}
 	}
 
-	override fun onRemoved(original: OriginalWidgetCollection, immediate: WidgetCollection) {
-		super.onRemoved(original, immediate)
+	override fun onRemoved(handled: HandledWidgetCollection, immediate: WidgetCollection) {
+		super.onRemoved(handled, immediate)
 
-		if (original is BaseScreenHandler) {
-			original.removeSlot(backendSlot)
+		if (handled is BaseScreenHandler) {
+			handled.removeSlot(backendSlot)
 		}
 	}
 

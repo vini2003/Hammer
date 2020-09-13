@@ -6,7 +6,7 @@ import com.github.vini2003.blade.client.utilities.Drawings
 import com.github.vini2003.blade.client.utilities.Instances
 import com.github.vini2003.blade.client.utilities.Texts
 import com.github.vini2003.blade.common.utilities.Networks
-import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
+import com.github.vini2003.blade.common.widget.HandledWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.sound.PositionedSoundInstance
@@ -14,7 +14,7 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.sound.SoundEvents
 import net.minecraft.text.Text
 
-class ButtonWidget(var clickAction: () -> Unit = {}) : AbstractWidget() {
+open class ButtonWidget(var clickAction: () -> Unit = {}) : AbstractWidget() {
 	var textureOn = PartitionedTexture(Blade.identifier("textures/widget/button_on.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.16666666666666666667F)
 	var textureOff = PartitionedTexture(Blade.identifier("textures/widget/button_off.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
 	var textureFocus = PartitionedTexture(Blade.identifier("textures/widget/button_on_focus.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
@@ -23,8 +23,8 @@ class ButtonWidget(var clickAction: () -> Unit = {}) : AbstractWidget() {
 
 	var label: Text? = null
 
-	override fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
-		super.onAdded(original, immediate)
+	override fun onAdded(handled: HandledWidgetCollection, immediate: WidgetCollection) {
+		super.onAdded(handled, immediate)
 
 		synchronize.add(Networks.MOUSE_CLICK)
 	}

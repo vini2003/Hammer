@@ -5,7 +5,7 @@ import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.utilities.Positions
 import com.github.vini2003.blade.common.utilities.Styles
-import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
+import com.github.vini2003.blade.common.widget.HandledWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
@@ -24,7 +24,7 @@ abstract class AbstractWidget : Positioned, Sized {
 		onLayoutChanged()
 	}
 
-	var original: OriginalWidgetCollection? = null
+	var handled: HandledWidgetCollection? = null
 	var immediate: WidgetCollection? = null
 
 	var style = "default"
@@ -63,14 +63,14 @@ abstract class AbstractWidget : Positioned, Sized {
 		return style().asColor(property)
 	}
 
-	open fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
-		this.original = original
+	open fun onAdded(handled: HandledWidgetCollection, immediate: WidgetCollection) {
+		this.handled = handled
 		this.immediate = immediate
-		this.handler = original.handler
+		this.handler = handled.handler
 	}
 
-	open fun onRemoved(original: OriginalWidgetCollection, immediate: WidgetCollection) {
-		this.original = null
+	open fun onRemoved(handled: HandledWidgetCollection, immediate: WidgetCollection) {
+		this.handled = null
 		this.immediate = null
 		this.handler = null
 	}
@@ -214,7 +214,7 @@ abstract class AbstractWidget : Positioned, Sized {
 		focus(Positions.mouseX, Positions.mouseY)
 
 		parent?.onLayoutChanged()
-		original?.onLayoutChanged()
+		handled?.onLayoutChanged()
 	}
 
 	fun focus(x: Float, y: Float) {

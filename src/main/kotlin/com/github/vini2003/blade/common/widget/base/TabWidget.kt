@@ -9,7 +9,7 @@ import com.github.vini2003.blade.common.data.geometry.Rectangle
 import com.github.vini2003.blade.common.data.widget.TabCollection
 import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.utilities.Positions
-import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
+import com.github.vini2003.blade.common.widget.HandledWidgetCollection
 import com.github.vini2003.blade.common.widget.WidgetCollection
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
 
 
-class TabWidget : AbstractWidget(), WidgetCollection {
+open class TabWidget : AbstractWidget(), WidgetCollection {
 	private val tabRectangles: MutableList<Rectangle> = mutableListOf()
 	private val tabCollections: MutableList<TabCollection> = mutableListOf()
 	private val tabSymbols: MutableList<ItemStack> = mutableListOf()
@@ -47,11 +47,11 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 		}
 	}
 
-	override fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
-		super.onAdded(original, immediate)
+	override fun onAdded(handled: HandledWidgetCollection, immediate: WidgetCollection) {
+		super.onAdded(handled, immediate)
 
 		tabCollections.forEachIndexed { index, collection ->
-			collection.original = original
+			collection.handled = handled
 			collection.parent = this
 
 			if (index != 0) {
@@ -82,7 +82,7 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 
 	fun addTab(symbol: ItemStack, tooltip: () -> List<Text>): WidgetCollection {
 		val collection = TabCollection(tabCollections.size)
-		collection.original = original
+		collection.handled = handled
 		collection.parent = this
 
 		tabCollections.add(collection)

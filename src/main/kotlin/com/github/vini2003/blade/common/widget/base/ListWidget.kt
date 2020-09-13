@@ -15,7 +15,7 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-class ListWidget() : AbstractWidget(), WidgetCollection {
+open class ListWidget() : AbstractWidget(), WidgetCollection {
     override val widgets: MutableList<AbstractWidget> = mutableListOf()
 
     var scrollbarTexture = PartitionedTexture(Blade.identifier("textures/widget/scrollbar.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.16666666666666666667F)
@@ -65,7 +65,7 @@ class ListWidget() : AbstractWidget(), WidgetCollection {
 
     override fun addWidget(widget: AbstractWidget) {
         widgets.add(widget)
-        original?.also { widget.onAdded(it, this) }
+        handled?.also { widget.onAdded(it, this) }
 
         widgets.forEach { _ ->
             widget.onLayoutChanged()
@@ -76,7 +76,7 @@ class ListWidget() : AbstractWidget(), WidgetCollection {
 
     override fun removeWidget(widget: AbstractWidget) {
         widgets.remove(widget)
-        original?.also { widget.onRemoved(it, this) }
+        handled?.also { widget.onRemoved(it, this) }
 
         widgets.forEach { _ ->
             widget.onLayoutChanged()

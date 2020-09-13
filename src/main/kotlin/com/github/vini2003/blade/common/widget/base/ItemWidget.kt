@@ -7,7 +7,7 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
 
-class ItemWidget(var stack: ItemStack = ItemStack.EMPTY) : AbstractWidget() {
+open class ItemWidget(var stack: ItemStack = ItemStack.EMPTY) : AbstractWidget() {
 	override fun getTooltip(): List<Text> {
 		if (stack.isEmpty) return emptyList()
 

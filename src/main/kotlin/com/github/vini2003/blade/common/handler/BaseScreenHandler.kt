@@ -3,7 +3,7 @@ package com.github.vini2003.blade.common.handler
 import com.github.vini2003.blade.client.utilities.Instances
 import com.github.vini2003.blade.common.data.Stacks
 import com.github.vini2003.blade.common.utilities.Networks
-import com.github.vini2003.blade.common.widget.OriginalWidgetCollection
+import com.github.vini2003.blade.common.widget.HandledWidgetCollection
 import com.github.vini2003.blade.common.widget.base.AbstractWidget
 import me.shedaniel.math.Rectangle
 import net.fabricmc.api.EnvType
@@ -19,7 +19,7 @@ import net.minecraft.screen.slot.Slot
 import net.minecraft.screen.slot.SlotActionType
 import net.minecraft.util.Identifier
 
-abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId: Int, val player: PlayerEntity) : ScreenHandler(type, syncId), OriginalWidgetCollection {
+abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId: Int, val player: PlayerEntity) : ScreenHandler(type, syncId), HandledWidgetCollection {
 	override val widgets: ArrayList<AbstractWidget> = ArrayList()
 
 	override val handler: BaseScreenHandler

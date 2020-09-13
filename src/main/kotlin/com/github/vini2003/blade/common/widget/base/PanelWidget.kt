@@ -6,7 +6,7 @@ import com.github.vini2003.blade.common.widget.WidgetCollection
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 
-class PanelWidget : AbstractWidget(), WidgetCollection {
+open class PanelWidget : AbstractWidget(), WidgetCollection {
 	override val widgets: ArrayList<AbstractWidget> = ArrayList()
 
 	var texture = PartitionedTexture(Blade.identifier("textures/widget/panel.png"), 18F, 18F, 0.25F, 0.25F, 0.25F, 0.25F)

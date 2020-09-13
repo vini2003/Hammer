@@ -29,8 +29,16 @@ abstract class AbstractWidget : Positioned, Sized {
 
 	var style = "default"
 
-	val hash
-			get() = Objects.hash(javaClass.name + "_" + position.x + "_" + position.y + "_" + size.width + "_" + size.height)
+	val hash: () -> Int
+		get() = {
+				if (salt == null) {
+					Objects.hash(javaClass.name + "_" + position.x + "_" + position.y + "_" + size.width + "_" + size.height)
+				} else {
+					Objects.hash(javaClass.name + "_" + position.x + "_" + position.y + "_" + size.width + "_" + size.height + "_" + salt)
+				}
+			}
+
+	var salt: String? = null
 
 	var handler: BaseScreenHandler? = null
 

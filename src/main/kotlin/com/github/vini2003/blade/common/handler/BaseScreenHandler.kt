@@ -19,8 +19,11 @@ import net.minecraft.screen.slot.Slot
 import net.minecraft.screen.slot.SlotActionType
 import net.minecraft.util.Identifier
 
-abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId: Int, private val player: PlayerEntity) : ScreenHandler(type, syncId), OriginalWidgetCollection {
+abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId: Int, val player: PlayerEntity) : ScreenHandler(type, syncId), OriginalWidgetCollection {
 	override val widgets: ArrayList<AbstractWidget> = ArrayList()
+
+	override val handler: BaseScreenHandler
+		get() = this
 
 	val client = player.world.isClient
 
@@ -107,14 +110,6 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 				return@forEach
 			}
 		}
-	}
-
-	override fun getPlayer(): PlayerEntity {
-		return player
-	}
-
-	override fun getHandler(): BaseScreenHandler {
-		return this
 	}
 
 	public override fun addSlot(slot: Slot?): Slot {

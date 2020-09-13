@@ -2,7 +2,9 @@ package com.github.vini2003.blade.common.widget
 
 import com.github.vini2003.blade.client.data.PartitionedTexture
 import com.github.vini2003.blade.common.data.Position
+import com.github.vini2003.blade.common.data.PositionHolder
 import com.github.vini2003.blade.common.data.Size
+import com.github.vini2003.blade.common.data.Slots
 import com.github.vini2003.blade.common.data.widget.TabCollection
 import com.github.vini2003.blade.common.widget.base.*
 import net.minecraft.inventory.Inventory
@@ -49,68 +51,72 @@ interface WidgetCollection {
 		this.position = Position.of(anchor, x, y)
 	}
 
-	fun AbstractWidget.floatTopLeftOut(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
-		this.position = widget.position.offset(-marginHorizontal - width, marginVertical - height)
+	fun AbstractWidget.floatTopLeftOut(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 9F, marginVertical: Float = 9F) {
+		this.position = widget.position.offset(-width - marginHorizontal, -marginVertical - height)
 	}
 
-	fun AbstractWidget.floatMiddleLeftOut(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatMiddleLeftOut(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 9F, marginVertical: Float = 0F) {
 		this.position = widget.position.offset(-marginHorizontal - width, widget.height / 2F - height / 2F + marginVertical)
 	}
 
-	fun AbstractWidget.floatBottomLeftOut(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatBottomLeftOut(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 9F, marginVertical: Float = 9F) {
 		this.position = widget.position.offset(-marginHorizontal - width, widget.height + marginVertical)
 	}
 
-	fun AbstractWidget.floatMiddleTopOut(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatMiddleTopOut(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 0F, marginVertical: Float = 9F) {
 		this.position = widget.position.offset(widget.width / 2F - width / 2F + marginHorizontal, -marginVertical - height)
 	}
 
-	fun AbstractWidget.floatMiddleBottomOut(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatMiddleBottomOut(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 0F, marginVertical: Float = 9F) {
 		this.position = widget.position.offset(widget.width / 2F - width / 2F + marginHorizontal, widget.height + marginVertical)
 	}
 
-	fun AbstractWidget.floatTopRightOut(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatTopRightOut(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 9F, marginVertical: Float = 9F) {
 		this.position = widget.position.offset(widget.width + marginHorizontal, -marginVertical - height)
 	}
 
-	fun AbstractWidget.floatMiddleRightOut(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatMiddleRightOut(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 9F, marginVertical: Float = 0F) {
 		this.position = widget.position.offset(widget.width + marginHorizontal, widget.height / 2F - height / 2F + marginVertical)
 	}
 
-	fun AbstractWidget.floatBottomRightOut(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatBottomRightOut(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 9F, marginVertical: Float = 9F) {
 		this.position = widget.position.offset(widget.width + marginHorizontal, widget.height + marginVertical)
 	}
 
-	fun AbstractWidget.floatTopLeftIn(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatTopLeftIn(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 9F, marginVertical: Float = 9F) {
 		this.position = widget.position.offset(marginHorizontal, marginVertical)
 	}
 
-	fun AbstractWidget.floatMiddleLeftIn(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatMiddleLeftIn(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 9F, marginVertical: Float = 0F) {
 		this.position = widget.position.offset(marginHorizontal, widget.height / 2F - height / 2F + marginVertical)
 	}
 
-	fun AbstractWidget.floatBottomLeftIn(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatBottomLeftIn(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 9F, marginVertical: Float = 9F) {
 		this.position = widget.position.offset(marginHorizontal, widget.height - height - marginVertical)
 	}
 
-	fun AbstractWidget.floatMiddleTopIn(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatMiddleTopIn(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 0F, marginVertical: Float = 9F) {
 		this.position = widget.position.offset(widget.width / 2F - width / 2F + marginHorizontal, marginVertical)
 	}
 
-	fun AbstractWidget.floatMiddleBottomIn(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatMiddleBottomIn(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 0F, marginVertical: Float = 9F) {
 		this.position = widget.position.offset(widget.width / 2F - width / 2F + marginHorizontal, widget.height - height - marginVertical)
 	}
 
-	fun AbstractWidget.floatTopRightIn(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatTopRightIn(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 9F, marginVertical: Float = 9F) {
 		this.position = widget.position.offset(widget.width - width - marginHorizontal, marginVertical)
 	}
 
-	fun AbstractWidget.floatMiddleRightIn(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatMiddleRightIn(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 9F, marginVertical: Float = 0F) {
 		this.position = widget.position.offset(widget.width - width - marginHorizontal, widget.height / 2F - height / 2F + marginVertical)
 	}
 
-	fun AbstractWidget.floatBottomRightIn(widget: AbstractWidget, marginHorizontal: Float, marginVertical: Float) {
+	fun AbstractWidget.floatBottomRightIn(widget: AbstractWidget = this.parent!!, marginHorizontal: Float = 9F, marginVertical: Float = 9F) {
 		this.position = widget.position.offset(widget.width - width - marginHorizontal, widget.height - height - marginVertical)
+	}
+
+	fun AbstractWidget.floatMiddle(widget: AbstractWidget = this.parent!!) {
+		this.position = widget.position.offset(widget.width / 2F - width / 2F, widget.height / 2F - height / 2F)
 	}
 
 	fun AbstractWidget.center() {
@@ -131,6 +137,10 @@ interface WidgetCollection {
 
 	fun AbstractWidget.size(width: Float, height: Float) {
 		this.size = Size.of(width, height)
+	}
+
+	fun AbstractWidget.size(side: Float) {
+		this.size = Size.of(side, side)
 	}
 
 	fun AbstractWidget.style(style: String) {
@@ -325,7 +335,7 @@ interface WidgetCollection {
 
 	fun text(text: Text, block: TextWidget.() -> Unit) {
 		val widget = TextWidget(text)
-		this.addWidget(widget)
+		addWidget(widget)
 		widget.apply(block)
 	}
 
@@ -343,5 +353,17 @@ interface WidgetCollection {
 
 	fun String.translatable(): TranslatableText {
 		return TranslatableText(this)
+	}
+
+	fun playerInventory(position: PositionHolder, size: Size, inventory: Inventory) {
+		Slots.addPlayerInventory(position, size, this, inventory)
+	}
+
+	fun playerInventory(panel: AbstractWidget, inventory: Inventory) {
+		playerInventory(Position.of(java.lang.Float.max(panel.x + 8F, panel.x + 8F + (panel.width / 2F - (9 * 18F - 4F))), panel.y + panel.height - 83F), Size.of(18, 18), inventory)
+	}
+
+	fun slotArray(position: PositionHolder, size: Size, slotNumber: Int, arrayWidth: Int, arrayHeight: Int, inventory: Inventory) {
+		Slots.addArray(position, size, this, slotNumber, arrayWidth, arrayHeight, inventory)
 	}
 }

@@ -1,7 +1,10 @@
 package com.github.vini2003.blade.testing.kotlin
 
+import com.github.vini2003.blade.common.data.Position
+import com.github.vini2003.blade.common.data.Size
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import net.minecraft.entity.player.PlayerEntity
+import java.lang.Float.max
 
 class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(DebugContainers.DEBUG_HANDLER, syncId, player) {
 	override fun initialize(width: Int, height: Int) {
@@ -15,98 +18,106 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 			button {
 				size(18F, 18F)
 
-				floatTopLeftIn(panel, 1F, 1F)
+				floatTopLeftIn()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatMiddleLeftIn(panel, 1F, 1F)
+				floatMiddleLeftIn()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatBottomLeftIn(panel, 1F, 1F)
+				floatBottomLeftIn()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatMiddleBottomIn(panel, 1F, 1F)
+				floatMiddleBottomIn()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatBottomRightIn(panel, 1F, 1F)
+				floatBottomRightIn()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatMiddleRightIn(panel, 1F, 1F)
+				floatMiddleRightIn()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatTopRightIn(panel, 1F, 1F)
+				floatTopRightIn()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatMiddleTopIn(panel, 1F, 1F)
+				floatMiddleTopIn()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatTopLeftOut(panel, 1F, 1F)
+				floatTopLeftOut()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatMiddleLeftOut(panel, 1F, 1F)
+				floatMiddleLeftOut()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatBottomLeftOut(panel, 1F, 1F)
+				floatBottomLeftOut()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatMiddleBottomOut(panel, 1F, 1F)
+				floatMiddleBottomOut()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatBottomRightOut(panel, 1F, 1F)
+				floatBottomRightOut()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatMiddleRightOut(panel, 1F, 1F)
+				floatMiddleRightOut()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatTopRightOut(panel, 1F, 1F)
+				floatTopRightOut()
 			}
 
 			button {
 				size(18F, 18F)
 
-				floatMiddleTopOut(panel, 1F, 1F)
+				floatMiddleTopOut()
 			}
+
+			button {
+				size(18F, 18F)
+
+				floatMiddle()
+			}
+
+			playerInventory(panel, player.inventory)
 		}
 	}
 

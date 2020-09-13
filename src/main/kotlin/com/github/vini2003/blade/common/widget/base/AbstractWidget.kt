@@ -66,7 +66,7 @@ abstract class AbstractWidget : Positioned, Sized {
 	open fun onAdded(original: OriginalWidgetCollection, immediate: WidgetCollection) {
 		this.original = original
 		this.immediate = immediate
-		this.handler = original.getHandler()
+		this.handler = original.handler
 	}
 
 	open fun onRemoved(original: OriginalWidgetCollection, immediate: WidgetCollection) {

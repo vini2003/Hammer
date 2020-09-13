@@ -20,11 +20,15 @@ class Styles {
 		fun load(manager: ResourceManager) {
 			manager.findResources("style") { string -> string.endsWith(".style.json") }.forEach {
 				try {
-					val reader = manager.getResource(it).inputStream.bufferedReader(Charset.defaultCharset())
+					val stream = manager.getResource(it).inputStream
+
+					val reader = stream.bufferedReader(Charset.defaultCharset())
 
 					val jsonObject = JsonObject()
 
 					load(it.path.replaceFirst("style/", "").replaceFirst(".style.json", ""), jankson.fromJson(reader, jsonObject.javaClass))
+
+					stream.close()
 				} catch (exception: Exception) {
 					System.err.println(exception.message)
 				}

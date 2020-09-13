@@ -33,7 +33,7 @@ interface Positioned : PositionHolder {
 		}
 }
 
-interface PositionHolder : Recalculatale {
+interface PositionHolder {
 	val x: Float
 	val y: Float
 }

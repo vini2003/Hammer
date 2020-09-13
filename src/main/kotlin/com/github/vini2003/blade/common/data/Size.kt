@@ -32,7 +32,7 @@ interface Sized : SizeHolder {
 		}
 }
 
-interface SizeHolder : Recalculatale {
+interface SizeHolder {
 	val width: Float
 	val height: Float
 }

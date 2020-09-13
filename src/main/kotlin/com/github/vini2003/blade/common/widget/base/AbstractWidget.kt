@@ -211,9 +211,6 @@ abstract class AbstractWidget : Positioned, Sized {
 	}
 
 	open fun onLayoutChanged() {
-		position.recalculate()
-		size.recalculate()
-
 		focus(Positions.mouseX, Positions.mouseY)
 
 		parent?.onLayoutChanged()

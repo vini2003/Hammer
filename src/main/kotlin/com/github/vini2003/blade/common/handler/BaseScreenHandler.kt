@@ -107,7 +107,7 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 					Networks.FOCUS_RELEASE -> it.onFocusReleased()
 				}
 
-				return@forEach
+				return
 			}
 		}
 	}

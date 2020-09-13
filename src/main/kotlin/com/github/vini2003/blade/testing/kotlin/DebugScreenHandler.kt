@@ -112,6 +112,10 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 				size(18F, 18F)
 
 				floatMiddle()
+
+				click {
+					println("Oopsie!")
+				}
 			}
 
 			playerInventory(panel, player.inventory)

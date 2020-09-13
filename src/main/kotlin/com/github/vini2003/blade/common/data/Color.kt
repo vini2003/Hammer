@@ -1,5 +1,8 @@
 package com.github.vini2003.blade.common.data
 
+import java.awt.Color.*
+
+
 class Color(val r: Float, val g: Float, val b: Float, val a: Float) {
 	companion object {
 		@JvmStatic
@@ -13,24 +16,27 @@ class Color(val r: Float, val g: Float, val b: Float, val a: Float) {
 		}
 
 		@JvmStatic
-		fun of(color: Int): Color {
-			return Color((color shr 24 and 0xFF) / 255F, (color shr 16 and 0xFF) / 255F, (color shr 8 and 0xFF) / 255F, (color and 0xFF) / 255F)
+		fun of(color: Long): Color {
+			val r = (color and -0x1000000 shr 24) / 255F
+			val g = (color and 0x00FF0000 shr 16) / 255F
+			val b = (color and 0x0000FF00 shr 8) / 255F
+			val a = (color and 0x000000FF) / 255F
+
+			return Color(r, g, b, a)
 		}
 
 		@JvmStatic
 		fun standard(): Color {
 			return Color(1F, 1F, 1F, 1F)
 		}
-
-		@JvmStatic
-		fun redGreenBlue(r: Int, g: Int, b: Int, a: Int): Int {
-			var i = (r shl 8) + g
-			i = (i shl 8) + b
-			return i
-		}
 	}
 
 	fun toInt(): Int {
-		return redGreenBlue((r * 255F).toInt(), (g * 255F).toInt(), (b * 255F).toInt(), (a * 255F).toInt())
+		val r: Int = (this.r * 255).toInt() and 0xFF
+		val g: Int = (this.g * 255).toInt() and 0xFF
+		val b: Int = (this.b * 255).toInt() and 0xFF
+		val a: Int = (this.a * 255).toInt() and 0xFF
+
+		return (r shl 24) + (g shl 16) + (b shl 8) + a
 	}
 }

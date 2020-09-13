@@ -141,7 +141,7 @@ class ListWidget() : AbstractWidget(), WidgetCollection {
 
 		if (widgets.isNotEmpty()) {
 			if (deltaY > 0 && widgets.minByOrNull { it.y }!!.y < this.y + 2) {
-				widgets.forEach {
+				allWidgets.forEach {
 					it.y += deltaY.toFloat() * 2.5F
 
 					it.onLayoutChanged()
@@ -151,7 +151,7 @@ class ListWidget() : AbstractWidget(), WidgetCollection {
 					else if (it.y >= this.y) it.hidden = false
 				}
 			} else if (deltaY <= 0 && widgets.asSequence().map { it.y + it.height }.maxOrNull()!! >= this.y + height - 2) {
-				widgets.forEach {
+				allWidgets.forEach {
 					it.y += deltaY.toFloat() * 2.5F
 
 					it.onLayoutChanged()

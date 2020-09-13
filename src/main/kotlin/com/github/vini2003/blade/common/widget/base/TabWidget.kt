@@ -27,15 +27,15 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 
 	var selected: Int = 0
 
-	private val leftActive = Blade.identifier("textures/widget/tab_left_active.png")
-	private val middleActive = Blade.identifier("textures/widget/tab_middle_active.png")
-	private val rightActive = Blade.identifier("textures/widget/tab_right_active.png")
+	var leftActiveTexture = Blade.identifier("textures/widget/tab_left_active.png")
+	var middleActiveTexture = Blade.identifier("textures/widget/tab_middle_active.png")
+	var rightActiveTexture = Blade.identifier("textures/widget/tab_right_active.png")
 
-	private val leftInactive = Blade.identifier("textures/widget/tab_left_inactive.png")
-	private val middleInactive = Blade.identifier("textures/widget/tab_middle_inactive.png")
-	private val rightInactive = Blade.identifier("textures/widget/tab_right_inactive.png")
+	var leftInactiveTexture = Blade.identifier("textures/widget/tab_left_inactive.png")
+	var middleInactiveTexture = Blade.identifier("textures/widget/tab_middle_inactive.png")
+	var rightInactiveTexture = Blade.identifier("textures/widget/tab_right_inactive.png")
 
-	var panel = PartitionedTexture(Blade.identifier("textures/widget/panel.png"), 18F, 18F, 0.25F, 0.25F, 0.25F, 0.25F)
+	var panelTexture = PartitionedTexture(Blade.identifier("textures/widget/panel.png"), 18F, 18F, 0.25F, 0.25F, 0.25F, 0.25F)
 
 	override fun onLayoutChanged() {
 		super.onLayoutChanged()
@@ -134,22 +134,22 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 	}
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
-		panel.draw(matrices, provider, position.x, position.y + 25F, size.width, size.height - 25F)
+		panelTexture.draw(matrices, provider, position.x, position.y + 25F, size.width, size.height - 25F)
 
 		if (provider is VertexConsumerProvider.Immediate) provider.draw()
 
 		tabRectangles.forEachIndexed { index, rectangle ->
 			if (selected == index) {
 				when (rectangle.position.x) {
-					position.x -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(leftActive), position.x + (26F * index), position.y, 25F, 29F, leftActive)
-					position.x + size.width - 25F -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(rightActive), position.x + (26F * index), position.y, 25F, 28F, rightActive)
-					else -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(middleActive), position.x + (26F * index), position.y, 25F, 28F, middleActive)
+					position.x -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(leftActiveTexture), position.x + (26F * index), position.y, 25F, 29F, leftActiveTexture)
+					position.x + size.width - 25F -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(rightActiveTexture), position.x + (26F * index), position.y, 25F, 28F, rightActiveTexture)
+					else -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(middleActiveTexture), position.x + (26F * index), position.y, 25F, 28F, middleActiveTexture)
 				}
 			} else {
 				when (rectangle.position.x) {
-					position.x -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(leftInactive), position.x + (26F * index), position.y + 3F, 25F, 24F, leftInactive)
-					position.x + size.width - 25F -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(rightInactive), position.x + (26F * index), position.y + 2F, 25F, 26F, rightInactive)
-					else -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(middleInactive), position.x + (26F * index), position.y + 2F, 25F, 25F, middleInactive)
+					position.x -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(leftInactiveTexture), position.x + (26F * index), position.y + 3F, 25F, 24F, leftInactiveTexture)
+					position.x + size.width - 25F -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(rightInactiveTexture), position.x + (26F * index), position.y + 2F, 25F, 26F, rightInactiveTexture)
+					else -> Drawings.drawTexturedQuad(matrices, provider, Layers.get(middleInactiveTexture), position.x + (26F * index), position.y + 2F, 25F, 25F, middleInactiveTexture)
 				}
 			}
 

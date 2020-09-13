@@ -16,8 +16,9 @@ import net.minecraft.screen.slot.Slot
 import kotlin.properties.Delegates
 
 class SlotWidget(
-	private val slot: Int, private val inventory: Inventory,
-	private val slotProvider: (Inventory, Int, Int, Int) -> Slot
+	var slot: Int,
+	var inventory: Inventory,
+	var slotProvider: (Inventory, Int, Int, Int) -> Slot
 ) : AbstractWidget() {
 	constructor(slot: Int, inventory: Inventory) : this(slot, inventory, { inv, id, x, y -> Slot(inv, id, x, y) })
 	

@@ -12,25 +12,25 @@ import com.github.vini2003.blade.common.widget.WidgetCollection
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.inventory.Inventory
+import net.minecraft.inventory.SimpleInventory
 import kotlin.math.max
 import kotlin.math.min
 
 class SlotListWidget(
-	private val inventory: Inventory
+	var inventory: Inventory = SimpleInventory(0),
+	var widthInSlots: Int = 0,
+	var heightInSlots: Int = 0,
+	var maximumSlots: Int = 0
 ) : AbstractWidget(), WidgetCollection {
-	var textureScrollbar = PartitionedTexture(Blade.identifier("textures/widget/scrollbar.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.16666666666666666667F)
-	var textureScroller = PartitionedTexture(Blade.identifier("textures/widget/scroller.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
-	var textureScrollerFocus = PartitionedTexture(Blade.identifier("textures/widget/scroller_focus.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
+	var scrollbarTexture = PartitionedTexture(Blade.identifier("textures/widget/scrollbar.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.16666666666666666667F)
+	var scrollerTexture = PartitionedTexture(Blade.identifier("textures/widget/scroller.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
+	var scrollerFocusTexture = PartitionedTexture(Blade.identifier("textures/widget/scroller_focus.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
 
 	override val widgets: ArrayList<AbstractWidget> = ArrayList()
 
 	private var row = 0
 
 	private var scrollerHeld = false
-
-	private var widthInSlots: Int = 0
-	private var heightInSlots: Int = 0
-	private var maximumSlots: Int = 0
 
 	private var updateScrollerRectangle: Boolean = false
 	private var updateScrollbarRectangle: Boolean = false
@@ -53,7 +53,7 @@ class SlotListWidget(
 	private val scrollerRectangle: Rectangle
 		get() {
 			return if (updateScrollerRectangle) {
-				scrollerRectangleCached = Rectangle(Position.of({ position.x + size.width - 1 - 16F }, { scrollerY - 1 }), Size.of({ 16F }, { scrollerHeight }))
+				scrollerRectangleCached = Rectangle(Position.of(position.x + size.width - 1 - 16F, scrollerY - 1), Size.of(16F, scrollerHeight))
 				updateScrollerRectangle = false
 				return scrollerRectangleCached
 			} else {
@@ -64,7 +64,7 @@ class SlotListWidget(
 	private val scrollbarRectangle: Rectangle
 		get() {
 			return if (updateScrollbarRectangle) {
-				scrollbarRectangleCached = Rectangle(Position.of({ position.x + size.width - 1 - 16F }, { position.y + 1 }), Size.of({ 16F }, { size.height - 2 }))
+				scrollbarRectangleCached = Rectangle(Position.of(position.x + size.width - 1 - 16F, position.y + 1), Size.of(16F, size.height - 2))
 				updateScrollbarRectangle = false
 				return scrollbarRectangleCached
 			} else {
@@ -212,14 +212,14 @@ class SlotListWidget(
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
 		if (hidden) return
 
-		textureScrollbar.draw(matrices, provider, position.x + size.width - 18F, position.y, 18F, size.height)
+		scrollbarTexture.draw(matrices, provider, position.x + size.width - 18F, position.y, 18F, size.height)
 
 		val scrollerFocus = scrollerRectangle.isWithin(Positions.mouseX, Positions.mouseY)
 
 		if (scrollerFocus || scrollerHeld) {
-			textureScrollerFocus.draw(matrices, provider, position.x + size.width - 18F + 1F, scrollerY - 1, 16F, scrollerHeight)
+			scrollerFocusTexture.draw(matrices, provider, position.x + size.width - 18F + 1F, scrollerY - 1, 16F, scrollerHeight)
 		} else {
-			textureScroller.draw(matrices, provider, position.x + size.width - 18F + 1F, scrollerY - 1, 16F, scrollerHeight)
+			scrollerTexture.draw(matrices, provider, position.x + size.width - 18F + 1F, scrollerY - 1, 16F, scrollerHeight)
 		}
 	}
 }

@@ -5,8 +5,7 @@ import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
 
-class TextWidget : AbstractWidget() {
-	var text: Text? = null
+class TextWidget(var text: Text? = null) : AbstractWidget() {
 	var shadow = false
 	var color = 4210752
 

@@ -1,38 +1,113 @@
 package com.github.vini2003.blade.testing.kotlin
 
-import com.github.vini2003.blade.common.data.Position
-import com.github.vini2003.blade.common.data.Size
-import com.github.vini2003.blade.common.data.Slots
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
-import com.github.vini2003.blade.common.widget.base.*
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.inventory.SimpleInventory
-import net.minecraft.item.ItemStack
-import net.minecraft.item.Items
-import net.minecraft.text.LiteralText
-import net.minecraft.text.Text
-import net.minecraft.util.registry.Registry
 
 class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(DebugContainers.DEBUG_HANDLER, syncId, player) {
 	override fun initialize(width: Int, height: Int) {
-		val panelA = PanelWidget()
-		panelA.position = Position.of(48, 48)
-		panelA.size = Size.of(96, 96)
 
-		addWidget(panelA)
+		panel {
+			val panel = this
 
-		val panelB = PanelWidget()
-		panelB.position = Position.of(48, 48)
-		panelB.size = Size.of(80, 96)
+			position(48F, 48F)
+			size(96F, 96F)
 
-		panelA.addWidget(panelB)
+			button {
+				size(18F, 18F)
 
-		val panelC = PanelWidget()
-		panelC.position = Position.of(48, 48)
-		panelC.size = Size.of(64, 96)
+				floatTopLeftIn(panel, 1F, 1F)
+			}
 
-		panelA.addWidget(panelC)
+			button {
+				size(18F, 18F)
 
+				floatMiddleLeftIn(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatBottomLeftIn(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatMiddleBottomIn(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatBottomRightIn(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatMiddleRightIn(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatTopRightIn(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatMiddleTopIn(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatTopLeftOut(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatMiddleLeftOut(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatBottomLeftOut(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatMiddleBottomOut(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatBottomRightOut(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatMiddleRightOut(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatTopRightOut(panel, 1F, 1F)
+			}
+
+			button {
+				size(18F, 18F)
+
+				floatMiddleTopOut(panel, 1F, 1F)
+			}
+		}
 	}
 
 	override fun canUse(player: PlayerEntity?): Boolean = true

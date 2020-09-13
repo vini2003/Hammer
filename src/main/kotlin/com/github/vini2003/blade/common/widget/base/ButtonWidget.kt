@@ -14,10 +14,10 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.sound.SoundEvents
 import net.minecraft.text.Text
 
-class ButtonWidget(private val clickAction: (ButtonWidget) -> Unit) : AbstractWidget() {
+class ButtonWidget(var clickAction: () -> Unit = {}) : AbstractWidget() {
 	var textureOn = PartitionedTexture(Blade.identifier("textures/widget/button_on.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.16666666666666666667F)
 	var textureOff = PartitionedTexture(Blade.identifier("textures/widget/button_off.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
-	var textureOnFocus = PartitionedTexture(Blade.identifier("textures/widget/button_on_focus.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
+	var textureFocus = PartitionedTexture(Blade.identifier("textures/widget/button_on_focus.png"), 18F, 18F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F, 0.11111111111111111111F)
 
 	var disabled: Boolean = false
 
@@ -31,22 +31,24 @@ class ButtonWidget(private val clickAction: (ButtonWidget) -> Unit) : AbstractWi
 
 	override fun onMouseClicked(x: Float, y: Float, button: Int) {
 		if (focused || (!focused && handler != null && !handler!!.client)) {
-			clickAction.invoke(this)
+			clickAction.invoke()
 
-			playSound()
+			if (handler!!.client) {
+				playSound()
+			}
 		}
 
 		super.onMouseClicked(x, y, button)
 	}
 
-	fun playSound() {
+	private fun playSound() {
 		Instances.client().soundManager.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F))
 	}
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
 		if (hidden) return
 
-		val texture = if (disabled) textureOff else if (focused) textureOnFocus else textureOn
+		val texture = if (disabled) textureOff else if (focused) textureFocus else textureOn
 
 		texture.draw(matrices, provider, position.x, position.y, size.width, size.height)
 

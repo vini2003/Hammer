@@ -8,9 +8,9 @@ import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
 
-class VerticalBarWidget(var maximum: () -> Float, var current: () -> Float, foregroundId: Identifier = Blade.identifier("textures/widget/bar_foreground.png"), backgroundId: Identifier = Blade.identifier("textures/widget/bar_background.png")) : AbstractWidget() {
-	var foreground = PartitionedTexture(foregroundId, 18F, 18F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F)
-	var background = PartitionedTexture(backgroundId, 18F, 18F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F)
+class VerticalBarWidget(var maximum: () -> Float = {100F}, var current: () -> Float = {0F}, foregroundId: Identifier = Blade.identifier("textures/widget/bar_foreground.png"), backgroundId: Identifier = Blade.identifier("textures/widget/bar_background.png")) : AbstractWidget() {
+	var foregroundTexture = PartitionedTexture(foregroundId, 18F, 18F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F)
+	var backgroundTexture = PartitionedTexture(backgroundId, 18F, 18F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F, 0.05555555555555555556F)
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
 		if (hidden) return
@@ -24,15 +24,15 @@ class VerticalBarWidget(var maximum: () -> Float, var current: () -> Float, fore
 
 		area = Scissors(provider, (x * scale).toInt(), (rawHeight - (y + height - sBGY) * scale).toInt(), (width * scale).toInt(), ((height - sBGY) * scale).toInt())
 
-		background.draw(matrices, provider, x, y, width, height)
+		backgroundTexture.draw(matrices, provider, x, y, width, height)
 
 		area.destroy(provider)
 
 		area = Scissors(provider, (x * scale).toInt(), (rawHeight - (y + height) * scale).toInt(), (width * scale).toInt(), (sBGY * scale).toInt())
 
-		foreground.draw(matrices, provider, x, y, width, height)
+		foregroundTexture.draw(matrices, provider, x, y, width, height)
 
-		foreground.draw(matrices, provider, x, y, width, height)
+		foregroundTexture.draw(matrices, provider, x, y, width, height)
 
 		area.destroy(provider)
 	}

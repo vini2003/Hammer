@@ -18,7 +18,7 @@ class HorizontalBarWidget(var maximum: () -> Float = {100F}, var current: () -> 
 		val rawHeight = Instances.client().window.height.toFloat()
 		val scale = Instances.client().window.scaleFactor.toFloat()
 
-		val sBGX: Float = width / maximum.invoke() * current.invoke()
+		val sBGX: Float = width / maximum() * current()
 
 		var area: Scissors?
 

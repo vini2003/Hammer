@@ -107,7 +107,7 @@ class TabWidget : AbstractWidget(), WidgetCollection {
 		tabRectangles.forEachIndexed { index, rectangle ->
 			if (rectangle.isWithin(Positions.mouseX, Positions.mouseY)) {
 				if (tabTooltips.size >= index) {
-					return tabTooltips[index].invoke()
+					return tabTooltips[index]()
 				}
 			}
 		}

@@ -31,7 +31,7 @@ class ButtonWidget(var clickAction: () -> Unit = {}) : AbstractWidget() {
 
 	override fun onMouseClicked(x: Float, y: Float, button: Int) {
 		if (focused || (!focused && handler != null && !handler!!.client)) {
-			clickAction.invoke()
+			clickAction()
 
 			if (handler!!.client) {
 				playSound()

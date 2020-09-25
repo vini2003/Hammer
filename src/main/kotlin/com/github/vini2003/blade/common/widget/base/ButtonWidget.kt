@@ -30,7 +30,7 @@ open class ButtonWidget(var clickAction: () -> Unit = {}) : AbstractWidget() {
 	}
 
 	override fun onMouseClicked(x: Float, y: Float, button: Int) {
-		if (focused || (!focused && handler != null && !handler!!.client)) {
+		if (focused || (!handler!!.client && !hidden)) {
 			clickAction()
 
 			if (handler!!.client) {

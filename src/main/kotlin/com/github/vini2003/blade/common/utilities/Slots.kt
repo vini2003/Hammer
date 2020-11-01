@@ -25,6 +25,8 @@ class Slots {
 					val slot = SlotWidget(slotNumber + y * arrayWidth + x, inventory)
 					slot.position = Position.of(position, size.width * x, size.height * y)
 					slot.size = Size.of(size)
+					
+					set.add(slot)
 
 					parent.addWidget(slot)
 				}

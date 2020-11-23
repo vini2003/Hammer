@@ -1,47 +1,40 @@
 package com.github.vini2003.blade.common.utilities
 
 import net.minecraft.item.ItemStack
+import net.minecraft.util.Pair
 import kotlin.math.max
 import kotlin.math.min
 
 class Stacks {
 	companion object {
 		@JvmStatic
-		fun merge(originalStackA: ItemStack, originalStackB: ItemStack, maxA: Int, maxB: Int, consumer: (ItemStack, ItemStack) -> Unit) {
-			var stackA: ItemStack = originalStackA
-			var stackB: ItemStack = originalStackB
+		open fun merge(source: ItemStack, target: ItemStack, consumer: (ItemStack, ItemStack) -> Unit) {
+			var target = target
 
-			if (equal(stackA, stackB)) {
-				val countA = stackA.count
-				val countB = stackB.count
+			val targetMax = target.maxCount
 
-				val availableB = max(0, maxB - countB)
+			if (ItemStack.areItemsEqual(source, target) && ItemStack.areTagsEqual(source, target)) {
+				val sourceCount = source.count
+				val targetCount = target.count
 
-				stackB.count = stackB.count + (min(countA, availableB))
-				stackA.count = max(countA - availableB, 0)
+				val targetAvailable = max(0, targetMax - targetCount)
+
+				target.increment(min(sourceCount, targetAvailable))
+				source.count = max(sourceCount - targetAvailable, 0)
 			} else {
-				if (stackA.isEmpty && !stackB.isEmpty) {
-					val countA = stackA.count
-					val availableA = maxA - countA
+				if (target.isEmpty && !source.isEmpty) {
+					val sourceCount = source.count
+					val targetCount = target.count
 
-					val countB = stackB.count
+					val targetAvailable = targetMax - targetCount
 
-					stackA = stackB.copy()
-					stackA.count = min(countB, availableA)
-					stackB.count = stackB.count - min(countB, availableA)
-				} else if (!stackA.isEmpty && stackB.isEmpty) {
-					val countB = stackB.count
-					val availableB = maxB - countB
+					target = source.copy()
 
-					val countA = stackA.count
-
-					stackB = stackA.copy()
-					stackB.count = min(countA, availableB)
-					stackA.count = stackA.count - min(countA, availableB)
+					target.count = min(sourceCount, targetAvailable)
+					source.decrement(min(sourceCount, targetAvailable))
 				}
 			}
-
-			consumer.invoke(stackA, stackB)
+			return consumer.invoke(source, target)
 		}
 
 		@JvmStatic

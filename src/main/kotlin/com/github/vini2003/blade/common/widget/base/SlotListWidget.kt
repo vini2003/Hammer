@@ -187,18 +187,8 @@ open class SlotListWidget(
 					if (slot.index - widthInSlots >= 0) {
 						slot.index = slot.index - widthInSlots
 					}
-				}
-			}
 
-			if (handler!!.client) {
-				widgets.forEach {
-					it as SlotWidget
-
-					val slot = it.backendSlot!!
-
-					if (slot.index - widthInSlots >= 0) {
-						slot.stack = inventory.getStack(slot.index - widthInSlots)
-					}
+					handler!!.sendContentUpdates()
 				}
 			}
 		} else if (deltaY < 0 && row < bottomRow) {
@@ -213,18 +203,8 @@ open class SlotListWidget(
 					if (slot.index + widthInSlots <= inventory.size()) {
 						slot.index = slot.index + widthInSlots
 					}
-				}
-			}
 
-			if (handler!!.client) {
-				widgets.forEach {
-					it as SlotWidget
-
-					val slot = it.backendSlot!!
-
-					if (slot.index + widthInSlots <= inventory.size()) {
-						slot.stack = inventory.getStack(slot.index + widthInSlots)
-					}
+					handler!!.sendContentUpdates()
 				}
 			}
 		}

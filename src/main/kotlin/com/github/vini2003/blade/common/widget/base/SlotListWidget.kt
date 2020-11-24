@@ -177,35 +177,31 @@ open class SlotListWidget(
 
 		if (deltaY > 0 && row > 0) {
 			--row
+			
+			widgets.forEach {
+				it as SlotWidget
 
-			if (!handler!!.client) {
-				widgets.forEach {
-					it as SlotWidget
+				val slot = it.backendSlot!!
 
-					val slot = it.backendSlot!!
-
-					if (slot.index - widthInSlots >= 0) {
-						slot.index = slot.index - widthInSlots
-					}
-
-					handler!!.sendContentUpdates()
+				if (slot.index - widthInSlots >= 0) {
+					slot.index = slot.index - widthInSlots
 				}
+
+				handler!!.sendContentUpdates()
 			}
 		} else if (deltaY < 0 && row < bottomRow) {
 			++row
+			
+			widgets.forEach {
+				it as SlotWidget
 
-			if (!handler!!.client) {
-				widgets.forEach {
-					it as SlotWidget
+				val slot = it.backendSlot!!
 
-					val slot = it.backendSlot!!
-
-					if (slot.index + widthInSlots <= inventory.size()) {
-						slot.index = slot.index + widthInSlots
-					}
-
-					handler!!.sendContentUpdates()
+				if (slot.index + widthInSlots <= inventory.size()) {
+					slot.index = slot.index + widthInSlots
 				}
+
+				handler!!.sendContentUpdates()
 			}
 		}
 

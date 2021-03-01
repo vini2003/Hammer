@@ -32,8 +32,8 @@ open class SlotWidget(
 
 	fun updateSlotPosition() {
 		if (hidden) {
-			backendSlot?.x = Int.MAX_VALUE
-			backendSlot?.y = Int.MAX_VALUE
+			backendSlot?.x = Int.MAX_VALUE / 2
+			backendSlot?.y = Int.MAX_VALUE / 2
 		} else {
 			backendSlot?.x = slotX
 			backendSlot?.y = slotY

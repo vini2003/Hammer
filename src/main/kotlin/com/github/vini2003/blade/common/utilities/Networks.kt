@@ -3,8 +3,8 @@ package com.github.vini2003.blade.common.utilities
 import com.github.vini2003.blade.Blade
 import com.github.vini2003.blade.common.handler.BaseScreenHandler
 import io.netty.buffer.Unpooled
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.util.Identifier
 
@@ -47,14 +47,14 @@ class Networks {
 		val FOCUS_RELEASE = Blade.identifier("focus_release")
 
 		init {
-			ServerSidePacketRegistry.INSTANCE.register(WIDGET_UPDATE) { context, buf ->
+			ServerPlayNetworking.registerGlobalReceiver(WIDGET_UPDATE) { server, player, handler, buf, responseSender ->
 				val syncId = buf.readInt()
 				val id = buf.readIdentifier()
 				
 				buf.retain()
 
-				context.taskQueue.execute {
-					context.player.server!!.playerManager.playerList.forEach {
+				server.execute {
+					server!!.playerManager.playerList.forEach {
 						if (it.currentScreenHandler.syncId == syncId && it.currentScreenHandler is BaseScreenHandler) {
 							(it.currentScreenHandler as BaseScreenHandler).handlePacket(id, PacketByteBuf(buf.copy()))
 						}
@@ -62,15 +62,15 @@ class Networks {
 				}
 			}
 
-			ServerSidePacketRegistry.INSTANCE.register(INITIALIZE) { context, buf ->
+			ServerPlayNetworking.registerGlobalReceiver(INITIALIZE) { server, player, handler, buf, responseSender ->
 				val syncId = buf.readInt()
 				val width = buf.readInt()
 				val height = buf.readInt()
 
 				buf.retain()
 
-				context.taskQueue.execute {
-					context.player.server!!.playerManager.playerList.forEach { it ->
+				server.execute {
+					server.playerManager.playerList.forEach { it ->
 						if (it.currentScreenHandler.syncId == syncId && it.currentScreenHandler is BaseScreenHandler) {
 							(it.currentScreenHandler as BaseScreenHandler).also {
 								it.slots.clear()
@@ -89,7 +89,7 @@ class Networks {
 
 		@JvmStatic
 		fun toServer(id: Identifier, buf: PacketByteBuf) {
-			ClientSidePacketRegistry.INSTANCE.sendToServer(id, buf)
+			ClientPlayNetworking.send(id, buf)
 		}
 
 		@JvmStatic

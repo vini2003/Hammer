@@ -2,12 +2,8 @@ name: Java CI
 
 on:
   push:
-    paths:
-      - '**.gradle'
-      - '**.properties'
-      - '**/src/**'
     branches:
-      - "fabric-1.16"
+      - "fabric-1.16.x"
 
 jobs:
   build:

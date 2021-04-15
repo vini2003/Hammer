@@ -7,8 +7,10 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-archivesBaseName = project.mod_name + "-" + project.mod_version + "+" + project.mod_target
-version = project.mod_version
+def runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "9999"
+
+archivesBaseName = project.mod_name
+version = project.mod_version + "." + runNumber
 group = project.mod_group
 
 minecraft {
@@ -16,12 +18,8 @@ minecraft {
 }
 
 repositories {
-    maven {
-        name = "Fabric"
-        url = "https://maven.fabricmc.net/"
-    }
-
-    mavenCentral()
+    maven { url "https://maven.terraformersmc.com/releases/" }
+    maven { url "https://maven.shedaniel.me/" }
 }
 
 dependencies {
@@ -41,7 +39,7 @@ dependencies {
     modImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.kotlin_version}"
 
     // ModMenu
-    modImplementation "io.github.prospector:modmenu:${modmenu_version}"
+    modImplementation "com.terraformersmc:modmenu:${modmenu_version}"
 
     // RoughlyEnoughItems
     modImplementation "me.shedaniel:RoughlyEnoughItems:${rei_version}"
@@ -65,7 +63,7 @@ tasks.withType(JavaCompile) {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = "sources"
+    classifier "sources"
     from sourceSets.main.allSource
 }
 
@@ -86,7 +84,15 @@ publishing {
     }
 
     repositories {
-        mavenLocal()
+        if (System.getenv("MAVEN_PASS") != null) {
+            maven {
+                url = "https://deploy.shedaniel.me/"
+                credentials {
+                    username = "shedaniel"
+                    password = System.getenv("MAVEN_PASS")
+                }
+            }
+        }
     }
 }
 

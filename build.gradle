@@ -7,11 +7,9 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_16
 targetCompatibility = JavaVersion.VERSION_16
 
-def runNumber = System.getenv("GITHUB_RUN_NUMBER") ?: "9999"
-
 archivesBaseName = project.mod_name
-version = project.mod_version + "." + runNumber
 group = project.mod_group
+version = project.mod_version + "+" + project.minecraft_version
 
 minecraft {
     accessWidener = file("src/main/resources/blade.accesswidener")
@@ -68,18 +66,6 @@ publishing {
             }
             artifact(sourcesJar) {
                 builtBy remapSourcesJar
-            }
-        }
-    }
-
-    repositories {
-        if (System.getenv("MAVEN_PASS") != null) {
-            maven {
-                url = "https://deploy.shedaniel.me/"
-                credentials {
-                    username = "shedaniel"
-                    password = System.getenv("MAVEN_PASS")
-                }
             }
         }
     }

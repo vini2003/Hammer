@@ -2,38 +2,29 @@
   "schemaVersion": 1,
   "id": "blade",
   "version": "${version}",
-
   "name": "Blade",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "A lightweight and simple GUI library.",
   "authors": [
     "vini2003"
   ],
   "contact": {
-    "sources": "https://github.com/vini2003/blade"
+    "email": "contact@vini2003.dev"
   },
-
-  "license": "LGPLv3",
+  "license": "MIT",
   "icon": "assets/blade/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.github.vini2003.blade.Blade"
+      "dev.vini2003.blade.BL"
     ],
     "client": [
-      "com.github.vini2003.blade.BladeClient"
+      "dev.vini2003.blade.BLClient"
     ]
   },
-  "mixins": [
-    "blade.mixins.json"
-  ],
   "accessWidener": "blade.accesswidener",
   "depends": {
     "fabricloader": ">=0.11.6",
-    "fabric": "*",
-    "minecraft": ">=1.17"
-  },
-  "suggests": {
-    "flamingo": "*"
+    "fabric": ">=0.35.1+1.17",
+    "minecraft": "1.17"
   }
 }

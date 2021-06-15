@@ -4,14 +4,14 @@ import com.github.vini2003.blade.client.utilities.Instances
 import com.github.vini2003.blade.common.utilities.Stacks
 import com.github.vini2003.blade.common.utilities.Networks
 import com.github.vini2003.blade.common.collection.base.HandledWidgetCollection
+import com.github.vini2003.blade.common.miscellaneous.Position
+import com.github.vini2003.blade.common.miscellaneous.Rectangle
+import com.github.vini2003.blade.common.miscellaneous.Size
 import com.github.vini2003.blade.common.widget.base.AbstractWidget
-import me.shedaniel.math.Rectangle
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.entity.player.PlayerInventory
-import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketByteBuf
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.ScreenHandlerType
@@ -27,7 +27,7 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 
 	val client = player.world.isClient
 
-	var rectangle: Rectangle = Rectangle()
+	var rectangle: Rectangle = Rectangle(Position.of(0, 0), Size.of(0, 0))
 
 	abstract fun initialize(width: Int, height: Int)
 
@@ -52,7 +52,7 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 			}
 		}
 
-		rectangle = Rectangle(minimumX.toInt(), minimumY.toInt(), (maximumX - minimumX).toInt(), (maximumY - minimumY).toInt())
+		rectangle = Rectangle(Position.of(minimumX.toInt(), minimumY.toInt()), Size.of((maximumX - minimumX).toInt(), (maximumY - minimumY).toInt()))
 
 		if (client) {
 			onLayoutChangedDelegate()
@@ -63,11 +63,11 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 	fun onLayoutChangedDelegate() {
 		val screen = Instances.client().currentScreen as? HandledScreen<*> ?: return
 
-		screen.x = rectangle.minX
-		screen.y = rectangle.minY
+		screen.x = rectangle.position.x.toInt()
+		screen.y = rectangle.position.y.toInt()
 
-		screen.backgroundWidth = rectangle.width
-		screen.backgroundHeight = rectangle.height
+		screen.backgroundWidth = rectangle.size.width.toInt()
+		screen.backgroundHeight = rectangle.size.height.toInt()
 	}
 
 	override fun addWidget(widget: AbstractWidget) {
@@ -126,8 +126,8 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 		}
 	}
 
-	override fun onSlotClick(slotNumber: Int, button: Int, actionType: SlotActionType?, playerEntity: PlayerEntity?): ItemStack {
-		return when (actionType) {
+	override fun onSlotClick(slotNumber: Int, button: Int, actionType: SlotActionType, playerEntity: PlayerEntity) {
+		when (actionType) {
 			SlotActionType.QUICK_MOVE -> {
 				if (slotNumber >= 0 && slotNumber < slots.size) {
 					val slot = slots[slotNumber]
@@ -166,9 +166,8 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 						}
 					}
 				}
-
-				return ItemStack.EMPTY
 			}
+			
 			else -> super.onSlotClick(slotNumber, button, actionType, playerEntity)
 		}
 	}

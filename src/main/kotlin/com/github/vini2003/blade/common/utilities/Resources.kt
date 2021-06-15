@@ -12,12 +12,12 @@ class Resources {
 		fun initialize() {
 			ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(object : SimpleSynchronousResourceReloadListener {
 				private val id: Identifier = Blade.identifier("reload_listener")
-
-				override fun apply(manager: ResourceManager?) {
+				
+				override fun reload(manager: ResourceManager?) {
 					Styles.clear()
 					Styles.load(manager!!)
 				}
-
+				
 				override fun getFabricId(): Identifier {
 					return id
 				}

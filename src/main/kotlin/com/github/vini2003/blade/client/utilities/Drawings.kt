@@ -1,7 +1,9 @@
 package com.github.vini2003.blade.client.utilities
 
 import com.github.vini2003.blade.common.miscellaneous.Color
+import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.font.TextRenderer
+import net.minecraft.client.render.GameRenderer
 import net.minecraft.client.render.OverlayTexture
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumerProvider
@@ -125,10 +127,8 @@ class Drawings {
 
 		@JvmStatic
 		fun drawTexturedQuad(matrices: MatrixStack, provider: VertexConsumerProvider, layer: RenderLayer, x: Float, y: Float, z: Float, sX: Float, sY: Float, u0: Float, v0: Float, u1: Float, v1: Float, light: Int, color: Color, texture: Identifier?) {
-			getTextureManager()?.bindTexture(texture)
-
 			val consumer = provider.getBuffer(layer)
-
+			
 			consumer.vertex(matrices.peek().model, x, y + sY, z).color(color.r, color.g, color.b, color.a).texture(u0, v1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().normal, 0F, 0F, 0F).next()
 			consumer.vertex(matrices.peek().model, x + sX, y + sY, z).color(color.r, color.g, color.b, color.a).texture(u1, v1).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().normal, 0F, 0F, 0F).next()
 			consumer.vertex(matrices.peek().model, x + sX, y, z).color(color.r, color.g, color.b, color.a).texture(u1, v0).overlay(OverlayTexture.DEFAULT_UV).light(light).normal(matrices.peek().normal, 0F, 0F, 0F).next()

@@ -1,79 +1,61 @@
 package com.github.vini2003.blade.client.utilities
 
-import net.minecraft.client.render.RenderLayer
-import net.minecraft.client.render.RenderPhase
-import net.minecraft.client.render.VertexFormat
-import net.minecraft.client.render.VertexFormats
+import net.minecraft.client.render.*
 import net.minecraft.util.Identifier
 
-class Layers : RenderLayer {
-	constructor(
-			name: String?,
-			vertexFormat: VertexFormat?,
-			drawMode: Int,
-			expectedBufferSize: Int,
-			hasCrumbling: Boolean,
-			translucent: Boolean,
-			startAction: Runnable?,
-			endAction: Runnable?
-	) : super(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction)
-
+class Layers(
+	name: String,
+	vertexFormat: VertexFormat,
+	drawMode: VertexFormat.DrawMode,
+	expectedBufferSize: Int,
+	hasCrumbling: Boolean,
+	translucent: Boolean,
+	startAction: Runnable,
+	endAction: Runnable
+) : RenderLayer(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction) {
+	
 	companion object {
 		@JvmStatic
-		fun get(texture: Identifier?): RenderLayer {
+		fun get(texture: Identifier): RenderLayer {
 			return of(
-					"entity_cutout",
-					VertexFormats.POSITION_COLOR_TEXTURE_LIGHT, 7, 256, true, true,
+					texture.toUnderscoreSeparatedString()!!,
+					VertexFormats.POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, 256, true, true,
 					MultiPhaseParameters.builder()
+							.shader(Shader(GameRenderer::getPositionColorTexLightmapShader))
 							.texture(Texture(texture, false, false))
 							.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
-							.diffuseLighting(RenderPhase.DISABLE_DIFFUSE_LIGHTING)
-							.alpha(RenderPhase.ONE_TENTH_ALPHA)
-							.lightmap(RenderPhase.DISABLE_LIGHTMAP)
-							.overlay(RenderPhase.DISABLE_OVERLAY_COLOR).build(true)
+							.overlay(RenderPhase.DISABLE_OVERLAY_COLOR)
+							.build(true)
 			)
 		}
 
 		@JvmStatic
-		private val INTERRFACE: RenderLayer = of(
+		private val Interface: RenderLayer = of(
 				"blade_flat",
-				VertexFormats.POSITION_COLOR_LIGHT, 7, 256,
+				VertexFormats.POSITION_COLOR_LIGHT, VertexFormat.DrawMode.QUADS, 256, false, false,
 				MultiPhaseParameters.builder()
 						.texture(NO_TEXTURE)
 						.cull(ENABLE_CULLING)
 						.lightmap(ENABLE_LIGHTMAP)
-						.shadeModel(SHADE_MODEL)
 						.depthTest(ALWAYS_DEPTH_TEST)
 						.transparency(TRANSLUCENT_TRANSPARENCY)
-						.alpha(ONE_TENTH_ALPHA)
 						.layering(VIEW_OFFSET_Z_LAYERING)
 						.build(false)
 		)
 
 		@JvmStatic
-		private val TOOLTIP: RenderLayer = of(
+		private val Tooltip: RenderLayer = of(
 				"blade_tooltip",
-				VertexFormats.POSITION_COLOR_LIGHT, 7, 256,
+				VertexFormats.POSITION_COLOR_LIGHT, VertexFormat.DrawMode.QUADS, 256, false, false,
 				MultiPhaseParameters.builder()
+						.shader(Shader(GameRenderer::getPositionColorLightmapShader))
 						.texture(NO_TEXTURE)
 						.cull(ENABLE_CULLING)
 						.lightmap(ENABLE_LIGHTMAP)
-						.shadeModel(SHADE_MODEL)
 						.depthTest(ALWAYS_DEPTH_TEST)
 						.transparency(NO_TRANSPARENCY)
-						.alpha(ONE_TENTH_ALPHA)
 						.layering(VIEW_OFFSET_Z_LAYERING)
 						.build(false)
 		)
-
-		@JvmStatic
-		fun flat(): RenderLayer {
-			return INTERRFACE
-		}
-
-		@JvmStatic
-		fun tooltip(): RenderLayer {
-			return TOOLTIP
-		}
 	}
 }

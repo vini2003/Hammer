@@ -18,6 +18,7 @@ import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.screen.slot.Slot
 import net.minecraft.screen.slot.SlotActionType
 import net.minecraft.util.Identifier
+import java.util.*
 
 abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId: Int, val player: PlayerEntity) : ScreenHandler(type, syncId), ExtendedWidgetCollection {
 	override val widgets: ArrayList<AbstractWidget> = ArrayList()
@@ -170,6 +171,12 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 			}
 			
 			else -> super.onSlotClick(slotNumber, button, actionType, playerEntity)
+		}
+	}
+	
+	open fun tick() {
+		this.widgets.forEach {
+			it.tick()
 		}
 	}
 }

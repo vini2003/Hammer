@@ -167,5 +167,11 @@ abstract class BaseScreen(title: Text?) : Screen(title), ExtendedWidgetCollectio
 		}
 	}
 	
-	
+	override fun tick() {
+		super.tick()
+		
+		this.widgets.forEach {
+			it.tick()
+		}
+	}
 }

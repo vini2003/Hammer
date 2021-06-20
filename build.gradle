@@ -35,32 +35,46 @@ dependencies {
 processResources {
     inputs.property "version", project.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
+    filesMatching("fabric.mod.json") {
         expand "version": project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
     }
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
+
+    it.options.release = 16
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier "sources"
-    from sourceSets.main.allSource
+java {
+    withSourcesJar()
 }
 
 jar {
-    from "LICENSE"
+    from("LICENSE") {
+        rename { "${it}_${project.archivesBaseName}"}
+    }
 }
 
 publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/vini2003/Blade"
+
+            credentials {
+                username = System.getenv("GPR_USERNAME")
+                password = System.getenv("GPR_TOKEN")
+            }
+        }
+    }
+
     publications {
-        mavenJava(MavenPublication) {
+        gpr(MavenPublication) {
+            groupId = project.mod_group
+            artifactId = project.mod_name
+            version = project.version
+
             artifact(remapJar) {
                 builtBy remapJar
             }

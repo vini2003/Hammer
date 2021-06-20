@@ -225,4 +225,12 @@ abstract class AbstractWidget : Positioned, Sized {
 	fun isWithin(x: Float, y: Float): Boolean {
 		return x > position.x && x < position.x + size.width && y > position.y && y < position.y + size.height
 	}
+	
+	open fun tick() {
+		if (this is WidgetCollection) {
+			this.widgets.forEach {
+				it.tick()
+			}
+		}
+	}
 }

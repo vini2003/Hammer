@@ -84,7 +84,7 @@ class Networks {
 		}
 
 		@JvmStatic
-		fun initialize() {
+		fun init() {
 		}
 
 		@JvmStatic

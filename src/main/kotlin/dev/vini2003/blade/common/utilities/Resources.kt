@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier
 
 class Resources {
 	companion object {
-		fun initialize() {
+		fun init() {
 			ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(object : SimpleSynchronousResourceReloadListener {
 				private val id: Identifier = BL.id("reload_listener")
 				

@@ -1,13 +1,13 @@
 package dev.vini2003.blade.common.handler
 
-import dev.vini2003.blade.client.utilities.Instances
-import dev.vini2003.blade.common.collection.base.ExtendedWidgetCollection
-import dev.vini2003.blade.common.miscellaneous.Position
-import dev.vini2003.blade.common.miscellaneous.Rectangle
-import dev.vini2003.blade.common.miscellaneous.Size
-import dev.vini2003.blade.common.utilities.Networks
-import dev.vini2003.blade.common.utilities.Stacks
-import dev.vini2003.blade.common.widget.base.AbstractWidget
+import dev.vini2003.blade.client.util.Instances
+import dev.vini2003.blade.common.collection.base.HandledWidgetCollection
+import dev.vini2003.blade.common.geometry.position.Position
+import dev.vini2003.blade.common.geometry.Rectangle
+import dev.vini2003.blade.common.geometry.size.Size
+import dev.vini2003.blade.common.util.Networks
+import dev.vini2003.blade.common.util.Stacks
+import dev.vini2003.blade.common.widget.AbstractWidget
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.gui.screen.ingame.HandledScreen
@@ -20,7 +20,7 @@ import net.minecraft.screen.slot.SlotActionType
 import net.minecraft.util.Identifier
 import java.util.*
 
-abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId: Int, val player: PlayerEntity) : ScreenHandler(type, syncId), ExtendedWidgetCollection {
+abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syncId: Int, val player: PlayerEntity) : ScreenHandler(type, syncId), HandledWidgetCollection {
 	override val widgets: ArrayList<AbstractWidget> = ArrayList()
 	
 	override val id = this.syncId
@@ -63,7 +63,7 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 	
 	@Environment(EnvType.CLIENT)
 	fun onLayoutChangedDelegate() {
-		val screen = Instances.client().currentScreen as? HandledScreen<*> ?: return
+		val screen = Instances.client.currentScreen as? HandledScreen<*> ?: return
 
 		screen.x = rectangle.position.x.toInt()
 		screen.y = rectangle.position.y.toInt()

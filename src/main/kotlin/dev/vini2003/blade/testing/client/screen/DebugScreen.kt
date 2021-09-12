@@ -1,6 +1,10 @@
 package dev.vini2003.blade.testing.client.screen
 
-import dev.vini2003.blade.client.handler.BaseScreen
+import dev.vini2003.blade.client.screen.BaseScreen
+import dev.vini2003.blade.common.util.extension.item
+import dev.vini2003.blade.common.util.extension.label
+import dev.vini2003.blade.common.util.extension.position
+import dev.vini2003.blade.common.util.extension.size
 import net.minecraft.item.Items
 
 class DebugScreen : BaseScreen(null) {

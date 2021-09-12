@@ -1,6 +1,6 @@
 package dev.vini2003.blade.registry.common
 
-import dev.vini2003.blade.BL.Companion.id
+import dev.vini2003.blade.BL.id
 import dev.vini2003.blade.testing.common.screenhandler.DebugScreenHandler
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry
 import net.minecraft.entity.player.PlayerInventory

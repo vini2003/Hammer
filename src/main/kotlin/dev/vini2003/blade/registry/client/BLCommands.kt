@@ -11,7 +11,7 @@ class BLCommands {
 			ClientCommandManager.DISPATCHER.register(
 				ClientCommandManager.literal("ds").executes {
 					MinecraftClient.getInstance().send {
-						MinecraftClient.getInstance().openScreen(DebugScreen())
+						MinecraftClient.getInstance().setScreen(DebugScreen())
 					}
 					
 					return@executes 1

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "blade",
-  "version": "${version}",
-  "name": "Blade",
-  "description": "A lightweight and simple GUI library.",
+  "id": "$id",
+  "version": "$version",
+  "name": "$name",
+  "description": "$description",
   "authors": [
     "vini2003"
   ],
@@ -15,16 +15,35 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.vini2003.blade.BL"
+      {
+        "adapter": "kotlin",
+        "value": "dev.vini2003.blade.BL"
+      }
     ],
     "client": [
-      "dev.vini2003.blade.BLClient"
+      {
+        "adapter": "kotlin",
+        "value": "dev.vini2003.blade.BLClient"
+      }
     ]
   },
   "accessWidener": "blade.accesswidener",
+  "mixins": [
+  ],
   "depends": {
-    "fabricloader": ">=0.11.6",
-    "fabric": ">=0.35.1+1.17",
-    "minecraft": "1.17"
+    "fabric-language-kotlin": ">=$fabricLanguageKotlinVersion",
+    "fabricloader": ">=$fabricLoaderVersion",
+    "fabric": ">=$fabricApiVersion",
+    "minecraft": ">=$minecraftVersion"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "text.blade.discord": "https://discord.gg/R3gGe5MpNe"
+      },
+      "badges": [
+        "library"
+      ]
+    }
   }
 }

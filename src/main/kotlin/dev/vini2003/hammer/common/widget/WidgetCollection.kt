@@ -29,8 +29,12 @@ interface WidgetCollection {
 		widgets.add(widget)
 		
 		if (this is Widget) {
-			this.onLayoutChanged()
-			this.handled?.also { widget.onAdded(it, this) }
+			onLayoutChanged()
+			
+			if (handled != null) {
+				widget.onAdded(handled!!, this)
+			}
+			
 			widget.parent = this
 		}
 	}
@@ -39,8 +43,12 @@ interface WidgetCollection {
 		widgets.remove(widget)
 		
 		if (this is Widget) {
-			this.onLayoutChanged()
-			this.handled?.also { widget.onRemoved(it, this) }
+			onLayoutChanged()
+			
+			if (handled != null) {
+				widget.onRemoved(handled!!, this)
+			}
+			
 			widget.parent = this
 		}
 	}

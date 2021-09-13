@@ -102,14 +102,12 @@ abstract class BaseScreen(title: Text?) : Screen(title), WidgetCollection.Handle
 		
 		val provider: VertexConsumerProvider.Immediate = Instances.client.bufferBuilders.effectVertexConsumers
 		
-		widgets.forEach {
+		widgets.asSequence().filterNot(Widget::hidden).forEach {
 			it.drawWidget(matrices, provider)
 		}
 		
-		allWidgets.forEach {
-			if (!it.hidden && it.focused) {
-				renderTooltip(matrices, it.getTooltip(), mouseX, mouseY)
-			}
+		allWidgets.asSequence().filterNot(Widget::hidden).filter(Widget::focused).forEach {
+			renderTooltip(matrices, it.getTooltip(), mouseX, mouseY)
 		}
 		
 		provider.draw()
@@ -160,8 +158,6 @@ abstract class BaseScreen(title: Text?) : Screen(title), WidgetCollection.Handle
 	override fun tick() {
 		super.tick()
 		
-		this.widgets.forEach {
-			it.tick()
-		}
+		widgets.forEach(Widget::tick)
 	}
 }

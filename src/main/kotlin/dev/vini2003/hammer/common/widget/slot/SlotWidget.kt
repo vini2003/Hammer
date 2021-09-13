@@ -72,6 +72,7 @@ open class SlotWidget(
 
 	override fun onAdded(handled: WidgetCollection.Handled, immediate: WidgetCollection) {
 		super.onAdded(handled, immediate)
+		
 		backendSlot = slotProvider(inventory, slot, slotX, slotY)
 		backendSlot!!.index = slot
 
@@ -94,10 +95,6 @@ open class SlotWidget(
 	}
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
-		if (hidden) return
-
 		texture.draw(matrices, provider, position.x, position.y, size.width, size.height)
-
-		super.drawWidget(matrices, provider)
 	}
 }

@@ -166,8 +166,8 @@ open class TabWidget : Widget(), WidgetCollection {
 			
 			Drawings.itemRenderer?.renderGuiItemIcon(tabSymbols[index], (position.x + (26F * index) + 4.5F).toInt(), position.y.toInt() + 7)
 		}
-
-		widgets.forEach {
+		
+		widgets.asSequence().filterNot(Widget::hidden).forEach {
 			it.drawWidget(matrices, provider)
 		}
 	}
@@ -177,6 +177,7 @@ open class TabWidget : Widget(), WidgetCollection {
 		
 		override fun addWidget(widget: Widget) {
 			super.addWidget(widget)
+			
 			widget.hidden = widget.hidden || parent != null && (parent as TabWidget).selected != number
 		}
 	}

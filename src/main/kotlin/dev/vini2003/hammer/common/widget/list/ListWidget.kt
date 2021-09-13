@@ -98,8 +98,11 @@ open class ListWidget : Widget(), WidgetCollection {
 
     override fun addWidget(widget: Widget) {
         widgets.add(widget)
-        this.handled?.also { widget.onAdded(it, this) }
-	
+	    
+	    if (handled != null) {
+	    	widget.onAdded(handled!!, this)
+	    }
+
 	    widgets.forEach(Widget::onLayoutChanged)
 
         super.addWidget(widget)
@@ -107,7 +110,10 @@ open class ListWidget : Widget(), WidgetCollection {
 
     override fun removeWidget(widget: Widget) {
         widgets.remove(widget)
-        this.handled?.also { widget.onRemoved(it, this) }
+	    
+	    if (handled != null) {
+	    	widget.onRemoved(handled!!, this)
+	    }
 	
 	    widgets.forEach(Widget::onLayoutChanged)
 	    
@@ -169,25 +175,25 @@ open class ListWidget : Widget(), WidgetCollection {
         }
 
 		if (widgets.isNotEmpty()) {
-			if (deltaY > 0 && widgets.minByOrNull { it.y }!!.y < this.y + 2) {
+			if (deltaY > 0 && widgets.minByOrNull { it.y }!!.y < y + 2) {
 				allWidgets.forEach {
 					it.y += deltaY.toFloat() * 2.5F
 
 					it.onLayoutChanged()
-					this.onLayoutChanged()
+					onLayoutChanged()
 
-					if (it.y >= this.y + height) it.hidden = true
-					else if (it.y >= this.y) it.hidden = false
+					if (it.y >= y + height) it.hidden = true
+					else if (it.y >= y) it.hidden = false
 				}
-			} else if (deltaY <= 0 && widgets.asSequence().map { it.y + it.height }.maxOrNull()!! >= this.y + height - 2) {
+			} else if (deltaY <= 0 && widgets.asSequence().map { it.y + it.height }.maxOrNull()!! >= y + height - 2) {
 				allWidgets.forEach {
 					it.y += deltaY.toFloat() * 2.5F
 
 					it.onLayoutChanged()
-					this.onLayoutChanged()
+					onLayoutChanged()
 
-					if (it.y >= this.y + height) it.hidden = true
-					else if (it.y >= this.y) it.hidden = false
+					if (it.y >= y + height) it.hidden = true
+					else if (it.y >= y) it.hidden = false
 				}
 			}
 		}
@@ -210,10 +216,10 @@ open class ListWidget : Widget(), WidgetCollection {
         val scale = Instances.client.window.scaleFactor.toFloat()
 
         val area = Scissors(provider, (x * scale).toInt(), (rawHeight - (y + height) * scale).toInt(), (width * scale).toInt(), (height * scale).toInt())
-	    
-        widgets.forEach {
-            it.drawWidget(matrices, provider)
-        }
+	
+	    widgets.asSequence().filterNot(Widget::hidden).forEach {
+		    it.drawWidget(matrices, provider)
+	    }
 
         area.destroy(provider)
     }

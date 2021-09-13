@@ -16,6 +16,7 @@ import net.minecraft.inventory.Inventory
 import net.minecraft.inventory.SimpleInventory
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.reflect.cast
 
 open class SlotListWidget(
 	var inventory: Inventory = SimpleInventory(0),
@@ -107,7 +108,10 @@ open class SlotListWidget(
 
 	override fun addWidget(widget: Widget) {
 		widgets.add(widget)
-		this.handled?.also { widget.onAdded(it, this) }
+		
+		if (handled != null) {
+			widget.onAdded(handled!!, this)
+		}
 		
 		widgets.forEach(Widget::onLayoutChanged)
 
@@ -116,8 +120,11 @@ open class SlotListWidget(
 
 	override fun removeWidget(widget: Widget) {
 		widgets.remove(widget)
-		this.handled?.also { widget.onRemoved(it, this) }
-
+		
+		if (handled != null) {
+			widget.onRemoved(handled!!, this)
+		}
+		
 		widgets.forEach(Widget::onLayoutChanged)
 
 		super.removeWidget(widget)
@@ -207,9 +214,7 @@ open class SlotListWidget(
 		if (deltaY > 0 && row > 0) {
 			--row
 			
-			widgets.forEach {
-				it as SlotWidget
-
+			widgets.map { it as SlotWidget }.forEach {
 				val slot = it.backendSlot!!
 
 				if (slot.index - widthInSlots >= 0) {
@@ -239,8 +244,6 @@ open class SlotListWidget(
 	}
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
-		if (hidden) return
-
 		scrollbarTexture.draw(matrices, provider, position.x + size.width - 18F, position.y, 18F, size.height)
 
 		val scrollerFocus = scrollerRectangle.isWithin(Positions.MouseX, Positions.MouseY)

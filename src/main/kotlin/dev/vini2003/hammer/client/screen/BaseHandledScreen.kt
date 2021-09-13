@@ -15,8 +15,8 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
 		handler.widgets.clear()
 		handler.slots.clear()
 		
-		this.backgroundWidth = width
-		this.backgroundHeight = height
+		backgroundWidth = width
+		backgroundHeight = height
 		
 		super.init()
 		
@@ -105,14 +105,12 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
 
 		val provider: VertexConsumerProvider.Immediate = Instances.client.bufferBuilders.effectVertexConsumers
 
-		handler.widgets.forEach {
+		handler.widgets.asSequence().filterNot(Widget::hidden).forEach {
 			it.drawWidget(matrices, provider)
 		}
-
-		handler.allWidgets.forEach {
-			if (!it.hidden && it.focused) {
-				renderTooltip(matrices, it.getTooltip(), mouseX, mouseY)
-			}
+		
+		handler.allWidgets.asSequence().filterNot(Widget::hidden).filter(Widget::focused).forEach {
+			renderTooltip(matrices, it.getTooltip(), mouseX, mouseY)
 		}
 
 		provider.draw()

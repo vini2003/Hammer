@@ -58,13 +58,13 @@ abstract class Widget : Positioned, Sized {
 		focus(x, y)
 
 		if (this is WidgetCollection && !(handled != null && !handled!!.client)) {
-			this.widgets.forEach {
+			widgets.forEach {
 				it.onMouseMoved(x, y)
 			}
 		}
 
-		if (focused && this.handled != null && this.handled!!.handler != null && this.handled!!.client && synchronize.contains(Networks.MouseMoved)) {
-			Networks.toServer(Networks.WidgetUpdate, Networks.ofMouseMove(this.handled!!.id!!, hash, x, y))
+		if (focused && handled != null && handled!!.handler != null && handled!!.client && synchronize.contains(Networks.MouseMoved)) {
+			Networks.toServer(Networks.WidgetUpdate, Networks.ofMouseMove(handled!!.id!!, hash, x, y))
 		}
 	}
 
@@ -72,13 +72,13 @@ abstract class Widget : Positioned, Sized {
 		if (focused) held = true
 
 		if (this is WidgetCollection && !(handled != null && !handled!!.client)) {
-			this.widgets.forEach {
+			widgets.forEach {
 				it.onMouseClicked(x, y, button)
 			}
 		}
 
-		if (focused && this.handled != null && this.handled!!.handler != null && this.handled!!.client && synchronize.contains(Networks.MouseClicked)) {
-			Networks.toServer(Networks.WidgetUpdate, Networks.ofMouseClick(this.handled!!.id!!, hash, x, y, button))
+		if (focused && handled != null && handled!!.handler != null && handled!!.client && synchronize.contains(Networks.MouseClicked)) {
+			Networks.toServer(Networks.WidgetUpdate, Networks.ofMouseClick(handled!!.id!!, hash, x, y, button))
 		}
 	}
 
@@ -86,96 +86,96 @@ abstract class Widget : Positioned, Sized {
 		held = false
 
 		if (this is WidgetCollection && !(handled != null && !handled!!.client)) {
-			this.widgets.forEach {
+			widgets.forEach {
 				it.onMouseReleased(x, y, button)
 			}
 		}
-		if (focused && this.handled != null && this.handled!!.handler != null && this.handled!!.client && synchronize.contains(Networks.MouseReleased)) {
-			Networks.toServer(Networks.WidgetUpdate, Networks.ofMouseRelease(this.handled!!.id!!, hash, x, y, button))
+		if (focused && handled != null && handled!!.handler != null && handled!!.client && synchronize.contains(Networks.MouseReleased)) {
+			Networks.toServer(Networks.WidgetUpdate, Networks.ofMouseRelease(handled!!.id!!, hash, x, y, button))
 		}
 	}
 
 	open fun onMouseDragged(x: Float, y: Float, button: Int, deltaX: Double, deltaY: Double) {
 		if (this is WidgetCollection && !(handled != null && !handled!!.client)) {
-			this.widgets.forEach {
+			widgets.forEach {
 				it.onMouseDragged(x, y, button, deltaX, deltaY)
 			}
 		}
 
-		if (focused && this.handled != null && this.handled!!.handler != null && this.handled!!.client && synchronize.contains(Networks.MouseDragged)) {
-			Networks.toServer(Networks.WidgetUpdate, Networks.ofMouseDrag(this.handled!!.id!!, hash, x, y, button, deltaX, deltaY))
+		if (focused && handled != null && handled!!.handler != null && handled!!.client && synchronize.contains(Networks.MouseDragged)) {
+			Networks.toServer(Networks.WidgetUpdate, Networks.ofMouseDrag(handled!!.id!!, hash, x, y, button, deltaX, deltaY))
 		}
 	}
 
 	open fun onMouseScrolled(x: Float, y: Float, deltaY: Double) {
 		if (this is WidgetCollection && !(handled != null && !handled!!.client)) {
-			this.widgets.forEach {
+			widgets.forEach {
 				it.onMouseScrolled(x, y, deltaY)
 			}
 		}
 
-		if (focused && this.handled != null && this.handled!!.handler != null && this.handled!!.client && synchronize.contains(Networks.MouseScrolled)) {
-			Networks.toServer(Networks.WidgetUpdate, Networks.ofMouseScroll(this.handled!!.id!!, hash, x, y, deltaY))
+		if (focused && handled != null && handled!!.handler != null && handled!!.client && synchronize.contains(Networks.MouseScrolled)) {
+			Networks.toServer(Networks.WidgetUpdate, Networks.ofMouseScroll(handled!!.id!!, hash, x, y, deltaY))
 		}
 	}
 
 	open fun onKeyPressed(keyCode: Int, scanCode: Int, keyModifiers: Int) {
 		if (this is WidgetCollection && !(handled != null && !handled!!.client)) {
-			this.widgets.forEach {
+			widgets.forEach {
 				it.onKeyPressed(keyCode, scanCode, keyModifiers)
 			}
 		}
 
-		if (focused && this.handled != null && this.handled!!.handler != null && this.handled!!.client && synchronize.contains(Networks.KeyPressed)) {
-			Networks.toServer(Networks.WidgetUpdate, Networks.ofKeyPress(this.handled!!.id!!, hash, keyCode, scanCode, keyModifiers))
+		if (focused && handled != null && handled!!.handler != null && handled!!.client && synchronize.contains(Networks.KeyPressed)) {
+			Networks.toServer(Networks.WidgetUpdate, Networks.ofKeyPress(handled!!.id!!, hash, keyCode, scanCode, keyModifiers))
 		}
 	}
 
 	open fun onKeyReleased(keyCode: Int, character: Int, keyModifiers: Int) {
 		if (this is WidgetCollection && !(handled != null && !handled!!.client)) {
-			this.widgets.forEach {
+			widgets.forEach {
 				it.onKeyReleased(keyCode, character, keyModifiers)
 			}
 		}
 
-		if (focused && this.handled != null && this.handled!!.handler != null && this.handled!!.client && synchronize.contains(Networks.KeyReleased)) {
-			Networks.toServer(Networks.WidgetUpdate, Networks.ofKeyRelease(this.handled!!.id!!, hash, keyCode, character, keyModifiers))
+		if (focused && handled != null && handled!!.handler != null && handled!!.client && synchronize.contains(Networks.KeyReleased)) {
+			Networks.toServer(Networks.WidgetUpdate, Networks.ofKeyRelease(handled!!.id!!, hash, keyCode, character, keyModifiers))
 		}
 	}
 
 	open fun onCharacterTyped(character: Char, keyCode: Int) {
 		if (this is WidgetCollection && !(handled != null && !handled!!.client)) {
-			this.widgets.forEach {
+			widgets.forEach {
 				it.onCharacterTyped(character, keyCode)
 			}
 		}
 
-		if (focused && this.handled != null && this.handled!!.handler != null && this.handled!!.client && synchronize.contains(Networks.CharacterTyped)) {
-			Networks.toServer(Networks.WidgetUpdate, Networks.ofCharType(this.handled!!.id!!, hash, character, keyCode))
+		if (focused && handled != null && handled!!.handler != null && handled!!.client && synchronize.contains(Networks.CharacterTyped)) {
+			Networks.toServer(Networks.WidgetUpdate, Networks.ofCharType(handled!!.id!!, hash, character, keyCode))
 		}
 	}
 
 	open fun onFocusGained() {
 		if (this is WidgetCollection && !(handled != null && !handled!!.client)) {
-			this.widgets.forEach {
+			widgets.forEach {
 				it.onFocusGained()
 			}
 		}
 
-		if (focused && this.handled != null && this.handled!!.handler != null && this.handled!!.client && synchronize.contains(Networks.FocusGained)) {
-			Networks.toServer(Networks.WidgetUpdate, Networks.ofFocusGain(this.handled!!.id!!, hash))
+		if (focused && handled != null && handled!!.handler != null && handled!!.client && synchronize.contains(Networks.FocusGained)) {
+			Networks.toServer(Networks.WidgetUpdate, Networks.ofFocusGain(handled!!.id!!, hash))
 		}
 	}
 
 	open fun onFocusReleased() {
 		if (this is WidgetCollection && !(handled != null && !handled!!.client)) {
-			this.widgets.forEach {
+			widgets.forEach {
 				it.onFocusReleased()
 			}
 		}
 
-		if (focused && this.handled != null && this.handled!!.handler != null && this.handled!!.client && synchronize.contains(Networks.FocusReleased)) {
-			Networks.toServer(Networks.WidgetUpdate, Networks.ofFocusRelease(this.handled!!.id!!, hash))
+		if (focused && handled != null && handled!!.handler != null && handled!!.client && synchronize.contains(Networks.FocusReleased)) {
+			Networks.toServer(Networks.WidgetUpdate, Networks.ofFocusRelease(handled!!.id!!, hash))
 		}
 	}
 
@@ -186,14 +186,14 @@ abstract class Widget : Positioned, Sized {
 
 	@Environment(EnvType.CLIENT)
 	open fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
-		if (hidden) return
+	
 	}
 
 	open fun onLayoutChanged() {
 		focus(Positions.MouseX, Positions.MouseY)
 
 		parent?.onLayoutChanged()
-		this.handled?.onLayoutChanged()
+		handled?.onLayoutChanged()
 	}
 
 	fun focus(x: Float, y: Float) {
@@ -210,9 +210,7 @@ abstract class Widget : Positioned, Sized {
 	
 	open fun tick() {
 		if (this is WidgetCollection) {
-			this.widgets.forEach {
-				it.tick()
-			}
+			widgets.forEach(Widget::tick)
 		}
 	}
 	

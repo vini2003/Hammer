@@ -171,8 +171,6 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 	}
 	
 	open fun tick() {
-		this.widgets.forEach {
-			it.tick()
-		}
+		widgets.forEach(Widget::tick)
 	}
 }

@@ -8,14 +8,11 @@ import net.minecraft.text.Text
 
 open class TextWidget(var text: Text? = null) : Widget() {
 	var shadow = false
-	var color = 4210752
+	
+	var color = 0x404040
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
-		if (hidden) return
-		
-		super.drawWidget(matrices, provider)
-
-		text?.also {
+		if (text != null) {
 			if (shadow) {
 				Drawings.textRenderer?.drawWithShadow(matrices, text, position.x, position.y, color)
 			} else {

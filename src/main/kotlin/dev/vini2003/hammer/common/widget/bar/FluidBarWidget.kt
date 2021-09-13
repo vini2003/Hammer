@@ -55,8 +55,6 @@ open class FluidBarWidget(
 	override var backgroundTexture: Texture = StandardBackgroundTexture
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
-		if (hidden) return
-		
 		val windowHeight = Instances.client.window.height.toFloat()
 		val windowScale = Instances.client.window.scaleFactor.toFloat()
 

@@ -18,8 +18,6 @@ open class ItemWidget(var stack: ItemStack = ItemStack.EMPTY) : Widget() {
 	}
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
-		if (hidden) return
-
 		Drawings.itemRenderer?.renderInGui(stack, position.x.toInt(), position.y.toInt())
 	}
 }

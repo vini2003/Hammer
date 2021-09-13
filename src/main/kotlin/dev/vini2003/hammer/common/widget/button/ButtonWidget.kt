@@ -79,8 +79,6 @@ open class ButtonWidget(var clickAction: () -> Unit = {}) : Widget() {
 	}
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
-		if (hidden) return
-
 		val texture = if (disabled()) offTexture else if (focused) focusedTexture else onTexture
 
 		texture.draw(matrices, provider, position.x, position.y, size.width, size.height)

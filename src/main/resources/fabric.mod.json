@@ -11,23 +11,23 @@
     "email": "contact@vini2003.dev"
   },
   "license": "MIT",
-  "icon": "assets/blade/icon.png",
+  "icon": "assets/hammer/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
       {
         "adapter": "kotlin",
-        "value": "dev.vini2003.blade.BL"
+        "value": "dev.vini2003.hammer.H"
       }
     ],
     "client": [
       {
         "adapter": "kotlin",
-        "value": "dev.vini2003.blade.BLClient"
+        "value": "dev.vini2003.hammer.HClient"
       }
     ]
   },
-  "accessWidener": "blade.accesswidener",
+  "accessWidener": "hammer.accesswidener",
   "mixins": [
   ],
   "depends": {
@@ -39,7 +39,7 @@
   "custom": {
     "modmenu": {
       "links": {
-        "text.blade.discord": "https://discord.gg/R3gGe5MpNe"
+        "text.hammer.discord": "https://discord.gg/R3gGe5MpNe"
       },
       "badges": [
         "library"

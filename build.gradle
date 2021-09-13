@@ -1,0 +1,140 @@
+plugins {
+    // Fabric Loom
+    id "fabric-loom"
+
+    // KotlinX Serialization
+    id "org.jetbrains.kotlin.plugin.serialization"
+
+    // Maven Publish
+    id "maven-publish"
+
+	// Kotlin
+	id "org.jetbrains.kotlin.jvm"
+}
+
+group = "dev.vini2003"
+version = "3.3.0"
+
+loom {
+    accessWidener = file("src/main/resources/hammer.accesswidener")
+}
+
+repositories {
+    // Maven Central
+    mavenCentral()
+
+    // vini2003.dev
+    maven {
+        name = "vini2003.dev"
+        url = "https://maven.pkg.github.com/vini2003/Maven"
+
+        credentials {
+			username = System.getenv("GPR_USERNAME")
+			password = System.getenv("GPR_TOKEN")
+        }
+    }
+
+    // Fabric
+    maven {
+		name = "FabricMC"
+		url = "https://maven.fabricmc.net/"
+	}
+	
+	// TerraformersMC
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/releases"
+	}
+}
+
+dependencies {
+    // Minecraft
+    minecraft group: "com.mojang", name: "minecraft", version: minecraftVersion
+
+
+    // Yarn
+    mappings group: "net.fabricmc", name: "yarn", version: yarnVersion, classifier: "v2"
+
+
+    // Fabric Loader
+    modImplementation group: "net.fabricmc", name: "fabric-loader", version: fabricLoaderVersion
+
+
+    // Fabric API
+    modImplementation group: "net.fabricmc.fabric-api",  name: "fabric-api",  version: fabricApiVersion
+
+
+    // Fabric Language Kotlin
+    modImplementation group: "net.fabricmc", name: "fabric-language-kotlin", version: fabricLanguageKotlinVersion
+
+    // KotlinX Serialization Json
+    implementation group: "org.jetbrains.kotlinx", name: "kotlinx-serialization-json", version: kotlinxSerializationJsonVersion
+
+
+    // KotlinX Coroutines
+    implementation group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: kotlinxCoroutinesVersion
+
+
+    // KotlinX DateTime
+    implementation group: "org.jetbrains.kotlinx", name: "kotlinx-datetime", version: kotlinxDateTimeVersion
+
+	// ModMenu
+	modImplementation group: "com.terraformersmc", name: "modmenu", version: modMenuVersion
+}
+
+compileKotlin {
+	kotlinOptions {
+		jvmTarget = "1.8"
+	}
+}
+
+processResources {
+	filesMatching("fabric.mod.json") {
+		expand(
+				id: projectId,
+				name: projectName,
+				version: projectVersion,
+				description: projectDescription,
+				minecraftVersion: minecraftVersion,
+				kotlinVersion: kotlinVersion,
+				fabricLoaderVersion: fabricLoaderVersion,
+				fabricApiVersion: fabricApiVersion,
+				fabricLanguageKotlinVersion: fabricLanguageKotlinVersion
+		)
+	}
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier "sources"
+	from sourceSets.main.allSource
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+		    artifactId = projectId
+			groupId = projectGroup
+			version = projectVersion
+
+			artifact(remapJar) {
+				builtBy remapJar
+			}
+
+			artifact(sourcesJar) {
+				builtBy remapSourcesJar
+			}
+        }
+    }
+
+    repositories {
+		maven {
+		    name = "GitHubPackages"
+		    url = "https://maven.pkg.github.com/vini2003/Maven"
+    
+		    credentials {
+		        username = System.getenv("GPR_USERNAME")
+		        password = System.getenv("GPR_TOKEN")
+		    }
+		}
+    }
+}

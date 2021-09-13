@@ -1,0 +1,22 @@
+pluginManagement {
+    repositories {
+        // Fabric
+        maven {
+            name = "FabricMC"
+            url = "https://maven.fabricmc.net"
+        }
+
+        // Plugin Portal
+        gradlePluginPortal()
+    }
+
+    plugins {
+        id "fabric-loom" version loomVersion
+
+        id "org.jetbrains.kotlin.jvm" version kotlinVersion
+
+        id "org.jetbrains.kotlin.plugin.serialization" version kotlinVersion
+    }
+}
+
+rootProject.name = "hammer"

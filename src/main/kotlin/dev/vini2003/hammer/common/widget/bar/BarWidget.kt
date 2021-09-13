@@ -35,5 +35,19 @@ abstract class BarWidget(
 	
 	abstract var backgroundTexture: Texture
 	
-	var orientation: Orientation = Orientation.Vertical
+	var horizontal: Boolean = false
+		set(value) {
+			field = value
+			if (vertical && value) {
+				vertical = false
+			}
+		}
+	
+	var vertical: Boolean = true
+		set(value) {
+			field = value
+			if (horizontal && value) {
+				horizontal = false
+			}
+		}
 }

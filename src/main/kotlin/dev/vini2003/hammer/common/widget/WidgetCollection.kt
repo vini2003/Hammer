@@ -18,6 +18,7 @@ import dev.vini2003.hammer.common.widget.tab.TabWidget
 import dev.vini2003.hammer.common.widget.text.TextWidget
 import net.minecraft.inventory.Inventory
 import net.minecraft.text.Text
+import kotlin.math.max
 
 interface WidgetCollection {
 	val widgets: MutableList<Widget>
@@ -120,7 +121,7 @@ interface WidgetCollection {
 	fun playerInventory(panel: Widget, inventory: Inventory) {
 		playerInventory(
 			Position.of(
-				java.lang.Float.max(
+				max(
 					panel.x + 8F,
 					panel.x + 8F + (panel.width / 2F - (9 * 18F - 4F))
 				), panel.y + panel.height - 83F

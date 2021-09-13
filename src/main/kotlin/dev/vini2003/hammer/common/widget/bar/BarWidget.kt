@@ -2,8 +2,8 @@ package dev.vini2003.hammer.common.widget.bar
 
 import dev.vini2003.hammer.H
 import dev.vini2003.hammer.client.texture.Texture
+import dev.vini2003.hammer.common.orientation.Orientation
 import dev.vini2003.hammer.common.widget.Widget
-import net.minecraft.util.Identifier
 
 abstract class BarWidget(
 	var maximum: () -> Float,
@@ -36,9 +36,4 @@ abstract class BarWidget(
 	abstract var backgroundTexture: Texture
 	
 	var orientation: Orientation = Orientation.Vertical
-	
-	enum class Orientation {
-		Horizontal,
-		Vertical
-	}
 }

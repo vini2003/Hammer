@@ -9,6 +9,7 @@ import dev.vini2003.hammer.client.util.extension.width
 import dev.vini2003.hammer.common.widget.WidgetCollection
 import dev.vini2003.hammer.common.util.Networks
 import dev.vini2003.hammer.common.widget.Widget
+import net.minecraft.client.gui.widget.ButtonWidget
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.sound.PositionedSoundInstance
 import net.minecraft.client.util.math.MatrixStack

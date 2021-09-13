@@ -59,30 +59,14 @@ interface WidgetCollection {
 		widget.apply(block)
 	}
 	
-	fun horizontalBar(block: TextureBarWidget.() -> Unit) {
+	fun bar(block: TextureBarWidget.() -> Unit) {
 		val widget = TextureBarWidget()
-		widget.orientation = BarWidget.Orientation.Horizontal
 		addWidget(widget)
 		widget.apply(block)
 	}
 	
-	fun verticalBar(block: TextureBarWidget.() -> Unit) {
-		val widget = TextureBarWidget()
-		widget.orientation = BarWidget.Orientation.Vertical
-		addWidget(widget)
-		widget.apply(block)
-	}
-	
-	fun horizontalFluidBar(block: FluidBarWidget.() -> Unit) {
+	fun fluidBar(block: FluidBarWidget.() -> Unit) {
 		val widget = FluidBarWidget()
-		widget.orientation = BarWidget.Orientation.Horizontal
-		addWidget(widget)
-		widget.apply(block)
-	}
-	
-	fun verticalFluidBar(block: FluidBarWidget.() -> Unit) {
-		val widget = FluidBarWidget()
-		widget.orientation = BarWidget.Orientation.Vertical
 		addWidget(widget)
 		widget.apply(block)
 	}

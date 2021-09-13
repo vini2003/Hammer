@@ -2,6 +2,7 @@ package dev.vini2003.hammer.testing.common.screenhandler
 
 import dev.vini2003.hammer.common.geometry.position.Position
 import dev.vini2003.hammer.common.geometry.size.Size
+import dev.vini2003.hammer.common.orientation.Orientation
 import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler
 import dev.vini2003.hammer.common.util.extension.*
 import dev.vini2003.hammer.registry.common.HScreenHandlers
@@ -17,16 +18,16 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 			
 			button {
 				position = Position.of(9.0F, 9.0F) + parent!!.position
-				size = Size.of(36.0F, 16.0F)
+				size = Size.of(11.0F, 11.0F)
 				
-				label = "UwU".toLiteralText()
+				label = "+".toLiteralText()
 			}
 			
 			button {
-				position = Position.of(9.0F, 9.0F + 16.0F + 4.5F) + parent!!.position
-				size = Size.of(36.0F, 16.0F)
+				position = Position.of(9.0F + 11.0F + 5F, 9.0F) + parent!!.position
+				size = Size.of(11.0F, 11.0F)
 				
-				label = "OwO".toLiteralText()
+				label = "-".toLiteralText()
 			}
 			
 			button {
@@ -36,20 +37,13 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 				label = "OvO".toLiteralText()
 			}
 			
-			verticalFluidBar {
+			fluidBar {
 				position = Position.of(9.0F + 36.0F + 9.0F, 9.0F) + parent!!.position
 				size = Size.of(18.0F, 48.0F)
 				
+				orientation = Orientation.Vertical
+				
 				fluid = Fluids.WATER
-				
-				current = { 0.5F }
-			}
-			
-			verticalFluidBar {
-				position = Position.of(9.0F + 36.0F + 9.0F + 18.0F + 9.0F, 9.0F) + parent!!.position
-				size = Size.of(18.0F, 48.0F)
-				
-				fluid = Fluids.LAVA
 				
 				current = { 0.5F }
 			}

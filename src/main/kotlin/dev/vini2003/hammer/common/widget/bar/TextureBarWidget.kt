@@ -3,6 +3,7 @@ package dev.vini2003.hammer.common.widget.bar
 import dev.vini2003.hammer.client.util.Instances
 import dev.vini2003.hammer.client.scissor.Scissors
 import dev.vini2003.hammer.client.texture.Texture
+import dev.vini2003.hammer.common.orientation.Orientation
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 

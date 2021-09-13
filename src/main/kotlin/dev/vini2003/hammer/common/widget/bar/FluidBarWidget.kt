@@ -5,11 +5,8 @@ package dev.vini2003.hammer.common.widget.bar
 import dev.vini2003.hammer.client.util.Instances
 import dev.vini2003.hammer.client.scissor.Scissors
 import dev.vini2003.hammer.client.texture.Texture
+import dev.vini2003.hammer.common.orientation.Orientation
 import dev.vini2003.hammer.common.util.Texts
-import dev.vini2003.hammer.common.util.extension.gray
-import dev.vini2003.hammer.common.util.extension.toLiteralText
-import dev.vini2003.hammer.common.util.extension.toTranslatableText
-import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView
 import net.minecraft.client.render.VertexConsumerProvider
@@ -79,7 +76,7 @@ open class FluidBarWidget(
 				
 				area = Scissors(provider, x * windowScale, windowHeight - (y + height) * windowScale, foregroundWidth * windowScale, height * windowScale)
 				
-				foregroundTexture.draw(matrices, provider, x, y, width, height)
+				foregroundTexture.draw(matrices, provider, x + 1, y + 1, width - 2, height - 2)
 				
 				area.destroy(provider)
 			}

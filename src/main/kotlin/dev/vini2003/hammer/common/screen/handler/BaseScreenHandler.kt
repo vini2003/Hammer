@@ -72,15 +72,17 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 		screen.backgroundHeight = rectangle.size.height.toInt()
 	}
 
-	override fun addWidget(widget: Widget) {
-		widgets.add(widget)
+	override fun add(widget: Widget) {
+		widgets += widget
+		
 		widget.onAdded(this, this)
 		
 		widgets.forEach(Widget::onLayoutChanged)
 	}
 
-	override fun removeWidget(widget: Widget) {
-		widgets.remove(widget)
+	override fun remove(widget: Widget) {
+		widgets -= widget
+		
 		widget.onRemoved(this, this)
 		
 		widgets.forEach(Widget::onLayoutChanged)
@@ -116,7 +118,9 @@ abstract class BaseScreenHandler(type: ScreenHandlerType<out ScreenHandler>, syn
 
 	fun removeSlot(slot: Slot?) {
 		val id = slot!!.id
-		slots.remove(slot)
+		
+		slots -= slot
+		
 		slots.forEach {
 			if (it.id >= id) {
 				--it.id

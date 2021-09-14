@@ -100,7 +100,7 @@ abstract class BaseScreen(title: Text?) : Screen(title), WidgetCollection.Handle
 	override fun render(matrices: MatrixStack, mouseX: Int, mouseY: Int, delta: Float) {
 		super.renderBackground(matrices)
 		
-		val provider: VertexConsumerProvider.Immediate = Instances.client.bufferBuilders.effectVertexConsumers
+		val provider = Instances.client.bufferBuilders.effectVertexConsumers
 		
 		widgets.asSequence().filterNot(Widget::hidden).forEach {
 			it.drawWidget(matrices, provider)
@@ -141,15 +141,17 @@ abstract class BaseScreen(title: Text?) : Screen(title), WidgetCollection.Handle
 		rectangle = Rectangle(Position.of(minimumX.toInt(), minimumY.toInt()), Size.of((maximumX - minimumX).toInt(), (maximumY - minimumY).toInt()))
 	}
 	
-	override fun addWidget(widget: Widget) {
-		widgets.add(widget)
+	override fun add(widget: Widget) {
+		widgets += widget
+		
 		widget.onAdded(this, this)
 		
 		widgets.forEach(Widget::onLayoutChanged)
 	}
 	
-	override fun removeWidget(widget: Widget) {
-		widgets.remove(widget)
+	override fun remove(widget: Widget) {
+		widgets -= widget
+		
 		widget.onRemoved(this, this)
 		
 		widgets.forEach(Widget::onLayoutChanged)

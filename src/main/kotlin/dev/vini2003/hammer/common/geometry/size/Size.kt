@@ -10,10 +10,17 @@ interface Size : SizeHolder {
 
 		@JvmStatic
 		fun of(anchor: SizeHolder): Size = of(anchor, 0, 0)
-
-		@JvmStatic
-		fun absolute(anchor: SizeHolder): Size = of(anchor.width, anchor.height)
 	}
+	
+	operator fun plus(size: Size): Size = of(width + size.width, height + size.height)
+	operator fun plus(size: Pair<Number, Number>): Size = of(width + size.first.toFloat(), height + size.second.toFloat())
+	
+	operator fun minus(size: Size): Size = of(width + size.width, height + size.height)
+	operator fun minus(size: Pair<Number, Number>): Size = of(width + size.first.toFloat(), height + size.second.toFloat())
+	
+	operator fun times(number: Number): Size = of(width * number.toFloat(), height + number.toFloat())
+	
+	operator fun div(number: Number): Size = of(width / number.toFloat(), height / number.toFloat())
 
 	data class SimpleSize(override val width: Float = 0F, override val height: Float = 0F) : Size
 }

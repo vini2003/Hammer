@@ -60,7 +60,7 @@ open class ButtonWidget(var clickAction: () -> Unit = {}) : Widget() {
 	override fun onAdded(handled: WidgetCollection.Handled, immediate: WidgetCollection) {
 		super.onAdded(handled, immediate)
 
-		synchronize.add(Networks.MouseClicked)
+		synchronize += Networks.MouseClicked
 	}
 
 	override fun onMouseClicked(x: Float, y: Float, button: Int) {

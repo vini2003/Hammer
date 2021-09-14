@@ -60,26 +60,24 @@ open class FluidBarWidget(
 		
 		var area: Scissors?
 		
-		when (orientation) {
-			Orientation.Vertical -> {
-				backgroundTexture.draw(matrices, provider, x, y, width, height)
-				
-				area = Scissors(provider, (x * windowScale).toInt(), (windowHeight - (y + height) * windowScale).toInt(), (width * windowScale).toInt(), (foregroundHeight * windowScale).toInt())
-				
-				foregroundTexture.draw(matrices, provider, x + 1, y + 1, width - 2, height - 2)
-				
-				area.destroy(provider)
-			}
+		if (vertical) {
+			backgroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			Orientation.Horizontal -> {
-				backgroundTexture.draw(matrices, provider, x, y, width, height)
-				
-				area = Scissors(provider, x * windowScale, windowHeight - (y + height) * windowScale, foregroundWidth * windowScale, height * windowScale)
-				
-				foregroundTexture.draw(matrices, provider, x + 1, y + 1, width - 2, height - 2)
-				
-				area.destroy(provider)
-			}
+			area = Scissors(provider, (x * windowScale).toInt(), (windowHeight - (y + height) * windowScale).toInt(), (width * windowScale).toInt(), (foregroundHeight * windowScale).toInt())
+			
+			foregroundTexture.draw(matrices, provider, x + 1, y + 1, width - 2, height - 2)
+			
+			area.destroy(provider)
+		}
+		
+		if (horizontal) {
+			backgroundTexture.draw(matrices, provider, x, y, width, height)
+			
+			area = Scissors(provider, x * windowScale, windowHeight - (y + height) * windowScale, foregroundWidth * windowScale, height * windowScale)
+			
+			foregroundTexture.draw(matrices, provider, x + 1, y + 1, width - 2, height - 2)
+			
+			area.destroy(provider)
 		}
 	}
 	

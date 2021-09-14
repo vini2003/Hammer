@@ -16,7 +16,6 @@ import net.minecraft.inventory.Inventory
 import net.minecraft.inventory.SimpleInventory
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.reflect.cast
 
 open class SlotListWidget(
 	var inventory: Inventory = SimpleInventory(0),
@@ -106,8 +105,8 @@ open class SlotListWidget(
 			}
 		}
 
-	override fun addWidget(widget: Widget) {
-		widgets.add(widget)
+	override fun add(widget: Widget) {
+		widgets += widget
 		
 		if (handled != null) {
 			widget.onAdded(handled!!, this)
@@ -115,11 +114,11 @@ open class SlotListWidget(
 		
 		widgets.forEach(Widget::onLayoutChanged)
 
-		super.addWidget(widget)
+		super.add(widget)
 	}
 
-	override fun removeWidget(widget: Widget) {
-		widgets.remove(widget)
+	override fun remove(widget: Widget) {
+		widgets -= widget
 		
 		if (handled != null) {
 			widget.onRemoved(handled!!, this)
@@ -127,7 +126,7 @@ open class SlotListWidget(
 		
 		widgets.forEach(Widget::onLayoutChanged)
 
-		super.removeWidget(widget)
+		super.remove(widget)
 	}
 
 	override fun onLayoutChanged() {
@@ -140,8 +139,8 @@ open class SlotListWidget(
 	override fun onAdded(handled: WidgetCollection.Handled, immediate: WidgetCollection) {
 		super.onAdded(handled, immediate)
 
-		synchronize.add(Networks.MouseScrolled)
-		synchronize.add(Networks.MouseClicked)
+		synchronize += Networks.MouseScrolled
+		synchronize += Networks.MouseClicked
 
 		widthInSlots = (size.width / 18 - 1).toInt()
 		heightInSlots = (size.height / 18).toInt()
@@ -153,8 +152,9 @@ open class SlotListWidget(
 					val slot = SlotWidget(0 + h * widthInSlots + w, inventory)
 					slot.position = position.offset(w * 18, h * 18)
 					slot.size = Size.of(18F, 18F)
-					widgets.add(slot)
-					immediate.addWidget(slot)
+					
+					widgets += slot
+					immediate += slot
 				}
 			}
 		}

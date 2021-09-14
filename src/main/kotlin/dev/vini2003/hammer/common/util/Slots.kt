@@ -24,9 +24,9 @@ object Slots {
 				slot.position = Position.of(position, size.width * x, size.height * y)
 				slot.size = Size.of(size)
 				
-				set.add(slot)
+				set += slot
 				
-				parent.addWidget(slot)
+				parent += slot
 			}
 		}
 		return set

@@ -72,7 +72,7 @@ open class TabWidget : Widget(), WidgetCollection {
 			}
 		}
 
-		synchronize.add(Networks.MouseClicked)
+		synchronize += Networks.MouseClicked
 	}
 
 	fun addTab(symbol: ItemStack): WidgetCollection {
@@ -96,9 +96,9 @@ open class TabWidget : Widget(), WidgetCollection {
 		collection.handled = this.handled
 		collection.parent = this
 
-		tabCollections.add(collection)
-		tabSymbols.add(symbol)
-		tabTooltips.add(tooltip)
+		tabCollections += collection
+		tabSymbols += symbol
+		tabTooltips += tooltip
 
 		tabRectangles.also {
 			it.clear()
@@ -106,7 +106,7 @@ open class TabWidget : Widget(), WidgetCollection {
 			var x = 0F
 
 			tabCollections.forEach { _ ->
-				tabRectangles.add(Rectangle(position.offset(x, 0), Size.of(26F, 25F)))
+				tabRectangles += Rectangle(position.offset(x, 0), Size.of(26F, 25F))
 				x += 26F
 			}
 		}
@@ -175,8 +175,8 @@ open class TabWidget : Widget(), WidgetCollection {
 	class TabWidgetCollection(private val number: Int) : Widget(), WidgetCollection {
 		override val widgets: MutableList<Widget> = mutableListOf()
 		
-		override fun addWidget(widget: Widget) {
-			super.addWidget(widget)
+		override fun add(widget: Widget) {
+			super.add(widget)
 			
 			widget.hidden = widget.hidden || parent != null && (parent as TabWidget).selected != number
 		}

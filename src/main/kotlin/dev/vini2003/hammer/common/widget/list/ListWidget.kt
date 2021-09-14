@@ -96,8 +96,8 @@ open class ListWidget : Widget(), WidgetCollection {
             }
         }
 
-    override fun addWidget(widget: Widget) {
-        widgets.add(widget)
+    override fun add(widget: Widget) {
+        widgets += widget
 	    
 	    if (handled != null) {
 	    	widget.onAdded(handled!!, this)
@@ -105,11 +105,11 @@ open class ListWidget : Widget(), WidgetCollection {
 
 	    widgets.forEach(Widget::onLayoutChanged)
 
-        super.addWidget(widget)
+        super.add(widget)
     }
 
-    override fun removeWidget(widget: Widget) {
-        widgets.remove(widget)
+    override fun remove(widget: Widget) {
+        widgets -= widget
 	    
 	    if (handled != null) {
 	    	widget.onRemoved(handled!!, this)
@@ -117,7 +117,7 @@ open class ListWidget : Widget(), WidgetCollection {
 	
 	    widgets.forEach(Widget::onLayoutChanged)
 	    
-        super.removeWidget(widget)
+        super.remove(widget)
     }
 
     override fun onLayoutChanged() {

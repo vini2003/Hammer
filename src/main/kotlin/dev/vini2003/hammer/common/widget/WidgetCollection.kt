@@ -5,9 +5,8 @@ import dev.vini2003.hammer.common.geometry.position.PositionHolder
 import dev.vini2003.hammer.common.geometry.size.Size
 import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler
 import dev.vini2003.hammer.common.util.Slots
-import dev.vini2003.hammer.common.widget.bar.BarWidget
-import dev.vini2003.hammer.common.widget.bar.TextureBarWidget
 import dev.vini2003.hammer.common.widget.bar.FluidBarWidget
+import dev.vini2003.hammer.common.widget.bar.TextureBarWidget
 import dev.vini2003.hammer.common.widget.button.ButtonWidget
 import dev.vini2003.hammer.common.widget.item.ItemWidget
 import dev.vini2003.hammer.common.widget.list.ListWidget
@@ -26,8 +25,12 @@ interface WidgetCollection {
 	val allWidgets: MutableList<Widget>
 		get() = (widgets + widgets.map { if (it is WidgetCollection) it.allWidgets else mutableListOf(it) }.flatten()).toMutableList()
 	
-	fun addWidget(widget: Widget) {
-		widgets.add(widget)
+	operator fun plusAssign(widget: Widget) {
+		add(widget)
+	}
+	
+	fun add(widget: Widget) {
+		widgets += widget
 		
 		if (this is Widget) {
 			onLayoutChanged()
@@ -40,8 +43,12 @@ interface WidgetCollection {
 		}
 	}
 	
-	fun removeWidget(widget: Widget) {
-		widgets.remove(widget)
+	operator fun minusAssign(widget: Widget) {
+		remove(widget)
+	}
+	
+	fun remove(widget: Widget) {
+		widgets -= widget
 		
 		if (this is Widget) {
 			onLayoutChanged()
@@ -56,61 +63,61 @@ interface WidgetCollection {
 	
 	fun button(block: ButtonWidget.() -> Unit) {
 		val widget = ButtonWidget()
-		addWidget(widget)
+		this += widget
 		widget.apply(block)
 	}
 	
 	fun bar(block: TextureBarWidget.() -> Unit) {
 		val widget = TextureBarWidget()
-		addWidget(widget)
+		this += widget
 		widget.apply(block)
 	}
 	
 	fun fluidBar(block: FluidBarWidget.() -> Unit) {
 		val widget = FluidBarWidget()
-		addWidget(widget)
+		this += widget
 		widget.apply(block)
 	}
 	
 	fun item(block: ItemWidget.() -> Unit) {
 		val widget = ItemWidget()
-		addWidget(widget)
+		this += widget
 		widget.apply(block)
 	}
 	
 	fun list(block: ListWidget.() -> Unit) {
 		val widget = ListWidget()
-		addWidget(widget)
+		this += widget
 		widget.apply(block)
 	}
 	
 	fun panel(block: PanelWidget.() -> Unit) {
 		val widget = PanelWidget()
-		addWidget(widget)
+		this += widget
 		widget.apply(block)
 	}
 	
 	fun slotList(widthInSlots: Int = 0, heightInSlots: Int = 0, maximumSlots: Int = 0, inventory: Inventory, block: SlotListWidget.() -> Unit) {
 		val widget = SlotListWidget(inventory, widthInSlots, heightInSlots, maximumSlots)
-		addWidget(widget)
+		this += widget
 		widget.apply(block)
 	}
 	
 	fun slot(number: Int, inventory: Inventory, block: SlotWidget.() -> Unit) {
 		val widget = SlotWidget(number, inventory)
-		addWidget(widget)
+		this += widget
 		widget.apply(block)
 	}
 	
 	fun tabs(block: TabWidget.() -> Unit) {
 		val widget = TabWidget()
-		addWidget(widget)
+		this += widget
 		widget.apply(block)
 	}
 	
 	fun text(text: Text, block: TextWidget.() -> Unit) {
 		val widget = TextWidget(text)
-		addWidget(widget)
+		this += widget
 		widget.apply(block)
 	}
 	

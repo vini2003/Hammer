@@ -24,34 +24,32 @@ open class TextureBarWidget(
 
 		var area: Scissors?
 		
-		when (orientation) {
-			Orientation.Vertical -> {
-				area = Scissors(provider, x * windowScale, windowHeight - (y + height - foregroundHeight) * windowScale, width * windowScale,(height - foregroundHeight) * windowScale)
-				
-				backgroundTexture.draw(matrices, provider, x, y, width, height)
-				
-				area.destroy(provider)
-				
-				area = Scissors(provider, x * windowScale, windowHeight - (y + height) * windowScale, width * windowScale, foregroundHeight * windowScale)
-				
-				foregroundTexture.draw(matrices, provider, x, y, width, height)
-				
-				area.destroy(provider)
-			}
+		if (vertical) {
+			area = Scissors(provider, x * windowScale, windowHeight - (y + height - foregroundHeight) * windowScale, width * windowScale,(height - foregroundHeight) * windowScale)
 			
-			Orientation.Horizontal -> {
-				area = Scissors(provider, x * windowScale, windowHeight - (y + height) * windowScale, width * windowScale, height * windowScale)
-				
-				backgroundTexture.draw(matrices, provider, x, y, width, height)
-				
-				area.destroy(provider)
-				
-				area = Scissors(provider, x * windowScale, windowHeight - (y + height) * windowScale, foregroundWidth * windowScale, height * windowScale)
-				
-				foregroundTexture.draw(matrices, provider, x, y, width, height)
-				
-				area.destroy(provider)
-			}
+			backgroundTexture.draw(matrices, provider, x, y, width, height)
+			
+			area.destroy(provider)
+			
+			area = Scissors(provider, x * windowScale, windowHeight - (y + height) * windowScale, width * windowScale, foregroundHeight * windowScale)
+			
+			foregroundTexture.draw(matrices, provider, x, y, width, height)
+			
+			area.destroy(provider)
+		}
+		
+		if (horizontal) {
+			area = Scissors(provider, x * windowScale, windowHeight - (y + height) * windowScale, width * windowScale, height * windowScale)
+			
+			backgroundTexture.draw(matrices, provider, x, y, width, height)
+			
+			area.destroy(provider)
+			
+			area = Scissors(provider, x * windowScale, windowHeight - (y + height) * windowScale, foregroundWidth * windowScale, height * windowScale)
+			
+			foregroundTexture.draw(matrices, provider, x, y, width, height)
+			
+			area.destroy(provider)
 		}
 	}
 }

@@ -2,13 +2,21 @@ package dev.vini2003.hammer.testing.common.screenhandler
 
 import dev.vini2003.hammer.common.geometry.position.Position
 import dev.vini2003.hammer.common.geometry.size.Size
-import dev.vini2003.hammer.common.orientation.Orientation
 import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler
-import dev.vini2003.hammer.common.util.extension.*
+import dev.vini2003.hammer.common.util.extension.center
+import dev.vini2003.hammer.common.util.extension.fluid
+import dev.vini2003.hammer.common.util.extension.toLiteralText
+import dev.vini2003.hammer.common.widget.bar.FluidBarWidget
 import dev.vini2003.hammer.registry.common.HScreenHandlers
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.fluid.Fluids
-import kotlin.system.exitProcess
+import net.minecraft.network.PacketByteBuf
+import net.minecraft.screen.ScreenHandler
+import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.text.Text
+import kotlin.math.max
 
 class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(HScreenHandlers.Debug, syncId, player) {
 	override fun initialize(width: Int, height: Int) {
@@ -24,7 +32,10 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 				label = "+".toLiteralText()
 				
 				clickAction = {
-					exitProcess(1)
+					widgets.find { it is FluidBarWidget }?.let { it as FluidBarWidget }?.apply {
+						val next = max(0.0F, current() + 0.125F)
+						current = { next }
+					}
 				}
 			}
 			
@@ -33,17 +44,17 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 				size = Size.of(11.0F, 11.0F)
 				
 				label = "-".toLiteralText()
-			}
-			
-			button {
-				position = Position.of(9.0F, 9.0F + 16.0F + 4.5F + 16.0F + 4.5F) + parent!!.position
-				size = Size.of(36.0F, 16.0F)
 				
-				label = "OvO".toLiteralText()
+				clickAction = {
+					widgets.find { it is FluidBarWidget }?.let { it as FluidBarWidget }?.apply {
+						val next = max(0.0F, current() - 0.125F)
+						current = { next }
+					}
+				}
 			}
 			
 			fluidBar {
-				position = Position.of(9.0F + 36.0F + 9.0F, 9.0F) + parent!!.position
+				position = Position.of(9.0F + 11.0F + 5.0F, 9.0F) + parent!!.position
 				size = Size.of(18.0F, 48.0F)
 				
 				vertical = true
@@ -53,14 +64,23 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 				current = { 0.5F }
 			}
 			
-			fluidBar {
-				position = Position.of(9.0F + 36.0F + 9.0F + 18.0F + 9.0F, 9.0F) + parent!!.position
-				size = Size.of(48.0F, 18.0F)
-			}
-			
 			playerInventory(this, player.inventory)
 		}
 	}
 
 	override fun canUse(player: PlayerEntity?): Boolean = true
+	
+	object Factory : ExtendedScreenHandlerFactory {
+		override fun createMenu(syncId: Int, inv: PlayerInventory, player: PlayerEntity): ScreenHandler {
+			return DebugScreenHandler(syncId, player)
+		}
+		
+		override fun getDisplayName(): Text {
+			return "".toLiteralText()
+		}
+		
+		override fun writeScreenOpeningData(player: ServerPlayerEntity?, buf: PacketByteBuf?) {
+		
+		}
+	}
 }

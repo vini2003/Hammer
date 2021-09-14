@@ -243,7 +243,7 @@ open class SlotListWidget(
 		updateScrollbarRectangle = true
 	}
 
-	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
+	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, delta: Float) {
 		scrollbarTexture.draw(matrices, provider, position.x + size.width - 18F, position.y, 18F, size.height)
 
 		val scrollerFocus = scrollerRectangle.isWithin(Positions.MouseX, Positions.MouseY)

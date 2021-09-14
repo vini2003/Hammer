@@ -6,7 +6,6 @@ import dev.vini2003.hammer.common.geometry.size.Size
 import dev.vini2003.hammer.common.geometry.size.Sized
 import dev.vini2003.hammer.common.util.Networks
 import dev.vini2003.hammer.common.util.Positions
-import dev.vini2003.hammer.common.util.extension.plus
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.client.render.VertexConsumerProvider
@@ -185,7 +184,7 @@ abstract class Widget : Positioned, Sized {
 	}
 
 	@Environment(EnvType.CLIENT)
-	open fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
+	open fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, delta: Float) {
 	
 	}
 

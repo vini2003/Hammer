@@ -2,16 +2,17 @@
 
 package dev.vini2003.hammer.common.widget.bar
 
-import dev.vini2003.hammer.client.util.Instances
 import dev.vini2003.hammer.client.scissor.Scissors
 import dev.vini2003.hammer.client.texture.Texture
-import dev.vini2003.hammer.common.orientation.Orientation
+import dev.vini2003.hammer.client.util.Instances
 import dev.vini2003.hammer.common.util.Texts
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.properties.Delegates
 
 
@@ -47,16 +48,26 @@ open class FluidBarWidget(
 		}
 	}
 	
+	var interpolatedCurrent = current()
+	
 	override var foregroundTexture: Texture = Texture.of(fluidVariant)
 	
 	override var backgroundTexture: Texture = StandardBackgroundTexture
 
-	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
+	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, delta: Float) {
 		val windowHeight = Instances.client.window.height.toFloat()
 		val windowScale = Instances.client.window.scaleFactor.toFloat()
 
-		val foregroundWidth = width / maximum() * current()
-		val foregroundHeight = height / maximum() * current()
+		if (interpolatedCurrent < current()) {
+			interpolatedCurrent += 0.05F * delta
+			interpolatedCurrent = min(interpolatedCurrent, current())
+		} else {
+			interpolatedCurrent -= 0.05F * delta
+			interpolatedCurrent = max(interpolatedCurrent, current())
+		}
+		
+		val foregroundWidth = width / maximum() * interpolatedCurrent
+		val foregroundHeight = height / maximum() * interpolatedCurrent
 		
 		var area: Scissors?
 		

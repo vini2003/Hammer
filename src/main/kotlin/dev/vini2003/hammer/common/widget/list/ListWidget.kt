@@ -199,7 +199,7 @@ open class ListWidget : Widget(), WidgetCollection {
 		}
     }
 
-    override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
+    override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, delta: Float) {
         if (hidden) return
 
         scrollbarTexture.draw(matrices, provider, position.x + size.width - 18F, position.y, 18F, size.height)
@@ -218,7 +218,7 @@ open class ListWidget : Widget(), WidgetCollection {
         val area = Scissors(provider, (x * scale).toInt(), (rawHeight - (y + height) * scale).toInt(), (width * scale).toInt(), (height * scale).toInt())
 	
 	    widgets.asSequence().filterNot(Widget::hidden).forEach {
-		    it.drawWidget(matrices, provider)
+		    it.drawWidget(matrices, provider, delta)
 	    }
 
         area.destroy(provider)

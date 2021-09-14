@@ -1,13 +1,12 @@
 package dev.vini2003.hammer.client.screen
 
 import dev.vini2003.hammer.client.util.Instances
-import dev.vini2003.hammer.common.geometry.position.Position
 import dev.vini2003.hammer.common.geometry.Rectangle
+import dev.vini2003.hammer.common.geometry.position.Position
 import dev.vini2003.hammer.common.geometry.size.Size
 import dev.vini2003.hammer.common.widget.Widget
 import dev.vini2003.hammer.common.widget.WidgetCollection
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
 
@@ -103,7 +102,7 @@ abstract class BaseScreen(title: Text?) : Screen(title), WidgetCollection.Handle
 		val provider = Instances.client.bufferBuilders.effectVertexConsumers
 		
 		widgets.asSequence().filterNot(Widget::hidden).forEach {
-			it.drawWidget(matrices, provider)
+			it.drawWidget(matrices, provider, delta)
 		}
 		
 		allWidgets.asSequence().filterNot(Widget::hidden).filter(Widget::focused).forEach {

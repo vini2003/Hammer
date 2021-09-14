@@ -94,7 +94,7 @@ open class SlotWidget(
 		updateSlotPosition()
 	}
 
-	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
+	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, delta: Float) {
 		texture.draw(matrices, provider, position.x, position.y, size.width, size.height)
 	}
 }

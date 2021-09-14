@@ -11,7 +11,7 @@ open class TextWidget(var text: Text? = null) : Widget() {
 	
 	var color = 0x404040
 
-	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
+	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, delta: Float) {
 		if (text != null) {
 			if (shadow) {
 				Drawings.textRenderer?.drawWithShadow(matrices, text, position.x, position.y, color)

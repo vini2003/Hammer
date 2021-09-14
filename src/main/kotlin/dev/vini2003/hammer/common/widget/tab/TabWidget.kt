@@ -144,7 +144,7 @@ open class TabWidget : Widget(), WidgetCollection {
 		}
 	}
 
-	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
+	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, delta: Float) {
 		panelTexture.draw(matrices, provider, position.x, position.y + 25F, size.width, size.height - 25F)
 
 		if (provider is VertexConsumerProvider.Immediate) provider.draw()
@@ -168,7 +168,7 @@ open class TabWidget : Widget(), WidgetCollection {
 		}
 		
 		widgets.asSequence().filterNot(Widget::hidden).forEach {
-			it.drawWidget(matrices, provider)
+			it.drawWidget(matrices, provider, delta)
 		}
 	}
 	

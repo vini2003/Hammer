@@ -106,7 +106,7 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
 		val provider = Instances.client.bufferBuilders.effectVertexConsumers
 
 		handler.widgets.asSequence().filterNot(Widget::hidden).forEach {
-			it.drawWidget(matrices, provider)
+			it.drawWidget(matrices, provider, delta)
 		}
 		
 		handler.allWidgets.asSequence().filterNot(Widget::hidden).filter(Widget::focused).forEach {

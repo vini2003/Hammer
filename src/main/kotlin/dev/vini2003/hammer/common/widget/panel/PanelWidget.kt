@@ -24,13 +24,13 @@ open class PanelWidget : Widget(), WidgetCollection {
 
 	var texture: Texture = StandardTexture
 	
-	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider) {
+	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, delta: Float) {
 		texture.draw(matrices, provider, position.x, position.y, size.width, size.height)
 
 		if (provider is VertexConsumerProvider.Immediate) provider.draw()
 		
 		widgets.asSequence().filterNot(Widget::hidden).forEach {
-			it.drawWidget(matrices, provider)
+			it.drawWidget(matrices, provider, delta)
 		}
 	}
 }

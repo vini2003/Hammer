@@ -12,8 +12,8 @@ plugins {
 	id "org.jetbrains.kotlin.jvm"
 }
 
-group = "dev.vini2003"
-version = "3.3.0"
+group = projectGroup
+version = projectVersion
 
 loom {
     accessWidener = file("src/main/resources/hammer.accesswidener")
@@ -33,6 +33,18 @@ repositories {
 			password = System.getenv("GPR_TOKEN")
         }
     }
+
+	// LadySnake
+	maven {
+		name = "Ladysnake"
+		url = "https://ladysnake.jfrog.io/artifactory/mods"
+	}
+
+	// Cafeteria
+	maven {
+		name = "Cafeteria"
+		url = "https://maven.cafeteria.dev"
+	}
 
     // Fabric
     maven {
@@ -63,23 +75,58 @@ dependencies {
     // Fabric API
     modImplementation group: "net.fabricmc.fabric-api",  name: "fabric-api",  version: fabricApiVersion
 
-
     // Fabric Language Kotlin
     modImplementation group: "net.fabricmc", name: "fabric-language-kotlin", version: fabricLanguageKotlinVersion
+
 
     // KotlinX Serialization Json
     implementation group: "org.jetbrains.kotlinx", name: "kotlinx-serialization-json", version: kotlinxSerializationJsonVersion
 
+	// KotlinX Serialization ProtoBuf
+	implementation group: "org.jetbrains.kotlinx", name: "kotlinx-serialization-protobuf", version: kotlinxSerializationProtobufVersion
 
     // KotlinX Coroutines
     implementation group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-jdk8", version: kotlinxCoroutinesVersion
 
-
     // KotlinX DateTime
     implementation group: "org.jetbrains.kotlinx", name: "kotlinx-datetime", version: kotlinxDateTimeVersion
 
+
 	// ModMenu
 	modImplementation group: "com.terraformersmc", name: "modmenu", version: modMenuVersion
+
+
+	// Cardinal Components API
+	modImplementation group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-base", version: cardinalComponentsApiVersion
+	include group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-base", version: cardinalComponentsApiVersion
+
+	modImplementation group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-util", version: cardinalComponentsApiVersion
+	include group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-util", version: cardinalComponentsApiVersion
+
+	modImplementation group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-block", version: cardinalComponentsApiVersion
+	include group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-block", version: cardinalComponentsApiVersion
+
+	modImplementation group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-chunk", version: cardinalComponentsApiVersion
+	include group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-chunk", version: cardinalComponentsApiVersion
+
+	modImplementation group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-entity", version: cardinalComponentsApiVersion
+	include group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-entity", version: cardinalComponentsApiVersion
+
+	modImplementation group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-item", version: cardinalComponentsApiVersion
+	include group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-item", version: cardinalComponentsApiVersion
+
+	modImplementation group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-level", version: cardinalComponentsApiVersion
+	include group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-level", version: cardinalComponentsApiVersion
+
+	modImplementation group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-scoreboard", version: cardinalComponentsApiVersion
+	include group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-scoreboard", version: cardinalComponentsApiVersion
+
+	modImplementation group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-world", version: cardinalComponentsApiVersion
+	include group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-world", version: cardinalComponentsApiVersion
+
+	// PlayerAbilityLib
+	modImplementation group: "io.github.ladysnake", name: "PlayerAbilityLib", version: playerAbilityLibVersion
+	include group: "io.github.ladysnake", name: "PlayerAbilityLib", version: playerAbilityLibVersion
 }
 
 compileKotlin {

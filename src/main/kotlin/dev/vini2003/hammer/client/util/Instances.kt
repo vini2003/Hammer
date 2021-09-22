@@ -16,4 +16,8 @@ object Instances {
 	
 	val server
 		get() = game as MinecraftServer
+	
+	val isClient = game !is MinecraftServer
+	
+	val isServer = game is MinecraftServer
 }

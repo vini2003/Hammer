@@ -10,9 +10,8 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.fluid.Fluid
 import net.minecraft.text.Text
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.properties.Delegates
 
 
@@ -48,7 +47,11 @@ open class FluidBarWidget(
 		}
 	}
 	
-	var interpolatedCurrent = current()
+	var fluid: Fluid
+		get() = fluidVariant.fluid
+		set(value) {
+			fluidVariant = FluidVariant.of(value)
+		}
 	
 	override var foregroundTexture: Texture = Texture.of(fluidVariant)
 	
@@ -57,17 +60,9 @@ open class FluidBarWidget(
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, delta: Float) {
 		val windowHeight = Instances.client.window.height.toFloat()
 		val windowScale = Instances.client.window.scaleFactor.toFloat()
-
-		if (interpolatedCurrent < current()) {
-			interpolatedCurrent += 0.05F * delta
-			interpolatedCurrent = min(interpolatedCurrent, current())
-		} else {
-			interpolatedCurrent -= 0.05F * delta
-			interpolatedCurrent = max(interpolatedCurrent, current())
-		}
 		
-		val foregroundWidth = width / maximum() * interpolatedCurrent
-		val foregroundHeight = height / maximum() * interpolatedCurrent
+		val foregroundWidth = width / maximum() * current()
+		val foregroundHeight = height / maximum() * current()
 		
 		var area: Scissors?
 		

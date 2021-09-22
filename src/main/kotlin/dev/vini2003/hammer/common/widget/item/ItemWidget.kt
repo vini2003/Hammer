@@ -5,10 +5,17 @@ import dev.vini2003.hammer.client.util.Instances
 import dev.vini2003.hammer.common.widget.Widget
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
 
 open class ItemWidget(var stack: ItemStack = ItemStack.EMPTY) : Widget() {
+	var item: Item
+		get() = stack.item
+		set(value) {
+			stack = ItemStack(value)
+		}
+	
 	override fun getTooltip(): List<Text> {
 		if (stack.isEmpty) return emptyList()
 

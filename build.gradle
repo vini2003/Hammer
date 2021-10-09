@@ -75,6 +75,7 @@ dependencies {
     // Fabric API
     modImplementation group: "net.fabricmc.fabric-api",  name: "fabric-api",  version: fabricApiVersion
 
+
     // Fabric Language Kotlin
     modImplementation group: "net.fabricmc", name: "fabric-language-kotlin", version: fabricLanguageKotlinVersion
 
@@ -123,10 +124,6 @@ dependencies {
 
 	modImplementation group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-world", version: cardinalComponentsApiVersion
 	include group: "io.github.onyxstudios.Cardinal-Components-API", name: "cardinal-components-world", version: cardinalComponentsApiVersion
-
-	// PlayerAbilityLib
-	modImplementation group: "io.github.ladysnake", name: "PlayerAbilityLib", version: playerAbilityLibVersion
-	include group: "io.github.ladysnake", name: "PlayerAbilityLib", version: playerAbilityLibVersion
 }
 
 compileKotlin {

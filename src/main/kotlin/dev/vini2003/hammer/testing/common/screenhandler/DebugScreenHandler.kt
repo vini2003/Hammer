@@ -4,7 +4,6 @@ import dev.vini2003.hammer.common.geometry.position.Position
 import dev.vini2003.hammer.common.geometry.size.Size
 import dev.vini2003.hammer.common.screen.handler.BaseScreenHandler
 import dev.vini2003.hammer.common.util.extension.center
-import dev.vini2003.hammer.common.util.extension.fluid
 import dev.vini2003.hammer.common.util.extension.toLiteralText
 import dev.vini2003.hammer.common.widget.bar.FluidBarWidget
 import dev.vini2003.hammer.registry.common.HScreenHandlers

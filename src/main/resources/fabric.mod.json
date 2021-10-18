@@ -31,7 +31,6 @@
   "mixins": [
   ],
   "depends": {
-    "fabric-language-kotlin": ">=$fabricLanguageKotlinVersion",
     "fabricloader": ">=$fabricLoaderVersion",
     "fabric": ">=$fabricApiVersion",
     "minecraft": ">=$minecraftVersion"

@@ -142,8 +142,7 @@ processResources {
 				minecraftVersion: minecraftVersion,
 				kotlinVersion: kotlinVersion,
 				fabricLoaderVersion: fabricLoaderVersion,
-				fabricApiVersion: fabricApiVersion,
-				fabricLanguageKotlinVersion: fabricLanguageKotlinVersion
+				fabricApiVersion: fabricApiVersion
 		)
 	}
 }

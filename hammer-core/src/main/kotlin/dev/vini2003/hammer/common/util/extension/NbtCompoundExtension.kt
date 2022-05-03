@@ -38,7 +38,7 @@ fun <T> NbtCompound.putRegistryKey(key: String, value: RegistryKey<T>) {
 	putString("${key}Id", value.value.toString())
 }
 
-fun <T> NbtCompound.getRegistryKey(key: String): RegistryKey<Registry<T>> {
+fun <T> NbtCompound.getRegistryKey(key: String): RegistryKey<T> {
 	val registryId = getString("${key}RegistryId").toIdentifier()
 	val id = getString("${key}Id").toIdentifier()
 	

@@ -140,7 +140,7 @@ A module containing interaction restriction mechanisms.
 
 <br>
 
-![](https://img.shields.io/badge/-Hammer%20Interface-blue?style=for-the-badge&logo=appveyor)
+![](https://img.shields.io/badge/-Hammer%20GUI-blue?style=for-the-badge&logo=appveyor)
 
 A module containing a complete toolset for creating in-game interfaces.
 
@@ -151,7 +151,7 @@ A module containing a complete toolset for creating in-game interfaces.
 
 - **Where can I find its documentation?**
 
-  This module's documentation can be found in its [Wiki](https://github.com/vini2003/Hammer/wiki/Hammer-Interface).
+  This module's documentation can be found in its [Wiki](https://github.com/vini2003/Hammer/wiki/Hammer-GUI).
 
 
 - **How do I import it?**
@@ -159,14 +159,14 @@ A module containing a complete toolset for creating in-game interfaces.
   This module should be imported using Gradle.
 
     ```groovy
-    modImplementation("dev.vini2003:hammer-interface:${hammerVersion}")
+    modImplementation("dev.vini2003:hammer-gui:${hammerVersion}")
     ```
 
 <br>
 
-![](https://img.shields.io/badge/-Hammer%20Interface%20Energy-blue?style=for-the-badge&logo=appveyor)
+![](https://img.shields.io/badge/-Hammer%20GUI%20Energy-blue?style=for-the-badge&logo=appveyor)
 
-A module containing compatibility tools between the **Interface** module and TeamReborn's [Energy](https://github.com/TechReborn/Energy) API.
+A module containing compatibility tools between the **GUI** module and TeamReborn's [Energy](https://github.com/TechReborn/Energy) API.
 
 - **What can I use it for?**
 
@@ -175,7 +175,7 @@ A module containing compatibility tools between the **Interface** module and Tea
 
 - **Where can I find its documentation?**
 
-  This module's documentation can be found in its [Wiki](https://github.com/vini2003/Hammer/wiki/Hammer-Interface-Energy).
+  This module's documentation can be found in its [Wiki](https://github.com/vini2003/Hammer/wiki/Hammer-GUI-Energy).
 
 
 - **How do I import it?**
@@ -183,7 +183,7 @@ A module containing compatibility tools between the **Interface** module and Tea
   This module should be imported using Gradle.
 
     ```groovy
-    modImplementation("dev.vini2003:hammer-interface-energy:${hammerVersion}")
+    modImplementation("dev.vini2003:hammer-gui-energy:${hammerVersion}")
     ```
 
 <br>

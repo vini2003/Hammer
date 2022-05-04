@@ -13,7 +13,7 @@ rootProject.project(":hammer-chat").tasks.remapJar.dependsOn remapJar
 rootProject.project(":hammer-command").tasks.remapJar.dependsOn remapJar
 rootProject.project(":hammer-gravity").tasks.remapJar.dependsOn remapJar
 rootProject.project(":hammer-interaction").tasks.remapJar.dependsOn remapJar
-rootProject.project(":hammer-interface").tasks.remapJar.dependsOn remapJar
-rootProject.project(":hammer-interface-energy").tasks.remapJar.dependsOn remapJar
+rootProject.project(":hammer-gui").tasks.remapJar.dependsOn remapJar
+rootProject.project(":hammer-gui-energy").tasks.remapJar.dependsOn remapJar
 rootProject.project(":hammer-permission").tasks.remapJar.dependsOn remapJar
 rootProject.project(":hammer-util").tasks.remapJar.dependsOn remapJar

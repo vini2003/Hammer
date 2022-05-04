@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "hammer-interface-energy",
+  "id": "hammer-all",
   "version": "0.6.5",
-  "name": "Hammer Interface Energy",
+  "name": "Hammer All",
   "description": "A library module.",
   "authors": [
     "vini2003"

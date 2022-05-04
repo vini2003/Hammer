@@ -9,11 +9,14 @@ import net.minecraft.fluid.Fluid
 
 object FluidTextUtils {
 	@JvmStatic
-	fun fluidTooltip(fluid: Fluid) = fluidTooltip(FluidVariant.of(fluid))
+	fun tooltip(fluid: Fluid) = variantTooltip(FluidVariant.of(fluid))
 	
 	@JvmStatic
-	fun fluidTooltip(fluidVariant: FluidVariant) = FluidVariantRendering.getTooltip(fluidVariant)
+	fun variantTooltip(fluidVariant: FluidVariant) = FluidVariantRendering.getTooltip(fluidVariant)
 	
 	@JvmStatic
-	fun fluidTooltip(fluidView: StorageView<FluidVariant>) = "${NumberUtils.shorten(fluidView.amount, "d")} / ${NumberUtils.shorten(fluidView.capacity, "d")}".toLiteralText().gray()
+	fun shortenedTooltip(fluidView: StorageView<FluidVariant>) = "${NumberUtils.shorten(fluidView.amount, "d")} / ${NumberUtils.shorten(fluidView.capacity, "d")}".toLiteralText().gray()
+	
+	@JvmStatic
+	fun detailedTooltip(fluidView: StorageView<FluidVariant>) = "${fluidView.amount} d / ${fluidView.capacity} d".toLiteralText().gray()
 }

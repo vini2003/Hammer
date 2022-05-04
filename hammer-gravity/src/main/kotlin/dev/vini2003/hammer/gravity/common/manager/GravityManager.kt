@@ -36,29 +36,35 @@ object GravityManager {
 	}
 	
 	@JvmStatic
-	fun clear(world: World) {
+	fun clear(world: World? = null) {
 		GRAVITIES.clear()
 		
-		if (!world.isClient) {
-			syncWith(world)
+		if (world != null) {
+			if (!world.isClient) {
+				syncWith(world)
+			}
 		}
 	}
 	
 	@JvmStatic
-	fun set(key: RegistryKey<World>, gravity: Float, world: World) {
+	fun set(key: RegistryKey<World>, gravity: Float, world: World? = null) {
 		GRAVITIES[key] = gravity
 		
-		if (!world.isClient) {
-			syncWith(world)
+		if (world != null) {
+			if (!world.isClient) {
+				syncWith(world)
+			}
 		}
 	}
 	
 	@JvmStatic
-	fun remove(key: RegistryKey<World>, world: World) {
+	fun remove(key: RegistryKey<World>, world: World? = null) {
 		GRAVITIES.remove(key)
 		
-		if (!world.isClient) {
-			syncWith(world)
+		if (world != null) {
+			if (!world.isClient) {
+				syncWith(world)
+			}
 		}
 	}
 	

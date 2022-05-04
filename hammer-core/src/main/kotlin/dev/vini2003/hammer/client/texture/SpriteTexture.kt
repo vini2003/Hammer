@@ -7,7 +7,7 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
 
 class SpriteTexture(
-	private val texture: Identifier
+	private val texture: Identifier,
 ) : Texture {
 	override fun draw(
 		matrices: MatrixStack,

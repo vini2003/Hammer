@@ -20,11 +20,11 @@ dependencies {
     // Hammer Interaction
     implementation project(path: ":hammer-interaction", configuration: "namedElements")
 
-    // Hammer Interface
-    implementation project(path: ":hammer-interface", configuration: "namedElements")
+    // Hammer GUI
+    implementation project(path: ":hammer-gui", configuration: "namedElements")
 
-    // Hammer Interface Energy
-    implementation project(path: ":hammer-interface-energy", configuration: "namedElements")
+    // Hammer GUI Energy
+    implementation project(path: ":hammer-gui-energy", configuration: "namedElements")
 
     // Hammer Permission
     implementation project(path: ":hammer-permission", configuration: "namedElements")

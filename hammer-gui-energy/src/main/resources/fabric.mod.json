@@ -13,14 +13,6 @@
 	"license": "MIT",
 	"icon": "assets/hammer/icon.png",
 	"environment": "*",
-	"entrypoints": {
-		"client": [
-			{
-				"adapter": "kotlin",
-				"value": "dev.vini2003.hammer.gui.energy.HGUIEClient"
-			}
-		]
-	},
 	"depends": {
 		"fabricloader": ">=0.12.9",
 		"fabric": ">=0.44.0+1.18",

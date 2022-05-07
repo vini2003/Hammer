@@ -107,8 +107,8 @@ object DrawingUtils {
 		
 		val consumer = provider.getBuffer(layer)
 		
-		val endX = x + height
-		val endY = y + width
+		val endX = x + width
+		val endY = y + height
 		
 		var currentX = x
 		var currentY = y

@@ -14,6 +14,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.fluid.Fluids
 import net.minecraft.item.Items
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.ScreenHandlerType
@@ -32,7 +33,7 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 		button.position = Position(panel, 8.0F, 8.0F)
 		button.size = Size(36.0F, 24.0F)
 		
-		panel.add(button)
+		// panel.add(button)
 		
 		val tabs = TabWidget()
 		tabs.position = Position(panel)
@@ -40,16 +41,17 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 		tabs.addTab(Items.IRON_INGOT)
 		tabs.addTab(Items.GOLD_INGOT)
 		
-		val textureBar = TextureBarWidget()
+		val textureBar = FluidBarWidget()
 		textureBar.position = Position(panel, 8.0F, 24.0F)
 		textureBar.size = Size(24.0F, 72.0F)
+		textureBar.variant = FluidVariant.of(Fluids.WATER)
 		
 		textureBar.current = { 50.0F }
 		textureBar.maximum = { 100.0F }
 		
 		add(textureBar)
 		
-		add(tabs)
+		// add(tabs)
 		
 	}
 	

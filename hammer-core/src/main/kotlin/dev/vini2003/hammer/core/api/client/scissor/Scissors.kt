@@ -43,30 +43,12 @@ class Scissors(
 	 * @param provider the provider to use.
 	 * @return the scissors.
 	 */
-	x: Int,
-	y: Int,
-	width: Int,
-	height: Int,
+	x: Float,
+	y: Float,
+	width: Float,
+	height: Float,
 	val provider: VertexConsumerProvider?
 ) {
-	/**
-	 * Constructs scissors.
-	 *
-	 * @param x the X position to use.
-	 * @param y the Y position to use.
-	 * @param width the width to use.
-	 * @param height the height to use.
-	 * @param provider the provider to use.
-	 * @return the scissors.
-	 */
-	constructor(
-		x: Float,
-		y: Float,
-		width: Float,
-		height: Float,
-		provider: VertexConsumerProvider?
-	) : this(x.toInt(), y.toInt(), width.toInt(), height.toInt(), provider)
-	
 	companion object {
 		private const val MAX_SCISSORS = 512
 		

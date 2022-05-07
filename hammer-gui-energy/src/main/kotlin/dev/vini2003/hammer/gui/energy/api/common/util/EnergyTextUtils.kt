@@ -32,22 +32,18 @@ import team.reborn.energy.api.EnergyStorage
 
 object EnergyTextUtils {
 	@JvmField
-	var COLOR_OVERRIDE: Color = Color(0x97D96AL)
+	var COLOR_OVERRIDE: Color = Color(0.59F, 0.85F, 0.41F, 1.0F)
 	
 	@JvmField
 	val ENERGY = "text.hammer.energy".toTranslatableText().styled { style -> style.withColor(COLOR_OVERRIDE.toRGB()) }
 	
 	@JvmStatic
 	fun getDetailedTooltips(storage: EnergyStorage): List<Text> {
-		val color = TextColor.fromRgb(COLOR_OVERRIDE.toRGB())
-		
-		return listOf(ENERGY.styled { style -> style.withColor(color) }, "${storage.amount.toPrettyString("E")} / ${storage.capacity.toPrettyString("E")}".toLiteralText().gray())
+		return listOf(ENERGY.styled { style -> style.withColor(COLOR_OVERRIDE.toRGB()) }, "${storage.amount.toPrettyString("E")} / ${storage.capacity.toPrettyString("E")}".toLiteralText().gray())
 	}
 	
 	@JvmStatic
 	fun getShortenedTooltips(storage: EnergyStorage): List<Text> {
-		val color = TextColor.fromRgb(COLOR_OVERRIDE.toRGB())
-		
-		return listOf(ENERGY.styled { style -> style.withColor(color) }, "${storage.amount.toPrettyShortenedString("E")} / ${storage.capacity.toPrettyShortenedString("E")}".toLiteralText().gray())
+		return listOf(ENERGY.styled { style -> style.withColor(COLOR_OVERRIDE.toRGB()) }, "${storage.amount.toPrettyShortenedString("E")} / ${storage.capacity.toPrettyShortenedString("E")}".toLiteralText().gray())
 	}
 }

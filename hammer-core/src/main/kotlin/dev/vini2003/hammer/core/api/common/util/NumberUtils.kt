@@ -29,7 +29,11 @@ object NumberUtils {
 	
 	@JvmStatic
 	fun getUnit(exponent: Int): String {
-		return UNITS.getOrElse(exponent) { "∞" }
+		if (exponent < 0) {
+			return ""
+		} else {
+			return UNITS.getOrElse(exponent) { "∞" }
+		}
 	}
 
 	@JvmStatic
@@ -54,12 +58,20 @@ object NumberUtils {
 	
 	@JvmStatic
 	fun getPrettyShortenedString(number: Number, unit: String): String {
-		val exponent = getExponent(number)
+		var exponent = getExponent(number)
 		val symbol = getUnit(exponent)
 		
+		var shortenedNumber = number.toLong()
+		
+		while(exponent > 0) {
+			--exponent
+			
+			shortenedNumber /= 1000
+		}
+		
 		return when (number) {
-			is Float, is Double -> String.format("%,.2f%s%s", number, symbol, unit)
-			is Int, is Long -> String.format("%,d%s%s", number, symbol, unit)
+			is Float, is Double -> String.format("%,.2f%s%s", shortenedNumber, symbol, unit)
+			is Int, is Long -> String.format("%,d%s%s", shortenedNumber, symbol, unit)
 			
 			else -> "${number}${unit}"
 		}

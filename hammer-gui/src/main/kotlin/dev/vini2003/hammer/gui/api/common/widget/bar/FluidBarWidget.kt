@@ -55,8 +55,6 @@ open class FluidBarWidget @JvmOverloads constructor(
 			
 			current = { value!!.amount.toFloat() }
 			maximum = { value!!.capacity.toFloat() }
-			
-			foregroundTexture = TiledFluidTexture(value!!.resource)
 		}
 	
 	override var foregroundTexture: BaseTexture = STANDARD_FOREGROUND_TEXTURE
@@ -64,6 +62,8 @@ open class FluidBarWidget @JvmOverloads constructor(
 	override var backgroundTexture: BaseTexture = STANDARD_BACKGROUND_TEXTURE
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, tickDelta: Float) {
+		val storage = storage ?: return
+		
 		val client = InstanceUtils.CLIENT ?: return
 		
 		val windowHeight = client.window.height.toFloat()
@@ -71,6 +71,8 @@ open class FluidBarWidget @JvmOverloads constructor(
 		
 		val foregroundWidth = width / maximum() * current()
 		val foregroundHeight = height / maximum() * current()
+		
+		foregroundTexture = TiledFluidTexture(storage.resource)
 		
 		var scissors: Scissors
 		

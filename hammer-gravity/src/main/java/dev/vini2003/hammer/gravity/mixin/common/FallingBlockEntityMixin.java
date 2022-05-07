@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 - 2022 Mixinors
+ * Copyright (c) 2020 - 2022 vini2003
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 package dev.vini2003.hammer.gravity.mixin.common;
 
-import dev.vini2003.hammer.gravity.common.manager.GravityManager;
+import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FallingBlockEntity;
@@ -43,10 +43,6 @@ public abstract class FallingBlockEntityMixin extends Entity {
 	double getGravity(double original) {
 		var gravity = GravityManager.get(world.getRegistryKey());
 		
-		if (gravity != null) {
-			return -gravity * 0.5F;
-		}
-		
-		return original;
+		return -gravity * 0.5F;
 	}
 }

@@ -13,7 +13,7 @@
   "license": "MIT",
   "icon": "assets/hammer/icon.png",
   "environment": "*",
-  "accessWidener": "hammer.accesswidener",
+  "accessWidener": "hammer.core.accesswidener",
   "depends": {
     "fabricloader": ">=0.12.9",
     "fabric": ">=0.44.0+1.18",

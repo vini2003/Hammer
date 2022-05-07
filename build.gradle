@@ -10,6 +10,19 @@ plugins {
 
 	// KotlinX Serialization
 	id "org.jetbrains.kotlin.plugin.serialization"
+
+	// Licenser
+	id "org.cadixdev.licenser"
+}
+
+allprojects {
+	apply plugin: 'org.cadixdev.licenser'
+
+	license {
+		header = rootProject.file("LICENSE")
+
+		ignoreFailures = true
+	}
 }
 
 subprojects {

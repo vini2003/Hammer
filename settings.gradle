@@ -28,6 +28,8 @@ pluginManagement {
         id "org.jetbrains.kotlin.jvm" version kotlinVersion
 
         id "org.jetbrains.kotlin.plugin.serialization" version kotlinxSerilizationVersion
+
+        id "org.cadixdev.licenser" version licenserVersion
     }
 }
 

@@ -1,5 +1,5 @@
 loom {
-    accessWidenerPath = file("src/main/resources/hammer.accesswidener")
+    accessWidenerPath = file("src/main/resources/hammer.core.accesswidener")
 }
 
 jar {

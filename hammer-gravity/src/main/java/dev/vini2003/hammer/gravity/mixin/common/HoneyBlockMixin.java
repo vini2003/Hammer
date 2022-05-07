@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 - 2022 Mixinors
+ * Copyright (c) 2020 - 2022 vini2003
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 package dev.vini2003.hammer.gravity.mixin.common;
 
-import dev.vini2003.hammer.gravity.common.manager.GravityManager;
+import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
 import net.minecraft.block.HoneyBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
@@ -38,10 +38,6 @@ public class HoneyBlockMixin {
 	double getGravity(double original, BlockPos pos, Entity entity) {
 		var gravity = GravityManager.get(entity.world.getRegistryKey());
 		
-		if (gravity != null) {
-			return -gravity;
-		}
-		
-		return original;
+		return -gravity;
 	}
 }

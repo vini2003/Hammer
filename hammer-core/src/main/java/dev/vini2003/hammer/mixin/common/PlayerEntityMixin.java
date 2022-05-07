@@ -1,7 +1,31 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2020 - 2022 vini2003
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package dev.vini2003.hammer.mixin.common;
 
-import dev.vini2003.hammer.common.entity.ConfigurablePlayerEntity;
-import dev.vini2003.hammer.registry.common.HConfig;
+import dev.vini2003.hammer.core.impl.common.accessor.PlayerEntityAccessor;
+import dev.vini2003.hammer.core.registry.common.HCConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -29,7 +53,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntity implements ConfigurablePlayerEntity {
+public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEntityAccessor {
 	@Shadow protected HungerManager hungerManager;
 	@Shadow @Final private PlayerAbilities abilities;
 	
@@ -52,31 +76,31 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Configur
 	private void hammer$initDataTracker(CallbackInfo ci) {
 		dataTracker.startTracking(FROZEN, false);
 		
-		if (HConfig.ENABLE_ATTACK_DAMAGE_MULTIPLIER) {
+		if (HCConfig.ENABLE_ATTACK_DAMAGE_MULTIPLIER) {
 			dataTracker.startTracking(ATTACK_DAMAGE_MULTIPLIER, 1.0F);
 		}
 		
-		if (HConfig.ENABLE_DAMAGE_MULTIPLIER) {
+		if (HCConfig.ENABLE_DAMAGE_MULTIPLIER) {
 			dataTracker.startTracking(DAMAGE_MULTIPLIER, 1.0F);
 		}
 		
-		if (HConfig.ENABLE_FALL_DAMAGE_MULTIPLIER) {
+		if (HCConfig.ENABLE_FALL_DAMAGE_MULTIPLIER) {
 			dataTracker.startTracking(FALL_DAMAGE_MULTIPLIER, 1.0F);
 		}
 		
-		if (HConfig.ENABLE_MOVEMENT_SPEED_MULTIPLIER) {
+		if (HCConfig.ENABLE_MOVEMENT_SPEED_MULTIPLIER) {
 			dataTracker.startTracking(MOVEMENT_SPEED_MULTIPLIER, 1.0F);
 		}
 		
-		if (HConfig.ENABLE_JUMP_MULTIPLIER) {
+		if (HCConfig.ENABLE_JUMP_MULTIPLIER) {
 			dataTracker.startTracking(JUMP_MULTIPLIER, 1.0F);
 		}
 		
-		if (HConfig.ENABLE_HEAL_MULTIPLIER) {
+		if (HCConfig.ENABLE_HEAL_MULTIPLIER) {
 			dataTracker.startTracking(HEAL_MULTIPLIER, 1.0F);
 		}
 		
-		if (HConfig.ENABLE_EXHAUSTION_MULTIPLIER) {
+		if (HCConfig.ENABLE_EXHAUSTION_MULTIPLIER) {
 			dataTracker.startTracking(EXHAUSTION_MULTIPLIER, 1.0F);
 		}
 	}
@@ -85,31 +109,31 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Configur
 	private void hammer$writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
 		nbt.putBoolean("Hammer$Frozen", dataTracker.get(FROZEN));
 		
-		if (HConfig.ENABLE_ATTACK_DAMAGE_MULTIPLIER) {
+		if (HCConfig.ENABLE_ATTACK_DAMAGE_MULTIPLIER) {
 			nbt.putFloat("Hammer$AttackDamageMultiplier", dataTracker.get(ATTACK_DAMAGE_MULTIPLIER));
 		}
 		
-		if (HConfig.ENABLE_DAMAGE_MULTIPLIER) {
+		if (HCConfig.ENABLE_DAMAGE_MULTIPLIER) {
 			nbt.putFloat("Hammer$DamageMultiplier", dataTracker.get(DAMAGE_MULTIPLIER));
 		}
 		
-		if (HConfig.ENABLE_FALL_DAMAGE_MULTIPLIER) {
+		if (HCConfig.ENABLE_FALL_DAMAGE_MULTIPLIER) {
 			nbt.putFloat("Hammer$FallDamageMultiplier", dataTracker.get(FALL_DAMAGE_MULTIPLIER));
 		}
 		
-		if (HConfig.ENABLE_MOVEMENT_SPEED_MULTIPLIER) {
+		if (HCConfig.ENABLE_MOVEMENT_SPEED_MULTIPLIER) {
 			nbt.putFloat("Hammer$MovementSpeedMultiplier", dataTracker.get(MOVEMENT_SPEED_MULTIPLIER));
 		}
 		
-		if (HConfig.ENABLE_JUMP_MULTIPLIER) {
+		if (HCConfig.ENABLE_JUMP_MULTIPLIER) {
 			nbt.putFloat("Hammer$JumpMultiplier", dataTracker.get(JUMP_MULTIPLIER));
 		}
 		
-		if (HConfig.ENABLE_HEAL_MULTIPLIER) {
+		if (HCConfig.ENABLE_HEAL_MULTIPLIER) {
 			nbt.putFloat("Hammer$HealMultiplier", dataTracker.get(HEAL_MULTIPLIER));
 		}
 		
-		if (HConfig.ENABLE_EXHAUSTION_MULTIPLIER) {
+		if (HCConfig.ENABLE_EXHAUSTION_MULTIPLIER) {
 			nbt.putFloat("Hammer$ExhaustionMultiplier", dataTracker.get(EXHAUSTION_MULTIPLIER));
 		}
 	}
@@ -120,31 +144,31 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Configur
 			dataTracker.set(FROZEN, nbt.getBoolean("Hammer$Frozen"));
 		}
 		
-		if (HConfig.ENABLE_ATTACK_DAMAGE_MULTIPLIER && nbt.contains("Hammer$AttackDamageMultiplier")) {
+		if (HCConfig.ENABLE_ATTACK_DAMAGE_MULTIPLIER && nbt.contains("Hammer$AttackDamageMultiplier")) {
 			dataTracker.set(ATTACK_DAMAGE_MULTIPLIER, nbt.getFloat("Hammer$AttackDamageMultiplier"));
 		}
 		
-		if (HConfig.ENABLE_DAMAGE_MULTIPLIER && nbt.contains("Hammer$DamageMultiplier")) {
+		if (HCConfig.ENABLE_DAMAGE_MULTIPLIER && nbt.contains("Hammer$DamageMultiplier")) {
 			dataTracker.set(DAMAGE_MULTIPLIER, nbt.getFloat("Hammer$DamageMultiplier"));
 		}
 		
-		if (HConfig.ENABLE_FALL_DAMAGE_MULTIPLIER && nbt.contains("Hammer$FallDamageMultiplier")) {
+		if (HCConfig.ENABLE_FALL_DAMAGE_MULTIPLIER && nbt.contains("Hammer$FallDamageMultiplier")) {
 			dataTracker.set(FALL_DAMAGE_MULTIPLIER, nbt.getFloat("Hammer$FallDamageMultiplier"));
 		}
 		
-		if (HConfig.ENABLE_MOVEMENT_SPEED_MULTIPLIER && nbt.contains("Hammer$MovementSpeedMultiplier")) {
+		if (HCConfig.ENABLE_MOVEMENT_SPEED_MULTIPLIER && nbt.contains("Hammer$MovementSpeedMultiplier")) {
 			dataTracker.set(MOVEMENT_SPEED_MULTIPLIER, nbt.getFloat("Hammer$MovementSpeedMultiplier"));
 		}
 		
-		if (HConfig.ENABLE_JUMP_MULTIPLIER && nbt.contains("Hammer$JumpMultiplier")) {
+		if (HCConfig.ENABLE_JUMP_MULTIPLIER && nbt.contains("Hammer$JumpMultiplier")) {
 			dataTracker.set(JUMP_MULTIPLIER, nbt.getFloat("Hammer$JumpMultiplier"));
 		}
 		
-		if (HConfig.ENABLE_HEAL_MULTIPLIER && nbt.contains("Hammer$HealMultiplier")) {
+		if (HCConfig.ENABLE_HEAL_MULTIPLIER && nbt.contains("Hammer$HealMultiplier")) {
 			dataTracker.set(HEAL_MULTIPLIER, nbt.getFloat("Hammer$HealMultiplier"));
 		}
 		
-		if (HConfig.ENABLE_EXHAUSTION_MULTIPLIER && nbt.contains("Hammer$ExhaustionMultiplier")) {
+		if (HCConfig.ENABLE_EXHAUSTION_MULTIPLIER && nbt.contains("Hammer$ExhaustionMultiplier")) {
 			dataTracker.set(EXHAUSTION_MULTIPLIER, nbt.getFloat("Hammer$ExhaustionMultiplier"));
 		}
 	}
@@ -239,14 +263,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Configur
 	
 	@ModifyArgs(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"), method = "damage")
 	private void hammer$damage(Args args) {
-		if (HConfig.ENABLE_DAMAGE_MULTIPLIER) {
+		if (HCConfig.ENABLE_DAMAGE_MULTIPLIER) {
 			args.set(1, ((float) args.get(1)) * hammer$getDamageMultiplier());
 		}
 	}
 	
 	@Inject(at = @At("HEAD"), method = "addExhaustion", cancellable = true)
 	private void hammer$addExhaustion(float exhaustion, CallbackInfo ci) {
-		if (HConfig.ENABLE_EXHAUSTION_MULTIPLIER) {
+		if (HCConfig.ENABLE_EXHAUSTION_MULTIPLIER) {
 			if (!abilities.invulnerable) {
 				if (!world.isClient) {
 					hungerManager.addExhaustion(exhaustion * hammer$getExhaustionMultiplier());
@@ -259,14 +283,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Configur
 	
 	@Inject(at = @At("RETURN"), method = "getMovementSpeed", cancellable = true)
 	private void hammer$getMovementSpeed(CallbackInfoReturnable<Float> cir) {
-		if (HConfig.ENABLE_MOVEMENT_SPEED_MULTIPLIER) {
+		if (HCConfig.ENABLE_MOVEMENT_SPEED_MULTIPLIER) {
 			cir.setReturnValue(cir.getReturnValueF() * hammer$getMovementSpeedMultiplier());
 		}
 	}
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D", ordinal = 0), method = "attack")
 	private double hammer$attack_getAttributeValue(PlayerEntity instance, EntityAttribute entityAttribute) {
-		if (HConfig.ENABLE_ATTACK_DAMAGE_MULTIPLIER) {
+		if (HCConfig.ENABLE_ATTACK_DAMAGE_MULTIPLIER) {
 			return instance.getAttributeValue(entityAttribute) * hammer$getAttackDamageMultiplier();
 		}
 		
@@ -275,7 +299,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Configur
 	
 	@Inject(at = @At("HEAD"), method = "handleFallDamage", cancellable = true)
 	private void hammer$handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
-		if (HConfig.ENABLE_FALL_DAMAGE_MULTIPLIER) {
+		if (HCConfig.ENABLE_FALL_DAMAGE_MULTIPLIER) {
 			if (hammer$getFallDamageMultiplier() == 0.0F) {
 				cir.setReturnValue(false);
 				cir.cancel();

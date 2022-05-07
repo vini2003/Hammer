@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 - 2022 Mixinors
+ * Copyright (c) 2020 - 2022 vini2003
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 package dev.vini2003.hammer.gravity.mixin.client;
 
-import dev.vini2003.hammer.gravity.common.manager.GravityManager;
+import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
 import net.minecraft.client.particle.CurrentDownParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.world.ClientWorld;
@@ -41,11 +41,7 @@ public abstract class CurrentDownParticleMixin extends Particle {
 	@ModifyConstant(method = "tick()V", constant = @Constant(floatValue = 0.08F))
 	float getGravity(float original) {
 		var gravity = GravityManager.get(world.getRegistryKey());
-		
-		if (gravity != null) {
-			return gravity;
-		}
-		
-		return original;
+
+		return gravity;
 	}
 }

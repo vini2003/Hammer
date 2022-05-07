@@ -43,42 +43,29 @@ open class TextureBarWidget @JvmOverloads constructor(
 	override var backgroundTexture: BaseTexture = STANDARD_BACKGROUND_TEXTURE
 	
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, tickDelta: Float) {
-		val client = InstanceUtils.CLIENT ?: return
-		
-		val windowHeight = client.window.height.toFloat()
-		val windowScale = client.window.scaleFactor.toFloat()
-		
 		val foregroundWidth = width / maximum() * current()
 		val foregroundHeight = height / maximum() * current()
 
-		var area: Scissors
+		var scissors: Scissors
 		
 		if (vertical) {
-			area = Scissors((x * windowScale).toInt(), (windowHeight - (y + height - foregroundHeight) * windowScale).toInt(), (width * windowScale).toInt(), ((height - foregroundHeight) * windowScale).toInt(), provider)
-			
 			backgroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			area.destroy()
-			
-			area = Scissors((x * windowScale).toInt(), (windowHeight - (y + height) * windowScale).toInt(), (width * windowScale).toInt(), (foregroundHeight * windowScale).toInt(), provider)
+			scissors = Scissors(x, y + (height - foregroundHeight), width, foregroundHeight, provider)
 			
 			foregroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			area.destroy()
+			scissors.destroy()
 		}
 		
 		if (horizontal) {
-			area = Scissors((x * windowScale).toInt(), (windowHeight - (y + height) * windowScale).toInt(), (width * windowScale).toInt(), (height * windowScale).toInt(), provider)
-			
 			backgroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			area.destroy()
-			
-			area = Scissors((x * windowScale).toInt(), (windowHeight - (y + height) * windowScale).toInt(), (foregroundWidth * windowScale).toInt(), (height * windowScale).toInt(), provider)
+			scissors = Scissors(x, y, foregroundWidth, height, provider)
 			
 			foregroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			area.destroy()
+			scissors.destroy()
 		}
 	}
 }

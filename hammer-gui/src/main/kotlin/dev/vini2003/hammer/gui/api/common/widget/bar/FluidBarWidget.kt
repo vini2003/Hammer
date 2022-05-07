@@ -64,11 +64,6 @@ open class FluidBarWidget @JvmOverloads constructor(
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, tickDelta: Float) {
 		val storage = storage ?: return
 		
-		val client = InstanceUtils.CLIENT ?: return
-		
-		val windowHeight = client.window.height.toFloat()
-		val windowScale = client.window.scaleFactor.toFloat()
-		
 		val foregroundWidth = width / maximum() * current()
 		val foregroundHeight = height / maximum() * current()
 		
@@ -79,7 +74,7 @@ open class FluidBarWidget @JvmOverloads constructor(
 		if (vertical) {
 			backgroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			scissors = Scissors((x * windowScale).toInt(), (windowHeight - (y + height) * windowScale).toInt(), (width * windowScale).toInt(), (foregroundHeight * windowScale).toInt(), provider)
+			scissors = Scissors(x, y + (height - foregroundHeight), width, foregroundHeight, provider)
 			
 			foregroundTexture.draw(matrices, provider, x + 1.0F, y + 1.0F, width - 2.0F, height - 2.0F)
 			
@@ -89,7 +84,7 @@ open class FluidBarWidget @JvmOverloads constructor(
 		if (horizontal) {
 			backgroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			scissors = Scissors((x * windowScale).toInt(), (windowHeight - (y + height) * windowScale).toInt(), (foregroundWidth * windowScale).toInt(), (height * windowScale).toInt(), provider)
+			scissors = Scissors(x, y, foregroundWidth, height, provider)
 			
 			foregroundTexture.draw(matrices, provider, x + 1.0F, y + 1.0F, width - 2.0F, height - 2.0F)
 			

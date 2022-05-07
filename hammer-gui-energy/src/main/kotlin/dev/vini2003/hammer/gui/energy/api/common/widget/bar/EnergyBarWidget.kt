@@ -33,10 +33,6 @@ import dev.vini2003.hammer.core.api.common.util.TextUtils
 import dev.vini2003.hammer.core.api.client.scissor.Scissors
 import dev.vini2003.hammer.core.api.client.texture.BaseTexture
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture
-import dev.vini2003.hammer.core.api.client.texture.TiledFluidTexture
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
@@ -60,7 +56,7 @@ open class EnergyBarWidget(
 		val STANDARD_FILLED_TEXTURE = ImageTexture(HC.id("textures/widget/energy_bar_filled.png"))
 		
 		@JvmField
-		val STANDARD_EMPTY_TEXTURE = ImageTexture(HC.id("textures/widget/energy_bar_empty.png"))
+		val STANDARD_EMPTY_TEXTURE = ImageTexture(HC.id("textures/widget/energy_bar_background.png"))
 	}
 	
 	constructor(storage: EnergyStorage) : this(
@@ -73,22 +69,17 @@ open class EnergyBarWidget(
 	override var backgroundTexture: BaseTexture = STANDARD_EMPTY_TEXTURE
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, tickDelta: Float) {
-		val client = InstanceUtils.CLIENT ?: return
-		
-		val windowHeight = client.window.height.toFloat()
-		val windowScale = client.window.scaleFactor.toFloat()
-		
 		val foregroundHeight = height / maximum() * current()
 		
-		val area: Scissors?
+		val scissors: Scissors
 		
 		backgroundTexture.draw(matrices, provider, x, y, width, height)
 		
-		area = Scissors((x * windowScale).toInt(), (windowHeight - (y + height) * windowScale).toInt(), (width * windowScale).toInt(), (foregroundHeight * windowScale).toInt(), provider)
+		scissors = Scissors(x, y + (height - foregroundHeight), width, foregroundHeight, provider)
 		
-		foregroundTexture.draw(matrices, provider, x + 1, y + 1, width - 2, height - 2)
+		foregroundTexture.draw(matrices, provider, x, y, width, height)
 		
-		area.destroy()
+		scissors.destroy()
 	}
 	
 	override fun getTooltip(): List<Text> {

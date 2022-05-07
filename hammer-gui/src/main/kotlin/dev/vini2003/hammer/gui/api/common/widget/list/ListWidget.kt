@@ -248,10 +248,6 @@ open class ListWidget : BaseWidget(), BaseWidgetCollection {
     }
 
     override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, tickDelta: Float) {
-        if (hidden) return
-		
-		val client = InstanceUtils.CLIENT ?: return
-
         scrollbarTexture.draw(matrices, provider, position.x + size.width - 18.0F, position.y, 18.0F, size.height)
 
         val scrollerFocus = scrollerRectangle.isPositionWithin(PositionUtils.MOUSE_POSITION)
@@ -261,11 +257,8 @@ open class ListWidget : BaseWidget(), BaseWidgetCollection {
         } else {
             scrollerTexture.draw(matrices, provider, position.x + size.width - 18.0F + 1.0F, scrollerY - 1.0F, 16.0F, scrollerHeight)
         }
-
-        val rawHeight = client.window.height.toFloat()
-        val scale = client.window.scaleFactor.toFloat()
-
-        val scissors = Scissors((x * scale).toInt(), (rawHeight - (y + height) * scale).toInt(), (width * scale).toInt(), (height * scale).toInt(), provider)
+		
+        val scissors = Scissors(x, y, width, height, provider)
 	
 	    widgets.filterNot { widget ->
 			widget.hidden

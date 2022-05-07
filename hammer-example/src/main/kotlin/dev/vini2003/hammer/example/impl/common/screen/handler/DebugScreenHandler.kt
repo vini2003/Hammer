@@ -5,9 +5,14 @@ import dev.vini2003.hammer.core.api.common.math.size.Size
 import dev.vini2003.hammer.core.api.common.util.extension.toLiteralText
 import dev.vini2003.hammer.example.registry.common.HEScreenHandlers
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler
+import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget
+import dev.vini2003.hammer.gui.api.common.widget.bar.TextureBarWidget
 import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget
 import dev.vini2003.hammer.gui.api.common.widget.tab.TabWidget
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
+import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Items
 import net.minecraft.screen.ScreenHandler
@@ -34,6 +39,15 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 		
 		tabs.addTab(Items.IRON_INGOT)
 		tabs.addTab(Items.GOLD_INGOT)
+		
+		val textureBar = TextureBarWidget()
+		textureBar.position = Position(panel, 8.0F, 24.0F)
+		textureBar.size = Size(24.0F, 72.0F)
+		
+		textureBar.current = { 50.0F }
+		textureBar.maximum = { 100.0F }
+		
+		add(textureBar)
 		
 		add(tabs)
 		

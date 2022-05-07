@@ -24,21 +24,30 @@
 
 package dev.vini2003.hammer.gui.energy.api.common.util
 
+import dev.vini2003.hammer.core.api.common.color.Color
 import dev.vini2003.hammer.core.api.common.util.extension.*
 import net.minecraft.text.Text
+import net.minecraft.text.TextColor
 import team.reborn.energy.api.EnergyStorage
 
 object EnergyTextUtils {
 	@JvmField
-	val ENERGY = "text.hammer.energy".toTranslatableText()
+	var COLOR_OVERRIDE: Color = Color(0x97D96AL)
+	
+	@JvmField
+	val ENERGY = "text.hammer.energy".toTranslatableText().styled { style -> style.withColor(COLOR_OVERRIDE.toRGB()) }
 	
 	@JvmStatic
 	fun getDetailedTooltips(storage: EnergyStorage): List<Text> {
-		return listOf(ENERGY, "${storage.amount.toPrettyString("E")} / ${storage.capacity.toPrettyString("E")}".toLiteralText().gray())
+		val color = TextColor.fromRgb(COLOR_OVERRIDE.toRGB())
+		
+		return listOf(ENERGY.styled { style -> style.withColor(color) }, "${storage.amount.toPrettyString("E")} / ${storage.capacity.toPrettyString("E")}".toLiteralText().gray())
 	}
 	
 	@JvmStatic
 	fun getShortenedTooltips(storage: EnergyStorage): List<Text> {
-		return listOf(ENERGY, "${storage.amount.toPrettyShortenedString("E")} / ${storage.capacity.toPrettyShortenedString("E")}".toLiteralText().gray())
+		val color = TextColor.fromRgb(COLOR_OVERRIDE.toRGB())
+		
+		return listOf(ENERGY.styled { style -> style.withColor(color) }, "${storage.amount.toPrettyShortenedString("E")} / ${storage.capacity.toPrettyShortenedString("E")}".toLiteralText().gray())
 	}
 }

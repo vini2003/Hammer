@@ -38,12 +38,12 @@ object NumberUtils {
 
 	@JvmStatic
 	fun getExponent(number: Number): Int {
-		var number = number.toLong()
+		var number = number.toDouble()
 		
 		var exponent = 0
 		
-		while (number >= 1000) {
-			number /= 1000
+		while (number >= 1000.0) {
+			number /= 1000.0
 			
 			exponent += 1
 		}
@@ -61,7 +61,7 @@ object NumberUtils {
 		var exponent = getExponent(number)
 		val symbol = getUnit(exponent)
 		
-		var shortenedNumber = number.toLong()
+		var shortenedNumber = number.toDouble()
 		
 		while(exponent > 0) {
 			--exponent
@@ -69,11 +69,6 @@ object NumberUtils {
 			shortenedNumber /= 1000
 		}
 		
-		return when (number) {
-			is Float, is Double -> String.format("%,.2f%s%s", shortenedNumber, symbol, unit)
-			is Int, is Long -> String.format("%,d%s%s", shortenedNumber, symbol, unit)
-			
-			else -> "${number}${unit}"
-		}
+		return String.format("%,.2f%s%s", shortenedNumber, symbol, unit)
 	}
 }

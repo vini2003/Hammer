@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.core.api.common.util
 
+import dev.vini2003.hammer.core.api.common.color.Color
 import dev.vini2003.hammer.core.api.common.util.extension.gray
 import dev.vini2003.hammer.core.api.common.util.extension.toPrettyShortenedString
 import dev.vini2003.hammer.core.api.common.util.extension.toLiteralText
@@ -31,14 +32,21 @@ import dev.vini2003.hammer.core.api.common.util.extension.toPrettyString
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView
+import net.minecraft.text.MutableText
 import net.minecraft.text.Text
+import net.minecraft.text.TextColor
 
 object FluidTextUtils {
+	@JvmField
+	val COLOR_OVERRIDES: MutableMap<FluidVariant, Color> = mutableMapOf()
+	
 	@JvmStatic
 	fun getVariantTooltips(fluidVariant: FluidVariant): List<Text> {
 		if (fluidVariant.isBlank) return listOf(TextUtils.EMPTY)
 		
-		return FluidVariantRendering.getTooltip(fluidVariant)
+		val color = TextColor.fromRgb(COLOR_OVERRIDES.get(fluidVariant)?.toRGB() ?: FluidVariantRendering.getColor(fluidVariant))
+		
+		return FluidVariantRendering.getTooltip(fluidVariant).map { text -> text as MutableText }.onEach { text -> text.styled { style -> style.withColor(color) } }
 	}
 
 	@JvmStatic
@@ -51,7 +59,7 @@ object FluidTextUtils {
 	@JvmStatic
 	fun getDetailedStorageTooltips(fluidView: StorageView<FluidVariant>): List<Text> {
 		if (fluidView.isResourceBlank) return listOf(TextUtils.EMPTY)
-		
+
 		return getVariantTooltips(fluidView.resource) + "${fluidView.amount.toPrettyString("d")} / ${fluidView.capacity.toPrettyString("d")}".toLiteralText().gray()
 	}
 }

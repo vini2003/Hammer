@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.core.api.client.scissor
 
+import dev.vini2003.hammer.core.api.client.util.InstanceUtils
 import net.minecraft.client.render.VertexConsumerProvider
 import org.lwjgl.opengl.GL11
 
@@ -48,6 +49,24 @@ class Scissors(
 	height: Int,
 	val provider: VertexConsumerProvider?
 ) {
+	/**
+	 * Constructs scissors.
+	 *
+	 * @param x the X position to use.
+	 * @param y the Y position to use.
+	 * @param width the width to use.
+	 * @param height the height to use.
+	 * @param provider the provider to use.
+	 * @return the scissors.
+	 */
+	constructor(
+		x: Float,
+		y: Float,
+		width: Float,
+		height: Float,
+		provider: VertexConsumerProvider?
+	) : this(x.toInt(), y.toInt(), width.toInt(), height.toInt(), provider)
+	
 	companion object {
 		private const val MAX_SCISSORS = 512
 		
@@ -74,20 +93,33 @@ class Scissors(
 			
 			SCISSORS[index] = this
 			
-			left = x
-			right = x + width - 1
+			val client = InstanceUtils.CLIENT
 			
-			top = y
-			bottom = y + height - 1
-			
-			if (index > 0) {
-				val parent = SCISSORS[index - 1]
+			if (client != null) {
+				val windowHeight = client.window.height.toFloat()
+				val windowScale = client.window.scaleFactor.toFloat()
 				
-				if (left < parent!!.left) left = parent.left
-				if (right > parent.right) right = parent.right
+				val scaledX = (x * windowScale).toInt()
+				val scaledY = (windowHeight - (y + height) * windowScale).toInt()
 				
-				if (top < parent.top) top = parent.top
-				if (bottom > parent.bottom) bottom = parent.bottom
+				val scaledWidth = (width * windowScale).toInt()
+				val scaledHeight = (height * windowScale).toInt()
+				
+				left = scaledX
+				right = scaledX + scaledWidth - 1
+				
+				top = scaledY
+				bottom = scaledY + scaledHeight - 1
+				
+				if (index > 0) {
+					val parent = SCISSORS[index - 1]
+					
+					if (left < parent!!.left) left = parent.left
+					if (right > parent.right) right = parent.right
+					
+					if (top < parent.top) top = parent.top
+					if (bottom > parent.bottom) bottom = parent.bottom
+				}
 			}
 			
 			create()

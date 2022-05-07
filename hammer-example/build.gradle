@@ -34,5 +34,5 @@ dependencies {
 }
 
 jar {
-    baseName("hammer-all")
+    baseName("hammer-example")
 }

@@ -239,12 +239,12 @@ open class Shape(
 	 * @return the result.
 	 */
 	fun isPositionWithin(pos: Position): Boolean {
-		return pos.x > startPos.x &&
-			   pos.x < endPos.x &&
-			   pos.y > startPos.y &&
-			   pos.y < endPos.y &&
-			   pos.z > startPos.z &&
-			   pos.z < endPos.z &&
+		return pos.x >= startPos.x &&
+			   pos.x <= endPos.x &&
+			   pos.y >= startPos.y &&
+			   pos.y <= endPos.y &&
+			   pos.z >= startPos.z &&
+			   pos.z <= endPos.z &&
 			   equation.invoke(this, pos - startPos)
 	}
 	

@@ -34,6 +34,7 @@ import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
+import kotlin.math.abs
 import kotlin.math.min
 
 object DrawingUtils {
@@ -102,7 +103,7 @@ object DrawingUtils {
 		light: Int = DEFAULT_LIGHT,
 		color: Color = DEFAULT_COLOR
 	) {
-		val layer = LayerUtils.get(textureId)
+		val layer = RenderLayer.getSolid()
 		
 		val consumer = provider.getBuffer(layer)
 		
@@ -115,14 +116,14 @@ object DrawingUtils {
 		while (currentY < endY) {
 			currentX = x
 			
-			while (currentY < endX) {
+			while (currentX < endX) {
 				val diffX = min(endX - currentX, tileWidth)
 				val diffY = min(endY - currentY, tileHeight)
 				
 				val deltaX: Float
 				
 				if (diffX < tileWidth) {
-					deltaX = (uEnd - uStart) * (1 - (diffX / tileWidth))
+					deltaX = (uEnd - uStart) * (1.0F - (diffX / tileWidth))
 				} else {
 					deltaX = 0.0F
 				}
@@ -130,7 +131,7 @@ object DrawingUtils {
 				val deltaY: Float
 				
 				if (diffY < tileHeight) {
-					deltaY = (vEnd - vStart) * (1 - (diffY / tileHeight))
+					deltaY = (vEnd - vStart) * (1.0F - (diffY / tileHeight))
 				} else {
 					deltaY = 0.0F
 				}
@@ -140,10 +141,10 @@ object DrawingUtils {
 				consumer.vertex(matrices.positionMatrix, currentX + diffX, currentY, z).color(color.r, color.g, color.b, color.a).texture(uEnd - deltaX, vStart).overlay(overlay).light(light).normal(matrices.normalMatrix, normalX, normalY, normalZ).next()
 				consumer.vertex(matrices.positionMatrix, currentX, currentY, z).color(color.r, color.g, color.b, color.a).texture(uStart, vStart).overlay(overlay).light(light).normal(matrices.normalMatrix, normalX, normalY, normalZ).next()
 				
-				currentX += min(endX - currentX, tileWidth)
+				currentX += min(abs(endX - currentX), tileWidth)
 			}
 			
-			currentY += min(endY - currentY, tileHeight)
+			currentY += min(abs(endY - currentY), tileHeight)
 		}
 	}
 

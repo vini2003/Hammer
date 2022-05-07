@@ -27,6 +27,7 @@
 package dev.vini2003.hammer.core.api.client.texture
 
 import dev.vini2003.hammer.core.api.client.util.DrawingUtils
+import dev.vini2003.hammer.core.api.client.util.InstanceUtils
 import dev.vini2003.hammer.core.api.common.color.Color
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
@@ -61,12 +62,17 @@ class FluidTexture @JvmOverloads constructor(
 			return
 		}
 		
+		val client = InstanceUtils.CLIENT!!
+		
+		val scaledX = x - (x % (client.window.scaledWidth.toFloat() / client.window.width.toFloat()))
+		val scaledY = y - (y % (client.window.scaledHeight.toFloat() / client.window.height.toFloat()))
+		
 		DrawingUtils.drawTexturedQuad(
 			matrices,
 			provider,
 			sprite.id,
-			x = x,
-			y = y,
+			x = scaledX,
+			y = scaledY,
 			width = width,
 			height = height,
 			uStart = sprite.minU,

@@ -27,10 +27,13 @@ package dev.vini2003.hammer.gui.api.common.widget.panel
 import dev.vini2003.hammer.core.HC
 import dev.vini2003.hammer.core.api.client.texture.BaseTexture
 import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture
+import dev.vini2003.hammer.core.api.client.texture.TiledFluidTexture
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.fluid.Fluids
 
 /**
  * A [PanelWidget] is a widget that holds other widgets.

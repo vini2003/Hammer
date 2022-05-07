@@ -7,7 +7,7 @@ jar {
 }
 
 rootProject.project(":hammer-adventure").tasks.remapJar.dependsOn remapJar
-rootProject.project(":hammer-all").tasks.remapJar.dependsOn remapJar
+rootProject.project(":hammer-example").tasks.remapJar.dependsOn remapJar
 rootProject.project(":hammer-border").tasks.remapJar.dependsOn remapJar
 rootProject.project(":hammer-chat").tasks.remapJar.dependsOn remapJar
 rootProject.project(":hammer-command").tasks.remapJar.dependsOn remapJar

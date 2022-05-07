@@ -26,11 +26,13 @@ package dev.vini2003.hammer.gui.api.common.widget.tab
 
 import dev.vini2003.hammer.core.HC
 import dev.vini2003.hammer.core.api.client.texture.BaseTexture
+import dev.vini2003.hammer.core.api.client.texture.ImageTexture
 import dev.vini2003.hammer.core.api.client.util.DrawingUtils
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget
 import dev.vini2003.hammer.core.api.client.util.PositionUtils
+import dev.vini2003.hammer.core.api.common.math.position.Position
 import dev.vini2003.hammer.core.api.common.math.shape.Shape
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
@@ -50,22 +52,22 @@ import net.minecraft.util.Identifier
 open class TabWidget : BaseWidget(), BaseWidgetCollection {
 	companion object {
 		@JvmField
-		val STANDARD_ACTIVE_LEFT_TEXTURE: Identifier = HC.id("textures/widget/tab_left_active.png")
+		val STANDARD_ACTIVE_LEFT_TEXTURE: BaseTexture = ImageTexture(HC.id("textures/widget/tab_left_active.png"))
 		
 		@JvmField
-		val STANDARD_ACTIVE_MIDDLE_TEXTURE: Identifier = HC.id("textures/widget/tab_middle_active.png")
+		val STANDARD_ACTIVE_MIDDLE_TEXTURE: BaseTexture = ImageTexture(HC.id("textures/widget/tab_middle_active.png"))
 		
 		@JvmField
-		val STANDARD_ACTIVE_RIGHT_TEXTURE: Identifier = HC.id("textures/widget/tab_right_active.png")
+		val STANDARD_ACTIVE_RIGHT_TEXTURE: BaseTexture = ImageTexture(HC.id("textures/widget/tab_right_active.png"))
 		
 		@JvmField
-		var STANDARD_INACTIVE_LEFT_TEXTURE: Identifier = HC.id("textures/widget/tab_left_inactive.png")
+		var STANDARD_INACTIVE_LEFT_TEXTURE: BaseTexture = ImageTexture(HC.id("textures/widget/tab_left_inactive.png"))
 		
 		@JvmField
-		var STANDARD_INACTIVE_MIDDLE_TEXTURE: Identifier = HC.id("textures/widget/tab_middle_inactive.png")
+		var STANDARD_INACTIVE_MIDDLE_TEXTURE: BaseTexture = ImageTexture(HC.id("textures/widget/tab_middle_inactive.png"))
 		
 		@JvmField
-		var STANDARD_INACTIVE_RIGHT_TEXTURE: Identifier = HC.id("textures/widget/tab_right_inactive.png")
+		var STANDARD_INACTIVE_RIGHT_TEXTURE: BaseTexture = ImageTexture(HC.id("textures/widget/tab_right_inactive.png"))
 	}
 	
 	override val widgets : MutableList<BaseWidget> = mutableListOf()
@@ -75,13 +77,13 @@ open class TabWidget : BaseWidget(), BaseWidgetCollection {
 	protected open val tabSymbols: MutableList<ItemStack> = mutableListOf()
 	protected open val tabTooltips: MutableList<() -> List<Text>> = mutableListOf()
 	
-	open var activeLeftTexture: Identifier = STANDARD_ACTIVE_LEFT_TEXTURE
-	open var activeMiddleTexture: Identifier = STANDARD_ACTIVE_MIDDLE_TEXTURE
-	open var activeRightTexture: Identifier = STANDARD_ACTIVE_RIGHT_TEXTURE
+	open var activeLeftTexture: BaseTexture = STANDARD_ACTIVE_LEFT_TEXTURE
+	open var activeMiddleTexture: BaseTexture = STANDARD_ACTIVE_MIDDLE_TEXTURE
+	open var activeRightTexture: BaseTexture = STANDARD_ACTIVE_RIGHT_TEXTURE
 	
-	open var inactiveLeftTexture: Identifier = STANDARD_INACTIVE_LEFT_TEXTURE
-	open var inactiveMiddleTexture: Identifier = STANDARD_INACTIVE_MIDDLE_TEXTURE
-	open var inactiveRightTexture: Identifier = STANDARD_INACTIVE_RIGHT_TEXTURE
+	open var inactiveLeftTexture: BaseTexture = STANDARD_INACTIVE_LEFT_TEXTURE
+	open var inactiveMiddleTexture: BaseTexture = STANDARD_INACTIVE_MIDDLE_TEXTURE
+	open var inactiveRightTexture: BaseTexture = STANDARD_INACTIVE_RIGHT_TEXTURE
 
 	var panelTexture: BaseTexture = PanelWidget.STANDARD_TEXTURE
 	
@@ -189,9 +191,9 @@ open class TabWidget : BaseWidget(), BaseWidgetCollection {
 	override fun onMouseClicked(x: Float, y: Float, button: Int) {
 		super.onMouseClicked(x, y, button)
 
-		val pos = PositionUtils.MOUSE_POSITION
+		val pos = Position(x, y)
 		
-		if (tabRectangles.any { widget -> widget.isPositionWithin(position) }) {
+		if (tabRectangles.any { widget -> widget.isPositionWithin(pos) }) {
 			tabRectangles.forEachIndexed { index, rectangle ->
 				val hidden = !rectangle.isPositionWithin(pos)
 
@@ -216,17 +218,17 @@ open class TabWidget : BaseWidget(), BaseWidgetCollection {
 		tabRectangles.forEachIndexed { index, rectangle ->
 			if (selected == index) {
 				when (rectangle.startPos.x) {
-					position.x -> DrawingUtils.drawTexturedQuad(matrices, provider, activeLeftTexture, position.x + (26.0F * index), position.y, 25.0F, 29.0F)
-					position.x + size.width - 25.0F -> DrawingUtils.drawTexturedQuad(matrices, provider, activeRightTexture, position.x + (26.0F * index), position.y, 25.0F, 28.0F)
+					position.x -> activeLeftTexture.draw(matrices, provider, position.x + (26.0F * index), position.y, 25.0F, 29.0F)
+					position.x + size.width - 25.0F -> activeRightTexture.draw(matrices, provider, position.x + (26.0F * index), position.y, 25.0F, 28.0F)
 					
-					else -> DrawingUtils.drawTexturedQuad(matrices, provider, activeMiddleTexture, position.x + (26.0F * index), position.y, 25.0F, 28.0F)
+					else -> activeMiddleTexture.draw(matrices, provider, position.x + (26.0F * index), position.y, 25.0F, 28.0F)
 				}
 			} else {
 				when (rectangle.startPos.x) {
-					position.x ->DrawingUtils.drawTexturedQuad(matrices, provider, inactiveLeftTexture, position.x + (26.0F * index), position.y + 3.0F, 25.0F, 24.0F)
-					position.x + size.width - 25.0F -> DrawingUtils.drawTexturedQuad(matrices, provider, inactiveRightTexture, position.x + (26.0F * index), position.y + 2.0F, 25.0F, 26.0F)
+					position.x -> inactiveLeftTexture.draw(matrices, provider, position.x + (26.0F * index), position.y + 3.0F, 25.0F, 24.0F)
+					position.x + size.width - 25.0F -> inactiveRightTexture.draw(matrices, provider, position.x + (26.0F * index), position.y + 2.0F, 25.0F, 26.0F)
 					
-					else -> DrawingUtils.drawTexturedQuad(matrices, provider, inactiveMiddleTexture, position.x + (26.0F * index), position.y + 2.0F, 25.0F, 25.0F)
+					else -> inactiveMiddleTexture.draw(matrices, provider, position.x + (26.0F * index), position.y + 2.0F, 25.0F, 25.0F)
 				}
 			}
 			

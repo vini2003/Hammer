@@ -34,11 +34,19 @@ object PositionUtils {
 
 	@JvmStatic
 	@get:JvmName("getMouseX")
-	val MOUSE_X
-		get() = InstanceUtils.CLIENT?.mouse?.x?.toFloat() ?: Float.MAX_VALUE
+	val MOUSE_X: Float
+		get() {
+			val client = InstanceUtils.CLIENT ?: return Float.MAX_VALUE
+			
+			return (client.mouse.x * (client.window.scaledWidth / client.window.width)).toFloat()
+		}
 	
 	@JvmStatic
 	@get:JvmName("getMouseY")
-	val MOUSE_Y
-		get() = InstanceUtils.CLIENT?.mouse?.y?.toFloat() ?: Float.MAX_VALUE
+	val MOUSE_Y: Float
+		get() {
+			val client = InstanceUtils.CLIENT ?: return Float.MAX_VALUE
+			
+			return (client.mouse.y * (client.window.scaledHeight / client.window.height)).toFloat()
+		}
 }

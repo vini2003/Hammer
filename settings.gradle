@@ -47,4 +47,4 @@ include "hammer-gui"
 include "hammer-gui-energy"
 include "hammer-util"
 
-include "hammer-all"
+include "hammer-example"

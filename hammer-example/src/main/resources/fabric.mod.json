@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "hammer-all",
+  "id": "hammer-example",
   "version": "0.6.5",
-  "name": "Hammer All",
+  "name": "Hammer Example",
   "description": "A library module.",
   "authors": [
     "vini2003"
@@ -13,6 +13,20 @@
   "license": "MIT",
   "icon": "assets/hammer/icon.png",
   "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "dev.vini2003.hammer.example.HE"
+      }
+    ],
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "dev.vini2003.hammer.example.HEClient"
+      }
+    ]
+  },
   "depends": {
     "fabricloader": ">=0.12.9",
     "fabric": ">=0.44.0+1.18",

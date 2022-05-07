@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.core.api.client.texture
 
 import dev.vini2003.hammer.core.api.client.util.DrawingUtils
+import dev.vini2003.hammer.core.api.client.util.InstanceUtils
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.Identifier
@@ -49,12 +50,17 @@ class ImageTexture(
 		width: Float,
 		height: Float
 	) {
+		val client = InstanceUtils.CLIENT!!
+		
+		val scaledX = x - (x % (client.window.scaledWidth.toFloat() / client.window.width.toFloat()))
+		val scaledY = y - (y % (client.window.scaledHeight.toFloat() / client.window.height.toFloat()))
+		
 		DrawingUtils.drawTexturedQuad(
 			matrices,
 			provider,
 			textureId,
-			x = x,
-			y = y,
+			x = scaledX,
+			y = scaledY,
 			width = width,
 			height = height
 		)

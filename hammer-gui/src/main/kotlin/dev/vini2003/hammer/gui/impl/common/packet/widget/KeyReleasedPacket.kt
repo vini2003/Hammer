@@ -35,7 +35,7 @@ data class KeyReleasedPacket(val syncId: Int, val widgetHash: Int, val keyCode: 
 			player.currentScreenHandler
 		}.filterIsInstance<BaseScreenHandler>().firstOrNull { handler ->
 			handler.syncId == syncId
-		}?.widgets?.firstOrNull { widget ->
+		}?.allWidgets?.firstOrNull { widget ->
 			widget.hash == widgetHash
 		}?.onKeyReleased(keyCode, scanCode, keyModifiers)
 	}

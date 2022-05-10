@@ -170,5 +170,23 @@ class Size(
 	operator fun div(number: Float): Size {
 		return Size(width / number, height / number, length / number)
 	}
+	
+	override fun equals(other: Any?): Boolean {
+		if (this === other) return true
+		if (other !is Size) return false
+		
+		if (width != other.width) return false
+		if (height != other.height) return false
+		if (length != other.length) return false
+		
+		return true
+	}
+	
+	override fun hashCode(): Int {
+		var result = width.hashCode()
+		result = 31 * result + height.hashCode()
+		result = 31 * result + length.hashCode()
+		return result
+	}
 }
 

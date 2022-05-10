@@ -70,7 +70,7 @@ open class ButtonWidget @JvmOverloads constructor(
 		
 		@JvmField
 		var STANDARD_FOCUSED_TEXTURE: BaseTexture = PartitionedTexture(
-			HC.id("textures/widget/button_on_focus.png"),
+			HC.id("textures/widget/button_focused.png"),
 			18F,
 			18F,
 			0.11111111111111111111F,

@@ -31,6 +31,7 @@ import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils
+import dev.vini2003.hammer.core.api.common.math.position.Position
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
@@ -62,6 +63,16 @@ open class SlotWidget @JvmOverloads constructor(
 	var texture: BaseTexture = STANDARD_TEXTURE
 	
 	var backendSlot: Slot? = null
+	
+	override var position: Position
+		get() = super.position
+		set(value) {
+			super.position = Position(
+				value.x.toInt().toFloat(),
+				value.y.toInt().toFloat(),
+				value.z.toInt().toFloat()
+			)
+		}
 	
 	protected open val slotX: Int
 		get() = (x + (if (size.width <= 18.0F) 1.0F else size.width / 2.0F - 9.0F)).toInt()

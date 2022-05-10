@@ -38,14 +38,21 @@ open class TextureBarWidget @JvmOverloads constructor(
 	maximum: () -> Float = { 100.0F },
 	current: () -> Float = { 0.0F }
 ) : BaseBarWidget(maximum, current) {
+	var smooth: Boolean = false
+	
 	override var foregroundTexture: BaseTexture = STANDARD_FOREGROUND_TEXTURE
 	
 	override var backgroundTexture: BaseTexture = STANDARD_BACKGROUND_TEXTURE
 	
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, tickDelta: Float) {
-		val foregroundWidth = width / maximum() * current()
-		val foregroundHeight = height / maximum() * current()
+		var foregroundWidth = width / maximum() * current()
+		var foregroundHeight = height / maximum() * current()
 
+		if (!smooth) {
+			foregroundWidth = foregroundWidth.toInt().toFloat()
+			foregroundHeight = foregroundHeight.toInt().toFloat()
+		}
+		
 		var scissors: Scissors
 		
 		if (vertical) {

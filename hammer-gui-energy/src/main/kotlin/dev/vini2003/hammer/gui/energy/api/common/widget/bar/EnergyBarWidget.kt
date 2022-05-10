@@ -33,6 +33,7 @@ import dev.vini2003.hammer.core.api.common.util.TextUtils
 import dev.vini2003.hammer.core.api.client.scissor.Scissors
 import dev.vini2003.hammer.core.api.client.texture.BaseTexture
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture
+import dev.vini2003.hammer.core.api.common.util.extension.gray
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
@@ -64,12 +65,18 @@ open class EnergyBarWidget(
 		{ storage.capacity }
 	)
 	
+	var smooth: Boolean = false
+	
 	override var foregroundTexture: BaseTexture = STANDARD_FILLED_TEXTURE
 	
 	override var backgroundTexture: BaseTexture = STANDARD_EMPTY_TEXTURE
 
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, tickDelta: Float) {
-		val foregroundHeight = height / maximum() * current()
+		var foregroundHeight = height / maximum() * current()
+		
+		if (!smooth) {
+			foregroundHeight = foregroundHeight.toInt().toFloat()
+		}
 		
 		val scissors: Scissors
 		
@@ -83,10 +90,10 @@ open class EnergyBarWidget(
 	}
 	
 	override fun getTooltip(): List<Text> {
-		val storage = storage ?: return listOf(TextUtils.EMPTY)
+		val storage = storage ?: return listOf(TextUtils.EMPTY.gray())
 		
 		return if (current() == 0.0F) {
-			listOf(TextUtils.EMPTY)
+			listOf(TextUtils.EMPTY.gray())
 		} else {
 			if (Screen.hasShiftDown()) {
 				return EnergyTextUtils.getDetailedTooltips(storage)

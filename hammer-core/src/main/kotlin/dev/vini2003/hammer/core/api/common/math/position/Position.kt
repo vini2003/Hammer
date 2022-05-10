@@ -36,6 +36,7 @@ import kotlinx.serialization.internal.TaggedDecoder
 import kotlinx.serialization.internal.TaggedEncoder
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.ChunkPos
+import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -304,5 +305,23 @@ class Position constructor(
 	 */
 	operator fun div(number: Float): Position {
 		return Position(x / number, y / number, z / number)
+	}
+	
+	override fun equals(other: Any?): Boolean {
+		if (this === other) return true
+		if (other !is Position) return false
+		
+		if (x != other.x) return false
+		if (y != other.y) return false
+		if (z != other.z) return false
+		
+		return true
+	}
+	
+	override fun hashCode(): Int {
+		var result = x.hashCode()
+		result = 31 * result + y.hashCode()
+		result = 31 * result + z.hashCode()
+		return result
 	}
 }

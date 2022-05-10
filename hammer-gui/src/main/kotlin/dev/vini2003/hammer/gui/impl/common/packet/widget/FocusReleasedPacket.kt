@@ -35,7 +35,7 @@ data class FocusReleasedPacket(val syncId: Int, val widgetHash: Int) : Packet<Fo
 			player.currentScreenHandler
 		}.filterIsInstance<BaseScreenHandler>().firstOrNull { handler ->
 			handler.syncId == syncId
-		}?.widgets?.firstOrNull { widget ->
+		}?.allWidgets?.firstOrNull { widget ->
 			widget.hash == widgetHash
 		}?.onFocusReleased()
 	}

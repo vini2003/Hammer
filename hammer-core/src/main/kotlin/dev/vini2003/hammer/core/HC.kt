@@ -24,7 +24,9 @@
 
 package dev.vini2003.hammer.core
 
+import dev.vini2003.hammer.core.api.common.util.serializer.module.HammerSerializersModule
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.plus
 import kotlinx.serialization.protobuf.ProtoBuf
 import net.minecraft.util.Identifier
 import org.jetbrains.annotations.ApiStatus
@@ -36,11 +38,18 @@ object HC {
 	
 	@JvmStatic
 	@get:JvmName("getJson")
-	val JSON = Json { ignoreUnknownKeys = true; prettyPrint = true }
+	val JSON = Json {
+		serializersModule = serializersModule
+		
+		ignoreUnknownKeys = true
+		prettyPrint = true
+	}
 	
 	@JvmStatic
 	@get:JvmName("getProtoBuf")
-	val PROTOBUF = ProtoBuf { }
+	val PROTOBUF = ProtoBuf {
+		serializersModule = serializersModule + HammerSerializersModule
+	}
 	
 	@JvmStatic
 	fun id(string: String): Identifier {

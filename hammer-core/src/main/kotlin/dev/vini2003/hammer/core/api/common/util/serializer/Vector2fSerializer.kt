@@ -26,6 +26,7 @@ package dev.vini2003.hammer.core.api.common.util.serializer
 
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element
@@ -37,6 +38,7 @@ import kotlinx.serialization.internal.TaggedDecoder
 import kotlinx.serialization.internal.TaggedEncoder
 import net.minecraft.client.util.math.Vector2f
 
+@Serializer(forClass = Vector2f::class)
 object Vector2fSerializer : KSerializer<Vector2f> {
 	override val descriptor: SerialDescriptor =
 		buildClassSerialDescriptor("Vector2f") {

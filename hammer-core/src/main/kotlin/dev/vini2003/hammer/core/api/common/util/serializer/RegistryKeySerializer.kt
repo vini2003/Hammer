@@ -28,6 +28,7 @@ import dev.vini2003.hammer.core.api.common.util.extension.toIdentifier
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element
@@ -39,6 +40,7 @@ import kotlinx.serialization.internal.TaggedDecoder
 import kotlinx.serialization.internal.TaggedEncoder
 import net.minecraft.util.registry.RegistryKey
 
+@Serializer(forClass = RegistryKey::class)
 class RegistryKeySerializer<T>(val unsupportedSerializer: KSerializer<T>) : KSerializer<RegistryKey<@Serializable(UnsupportedSerializer::class) T>> {
 	override val descriptor: SerialDescriptor =
 		buildClassSerialDescriptor("RegistryKey") {

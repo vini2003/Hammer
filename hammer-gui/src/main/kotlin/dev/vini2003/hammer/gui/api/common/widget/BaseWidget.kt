@@ -78,7 +78,7 @@ abstract class BaseWidget : Positioned, Sized {
 	 * A unique hash for this widget.
 	 */
 	open val hash: Int
-		get() = Objects.hash(this, parent)
+		get() = Objects.hashCode(this)
 	
 	/**
 	 * Whether this widget is hidden or not.

@@ -32,6 +32,7 @@ import dev.vini2003.hammer.core.api.client.texture.TiledFluidTexture
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils
 import dev.vini2003.hammer.core.api.common.util.FluidTextUtils
 import dev.vini2003.hammer.core.api.common.util.TextUtils
+import dev.vini2003.hammer.core.api.common.util.extension.gray
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage
 import net.minecraft.client.gui.screen.Screen
@@ -59,6 +60,8 @@ open class FluidBarWidget @JvmOverloads constructor(
 	
 	var variant: FluidVariant? = null
 	
+	var smooth: Boolean = false
+	
 	override var foregroundTexture: BaseTexture = STANDARD_FOREGROUND_TEXTURE
 	
 	override var backgroundTexture: BaseTexture = STANDARD_BACKGROUND_TEXTURE
@@ -66,8 +69,13 @@ open class FluidBarWidget @JvmOverloads constructor(
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, tickDelta: Float) {
 		val resource = storage?.resource ?: variant ?: return
 		
-		val foregroundWidth = width / maximum() * current()
-		val foregroundHeight = height / maximum() * current()
+		var foregroundWidth = (width / maximum() * current())
+		var foregroundHeight = (height / maximum() * current())
+		
+		if (!smooth) {
+			foregroundWidth = foregroundHeight.toInt().toFloat()
+			foregroundHeight = foregroundHeight.toInt().toFloat()
+		}
 		
 		foregroundTexture = TiledFluidTexture(resource)
 		
@@ -95,10 +103,10 @@ open class FluidBarWidget @JvmOverloads constructor(
 	}
 	
 	override fun getTooltip(): List<Text> {
-		val storage = storage ?: return listOf(TextUtils.EMPTY)
+		val storage = storage ?: return listOf(TextUtils.EMPTY.gray())
 		
 		if (current() == 0.0F) {
-			return listOf(TextUtils.EMPTY)
+			return listOf(TextUtils.EMPTY.gray())
 		} else {
 			if (Screen.hasShiftDown()) {
 				return FluidTextUtils.getDetailedStorageTooltips(storage)

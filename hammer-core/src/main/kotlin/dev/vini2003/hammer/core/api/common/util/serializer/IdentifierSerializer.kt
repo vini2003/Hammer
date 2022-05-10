@@ -26,6 +26,7 @@ package dev.vini2003.hammer.core.api.common.util.serializer
 
 import dev.vini2003.hammer.core.api.common.util.extension.toIdentifier
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -33,9 +34,9 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import net.minecraft.util.Identifier
 
+@Serializer(forClass = Identifier::class)
 object IdentifierSerializer : KSerializer<Identifier> {
-	override val descriptor: SerialDescriptor =
-		PrimitiveSerialDescriptor("Identifier", PrimitiveKind.STRING)
+	override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Identifier", PrimitiveKind.STRING)
 	
 	override fun deserialize(decoder: Decoder): Identifier {
 		return decoder.decodeString().toIdentifier()

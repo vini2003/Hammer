@@ -35,7 +35,7 @@ data class MouseReleasedPacket(val syncId: Int, val widgetHash: Int, val x: Floa
 			player.currentScreenHandler
 		}.filterIsInstance<BaseScreenHandler>().firstOrNull { handler ->
 			handler.syncId == syncId
-		}?.widgets?.firstOrNull { widget ->
+		}?.allWidgets?.firstOrNull { widget ->
 			widget.hash == widgetHash
 		}?.onMouseReleased(x, y, button)
 	}

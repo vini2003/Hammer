@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.core.api.common.util.serializer
 
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -32,9 +33,9 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import net.minecraft.util.math.BlockPos
 
+@Serializer(forClass = BlockPos::class)
 object BlockPosSerializer : KSerializer<BlockPos> {
-	override val descriptor: SerialDescriptor =
-		PrimitiveSerialDescriptor("BlockPos", PrimitiveKind.LONG)
+	override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("BlockPos", PrimitiveKind.LONG)
 	
 	override fun deserialize(decoder: Decoder): BlockPos {
 		return BlockPos.fromLong(decoder.decodeLong())

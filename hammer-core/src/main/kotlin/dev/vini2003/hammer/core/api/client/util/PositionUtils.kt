@@ -38,7 +38,7 @@ object PositionUtils {
 		get() {
 			val client = InstanceUtils.CLIENT ?: return Float.MAX_VALUE
 			
-			return (client.mouse.x * (client.window.scaledWidth / client.window.width)).toFloat()
+			return (client.mouse.x * (client.window.scaledWidth / client.window.width.coerceAtLeast(1))).toFloat()
 		}
 	
 	@JvmStatic
@@ -47,6 +47,6 @@ object PositionUtils {
 		get() {
 			val client = InstanceUtils.CLIENT ?: return Float.MAX_VALUE
 			
-			return (client.mouse.y * (client.window.scaledHeight / client.window.height)).toFloat()
+			return (client.mouse.y * (client.window.scaledHeight / client.window.height.coerceAtLeast(1))).toFloat()
 		}
 }

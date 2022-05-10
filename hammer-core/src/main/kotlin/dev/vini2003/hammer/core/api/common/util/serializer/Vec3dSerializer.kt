@@ -26,6 +26,7 @@ package dev.vini2003.hammer.core.api.common.util.serializer
 
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.element
@@ -37,6 +38,7 @@ import kotlinx.serialization.internal.TaggedDecoder
 import kotlinx.serialization.internal.TaggedEncoder
 import net.minecraft.util.math.Vec3d
 
+@Serializer(forClass = Vec3d::class)
 object Vec3dSerializer : KSerializer<Vec3d> {
 	override val descriptor: SerialDescriptor =
 		buildClassSerialDescriptor("Vec3d") {

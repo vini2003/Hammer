@@ -24,9 +24,17 @@
 
 package dev.vini2003.hammer.core.api.client.util
 
+import dev.vini2003.hammer.core.api.client.util.extension.capitalizeWords
 import dev.vini2003.hammer.core.api.client.util.extension.height
 import dev.vini2003.hammer.core.api.client.util.extension.width
+import dev.vini2003.hammer.core.api.common.util.extension.blue
+import dev.vini2003.hammer.core.api.common.util.extension.italic
+import dev.vini2003.hammer.core.api.common.util.extension.toLiteralText
+import net.fabricmc.loader.api.FabricLoader
+import net.minecraft.text.MutableText
 import net.minecraft.text.Text
+import net.minecraft.util.Identifier
+import net.minecraft.util.registry.Registry
 
 object TextUtils {
 	@JvmStatic
@@ -34,4 +42,18 @@ object TextUtils {
 	
 	@JvmStatic
 	fun height(text: Text) = text.height
+	
+	@JvmStatic
+	fun getIdMod(id: Identifier): MutableText {
+		val loader = FabricLoader.getInstance()
+		val mod = loader.getModContainer(id.namespace)
+		
+		if (mod.isPresent) {
+			val mod = mod.get()
+			
+			return mod.metadata.name.toLiteralText().blue().italic()
+		} else {
+			return id.namespace.replace("_", " ").replace("-", " ").capitalizeWords().toLiteralText().blue().italic()
+		}
+	}
 }

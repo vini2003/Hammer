@@ -35,7 +35,7 @@ data class CharacterTypedPacket(val syncId: Int, val widgetHash: Int, val charac
 			player.currentScreenHandler
 		}.filterIsInstance<BaseScreenHandler>().firstOrNull { handler ->
 			handler.syncId == syncId
-		}?.widgets?.firstOrNull { widget ->
+		}?.allWidgets?.firstOrNull { widget ->
 			widget.hash == widgetHash
 		}?.onCharacterTyped(character, keyCode)
 	}

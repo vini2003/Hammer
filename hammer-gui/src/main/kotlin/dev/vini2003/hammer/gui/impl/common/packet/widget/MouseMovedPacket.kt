@@ -35,7 +35,7 @@ data class MouseMovedPacket(val syncId: Int, val widgetHash: Int, val x: Float, 
 			player.currentScreenHandler
 		}.filterIsInstance<BaseScreenHandler>().firstOrNull { handler ->
 			handler.syncId == syncId
-		}?.widgets?.firstOrNull { widget ->
+		}?.allWidgets?.firstOrNull { widget ->
 			widget.hash == widgetHash
 		}?.onMouseMoved(x, y)
 	}

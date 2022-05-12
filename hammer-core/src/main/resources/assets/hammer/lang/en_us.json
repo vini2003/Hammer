@@ -1,6 +1,7 @@
 {
   "text.hammer.discord": "Discord",
   "text.hammer.empty": "Empty",
+  "text.hammer.fluid": "Fluid",
   "command.hammer.heal.self": "Healed self",
   "command.hammer.heal.other": "Healed %s",
   "command.hammer.satiate.self": "Satiated self",

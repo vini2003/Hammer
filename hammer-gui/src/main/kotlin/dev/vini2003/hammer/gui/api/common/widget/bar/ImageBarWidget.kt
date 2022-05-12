@@ -22,96 +22,74 @@
  * SOFTWARE.
  */
 
-@file:Suppress("DEPRECATION", "UnstableApiUsage")
-
 package dev.vini2003.hammer.gui.api.common.widget.bar
 
 import dev.vini2003.hammer.core.api.client.scissor.Scissors
 import dev.vini2003.hammer.core.api.client.texture.BaseTexture
-import dev.vini2003.hammer.core.api.client.texture.TiledFluidTexture
-import dev.vini2003.hammer.core.api.common.util.FluidTextUtils
-import dev.vini2003.hammer.core.api.common.util.TextUtils
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
-import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage
-import net.minecraft.client.gui.screen.Screen
+import dev.vini2003.hammer.core.api.client.texture.TiledImageTexture
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.text.Text
-
 
 /**
- * A [FluidBarWidget] is a [BaseBarWidget] whose texture,
- * [maximum] and [current] are dictated by a storage,
- * or manually configurable.
+ * A [ImageBarWidget] is a [BaseBarWidget] whose texture,
+ * [maximum] and [current] are configurable.
  */
-open class FluidBarWidget @JvmOverloads constructor(
-	maximum: () -> Float = { 1.0F },
-	current: () -> Float = { 0.0F }
+open class ImageBarWidget @JvmOverloads constructor(
+	maximum: () -> Float = { 100.0F },
+	current: () -> Float = { 0.0F },
+	var stepWidth: Float = -1.0F,
+	var stepHeight: Float = -1.0F
 ) : BaseBarWidget(maximum, current) {
-	var storage: SingleSlotStorage<FluidVariant>? = null
-		set(value) {
-			field = value
-			
-			current = { value!!.amount.toFloat() }
-			maximum = { value!!.capacity.toFloat() }
-		}
-	
-	var variant: FluidVariant? = null
-	
 	var smooth: Boolean = false
-	
-	var tiled: Boolean = true
 	
 	override var foregroundTexture: BaseTexture = STANDARD_FOREGROUND_TEXTURE
 	
 	override var backgroundTexture: BaseTexture = STANDARD_BACKGROUND_TEXTURE
-
+	
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, tickDelta: Float) {
-		val resource = storage?.resource ?: variant ?: return
+		var foregroundWidth = width / maximum() * current()
+		var foregroundHeight = height / maximum() * current()
 		
-		var foregroundWidth = (width / maximum() * current())
-		var foregroundHeight = (height / maximum() * current())
+		if (stepWidth != -1.0F) {
+			foregroundWidth -= foregroundWidth % stepWidth
+		}
+		
+		if (stepHeight != -1.0F) {
+			foregroundHeight -= foregroundHeight % stepHeight
+		}
 		
 		if (!smooth) {
-			foregroundWidth = foregroundHeight.toInt().toFloat()
+			foregroundWidth = foregroundWidth.toInt().toFloat()
 			foregroundHeight = foregroundHeight.toInt().toFloat()
 		}
 		
-		foregroundTexture = TiledFluidTexture(resource)
-		
-		var scissors: Scissors
+		lateinit var scissors: Scissors
 		
 		if (vertical) {
 			backgroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			scissors = Scissors(x, y + (height - foregroundHeight), width, foregroundHeight, provider)
+			if (stepHeight == -1.0F) {
+				scissors = Scissors(x, y + (height - foregroundHeight), width, foregroundHeight, provider)
+			}
 			
-			foregroundTexture.draw(matrices, provider, x + 1.0F, y + 1.0F, width - 2.0F, height - 2.0F)
+			foregroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			scissors.destroy()
+			if (stepHeight == -1.0F) {
+				scissors.destroy()
+			}
 		}
 		
 		if (horizontal) {
 			backgroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			scissors = Scissors(x, y, foregroundWidth, height, provider)
+			if (stepHeight == -1.0F) {
+				scissors = Scissors(x, y, foregroundWidth, height, provider)
+			}
 			
-			foregroundTexture.draw(matrices, provider, x + 1.0F, y + 1.0F, width - 2.0F, height - 2.0F)
+			foregroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			scissors.destroy()
-		}
-	}
-	
-	override fun getTooltip(): List<Text> {
-		val storage = storage ?: return listOf(TextUtils.FLUID, TextUtils.EMPTY)
-		
-		if (current() == 0.0F) {
-			return listOf(TextUtils.FLUID, TextUtils.EMPTY)
-		} else {
-			if (Screen.hasShiftDown()) {
-				return FluidTextUtils.getDetailedStorageTooltips(storage)
-			} else {
-				return FluidTextUtils.getShortenedStorageTooltips(storage)
+			if (stepWidth == -1.0F) {
+				scissors.destroy()
 			}
 		}
 	}

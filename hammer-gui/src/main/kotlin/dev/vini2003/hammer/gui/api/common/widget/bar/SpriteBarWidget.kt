@@ -26,19 +26,42 @@ package dev.vini2003.hammer.gui.api.common.widget.bar
 
 import dev.vini2003.hammer.core.api.client.scissor.Scissors
 import dev.vini2003.hammer.core.api.client.texture.BaseTexture
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils
+import dev.vini2003.hammer.core.api.client.texture.TiledSpriteTexture
 import net.minecraft.client.render.VertexConsumerProvider
+import net.minecraft.client.texture.Sprite
 import net.minecraft.client.util.math.MatrixStack
 
 /**
- * A [TextureBarWidget] is a [BaseBarWidget] whose texture,
+ * A [SpriteBarWidget] is a [BaseBarWidget] whose data is located through a sprite and
  * [maximum] and [current] are configurable.
  */
-open class TextureBarWidget @JvmOverloads constructor(
+open class SpriteBarWidget @JvmOverloads constructor(
 	maximum: () -> Float = { 100.0F },
-	current: () -> Float = { 0.0F }
+	current: () -> Float = { 0.0F },
+	var stepWidth: Float = -1.0F,
+	var stepHeight: Float = -1.0F
 ) : BaseBarWidget(maximum, current) {
 	var smooth: Boolean = false
+	
+	var foregroundSprite: Sprite? = null
+		get() = field
+		set(value) {
+			value ?: return
+			
+			foregroundTexture = TiledSpriteTexture(value)
+			
+			field = value
+		}
+	
+	var backgroundSprite: Sprite? = null
+		get() = field
+		set(value) {
+			value ?: return
+			
+			backgroundTexture = TiledSpriteTexture(value)
+			
+			field = value
+		}
 	
 	override var foregroundTexture: BaseTexture = STANDARD_FOREGROUND_TEXTURE
 	
@@ -47,7 +70,15 @@ open class TextureBarWidget @JvmOverloads constructor(
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, tickDelta: Float) {
 		var foregroundWidth = width / maximum() * current()
 		var foregroundHeight = height / maximum() * current()
-
+		
+		if (stepWidth != -1.0F) {
+			foregroundWidth -= foregroundWidth % stepWidth
+		}
+		
+		if (stepHeight != -1.0F) {
+			foregroundHeight -= foregroundHeight % stepHeight
+		}
+		
 		if (!smooth) {
 			foregroundWidth = foregroundWidth.toInt().toFloat()
 			foregroundHeight = foregroundHeight.toInt().toFloat()

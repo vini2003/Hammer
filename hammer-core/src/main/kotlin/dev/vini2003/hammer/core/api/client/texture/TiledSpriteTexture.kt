@@ -48,7 +48,9 @@ class TiledSpriteTexture @JvmOverloads constructor(
 	 */
 	private val sprite: Sprite,
 	private val tileWidth: Float = sprite.width.toFloat(),
-	private val tileHeight: Float = sprite.height.toFloat()
+	private val tileHeight: Float = sprite.height.toFloat(),
+	private val shiftOnTileX: Float = 0.0F,
+	private val shiftOnTileY: Float = 0.0F
 ) : BaseTexture {
 	override fun draw(
 		matrices: MatrixStack,
@@ -76,7 +78,9 @@ class TiledSpriteTexture @JvmOverloads constructor(
 			uEnd = sprite.maxU,
 			vEnd = sprite.maxV,
 			tileWidth = tileWidth,
-			tileHeight = tileHeight
+			tileHeight = tileHeight,
+			shiftOnTileX = shiftOnTileX,
+			shiftOnTileY = shiftOnTileY
 		)
 	}
 }

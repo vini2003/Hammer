@@ -6,18 +6,13 @@ import dev.vini2003.hammer.core.api.common.util.extension.toLiteralText
 import dev.vini2003.hammer.example.registry.common.HEScreenHandlers
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler
 import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget
-import dev.vini2003.hammer.gui.api.common.widget.bar.TextureBarWidget
 import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget
 import dev.vini2003.hammer.gui.api.common.widget.tab.TabWidget
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
-import net.fabricmc.fabric.api.transfer.v1.storage.base.CombinedStorage
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.Items
-import net.minecraft.screen.ScreenHandler
-import net.minecraft.screen.ScreenHandlerType
 
 class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(HEScreenHandlers.DEBUG, syncId, player) {
 	override fun initialize(width: Int, height: Int) {

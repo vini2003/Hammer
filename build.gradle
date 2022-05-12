@@ -23,6 +23,13 @@ allprojects {
 
 		ignoreFailures = true
 	}
+
+	tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+		kotlinOptions {
+			freeCompilerArgs = ['-Xjvm-default=all'] //enable or compatibility
+			jvmTarget = "1.8"
+		}
+	}
 }
 
 subprojects {
@@ -39,6 +46,17 @@ subprojects {
 		targetCompatibility = JavaVersion.VERSION_17
 
 		withSourcesJar()
+	}
+
+	loom {
+		runs {
+			client {
+				client()
+				setConfigName("Minecraft Client ($projectName)")
+				ideConfigGenerated(true)
+				runDir("run")
+			}
+		}
 	}
 
 	repositories {

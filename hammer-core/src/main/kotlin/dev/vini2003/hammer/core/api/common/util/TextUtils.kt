@@ -26,13 +26,17 @@
 
 package dev.vini2003.hammer.core.api.common.util
 
+import dev.vini2003.hammer.core.api.common.util.extension.blue
 import dev.vini2003.hammer.core.api.common.util.extension.gray
 import dev.vini2003.hammer.core.api.common.util.extension.toLiteralText
 import dev.vini2003.hammer.core.api.common.util.extension.toTranslatableText
 
 object TextUtils {
 	@JvmField
-	val EMPTY = "text.hammer.empty".toTranslatableText()
+	val FLUID = "text.hammer.fluid".toTranslatableText().blue()
+	
+	@JvmField
+	val EMPTY = "text.hammer.empty".toTranslatableText().gray()
 	
 	@JvmStatic
 	fun percentage(a: Number, b: Number) = "${(a.toFloat() / b.toFloat() * 100.0F).toInt()}%".toLiteralText().gray()

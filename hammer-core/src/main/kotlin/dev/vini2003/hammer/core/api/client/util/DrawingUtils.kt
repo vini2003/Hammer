@@ -101,9 +101,13 @@ object DrawingUtils {
 		normalX: Float = 0.0F, normalY: Float = 0.0F, normalZ: Float = 0.0F,
 		overlay: Int = DEFAULT_OVERLAY,
 		light: Int = DEFAULT_LIGHT,
-		color: Color = DEFAULT_COLOR
+		color: Color = DEFAULT_COLOR,
+		maxTilesX: () -> Int = { Int.MAX_VALUE },
+		maxTilesY: () -> Int = { Int.MAX_VALUE },
+		shiftOnTileX: Float = 0.0F,
+		shiftOnTileY: Float = 0.0F
 	) {
-		val layer = RenderLayer.getSolid()
+		val layer = LayerUtils.get(textureId)
 		
 		val consumer = provider.getBuffer(layer)
 		
@@ -113,12 +117,28 @@ object DrawingUtils {
 		var currentX = x
 		var currentY = y
 		
-		while (currentY < endY) {
+		var tilesX = 0
+		var tilesY = 0
+		
+		while (currentY < endY && tilesY < maxTilesY()) {
 			currentX = x
 			
-			while (currentX < endX) {
-				val diffX = min(endX - currentX, tileWidth)
-				val diffY = min(endY - currentY, tileHeight)
+			while (currentX < endX && tilesX < maxTilesX()) {
+				val diffX: Float
+				
+				if (maxTilesX() != Int.MAX_VALUE) {
+					diffX = tileWidth
+				} else {
+					diffX = min(endX - currentX, tileWidth)
+				}
+				
+				val diffY: Float
+				
+				if (maxTilesY() != Int.MAX_VALUE) {
+					diffY = min(endY - currentY, tileHeight)
+				} else {
+					diffY = tileHeight
+				}
 				
 				val deltaX: Float
 				
@@ -141,10 +161,32 @@ object DrawingUtils {
 				consumer.vertex(matrices.positionMatrix, currentX + diffX, currentY, z).color(color.r, color.g, color.b, color.a).texture(uEnd - deltaX, vStart).overlay(overlay).light(light).normal(matrices.normalMatrix, normalX, normalY, normalZ).next()
 				consumer.vertex(matrices.positionMatrix, currentX, currentY, z).color(color.r, color.g, color.b, color.a).texture(uStart, vStart).overlay(overlay).light(light).normal(matrices.normalMatrix, normalX, normalY, normalZ).next()
 				
-				currentX += min(abs(endX - currentX), tileWidth)
+				if (maxTilesX() != Int.MAX_VALUE) {
+					currentX += tileWidth
+				} else {
+					currentX += min(abs(endX - currentX - (tilesX * shiftOnTileX)), tileWidth)
+				}
+				
+				if (currentX < (endX + shiftOnTileX)) {
+					currentX += shiftOnTileX
+				}
+				
+				tilesX += 1
 			}
 			
-			currentY += min(abs(endY - currentY), tileHeight)
+			if (maxTilesY() != Int.MAX_VALUE) {
+				currentY += tileHeight
+			} else {
+				currentY += min(abs(endY - currentY - (tilesY * shiftOnTileY)), tileHeight)
+			}
+			
+			if (currentY < (endY + shiftOnTileY)) {
+				currentY += shiftOnTileY
+			}
+			
+			tilesX = 0
+			
+			tilesY += 1
 		}
 	}
 

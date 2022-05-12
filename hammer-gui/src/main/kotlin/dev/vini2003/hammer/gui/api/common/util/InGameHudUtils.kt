@@ -1,10 +1,7 @@
 package dev.vini2003.hammer.gui.api.common.util
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils
-import dev.vini2003.hammer.gui.api.client.util.extension.getAirBarPos
-import dev.vini2003.hammer.gui.api.client.util.extension.getArmorBarPos
-import dev.vini2003.hammer.gui.api.client.util.extension.getHeartBarPos
-import dev.vini2003.hammer.gui.api.client.util.extension.getHungerBarPos
+import dev.vini2003.hammer.gui.api.client.util.extension.*
 import net.minecraft.client.gui.hud.InGameHud
 import net.minecraft.entity.player.PlayerEntity
 
@@ -16,6 +13,12 @@ object InGameHudUtils {
 			return client.inGameHud
 		}
 
+	@JvmStatic
+	fun getLeftBarPos(hud: InGameHud, playerEntity: PlayerEntity) = hud.getLeftBarPos(playerEntity)
+	
+	@JvmStatic
+	fun getRightBarPos(hud: InGameHud, playerEntity: PlayerEntity) = hud.getRightBarPos(playerEntity)
+	
 	@JvmStatic
 	fun getHeartBarPos(hud: InGameHud, playerEntity: PlayerEntity) = hud.getHeartBarPos(playerEntity)
 	

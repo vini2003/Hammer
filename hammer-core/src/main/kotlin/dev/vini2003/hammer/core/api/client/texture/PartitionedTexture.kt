@@ -76,23 +76,23 @@ class PartitionedTexture(
 	 * @param bottomPadding the textures' bottom padding.
 	 * @return the texture.
 	 */
-	private val textureId: Identifier,
-	private val textureWidth: Float,
-	private val textureHeight: Float,
+	val textureId: Identifier,
+	val textureWidth: Float,
+	val textureHeight: Float,
 	leftPadding: Float,
 	rightPadding: Float,
 	topPadding: Float,
 	bottomPadding: Float
 ) : BaseTexture {
-	private val topLeft = Part(0.0F, 0.0F, leftPadding, topPadding)
-	private val topRight = Part(1.0F - rightPadding, 0.0F, 1.0F, topPadding)
-	private val bottomLeft = Part(0.0F, 1.0F - bottomPadding, leftPadding, 1.0F)
-	private val bottomRight = Part(1.0F - rightPadding, 1.0F - bottomPadding, 1.0F, 1.0F)
-	private val middleLeft = Part(0.0F, topPadding, leftPadding, 1.0F - bottomPadding)
-	private val middleRight = Part(1.0F - rightPadding, topPadding, 1.0F, 1.0F - bottomPadding)
-	private val middleTop = Part(leftPadding, 0.0F, 1.0F - rightPadding, topPadding)
-	private val middleBottom = Part(leftPadding, 1.0F - bottomPadding, 1.0F - rightPadding, 1.0F)
-	private val center = Part(leftPadding, topPadding, 1.0F - rightPadding, 1.0F - bottomPadding)
+	val topLeft = Part(0.0F, 0.0F, leftPadding, topPadding)
+	val topRight = Part(1.0F - rightPadding, 0.0F, 1.0F, topPadding)
+	val bottomLeft = Part(0.0F, 1.0F - bottomPadding, leftPadding, 1.0F)
+	val bottomRight = Part(1.0F - rightPadding, 1.0F - bottomPadding, 1.0F, 1.0F)
+	val middleLeft = Part(0.0F, topPadding, leftPadding, 1.0F - bottomPadding)
+	val middleRight = Part(1.0F - rightPadding, topPadding, 1.0F, 1.0F - bottomPadding)
+	val middleTop = Part(leftPadding, 0.0F, 1.0F - rightPadding, topPadding)
+	val middleBottom = Part(leftPadding, 1.0F - bottomPadding, 1.0F - rightPadding, 1.0F)
+	val center = Part(leftPadding, topPadding, 1.0F - rightPadding, 1.0F - bottomPadding)
 
 	override fun draw(matrices: MatrixStack, provider: VertexConsumerProvider, x: Float, y: Float, width: Float, height: Float) {
 		val scaleWidth = width / textureWidth

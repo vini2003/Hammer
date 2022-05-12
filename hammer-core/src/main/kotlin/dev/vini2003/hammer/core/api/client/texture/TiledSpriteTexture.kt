@@ -46,11 +46,11 @@ class TiledSpriteTexture @JvmOverloads constructor(
 	 * @param tileHeight the tile's height.
 	 * @return the texture.
 	 */
-	private val sprite: Sprite,
-	private val tileWidth: Float = sprite.width.toFloat(),
-	private val tileHeight: Float = sprite.height.toFloat(),
-	private val shiftOnTileX: Float = 0.0F,
-	private val shiftOnTileY: Float = 0.0F
+	val sprite: Sprite,
+	val tileWidth: Float = sprite.width.toFloat(),
+	val tileHeight: Float = sprite.height.toFloat(),
+	val shiftOnTileX: Float = 0.0F,
+	val shiftOnTileY: Float = 0.0F
 ) : BaseTexture {
 	override fun draw(
 		matrices: MatrixStack,

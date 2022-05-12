@@ -40,7 +40,7 @@ class ImageTexture(
 	 * @param textureId the texture's ID.
 	 * @return the texture.
 	 */
-	private val textureId: Identifier,
+	val textureId: Identifier,
 ) : BaseTexture {
 	override fun draw(
 		matrices: MatrixStack,

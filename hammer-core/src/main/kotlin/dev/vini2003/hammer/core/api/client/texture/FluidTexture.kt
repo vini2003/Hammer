@@ -46,8 +46,8 @@ class FluidTexture @JvmOverloads constructor(
 	 * @return the texture.
 	 */
 	fluid: FluidVariant,
-	private val sprite: Sprite? = FluidVariantRendering.getSprite(fluid),
-	private val color: Color = Color(FluidVariantRendering.getColor(fluid)),
+	val sprite: Sprite? = FluidVariantRendering.getSprite(fluid),
+	val color: Color = Color(FluidVariantRendering.getColor(fluid)),
 ) : BaseTexture {
 
 	override fun draw(

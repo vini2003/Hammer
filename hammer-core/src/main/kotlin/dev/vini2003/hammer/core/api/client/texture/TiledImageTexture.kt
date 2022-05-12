@@ -46,13 +46,13 @@ class TiledImageTexture(
 	 * @param tileHeight the tile's height.
 	 * @return the texture.
 	 */
-	private val textureId: Identifier,
-	private val tileWidth: Float,
-	private val tileHeight: Float,
-	private val maxTilesX: () -> Int = { Int.MAX_VALUE },
-	private val maxTilesY: () -> Int = { Int.MAX_VALUE },
-	private val shiftOnTileX: Float = 0.0F,
-	private val shiftOnTileY: Float = 0.0F
+	val textureId: Identifier,
+	val tileWidth: Float,
+	val tileHeight: Float,
+	val maxTilesX: () -> Int = { Int.MAX_VALUE },
+	val maxTilesY: () -> Int = { Int.MAX_VALUE },
+	val shiftOnTileX: Float = 0.0F,
+	val shiftOnTileY: Float = 0.0F
 ) : BaseTexture {
 	override fun draw(
 		matrices: MatrixStack,

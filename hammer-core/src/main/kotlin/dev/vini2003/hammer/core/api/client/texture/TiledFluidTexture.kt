@@ -51,11 +51,11 @@ class TiledFluidTexture @JvmOverloads constructor(
 	 * @param tileHeight the tile's height.
 	 * @return the texture.
 	 */
-	private val fluid: FluidVariant,
-	private val sprite: Sprite? = FluidVariantRendering.getSprite(fluid),
-	private val spriteColor: Color = FluidVariantRendering.getColor(fluid).toColor(),
-	private val tileWidth: Float = sprite?.width?.toFloat() ?: 0.0F,
-	private val tileHeight: Float = sprite?.height?.toFloat() ?: 0.0F
+	val fluid: FluidVariant,
+	val sprite: Sprite? = FluidVariantRendering.getSprite(fluid),
+	val spriteColor: Color = FluidVariantRendering.getColor(fluid).toColor(),
+	val tileWidth: Float = sprite?.width?.toFloat() ?: 0.0F,
+	val tileHeight: Float = sprite?.height?.toFloat() ?: 0.0F
 ) : BaseTexture {
 	
 	override fun draw(

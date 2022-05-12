@@ -71,8 +71,8 @@ public abstract class InGameHudMixin implements BaseWidgetCollection, BaseWidget
 					})
 					.collect(Collectors.toList());
 		
-		var leftPos = InGameHudUtils.getArmorBarPos((InGameHud) (Object) this, client.player);
-		var rightPos = InGameHudUtils.getHungerBarPos((InGameHud) (Object) this, client.player);
+		var leftPos = InGameHudUtils.getLeftBarPos((InGameHud) (Object) this, client.player);
+		var rightPos = InGameHudUtils.getRightBarPos((InGameHud) (Object) this, client.player);
 		
 		for (var bar : bars) {
 			switch (bar.getSide()) {
@@ -80,13 +80,21 @@ public abstract class InGameHudMixin implements BaseWidgetCollection, BaseWidget
 					leftPos = leftPos.plus(new Position(0.0F, -10.0F));
 					
 					bar.setPosition(leftPos);
-					bar.setSize(new Size(10.0F * 9.0F, 9.0F));
 				}
 				
 				case RIGHT -> {
 					rightPos = rightPos.plus(new Position(0.0F, -10.0F));
 					
 					bar.setPosition(rightPos);
+				}
+			}
+			
+			switch (bar.getType()) {
+				case CONTINUOS -> {
+					bar.setSize(new Size(10.0F * 9.0F - 9.0F, 9.0F));
+				}
+				
+				case TILED -> {
 					bar.setSize(new Size(10.0F * 9.0F, 9.0F));
 				}
 			}

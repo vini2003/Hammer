@@ -24,7 +24,7 @@ val HammerSerializersModule = SerializersModule {
 	contextual(Vec3d::class, Vec3dSerializer)
 	contextual(Vec3f::class, Vec3fSerializer)
 	contextual(Vec3i::class, Vec3iSerializer)
-	contextual(Vector2f::class, Vector2fSerializer)
+	// contextual(Vector2f::class, Vector2fSerializer) - this is client-only...
 	contextual(Vector3d::class, Vector3dSerializer)
 	contextual(Vector4f::class, Vector4fSerializer)
 	

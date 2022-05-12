@@ -43,7 +43,7 @@ class SpriteTexture(
 	 * @param sprite the sprite.
 	 * @return the texture.
 	 */
-	private val sprite: Sprite,
+	val sprite: Sprite,
 ) : BaseTexture {
 	override fun draw(
 		matrices: MatrixStack,

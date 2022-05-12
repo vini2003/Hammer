@@ -43,6 +43,8 @@ open class SpriteBarWidget @JvmOverloads constructor(
 ) : BaseBarWidget(maximum, current) {
 	var smooth: Boolean = false
 	
+	var invert: Boolean = false
+	
 	var foregroundSprite: Sprite? = null
 		get() = field
 		set(value) {
@@ -71,11 +73,11 @@ open class SpriteBarWidget @JvmOverloads constructor(
 		var foregroundWidth = width / maximum() * current()
 		var foregroundHeight = height / maximum() * current()
 		
-		if (stepWidth != -1.0F) {
+		if (stepWidth != 1.0F) {
 			foregroundWidth -= foregroundWidth % stepWidth
 		}
 		
-		if (stepHeight != -1.0F) {
+		if (stepHeight != 1.0F) {
 			foregroundHeight -= foregroundHeight % stepHeight
 		}
 		
@@ -84,26 +86,50 @@ open class SpriteBarWidget @JvmOverloads constructor(
 			foregroundHeight = foregroundHeight.toInt().toFloat()
 		}
 		
-		var scissors: Scissors
+		lateinit var scissors: Scissors
 		
 		if (vertical) {
 			backgroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			scissors = Scissors(x, y + (height - foregroundHeight), width, foregroundHeight, provider)
+			if (stepHeight == -1.0F) {
+				if (!invert) {
+					scissors = Scissors(x, y + (height - foregroundHeight), width, foregroundHeight, provider)
+				} else {
+					scissors = Scissors(x, y, width, foregroundHeight, provider)
+				}
+			}
 			
-			foregroundTexture.draw(matrices, provider, x, y, width, height)
+			if (!invert) {
+				foregroundTexture.draw(matrices, provider, x, y, width, height)
+			} else {
+				foregroundTexture.draw(matrices, provider, x, y + (height - foregroundHeight), width, height)
+			}
 			
-			scissors.destroy()
+			if (stepHeight == -1.0F) {
+				scissors.destroy()
+			}
 		}
 		
 		if (horizontal) {
 			backgroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			scissors = Scissors(x, y, foregroundWidth, height, provider)
+			if (stepWidth == -1.0F) {
+				if (!invert) {
+					scissors = Scissors(x, y, foregroundWidth, height, provider)
+				} else {
+					scissors = Scissors(x + (width - foregroundWidth), y, foregroundWidth, height, provider)
+				}
+			}
 			
-			foregroundTexture.draw(matrices, provider, x, y, width, height)
+			if (!invert) {
+				foregroundTexture.draw(matrices, provider, x, y, width, height)
+			} else {
+				foregroundTexture.draw(matrices, provider, x + (width - foregroundWidth), y, foregroundWidth, height)
+			}
 			
-			scissors.destroy()
+			if (stepWidth == -1.0F) {
+				scissors.destroy()
+			}
 		}
 	}
 }

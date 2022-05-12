@@ -36,11 +36,13 @@ import net.minecraft.client.util.math.MatrixStack
  */
 open class ImageBarWidget @JvmOverloads constructor(
 	maximum: () -> Float = { 100.0F },
-	current: () -> Float = { 0.0F },
-	var stepWidth: Float = -1.0F,
-	var stepHeight: Float = -1.0F
+	current: () -> Float = { 0.0F }
 ) : BaseBarWidget(maximum, current) {
 	var smooth: Boolean = false
+	
+	var scissor: Boolean = false
+	
+	var invert: Boolean = false
 	
 	override var foregroundTexture: BaseTexture = STANDARD_FOREGROUND_TEXTURE
 	
@@ -49,14 +51,6 @@ open class ImageBarWidget @JvmOverloads constructor(
 	override fun drawWidget(matrices: MatrixStack, provider: VertexConsumerProvider, tickDelta: Float) {
 		var foregroundWidth = width / maximum() * current()
 		var foregroundHeight = height / maximum() * current()
-		
-		if (stepWidth != -1.0F) {
-			foregroundWidth -= foregroundWidth % stepWidth
-		}
-		
-		if (stepHeight != -1.0F) {
-			foregroundHeight -= foregroundHeight % stepHeight
-		}
 		
 		if (!smooth) {
 			foregroundWidth = foregroundWidth.toInt().toFloat()
@@ -68,13 +62,17 @@ open class ImageBarWidget @JvmOverloads constructor(
 		if (vertical) {
 			backgroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			if (stepHeight == -1.0F) {
-				scissors = Scissors(x, y + (height - foregroundHeight), width, foregroundHeight, provider)
+			if (scissor) {
+				if (!invert) {
+					scissors = Scissors(x, y + (height - foregroundHeight), width, foregroundHeight, provider)
+				} else {
+					scissors = Scissors(x, y, width, foregroundHeight, provider)
+				}
 			}
 			
 			foregroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			if (stepHeight == -1.0F) {
+			if (scissor) {
 				scissors.destroy()
 			}
 		}
@@ -82,13 +80,17 @@ open class ImageBarWidget @JvmOverloads constructor(
 		if (horizontal) {
 			backgroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			if (stepHeight == -1.0F) {
-				scissors = Scissors(x, y, foregroundWidth, height, provider)
+			if (scissor) {
+				if (!invert) {
+					scissors = Scissors(x, y, foregroundWidth, height, provider)
+				} else {
+					scissors = Scissors(x + (width - foregroundWidth), y, foregroundWidth, height, provider)
+				}
 			}
 			
 			foregroundTexture.draw(matrices, provider, x, y, width, height)
 			
-			if (stepWidth == -1.0F) {
+			if (scissor) {
 				scissors.destroy()
 			}
 		}

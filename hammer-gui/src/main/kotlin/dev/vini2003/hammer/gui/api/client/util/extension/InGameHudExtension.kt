@@ -1,11 +1,27 @@
 package dev.vini2003.hammer.gui.api.client.util.extension
 
 import dev.vini2003.hammer.core.api.common.math.position.Position
+import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
 import net.minecraft.client.gui.hud.InGameHud
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.attribute.EntityAttributes
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.math.MathHelper
+
+val InGameHud.collection: BaseWidgetCollection.Handled
+	get() = (this as BaseWidgetCollection.Handled)
+
+fun InGameHud.getLeftBarPos(playerEntity: PlayerEntity): Position {
+	return getArmorBarPos(playerEntity)
+}
+
+fun InGameHud.getRightBarPos(playerEntity: PlayerEntity): Position {
+	if (playerEntity.air < playerEntity.maxAir) {
+		return getAirBarPos(playerEntity)
+	} else {
+		return getHungerBarPos(playerEntity)
+	}
+}
 
 fun InGameHud.getHeartBarPos(playerEntity: PlayerEntity): Position {
 	return Position(scaledWidth / 2.0F - 91.0F, scaledHeight - 39.0F)

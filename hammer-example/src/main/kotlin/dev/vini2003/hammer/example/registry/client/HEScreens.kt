@@ -1,6 +1,7 @@
 package dev.vini2003.hammer.example.registry.client
 
 import dev.vini2003.hammer.core.HC
+import dev.vini2003.hammer.core.api.client.texture.ImageTexture
 import dev.vini2003.hammer.core.api.client.texture.TiledImageTexture
 import dev.vini2003.hammer.core.api.client.util.DrawingUtils.drawTexturedQuad
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils
@@ -24,30 +25,38 @@ object HEScreens {
 			val client = InstanceUtils.CLIENT ?: return@register
 			
 			var leftBar = HudBarWidget(
+				type = HudBarWidget.Type.CONTINUOS,
+				side = HudBarWidget.Side.LEFT,
 				maximum = { 100.0F },
 				current = { client.player?.age?.toFloat()!! % 100.0F },
-				side = HudBarWidget.Side.LEFT,
-				show = { client.player?.isSneaking == false }
 			)
 			
 			leftBar.horizontal = true
 			
-			leftBar.foregroundTexture = TiledImageTexture(HC.id("textures/widget/oxygen_foreground.png"), 9.0F, 9.0F, maxTilesX = { 10 - (ceil(((leftBar.current() / leftBar.maximum())) * 10.0F).toInt()) }, shiftOnTileX = -1.0F)
-			leftBar.backgroundTexture = TiledImageTexture(HC.id("textures/widget/oxygen_background.png"), 9.0F, 9.0F, maxTilesX = { 10 }, shiftOnTileX = -1.0F)
+			leftBar.show = { client.player?.isCreative == false && client.player?.isSneaking == false }
+			leftBar.smooth = false
+			leftBar.invert = false
+			
+			leftBar.foregroundTexture = ImageTexture(HC.id("textures/widget/oxygen_foreground.png"))
+			leftBar.backgroundTexture = ImageTexture(HC.id("textures/widget/oxygen_background.png"))
 			
 			collection.add(leftBar)
 			
 			var rightBar = HudBarWidget(
+				type = HudBarWidget.Type.CONTINUOS,
+				side = HudBarWidget.Side.RIGHT,
 				maximum = { 100.0F },
 				current = { client.player?.age?.toFloat()!! % 100.0F },
-				side = HudBarWidget.Side.RIGHT,
-				show = { client.player?.isSneaking == false }
 			)
 			
-			rightBar.horizontal = true
+			rightBar.show = { client.player?.isCreative == false && client.player?.isSneaking == false }
 			
-			rightBar.foregroundTexture = TiledImageTexture(HC.id("textures/widget/oxygen_foreground.png"), 9.0F, 9.0F, maxTilesX = { 10 - (ceil(((rightBar.current() / rightBar.maximum())) * 10.0F).toInt()) }, shiftOnTileX = -1.0F)
-			rightBar.backgroundTexture = TiledImageTexture(HC.id("textures/widget/oxygen_background.png"), 9.0F, 9.0F, maxTilesX = { 10 }, shiftOnTileX = -1.0F)
+			rightBar.horizontal = true
+			rightBar.smooth = false
+			rightBar.invert = true
+			
+			rightBar.foregroundTexture = ImageTexture(HC.id("textures/widget/oxygen_foreground.png"))
+			rightBar.backgroundTexture = ImageTexture(HC.id("textures/widget/oxygen_background.png"))
 			
 			collection.add(rightBar)
 		}

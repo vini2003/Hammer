@@ -27,6 +27,7 @@ package dev.vini2003.hammer.core.api.client.texture
 import dev.vini2003.hammer.core.api.client.texture.BaseTexture
 import dev.vini2003.hammer.core.api.client.util.DrawingUtils
 import dev.vini2003.hammer.core.api.client.util.InstanceUtils
+import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.texture.Sprite
 import net.minecraft.client.util.math.MatrixStack
@@ -80,7 +81,8 @@ class TiledSpriteTexture @JvmOverloads constructor(
 			tileWidth = tileWidth,
 			tileHeight = tileHeight,
 			shiftOnTileX = shiftOnTileX,
-			shiftOnTileY = shiftOnTileY
+			shiftOnTileY = shiftOnTileY,
+			layer = RenderLayer.getSolid()
 		)
 	}
 }

@@ -32,6 +32,7 @@ import dev.vini2003.hammer.core.api.common.color.Color
 import dev.vini2003.hammer.core.api.common.util.extension.toColor
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
+import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.texture.Sprite
 import net.minecraft.client.util.math.MatrixStack
@@ -89,7 +90,8 @@ class TiledFluidTexture @JvmOverloads constructor(
 			vEnd = sprite.maxV,
 			color = spriteColor,
 			tileWidth = sprite.width.toFloat(),
-			tileHeight = sprite.height.toFloat()
+			tileHeight = sprite.height.toFloat(),
+			layer = RenderLayer.getSolid()
 		)
 	}
 }

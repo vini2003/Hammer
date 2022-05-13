@@ -74,10 +74,9 @@ object DrawingUtils {
 		normalX: Float = 0.0F, normalY: Float = 0.0F, normalZ: Float = 0.0F,
 		overlay: Int = DEFAULT_OVERLAY,
 		light: Int = DEFAULT_LIGHT,
-		color: Color = DEFAULT_COLOR
+		color: Color = DEFAULT_COLOR,
+		layer: RenderLayer = LayerUtils.get(textureId)
 	) {
-		val layer = LayerUtils.get(textureId)
-		
 		val consumer = provider.getBuffer(layer)
 		
 		consumer.vertex(matrices.positionMatrix, x, y + height, z).color(color.r, color.g, color.b, color.a).texture(uStart, vEnd).overlay(overlay).light(light).normal(matrices.normalMatrix, normalX, normalY, normalZ).next()
@@ -105,10 +104,9 @@ object DrawingUtils {
 		maxTilesX: () -> Int = { Int.MAX_VALUE },
 		maxTilesY: () -> Int = { Int.MAX_VALUE },
 		shiftOnTileX: Float = 0.0F,
-		shiftOnTileY: Float = 0.0F
+		shiftOnTileY: Float = 0.0F,
+		layer: RenderLayer = LayerUtils.get(textureId)
 	) {
-		val layer = LayerUtils.get(textureId)
-		
 		val consumer = provider.getBuffer(layer)
 		
 		val endX = x + width
@@ -126,19 +124,11 @@ object DrawingUtils {
 			while (currentX < endX && tilesX < maxTilesX()) {
 				val diffX: Float
 				
-				if (maxTilesX() != Int.MAX_VALUE) {
-					diffX = tileWidth
-				} else {
-					diffX = min(endX - currentX, tileWidth)
-				}
+				diffX = min(endX - currentX, tileWidth)
 				
 				val diffY: Float
 				
-				if (maxTilesY() != Int.MAX_VALUE) {
-					diffY = min(endY - currentY, tileHeight)
-				} else {
-					diffY = tileHeight
-				}
+				diffY = min(endY - currentY, tileHeight)
 				
 				val deltaX: Float
 				
@@ -161,11 +151,7 @@ object DrawingUtils {
 				consumer.vertex(matrices.positionMatrix, currentX + diffX, currentY, z).color(color.r, color.g, color.b, color.a).texture(uEnd - deltaX, vStart).overlay(overlay).light(light).normal(matrices.normalMatrix, normalX, normalY, normalZ).next()
 				consumer.vertex(matrices.positionMatrix, currentX, currentY, z).color(color.r, color.g, color.b, color.a).texture(uStart, vStart).overlay(overlay).light(light).normal(matrices.normalMatrix, normalX, normalY, normalZ).next()
 				
-				if (maxTilesX() != Int.MAX_VALUE) {
-					currentX += tileWidth
-				} else {
-					currentX += min(abs(endX - currentX - (tilesX * shiftOnTileX)), tileWidth)
-				}
+				currentX += min(abs(endX - currentX - (tilesX * shiftOnTileX)), tileWidth)
 				
 				if (currentX < (endX + shiftOnTileX)) {
 					currentX += shiftOnTileX
@@ -174,11 +160,7 @@ object DrawingUtils {
 				tilesX += 1
 			}
 			
-			if (maxTilesY() != Int.MAX_VALUE) {
-				currentY += tileHeight
-			} else {
-				currentY += min(abs(endY - currentY - (tilesY * shiftOnTileY)), tileHeight)
-			}
+			currentY += min(abs(endY - currentY - (tilesY * shiftOnTileY)), tileHeight)
 			
 			if (currentY < (endY + shiftOnTileY)) {
 				currentY += shiftOnTileY

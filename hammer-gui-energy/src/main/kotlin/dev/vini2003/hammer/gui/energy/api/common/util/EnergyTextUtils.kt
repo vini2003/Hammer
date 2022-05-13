@@ -32,7 +32,7 @@ import team.reborn.energy.api.EnergyStorage
 
 object EnergyTextUtils {
 	@JvmField
-	var COLOR_OVERRIDE: Color = Color(0.59F, 0.85F, 0.41F, 1.0F)
+	var COLOR_OVERRIDE: Color = Color(0.67F, 0.89F, 0.47F, 1.0F)
 	
 	@JvmField
 	val ENERGY = "text.hammer.energy".toTranslatableText().styled { style -> style.withColor(COLOR_OVERRIDE.toRGB()) }

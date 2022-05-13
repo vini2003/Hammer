@@ -40,7 +40,7 @@ open class ImageBarWidget @JvmOverloads constructor(
 ) : BaseBarWidget(maximum, current) {
 	var smooth: Boolean = false
 	
-	var scissor: Boolean = false
+	var scissor: Boolean = true
 	
 	var invert: Boolean = false
 	

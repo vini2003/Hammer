@@ -62,7 +62,7 @@ fun InGameHud.getAirBarPos(playerEntity: PlayerEntity): Position {
 		bubblesY += 10
 	}
 	
-	return Position(scaledWidth / 2.0F + 91.0F, bubblesY.toFloat())
+	return Position(scaledWidth / 2.0F + 91.0F - 9 * 8 - 9, bubblesY.toFloat())
 }
 
 fun InGameHud.getHungerBarPos(playerEntity: PlayerEntity): Position {

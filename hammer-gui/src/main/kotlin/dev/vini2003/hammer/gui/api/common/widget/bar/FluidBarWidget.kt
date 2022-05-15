@@ -104,15 +104,11 @@ open class FluidBarWidget @JvmOverloads constructor(
 	
 	override fun getTooltip(): List<Text> {
 		val storage = storage ?: return listOf(TextUtils.FLUID, TextUtils.EMPTY)
-		
-		if (current() == 0.0F) {
-			return listOf(TextUtils.FLUID, TextUtils.EMPTY)
+
+		if (Screen.hasShiftDown()) {
+			return FluidTextUtils.getDetailedStorageTooltips(storage)
 		} else {
-			if (Screen.hasShiftDown()) {
-				return FluidTextUtils.getDetailedStorageTooltips(storage)
-			} else {
-				return FluidTextUtils.getShortenedStorageTooltips(storage)
-			}
+			return FluidTextUtils.getShortenedStorageTooltips(storage)
 		}
 	}
 }

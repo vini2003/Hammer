@@ -27,7 +27,9 @@ package dev.vini2003.hammer.core.api.common.util
 import dev.vini2003.hammer.core.api.client.util.TextUtils.getIdMod
 import dev.vini2003.hammer.core.api.common.color.Color
 import dev.vini2003.hammer.core.api.common.util.extension.*
+import dev.vini2003.hammer.core.registry.common.HCConfig
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView
 import net.fabricmc.loader.api.FabricLoader
@@ -51,19 +53,23 @@ object FluidTextUtils {
 
 	@JvmStatic
 	fun getShortenedStorageTooltips(fluidView: StorageView<FluidVariant>): List<Text> {
-		if (fluidView.isResourceBlank) return listOf(TextUtils.EMPTY.gray())
-		
 		val fluidId = Registry.FLUID.getId(fluidView.resource.fluid)
 		
-		return getVariantTooltips(fluidView.resource) + "${fluidView.amount.toPrettyShortenedString("d")} / ${fluidView.capacity.toPrettyShortenedString("d")}".toLiteralText().gray() + getIdMod(fluidId)
+		if (HCConfig.USE_DROPLETS) {
+			return getVariantTooltips(fluidView.resource) + "${fluidView.amount.toPrettyShortenedString("d")} / ${fluidView.capacity.toPrettyShortenedString("d")}".toLiteralText().gray() + getIdMod(fluidId)
+		} else {
+			return getVariantTooltips(fluidView.resource) + "${fluidView.amount.div(FluidConstants.BUCKET).toPrettyShortenedString("b")} / ${fluidView.capacity.div(FluidConstants.BUCKET).toPrettyShortenedString("b")}".toLiteralText().gray() + getIdMod(fluidId)
+		}
 	}
 	
 	@JvmStatic
 	fun getDetailedStorageTooltips(fluidView: StorageView<FluidVariant>): List<Text> {
-		if (fluidView.isResourceBlank) return listOf(TextUtils.EMPTY.gray())
-
 		val fluidId = Registry.FLUID.getId(fluidView.resource.fluid)
 		
-		return getVariantTooltips(fluidView.resource) + "${fluidView.amount.toPrettyString("d")} / ${fluidView.capacity.toPrettyString("d")}".toLiteralText().gray() + getIdMod(fluidId)
+		if (HCConfig.USE_DROPLETS) {
+			return getVariantTooltips(fluidView.resource) + "${fluidView.amount.toPrettyString("d")} / ${fluidView.capacity.toPrettyString("d")}".toLiteralText().gray() + getIdMod(fluidId)
+		} else {
+			return getVariantTooltips(fluidView.resource) + "${fluidView.amount.div(FluidConstants.BUCKET).toPrettyString("b")} / ${fluidView.capacity.div(FluidConstants.BUCKET).toPrettyString("b")}".toLiteralText().gray() + getIdMod(fluidId)
+		}
 	}
 }

@@ -92,14 +92,10 @@ open class EnergyBarWidget(
 	override fun getTooltip(): List<Text> {
 		val storage = storage ?: return listOf(TextUtils.EMPTY.gray())
 		
-		return if (current() == 0.0F) {
-			listOf(TextUtils.EMPTY.gray())
+		if (Screen.hasShiftDown()) {
+			return EnergyTextUtils.getDetailedTooltips(storage)
 		} else {
-			if (Screen.hasShiftDown()) {
-				return EnergyTextUtils.getDetailedTooltips(storage)
-			} else {
-				return EnergyTextUtils.getShortenedTooltips(storage)
-			}
+			return EnergyTextUtils.getShortenedTooltips(storage)
 		}
 	}
 }

@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.core
 
+import dev.vini2003.hammer.core.api.common.util.serializer.format.Nbt
 import dev.vini2003.hammer.core.api.common.util.serializer.module.HammerSerializersModule
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.plus
@@ -50,6 +51,10 @@ object HC {
 	val PROTOBUF = ProtoBuf {
 		serializersModule = serializersModule + HammerSerializersModule
 	}
+	
+	@JvmStatic
+	@get:JvmName("getNbt")
+	val NBT = Nbt()
 	
 	@JvmStatic
 	fun id(string: String): Identifier {

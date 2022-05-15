@@ -44,4 +44,32 @@ object HCConfig {
 	var ENABLE_END_PORTAL: Boolean = true
 	@JvmField
 	var ENABLE_NETHER_PORTAL: Boolean = true
+	
+	@JvmStatic
+	@Suppress("INAPPLICABLE_JVM_NAME")
+	@get:JvmName("shouldUseDroplets")
+	@set:JvmName("setUseDroplets")
+	var USE_DROPLETS: Boolean = true
+		get() = field
+		set(value) {
+			if (value) {
+				USE_BUCKETS = false
+			}
+			
+			field = value
+		}
+	
+	@JvmStatic
+	@Suppress("INAPPLICABLE_JVM_NAME")
+	@get:JvmName("shouldUseBuckets")
+	@set:JvmName("setUseBuckets")
+	var USE_BUCKETS: Boolean = false
+		get() = field
+		set(value) {
+			if (value) {
+				USE_DROPLETS = false
+			}
+			
+			field = value
+		}
 }

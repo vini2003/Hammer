@@ -107,6 +107,13 @@ abstract class BaseWidget : Positioned, Sized {
 		get() = if (parent == null) field else field && !parent!!.hidden
 	
 	/**
+	 * Whether this widget is locking player input or not.
+	 */
+	@Suppress("INAPPLICABLE_JVM_NAME")
+	@get:JvmName("isLocking")
+	open var locking: Boolean = false
+	
+	/**
 	 * Whether [onMouseMoved] will be synchronized to the server or not.
 	 */
 	@Suppress("INAPPLICABLE_JVM_NAME")

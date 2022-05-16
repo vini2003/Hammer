@@ -116,8 +116,12 @@ open class BaseHandledScreen<T : BaseScreenHandler>(handler: BaseScreenHandler, 
 		handler.widgets.forEach { widget ->
 			widget.onKeyPressed(keyCode, scanCode, keyModifiers)
 		}
-
-		return super.keyPressed(keyCode, scanCode, keyModifiers)
+		
+		if (handler.widgets.none { widget -> widget.locking }) {
+			return super.keyPressed(keyCode, scanCode, keyModifiers)
+		} else {
+			return true
+		}
 	}
 
 	override fun keyReleased(keyCode: Int, scanCode: Int, keyModifiers: Int): Boolean {

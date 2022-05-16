@@ -65,7 +65,7 @@ abstract class BaseBarWidget(
 	
 	abstract var backgroundTexture: BaseTexture
 	
-	var horizontal: Boolean = false
+	open var horizontal: Boolean = false
 		set(value) {
 			field = value
 			
@@ -74,7 +74,7 @@ abstract class BaseBarWidget(
 			}
 		}
 	
-	var vertical: Boolean = true
+	open var vertical: Boolean = true
 		set(value) {
 			field = value
 			

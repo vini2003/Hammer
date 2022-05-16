@@ -30,6 +30,24 @@ import net.minecraft.util.Identifier
 object LayerUtils {
 	private val LAYERS = mutableMapOf<Identifier, RenderLayer>()
 	
+	private val INTERFACE = RenderLayer.of(
+		"interface",
+		VertexFormats.POSITION_COLOR,
+		VertexFormat.DrawMode.QUADS,
+		256,
+		false,
+		true,
+		RenderLayer.MultiPhaseParameters.builder()
+			.shader(RenderPhase.Shader(GameRenderer::getPositionColorShader))
+			.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
+			.build(true)
+	)
+	
+	@JvmStatic
+	fun getInterface(): RenderLayer {
+		return INTERFACE
+	}
+	
 	@JvmStatic
 	fun get(texture: Identifier): RenderLayer {
 		if (!LAYERS.containsKey(texture)) {

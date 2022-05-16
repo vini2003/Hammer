@@ -43,21 +43,18 @@ object DrawingUtils {
 	fun drawQuad(
 		matrices: MatrixStack,
 		provider: VertexConsumerProvider,
-		layer: RenderLayer,
 		x: Float, y: Float,
 		width: Float, height: Float,
 		z: Float = 0.0F,
-		normalX: Float = 0.0F, normalY: Float = 0.0F, normalZ: Float = 0.0F,
-		overlay: Int = DEFAULT_OVERLAY,
-		light: Int = DEFAULT_LIGHT,
 		color: Color = DEFAULT_COLOR,
+		layer: RenderLayer = LayerUtils.getInterface()
 	) {
 		val consumer = provider.getBuffer(layer)
 		
-		consumer.vertex(matrices.positionMatrix, x, y, z).color(color.r, color.g, color.b, color.a).overlay(overlay).light(light).normal(matrices.normalMatrix, normalX, normalY, normalZ).next()
-		consumer.vertex(matrices.positionMatrix, x, y + height, z).color(color.r, color.g, color.b, color.a).overlay(overlay).light(light).normal(matrices.normalMatrix, normalX, normalY, normalZ).next()
-		consumer.vertex(matrices.positionMatrix, x + width, y + height, z).color(color.r, color.g, color.b, color.a).overlay(overlay).normal(matrices.normalMatrix, normalX, normalY, normalZ).light(light).next()
-		consumer.vertex(matrices.positionMatrix, x + width, y, z).color(color.r, color.g, color.b, color.a).overlay(overlay).normal(matrices.normalMatrix, normalX, normalY, normalZ).light(light).next()
+		consumer.vertex(matrices.positionMatrix, x, y, z).color(color.r, color.g, color.b, color.a).next()
+		consumer.vertex(matrices.positionMatrix, x, y + height, z).color(color.r, color.g, color.b, color.a).next()
+		consumer.vertex(matrices.positionMatrix, x + width, y + height, z).color(color.r, color.g, color.b, color.a).next()
+		consumer.vertex(matrices.positionMatrix, x + width, y, z).color(color.r, color.g, color.b, color.a).next()
 	}
 	
 	@JvmStatic

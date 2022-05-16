@@ -38,14 +38,14 @@ open class TextField : AbstractTextEditor() {
         val sX: Float = size.width
         val sY: Float = size.height
         matrices.push()
-        DrawingUtils.drawTexturedQuad(
+        DrawingUtils.drawQuad(
             matrices,
             provider,
-            Identifier("e"),
             x,
             y,
             sX,
             sY,
+            z,
             color = Color.BLACK
         )
         renderField(matrices, provider)

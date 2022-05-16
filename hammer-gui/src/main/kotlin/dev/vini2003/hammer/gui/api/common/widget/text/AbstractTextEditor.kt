@@ -87,12 +87,17 @@ abstract class AbstractTextEditor : BaseWidget() {
         val cH: Int = getTextHeight()
         val offsetMouseX: Float = -xOffset + mouseX
         for (i in 0 until getVisibleLines()) {
-            if (mouseY >= innerPos.y + (cH - 2) * i && mouseY <= innerPos.y + (cH + 2) * i + cH) {
+            if (mouseY >= innerPos.y + (cH + 2) * i && mouseY <= innerPos.y + (cH + 2) * i + cH) {
                 if (lineOffset + i > lines.size - 1) {
                     y = lines.size - 1
                     if (offsetMouseX >= innerPos.x + getLineWidth(y)) {
                         x = getLineLength(y)
                     }
+                    break
+                }
+                y = (lineOffset + i).toInt()
+                if (offsetMouseX >= innerPos.x + getLineWidth(y)) {
+                    x = getLineLength(y)
                     break
                 }
             }
@@ -107,7 +112,7 @@ abstract class AbstractTextEditor : BaseWidget() {
     }
 
     protected open fun getLineWidth(lineIndex: Int): Int {
-        if (lineIndex > lines.size - 1) {
+        if (lineIndex > lines.size - 1 || lineIndex == -1) {
             return 0
         }
         return (DrawingUtils.TEXT_RENDERER!!.getWidth(lines.get(lineIndex)) * scale).toInt()
@@ -178,7 +183,20 @@ abstract class AbstractTextEditor : BaseWidget() {
             clearSelection()
         }
         cursorTick = 20
+
+        if (active && keyCode == GLFW.GLFW_KEY_E) {
+            return
+        }
+
         super.onKeyPressed(keyCode, scanCode, keyModifiers)
+    }
+
+    override fun onKeyReleased(keyCode: Int, scanCode: Int, keyModifiers: Int) {
+        if (active && keyCode == GLFW.GLFW_KEY_E) {
+            return
+        }
+
+        super.onKeyReleased(keyCode, scanCode, keyModifiers)
     }
 
     override fun onCharacterTyped(character: Char, keyCode: Int) {
@@ -198,6 +216,10 @@ abstract class AbstractTextEditor : BaseWidget() {
                 onCursorMove()
             }
             cursorTick = 20
+        }
+
+        if (active && keyCode == GLFW.GLFW_KEY_E) {
+            return
         }
 
         super.onCharacterTyped(character, keyCode)
@@ -619,23 +641,21 @@ abstract class AbstractTextEditor : BaseWidget() {
             if (getSelectedChars(i) != null) {
                 val selectedChars: Pair<Int, Int> = getSelectedChars(i)!!
                 val selW = getXOffset(i, selectedChars.second) - getXOffset(i, selectedChars.first)
-                DrawingUtils.drawTexturedQuad(
+                DrawingUtils.drawQuad(
                     matrices,
                     provider,
-                    Identifier("e"),
                     innerX + getXOffset(i, selectedChars.first),
                     innerY + (cH + 2) * adjustedI,
                     selW,
                     cH + 1,
                     z,
-                    color = Color(0.33F, 0.33F, 1.0F, 0.5F),
-                    layer = RenderLayer.getTranslucent()
+                    color = Color(0.33F, 0.33F, 1.0F, 0.5F)
                 )
             }
         }
         if (active && cursorTick > 10) {
-            DrawingUtils.drawTexturedQuad(matrices, provider, Identifier("e"), cursorX, cursorY, 1F, cH + 2, z,
-                color = Color(0.5F, 0.5F, 0.5F, 0.5F), layer = RenderLayer.getTranslucent())
+            DrawingUtils.drawQuad(matrices, provider, cursorX, cursorY, 1F, cH + 2, z,
+                color = Color(0.75F, 0.75F, 0.75F, 0.8F))
         }
         matrices.pop()
 

@@ -58,7 +58,7 @@ object FluidTextUtils {
 		if (HCConfig.USE_DROPLETS) {
 			return getVariantTooltips(fluidView.resource) + "${fluidView.amount.toPrettyShortenedString("d")} / ${fluidView.capacity.toPrettyShortenedString("d")}".toLiteralText().gray() + getIdMod(fluidId)
 		} else {
-			return getVariantTooltips(fluidView.resource) + "${fluidView.amount.div(FluidConstants.BUCKET).toPrettyShortenedString("b")} / ${fluidView.capacity.div(FluidConstants.BUCKET).toPrettyShortenedString("b")}".toLiteralText().gray() + getIdMod(fluidId)
+			return getVariantTooltips(fluidView.resource) + "${fluidView.amount.div(FluidConstants.BUCKET.toDouble()).toPrettyShortenedString("b")} / ${fluidView.capacity.div(FluidConstants.BUCKET.toDouble()).toPrettyShortenedString("b")}".toLiteralText().gray() + getIdMod(fluidId)
 		}
 	}
 	
@@ -69,7 +69,7 @@ object FluidTextUtils {
 		if (HCConfig.USE_DROPLETS) {
 			return getVariantTooltips(fluidView.resource) + "${fluidView.amount.toPrettyString("d")} / ${fluidView.capacity.toPrettyString("d")}".toLiteralText().gray() + getIdMod(fluidId)
 		} else {
-			return getVariantTooltips(fluidView.resource) + "${fluidView.amount.div(FluidConstants.BUCKET).toPrettyString("b")} / ${fluidView.capacity.div(FluidConstants.BUCKET).toPrettyString("b")}".toLiteralText().gray() + getIdMod(fluidId)
+			return getVariantTooltips(fluidView.resource) + "${fluidView.amount.div(FluidConstants.BUCKET.toDouble()).toPrettyString("b")} / ${fluidView.capacity.div(FluidConstants.BUCKET.toDouble()).toPrettyString("b")}".toLiteralText().gray() + getIdMod(fluidId)
 		}
 	}
 }

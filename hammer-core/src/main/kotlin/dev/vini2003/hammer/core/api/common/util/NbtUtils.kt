@@ -31,6 +31,7 @@ import net.minecraft.client.util.math.Vector2f
 import net.minecraft.client.util.math.Vector3d
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.tag.TagKey
+import net.minecraft.util.Identifier
 import net.minecraft.util.math.*
 import net.minecraft.util.registry.RegistryKey
 
@@ -46,6 +47,24 @@ object NbtUtils {
 	
 	@JvmStatic
 	fun getSize(nbt: NbtCompound, key: String) = nbt.getSize(key)
+
+	@JvmStatic
+	fun putBlockPos(nbt: NbtCompound, key: String, value: BlockPos) = nbt.putBlockPos(key, value)
+	
+	@JvmStatic
+	fun getBlockPos(nbt: NbtCompound, key: String) = nbt.getBlockPos(key)
+	
+	@JvmStatic
+	fun putChunkPos(nbt: NbtCompound, key: String, value: ChunkPos) = nbt.putChunkPos(key, value)
+	
+	@JvmStatic
+	fun getChunkPos(nbt: NbtCompound, key: String) = nbt.getChunkPos(key)
+	
+	@JvmStatic
+	fun putIdentifier(nbt: NbtCompound, key: String, value: Identifier) = nbt.putIdentifier(key, value)
+	
+	@JvmStatic
+	fun getIdentifier(nbt: NbtCompound, key: String) = nbt.getIdentifier(key)
 	
 	@JvmStatic
 	fun <T> putRegistryKey(nbt: NbtCompound, key: String, value: RegistryKey<T>) = nbt.putRegistryKey(key, value)

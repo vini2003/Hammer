@@ -26,6 +26,7 @@ package dev.vini2003.hammer.core.api.common.math.shape
 
 import dev.vini2003.hammer.core.api.common.math.position.Position
 import dev.vini2003.hammer.core.api.common.math.shape.modifier.BaseModifier
+import kotlin.math.abs
 import kotlin.math.pow
 
 /**
@@ -228,9 +229,9 @@ open class Shape(
 		}
 	)
 	
-	val width: Float by lazy { startPos.x - endPos.x }
-	val height: Float by lazy { startPos.y - endPos.y }
-	val depth: Float by lazy { startPos.z - endPos.z }
+	val width: Float by lazy { abs(startPos.x - endPos.x) }
+	val height: Float by lazy { abs(startPos.y - endPos.y) }
+	val depth: Float by lazy { abs(startPos.z - endPos.z) }
 	
 	/**
 	 * Returns whether the position is within this shape or not.

@@ -27,7 +27,6 @@ package dev.vini2003.hammer.util.impl.common.command.speed
 import com.mojang.brigadier.context.CommandContext
 import dev.vini2003.hammer.command.api.common.command.ServerRootCommand
 import dev.vini2003.hammer.command.api.common.util.extension.*
-import dev.vini2003.hammer.core.api.common.util.BufUtils
 import dev.vini2003.hammer.util.impl.common.packet.speed.WalkSpeedUpdatePacket
 import dev.vini2003.hammer.util.registry.common.HUNetworking
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking

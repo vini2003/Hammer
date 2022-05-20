@@ -24,7 +24,6 @@
 
 package dev.vini2003.hammer.permission.api.common.role
 
-import dev.vini2003.hammer.core.api.common.util.BufUtils
 import dev.vini2003.hammer.permission.impl.packet.add.AddRolePacket
 import dev.vini2003.hammer.permission.impl.packet.remove.RemoveRolePacket
 import dev.vini2003.hammer.permission.api.common.util.PermissionUtils

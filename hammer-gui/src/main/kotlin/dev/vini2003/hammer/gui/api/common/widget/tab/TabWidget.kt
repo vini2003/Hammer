@@ -25,21 +25,15 @@
 package dev.vini2003.hammer.gui.api.common.widget.tab
 
 import dev.vini2003.hammer.core.HC
-import dev.vini2003.hammer.core.api.client.texture.BaseTexture
-import dev.vini2003.hammer.core.api.client.texture.ImageTexture
-import dev.vini2003.hammer.core.api.client.util.DrawingUtils
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget
-import dev.vini2003.hammer.core.api.client.util.PositionUtils
 import dev.vini2003.hammer.core.api.common.math.position.Position
-import dev.vini2003.hammer.core.api.common.math.shape.Shape
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Text
-import net.minecraft.util.Identifier
 
 /**
  * A [TabWidget] is a widget that has multiple panels, divided

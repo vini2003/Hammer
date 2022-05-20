@@ -25,8 +25,6 @@
 package dev.vini2003.hammer.gui.api.common.widget.arrow
 
 import dev.vini2003.hammer.core.HC
-import dev.vini2003.hammer.core.api.client.texture.BaseTexture
-import dev.vini2003.hammer.core.api.client.texture.ImageTexture
 import dev.vini2003.hammer.gui.api.common.util.TextUtils
 import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget
 import net.minecraft.text.Text

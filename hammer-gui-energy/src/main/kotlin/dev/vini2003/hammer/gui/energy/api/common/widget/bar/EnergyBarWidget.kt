@@ -29,10 +29,7 @@ package dev.vini2003.hammer.gui.energy.api.common.widget.bar
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtils
 import dev.vini2003.hammer.core.HC
 import dev.vini2003.hammer.gui.api.common.widget.bar.BaseBarWidget
-import dev.vini2003.hammer.core.api.common.util.TextUtils
 import dev.vini2003.hammer.core.api.client.scissor.Scissors
-import dev.vini2003.hammer.core.api.client.texture.BaseTexture
-import dev.vini2003.hammer.core.api.client.texture.ImageTexture
 import dev.vini2003.hammer.core.api.common.util.extension.gray
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.render.VertexConsumerProvider

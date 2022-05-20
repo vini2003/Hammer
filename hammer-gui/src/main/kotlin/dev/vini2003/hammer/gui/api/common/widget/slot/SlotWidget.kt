@@ -25,12 +25,9 @@
 package dev.vini2003.hammer.gui.api.common.widget.slot
 
 import dev.vini2003.hammer.core.HC
-import dev.vini2003.hammer.core.api.client.texture.BaseTexture
-import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils
 import dev.vini2003.hammer.core.api.common.math.position.Position
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.render.VertexConsumerProvider

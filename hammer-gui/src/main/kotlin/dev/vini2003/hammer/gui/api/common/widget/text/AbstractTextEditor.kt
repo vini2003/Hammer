@@ -1,18 +1,13 @@
 package dev.vini2003.hammer.gui.api.common.widget.text
 
-import dev.vini2003.hammer.core.api.client.scissor.Scissors
-import dev.vini2003.hammer.core.api.client.util.DrawingUtils
 import dev.vini2003.hammer.core.api.common.color.Color
 import dev.vini2003.hammer.core.api.common.math.position.Position
-import dev.vini2003.hammer.core.api.common.math.size.Size
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
-import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 import java.util.*
 

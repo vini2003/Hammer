@@ -1,6 +1,5 @@
 package dev.vini2003.hammer.gui.api.common.util
 
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils
 import dev.vini2003.hammer.gui.api.client.util.extension.*
 import net.minecraft.client.gui.hud.InGameHud
 import net.minecraft.entity.player.PlayerEntity

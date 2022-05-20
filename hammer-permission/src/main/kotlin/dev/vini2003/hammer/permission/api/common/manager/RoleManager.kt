@@ -24,7 +24,6 @@
 
 package dev.vini2003.hammer.permission.api.common.manager
 
-import dev.vini2003.hammer.core.api.common.util.BufUtils
 import dev.vini2003.hammer.permission.impl.packet.sync.SyncRolesPacket
 import dev.vini2003.hammer.permission.api.common.role.Role
 import dev.vini2003.hammer.permission.api.common.util.extension.hasRole

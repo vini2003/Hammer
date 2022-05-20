@@ -25,8 +25,6 @@
 package dev.vini2003.hammer.gui.api.common.widget.bar
 
 import dev.vini2003.hammer.core.api.client.scissor.Scissors
-import dev.vini2003.hammer.core.api.client.texture.BaseTexture
-import dev.vini2003.hammer.core.api.client.texture.TiledSpriteTexture
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.texture.Sprite
 import net.minecraft.client.util.math.MatrixStack

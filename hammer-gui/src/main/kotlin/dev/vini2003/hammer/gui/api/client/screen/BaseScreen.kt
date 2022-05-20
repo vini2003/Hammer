@@ -26,9 +26,7 @@ package dev.vini2003.hammer.gui.api.client.screen
 
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils
 import dev.vini2003.hammer.core.api.common.math.position.Position
-import dev.vini2003.hammer.core.api.common.math.shape.Shape
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text

@@ -1,8 +1,5 @@
 package dev.vini2003.hammer.gui.api.common.widget.bar
 
-import dev.vini2003.hammer.core.api.client.texture.BaseTexture
-import dev.vini2003.hammer.core.api.client.texture.TiledImageTexture
-
 /**
  * A [HudBarWidget] is a [BaseBarWidget] whose data is located through a sprite and
  * [maximum] and [current] are configurable, while its position and size are dictated

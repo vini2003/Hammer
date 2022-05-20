@@ -27,10 +27,6 @@
 package dev.vini2003.hammer.gui.api.common.widget.bar
 
 import dev.vini2003.hammer.core.api.client.scissor.Scissors
-import dev.vini2003.hammer.core.api.client.texture.BaseTexture
-import dev.vini2003.hammer.core.api.client.texture.TiledFluidTexture
-import dev.vini2003.hammer.core.api.common.util.FluidTextUtils
-import dev.vini2003.hammer.core.api.common.util.TextUtils
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage
 import net.minecraft.client.gui.screen.Screen

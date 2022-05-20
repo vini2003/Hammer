@@ -25,8 +25,6 @@
 package dev.vini2003.hammer.gui.api.common.widget.bar
 
 import dev.vini2003.hammer.core.HC
-import dev.vini2003.hammer.core.api.client.texture.BaseTexture
-import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
 
 /**

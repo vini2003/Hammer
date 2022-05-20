@@ -27,7 +27,6 @@ package dev.vini2003.hammer.chat.impl.common.listener
 import dev.vini2003.hammer.chat.impl.common.packet.ToggleGlobalChatPacket
 import dev.vini2003.hammer.chat.registry.common.HCNetworking
 import dev.vini2003.hammer.chat.registry.common.HCValues
-import dev.vini2003.hammer.core.api.common.util.BufUtils
 import net.fabricmc.fabric.api.networking.v1.PacketSender
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking

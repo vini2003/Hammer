@@ -1,21 +1,11 @@
 package dev.vini2003.hammer.example.registry.client
 
 import dev.vini2003.hammer.core.HC
-import dev.vini2003.hammer.core.api.client.texture.ImageTexture
-import dev.vini2003.hammer.core.api.client.texture.TiledImageTexture
-import dev.vini2003.hammer.core.api.client.util.DrawingUtils.drawTexturedQuad
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils
-import dev.vini2003.hammer.core.api.common.math.position.Position
 import dev.vini2003.hammer.example.impl.client.screen.handled.DebugHandledScreen
 import dev.vini2003.hammer.example.registry.common.HEScreenHandlers
 import dev.vini2003.hammer.gui.api.client.event.InGameHudEvents
-import dev.vini2003.hammer.gui.api.client.util.extension.getHungerBarPos
 import dev.vini2003.hammer.gui.api.common.widget.bar.HudBarWidget
-import net.fabricmc.fabric.api.renderer.v1.model.SpriteFinder
 import net.minecraft.client.gui.screen.ingame.HandledScreens
-import net.minecraft.client.texture.SpriteAtlasTexture
-import net.minecraft.util.Identifier
-import kotlin.math.ceil
 
 object HEScreens {
 	fun init() {

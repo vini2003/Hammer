@@ -1,13 +1,8 @@
 package dev.vini2003.hammer.gui.api.common.widget.text
 
-import com.mojang.blaze3d.platform.GlStateManager.Viewport.getX
-import com.mojang.blaze3d.platform.GlStateManager.Viewport.getY
-import dev.vini2003.hammer.core.api.client.util.DrawingUtils
 import dev.vini2003.hammer.core.api.common.color.Color
-import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.util.Identifier
 
 
 open class TextField : AbstractTextEditor() {

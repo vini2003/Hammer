@@ -24,7 +24,6 @@
 
 package dev.vini2003.hammer.permission.api.common.util
 
-import dev.vini2003.hammer.adventure.common.util.AdventureUtils
 import dev.vini2003.hammer.permission.HP
 import net.minecraft.network.MessageType
 import net.minecraft.scoreboard.Team

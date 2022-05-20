@@ -25,8 +25,6 @@
 package dev.vini2003.hammer.gui.api.common.widget.item
 
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
-import dev.vini2003.hammer.core.api.client.util.DrawingUtils
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.item.ItemStack

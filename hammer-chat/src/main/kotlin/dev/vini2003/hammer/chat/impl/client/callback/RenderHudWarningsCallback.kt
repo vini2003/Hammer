@@ -27,7 +27,6 @@ package dev.vini2003.hammer.chat.impl.client.callback
 import com.mojang.blaze3d.systems.RenderSystem
 import dev.vini2003.hammer.chat.registry.client.HCTextures
 import dev.vini2003.hammer.chat.registry.common.HCValues
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.gui.DrawableHelper
 import net.minecraft.client.gui.screen.ChatScreen

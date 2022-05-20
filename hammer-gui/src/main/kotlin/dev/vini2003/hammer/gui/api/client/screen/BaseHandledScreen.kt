@@ -27,8 +27,6 @@ package dev.vini2003.hammer.gui.api.client.screen
 import dev.vini2003.hammer.gui.impl.common.packet.sync.SyncScreenHandlerPacket
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler
 import dev.vini2003.hammer.gui.registry.common.HGUINetworking
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils
-import dev.vini2003.hammer.core.api.common.util.BufUtils
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.client.util.math.MatrixStack

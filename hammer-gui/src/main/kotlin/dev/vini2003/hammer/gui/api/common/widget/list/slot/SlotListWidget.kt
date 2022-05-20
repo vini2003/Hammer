@@ -25,15 +25,10 @@
 package dev.vini2003.hammer.gui.api.common.widget.list.slot
 
 import dev.vini2003.hammer.core.HC
-import dev.vini2003.hammer.core.api.client.texture.BaseTexture
-import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget
 import dev.vini2003.hammer.core.api.common.math.position.Position
-import dev.vini2003.hammer.core.api.common.math.size.Size
-import dev.vini2003.hammer.core.api.client.util.PositionUtils
-import dev.vini2003.hammer.core.api.common.math.shape.Shape
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.inventory.Inventory

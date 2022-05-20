@@ -24,7 +24,7 @@
 
 package dev.vini2003.hammer.permission.impl.command.role
 
-import dev.vini2003.hammer.core.api.client.util.InstanceUtils.FABRIC
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil.FABRIC
 import dev.vini2003.hammer.command.api.common.command.ServerRootCommand
 import dev.vini2003.hammer.command.api.common.util.extension.*
 import dev.vini2003.hammer.permission.api.common.manager.RoleManager

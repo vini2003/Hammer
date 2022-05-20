@@ -25,7 +25,6 @@
 package dev.vini2003.hammer.interaction.api.common.manager
 
 import com.google.common.collect.Maps
-import dev.vini2003.hammer.core.api.common.util.BufUtils
 import dev.vini2003.hammer.core.api.common.util.extension.frozen
 import dev.vini2003.hammer.interaction.api.common.interaction.InteractionMode
 import dev.vini2003.hammer.interaction.api.common.interaction.InteractionRule

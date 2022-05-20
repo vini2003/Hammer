@@ -24,13 +24,9 @@
 
 package dev.vini2003.hammer.gui.api.common.widget
 
-import dev.vini2003.hammer.core.api.client.util.PositionUtils
 import dev.vini2003.hammer.core.api.common.math.position.Position
 import dev.vini2003.hammer.gui.registry.common.HGUINetworking
-import dev.vini2003.hammer.core.api.common.math.position.Positioned
-import dev.vini2003.hammer.core.api.common.math.size.Size
 import dev.vini2003.hammer.core.api.common.math.size.Sized
-import dev.vini2003.hammer.core.api.common.util.BufUtils
 import dev.vini2003.hammer.gui.impl.common.packet.widget.*
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.minecraft.client.render.VertexConsumerProvider

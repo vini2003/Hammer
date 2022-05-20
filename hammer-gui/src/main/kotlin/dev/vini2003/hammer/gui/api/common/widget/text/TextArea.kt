@@ -1,6 +1,5 @@
 package dev.vini2003.hammer.gui.api.common.widget.text
 
-import dev.vini2003.hammer.core.api.client.util.DrawingUtils
 import dev.vini2003.hammer.core.api.common.color.Color
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack

@@ -1,10 +1,8 @@
 package dev.vini2003.hammer.gui.mixin.client;
 
-import dev.vini2003.hammer.core.api.client.util.DrawingUtils;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.client.event.InGameHudEvents;
-import dev.vini2003.hammer.gui.api.client.util.extension.InGameHudExtensionKt;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import dev.vini2003.hammer.gui.api.common.util.InGameHudUtils;
 import dev.vini2003.hammer.gui.api.common.widget.BaseWidget;
@@ -13,7 +11,6 @@ import dev.vini2003.hammer.gui.api.common.widget.bar.HudBarWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;

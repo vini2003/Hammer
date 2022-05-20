@@ -29,7 +29,6 @@ import dev.vini2003.hammer.command.api.client.command.ClientRootCommand
 import dev.vini2003.hammer.command.api.common.util.extension.command
 import dev.vini2003.hammer.command.api.common.util.extension.execute
 import net.minecraft.text.TranslatableText
-
 val TOGGLE_CHAT_COMMAND = ClientRootCommand {
 	command("toggle_chat") {
 		execute {

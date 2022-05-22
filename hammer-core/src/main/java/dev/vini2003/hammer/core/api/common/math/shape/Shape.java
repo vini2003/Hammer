@@ -102,6 +102,14 @@ public class Shape implements SizeHolder {
 		return Math.abs(startPos.getZ() - endPos.getZ());
 	}
 	
+	public Position getStartPos() {
+		return startPos;
+	}
+	
+	public Position getEndPos() {
+		return endPos;
+	}
+	
 	public static class ScreenRectangle extends Shape {
 		public ScreenRectangle(float width, float height) {
 			super(new Position(0.0F, 0.0F), new Position(width, height));

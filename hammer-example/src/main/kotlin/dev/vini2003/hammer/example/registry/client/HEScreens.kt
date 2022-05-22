@@ -4,7 +4,6 @@ import dev.vini2003.hammer.core.HC
 import dev.vini2003.hammer.example.impl.client.screen.handled.DebugHandledScreen
 import dev.vini2003.hammer.example.registry.common.HEScreenHandlers
 import dev.vini2003.hammer.gui.api.client.event.InGameHudEvents
-import dev.vini2003.hammer.gui.api.common.widget.bar.HudBarWidget
 import net.minecraft.client.gui.screen.ingame.HandledScreens
 
 object HEScreens {

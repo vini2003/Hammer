@@ -1,7 +1,6 @@
 package dev.vini2003.hammer.gui.api.client.util.extension
 
 import dev.vini2003.hammer.core.api.common.math.position.Position
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
 import net.minecraft.client.gui.hud.InGameHud
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.attribute.EntityAttributes

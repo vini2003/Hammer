@@ -1,16 +1,15 @@
 package dev.vini2003.hammer.core.api.client.texture;
 
 import dev.vini2003.hammer.core.api.client.color.Color;
-import dev.vini2003.hammer.core.api.client.texture.base.BaseTexture;
+import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.core.api.client.util.LayerUtil;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class SpriteTexture implements BaseTexture {
+public class SpriteTexture implements Texture {
 	private Sprite sprite;
 	
 	public SpriteTexture(Sprite sprite) {

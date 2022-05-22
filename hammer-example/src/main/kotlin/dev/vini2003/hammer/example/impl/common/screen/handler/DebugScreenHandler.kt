@@ -4,7 +4,6 @@ import dev.vini2003.hammer.core.api.common.math.position.Position
 import dev.vini2003.hammer.core.api.common.util.extension.toLiteralText
 import dev.vini2003.hammer.example.registry.common.HEScreenHandlers
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler
-import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget
 import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget
 import dev.vini2003.hammer.gui.api.common.widget.tab.TabWidget

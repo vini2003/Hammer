@@ -1,16 +1,15 @@
 package dev.vini2003.hammer.core.api.client.texture;
 
 import dev.vini2003.hammer.core.api.client.color.Color;
-import dev.vini2003.hammer.core.api.client.texture.base.BaseTexture;
+import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.core.api.client.util.LayerUtil;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class TiledSpriteTexture implements BaseTexture {
+public class TiledSpriteTexture implements Texture {
 	private final Sprite sprite;
 	
 	private final float maxTilesX;
@@ -18,6 +17,16 @@ public class TiledSpriteTexture implements BaseTexture {
 	
 	private final float stepTilesX;
 	private final float stepTilesY;
+	
+	public TiledSpriteTexture(Sprite sprite) {
+		this.sprite = sprite;
+		
+		this.maxTilesX = Integer.MAX_VALUE;
+		this.maxTilesY = Integer.MAX_VALUE;
+		
+		this.stepTilesX = Integer.MAX_VALUE;
+		this.stepTilesY = Integer.MAX_VALUE;
+	}
 	
 	public TiledSpriteTexture(Sprite sprite, float maxTilesX, float maxTilesY, float stepTilesX, float stepTilesY) {
 		this.sprite = sprite;

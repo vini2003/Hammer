@@ -24,7 +24,6 @@
 
 package dev.vini2003.hammer.gui.api.common.util
 
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget
 import dev.vini2003.hammer.core.api.common.math.position.Position
 import net.minecraft.inventory.Inventory

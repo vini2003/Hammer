@@ -24,8 +24,6 @@
 
 package dev.vini2003.hammer.gui.api.client.screen
 
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
 import dev.vini2003.hammer.core.api.common.math.position.Position
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.math.MatrixStack
@@ -35,7 +33,7 @@ import net.minecraft.text.Text
  * A [BaseScreen] is a screen that holds widgets.
  */
 abstract class BaseScreen(title: Text?) : Screen(title), BaseWidgetCollection.Handled {
-	override val widgets: MutableList<BaseWidget> = mutableListOf()
+	override val widgets: MutableList<Widget> = mutableListOf()
 	
 	override val id = null
 	
@@ -176,7 +174,7 @@ abstract class BaseScreen(title: Text?) : Screen(title), BaseWidgetCollection.Ha
 		rectangle = Shape.ScreenRectangle(maximumX - minimumX, maximumY - minimumY, Position(minimumX, minimumY))
 	}
 	
-	override fun add(widget: BaseWidget) {
+	override fun add(widget: Widget) {
 		widgets += widget
 		
 		widget.onAdded(this, this)
@@ -186,7 +184,7 @@ abstract class BaseScreen(title: Text?) : Screen(title), BaseWidgetCollection.Ha
 		}
 	}
 	
-	override fun remove(widget: BaseWidget) {
+	override fun remove(widget: Widget) {
 		widgets -= widget
 		
 		widget.onRemoved(this, this)

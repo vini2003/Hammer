@@ -2,7 +2,6 @@ package dev.vini2003.hammer.example
 
 import dev.vini2003.hammer.example.registry.client.HEScreens
 import dev.vini2003.hammer.gui.api.client.event.InGameHudEvents
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
 import net.fabricmc.api.ClientModInitializer
 import net.minecraft.client.gui.hud.InGameHud
 

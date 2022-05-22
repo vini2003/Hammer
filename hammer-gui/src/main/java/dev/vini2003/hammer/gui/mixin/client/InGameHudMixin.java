@@ -3,10 +3,11 @@ package dev.vini2003.hammer.gui.mixin.client;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.client.event.InGameHudEvents;
+import dev.vini2003.hammer.gui.api.common.event.LayoutChangedEvent;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import dev.vini2003.hammer.gui.api.common.util.InGameHudUtils;
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidget;
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection;
+import dev.vini2003.hammer.gui.api.common.widget.Widget;
+import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.bar.HudBarWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -25,8 +26,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Mixin(InGameHud.class)
-public abstract class InGameHudMixin implements BaseWidgetCollection, BaseWidgetCollection.Handled {
-	private final List<BaseWidget> hammer$widgets = new ArrayList<>();
+public abstract class InGameHudMixin implements WidgetCollection, WidgetCollection.Root {
+	private final List<Widget> hammer$widgets = new ArrayList<>();
 	@Shadow
 	@Final
 	private MinecraftClient client;
@@ -39,10 +40,12 @@ public abstract class InGameHudMixin implements BaseWidgetCollection, BaseWidget
 		
 		onLayoutChanged();
 		
-		getAllWidgets().forEach(widget -> {
-			widget.onLayoutChanged();
-		});
+		for (var widget : getAllChildren()) {
+			widget.dispatchEvent(new LayoutChangedEvent());
+		}
 	}
+	
+	
 	
 	@Inject(at = @At("RETURN"), method = "render")
 	private void hammer$render(MatrixStack matrices, float delta, CallbackInfo ci) {
@@ -52,10 +55,10 @@ public abstract class InGameHudMixin implements BaseWidgetCollection, BaseWidget
 		
 		var provider = client.getBufferBuilders().getEffectVertexConsumers();
 		
-		var bars = getWidgets().stream()
-					.filter(widget -> widget instanceof HudBarWidget)
-					.map(widget -> (HudBarWidget) widget)
-					.filter(widget -> {
+		var bars = getChildren().stream()
+								.filter(widget -> widget instanceof HudBarWidget)
+								.map(widget -> (HudBarWidget) widget)
+								.filter(widget -> {
 						if (!widget.shouldShow()) {
 							widget.setHidden(true);
 							
@@ -66,7 +69,7 @@ public abstract class InGameHudMixin implements BaseWidgetCollection, BaseWidget
 							return true;
 						}
 					})
-					.collect(Collectors.toList());
+								.collect(Collectors.toList());
 		
 		var leftPos = InGameHudUtils.getLeftBarPos((InGameHud) (Object) this, client.player);
 		var rightPos = InGameHudUtils.getRightBarPos((InGameHud) (Object) this, client.player);
@@ -97,9 +100,9 @@ public abstract class InGameHudMixin implements BaseWidgetCollection, BaseWidget
 			}
 		}
 		
-		getWidgets().stream()
-					.filter(widget -> !widget.isHidden())
-					.forEach(widget -> widget.drawWidget(matrices, provider, delta));
+		getChildren().stream()
+					 .filter(widget -> !widget.isHidden())
+					 .forEach(widget -> widget.drawWidget(matrices, provider, delta));
 		
 		provider.draw();
 		
@@ -108,7 +111,7 @@ public abstract class InGameHudMixin implements BaseWidgetCollection, BaseWidget
 	
 	@NotNull
 	@Override
-	public List<BaseWidget> getWidgets() {
+	public List<Widget> getChildren() {
 		return hammer$widgets;
 	}
 	
@@ -130,7 +133,7 @@ public abstract class InGameHudMixin implements BaseWidgetCollection, BaseWidget
 	
 	@Nullable
 	@Override
-	public BaseScreenHandler getHandler() {
+	public BaseScreenHandler getScreenHandler() {
 		return null;
 	}
 }

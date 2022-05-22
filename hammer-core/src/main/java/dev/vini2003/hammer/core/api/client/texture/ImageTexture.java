@@ -1,7 +1,7 @@
 package dev.vini2003.hammer.core.api.client.texture;
 
 import dev.vini2003.hammer.core.api.client.color.Color;
-import dev.vini2003.hammer.core.api.client.texture.base.BaseTexture;
+import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.client.util.LayerUtil;
@@ -9,7 +9,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
-public class ImageTexture implements BaseTexture {
+public class ImageTexture implements Texture {
 	private final Identifier textureId;
 	
 	public ImageTexture(Identifier textureId) {

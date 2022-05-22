@@ -24,7 +24,6 @@
 
 package dev.vini2003.hammer.gui.api.common.widget.text
 
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.text.Text
@@ -32,7 +31,7 @@ import net.minecraft.text.Text
 /**
  * A [TextWidget] is a widget that displays text on the screen.
  */
-open class TextWidget : BaseWidget() {
+open class TextWidget : Widget() {
 	/**
 	 * This widget's text.
 	 */

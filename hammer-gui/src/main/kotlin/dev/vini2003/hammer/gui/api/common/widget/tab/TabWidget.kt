@@ -25,8 +25,6 @@
 package dev.vini2003.hammer.gui.api.common.widget.tab
 
 import dev.vini2003.hammer.core.HC
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget
 import dev.vini2003.hammer.core.api.common.math.position.Position
 import net.minecraft.client.render.VertexConsumerProvider
@@ -43,7 +41,7 @@ import net.minecraft.text.Text
  *
  * A tab has an item as a symbol, and, optionally, a tooltip.
  */
-open class TabWidget : BaseWidget(), BaseWidgetCollection {
+open class TabWidget : Widget(), BaseWidgetCollection {
 	companion object {
 		@JvmField
 		val STANDARD_ACTIVE_LEFT_TEXTURE: BaseTexture = ImageTexture(HC.id("textures/widget/tab_left_active.png"))
@@ -64,7 +62,7 @@ open class TabWidget : BaseWidget(), BaseWidgetCollection {
 		var STANDARD_INACTIVE_RIGHT_TEXTURE: BaseTexture = ImageTexture(HC.id("textures/widget/tab_right_inactive.png"))
 	}
 	
-	override val widgets : MutableList<BaseWidget> = mutableListOf()
+	override val widgets : MutableList<Widget> = mutableListOf()
 	
 	protected open val tabRectangles: MutableList<Shape> = mutableListOf()
 	protected open val tabCollections: MutableList<TabWidgetCollection> = mutableListOf()
@@ -238,10 +236,10 @@ open class TabWidget : BaseWidget(), BaseWidgetCollection {
 		}
 	}
 	
-	class TabWidgetCollection(private val number: Int) : BaseWidget(), BaseWidgetCollection {
-		override val widgets: MutableList<BaseWidget> = mutableListOf()
+	class TabWidgetCollection(private val number: Int) : Widget(), BaseWidgetCollection {
+		override val widgets: MutableList<Widget> = mutableListOf()
 		
-		override fun add(widget: BaseWidget) {
+		override fun add(widget: Widget) {
 			super.add(widget)
 			
 			widget.hidden = widget.hidden || parent != null && (parent as TabWidget).selected != number

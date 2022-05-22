@@ -2,7 +2,6 @@ package dev.vini2003.hammer.gui.api.common.widget.text
 
 import dev.vini2003.hammer.core.api.common.color.Color
 import dev.vini2003.hammer.core.api.common.math.position.Position
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.render.VertexConsumerProvider
@@ -11,7 +10,7 @@ import net.minecraft.text.Text
 import org.lwjgl.glfw.GLFW
 import java.util.*
 
-abstract class AbstractTextEditor : BaseWidget() {
+abstract class AbstractTextEditor : Widget() {
     
     protected val lines: MutableList<String> = ArrayList()
 
@@ -705,7 +704,7 @@ abstract class AbstractTextEditor : BaseWidget() {
         return this as W
     }
 
-    open fun <W : BaseWidget?> setActive(active: Boolean): W {
+    open fun <W : Widget?> setActive(active: Boolean): W {
         this.active = active
         return this as W
     }

@@ -2,8 +2,11 @@ package dev.vini2003.hammer.core.api.common.math.shape;
 
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.shape.modifier.Modifier;
+import dev.vini2003.hammer.core.api.common.math.shape.modifier.NoiseModifier;
+import dev.vini2003.hammer.core.api.common.math.shape.modifier.TranslateModifier;
 import dev.vini2003.hammer.core.api.common.math.size.SizeHolder;
 
+import java.util.Random;
 import java.util.function.BiPredicate;
 
 public class Shape implements SizeHolder {
@@ -23,6 +26,20 @@ public class Shape implements SizeHolder {
 		this.startPos = startPos;
 		this.endPos = endPos;
 	}
+	
+	/**
+	 * Constructs a shape.
+	 *
+	 * @param startPos the shape's start position.
+	 * @param endPos the shape's end position.
+	 * @param eequation the shape's equation, checks whether a point is within the shape or not.
+	 */
+	public Shape(Position startPos, Position endPos, BiPredicate<Shape, Position> equation) {
+		this.startPos = startPos;
+		this.endPos = endPos;
+		this.equation = equation;
+	}
+	
 	
 	/**
 	 * Returns whether the position is within this shape or not.
@@ -49,7 +66,25 @@ public class Shape implements SizeHolder {
 	public Shape applyModifier(Modifier modifier) {
 		var chainEquation = equation;
 		
-		return new Shape(startPos, endPos, (shape, pos) -> chainEquation.test(this, modifier.invoke(pos)));
+		return new Shape(startPos, endPos, (shape, pos) -> chainEquation.test(this, modifier.modify(pos)));
+	}
+	
+	/**
+	 * Applies a translate modifier to this shape.
+	 *
+	 * @return a new shape with the modifier.
+	 */
+	public Shape translate(float x, float y, float z) {
+		return applyModifier(new TranslateModifier(x, y, z));
+	}
+	
+	/**
+	 * Applies a noise modifier to this shape.
+	 *
+	 * @return a new shape with the modifier.
+	 */
+	public Shape noise(Random random, float magnitude) {
+		return applyModifier(new NoiseModifier(random, magnitude));
 	}
 	
 	@Override

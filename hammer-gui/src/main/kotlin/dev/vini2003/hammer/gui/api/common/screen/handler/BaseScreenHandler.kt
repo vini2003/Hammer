@@ -24,8 +24,6 @@
 
 package dev.vini2003.hammer.gui.api.common.screen.handler
 
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidgetCollection
 import dev.vini2003.hammer.core.api.common.math.position.Position
 import dev.vini2003.hammer.core.api.common.util.StackUtils
 import net.fabricmc.api.EnvType
@@ -47,7 +45,7 @@ abstract class BaseScreenHandler(
 ) : ScreenHandler(type, syncId), BaseWidgetCollection.Handled {
 	var rectangle: Shape = Shape.ScreenRectangle(0.0F, 0.0F)
 	
-	override val widgets: MutableList<BaseWidget> = mutableListOf()
+	override val widgets: MutableList<Widget> = mutableListOf()
 	
 	override val id = this.syncId
 
@@ -102,7 +100,7 @@ abstract class BaseScreenHandler(
 		screen.backgroundHeight = rectangle.height.toInt()
 	}
 
-	override fun add(widget: BaseWidget) {
+	override fun add(widget: Widget) {
 		widgets += widget
 		
 		widget.onAdded(this, this)
@@ -112,7 +110,7 @@ abstract class BaseScreenHandler(
 		}
 	}
 
-	override fun remove(widget: BaseWidget) {
+	override fun remove(widget: Widget) {
 		widgets -= widget
 		
 		widget.onRemoved(this, this)

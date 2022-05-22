@@ -1,7 +1,7 @@
 package dev.vini2003.hammer.core.api.client.texture;
 
 import dev.vini2003.hammer.core.api.client.color.Color;
-import dev.vini2003.hammer.core.api.client.texture.base.BaseTexture;
+import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
@@ -11,7 +11,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class FluidTexture implements BaseTexture {
+public class FluidTexture implements Texture {
 	private final FluidVariant variant;
 	
 	private final Sprite sprite;

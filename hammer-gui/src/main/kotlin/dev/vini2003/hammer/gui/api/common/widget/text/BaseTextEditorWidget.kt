@@ -3,7 +3,6 @@ package dev.vini2003.hammer.gui.api.common.widget.text
 import dev.vini2003.hammer.core.api.common.color.Color
 import dev.vini2003.hammer.core.api.common.math.position.Position
 import dev.vini2003.hammer.gui.api.common.filter.InputFilter
-import dev.vini2003.hammer.gui.api.common.widget.BaseWidget
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.util.math.MatrixStack
@@ -15,7 +14,7 @@ import kotlin.math.round
 /**
  * A [BaseTextEditorWidget] is a widget that contains a text editor.
  */
-abstract class BaseTextEditorWidget : BaseWidget() {
+abstract class BaseTextEditorWidget : Widget() {
 	protected open val lines: MutableList<String> = mutableListOf()
 	
 	protected open val cursor: Cursor = Cursor(0, 0)

@@ -36,7 +36,6 @@ pluginManagement {
 rootProject.name = "hammer"
 
 include "hammer-core"
-include "hammer-command"
 include "hammer-adventure"
 include "hammer-chat"
 include "hammer-border"

@@ -66,7 +66,7 @@ public class PartitionedTexture implements Texture {
 		
 		var bottomLeftWidth = (width * (bottomLeft.uE - bottomLeft.uS) / scaleWidth);
 		var bottomLeftHeight = (height * (bottomLeft.vE - bottomLeft.vS) / scaleHeight);
-		;
+		
 		var bottomRightWidth = (width * (bottomRight.uE - bottomRight.uS) / scaleWidth);
 		var bottomRightHeight = (height * (bottomRight.vE - bottomRight.vS) / scaleHeight);
 		

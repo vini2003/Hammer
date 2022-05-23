@@ -7,7 +7,6 @@ import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler
 import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget
 import dev.vini2003.hammer.gui.api.common.widget.tab.TabWidget
-import dev.vini2003.hammer.gui.api.common.widget.text.TextEditorWidget
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.fluid.Fluids
@@ -45,7 +44,7 @@ class DebugScreenHandler(syncId: Int, player: PlayerEntity) : BaseScreenHandler(
 		
 		add(textureBar)
 
-		val textField = TextEditorWidget()
+		val textField = TextAreaWidget()
 
 		textField.size = Size(150F, 150F)
 		//textField.setFixedLength(30)

@@ -17,7 +17,15 @@ public class TextUtil {
 		return DrawingUtil.getTextRenderer().getWidth(text);
 	}
 	
+	public static float getWidth(String string) {
+		return DrawingUtil.getTextRenderer().getWidth(string);
+	}
+	
 	public static float getHeight(Text text) {
+		return 9.0F;
+	}
+	
+	public static float getHeight(String string) {
 		return 9.0F;
 	}
 	

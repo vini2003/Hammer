@@ -47,7 +47,7 @@ public class TabWidget extends Widget implements WidgetCollection {
 	protected List<Supplier<ItemStack>> tabSymbols = new ArrayList<>();
 	protected List<Supplier<List<Text>>> tabTooltips = new ArrayList<>();
 	
-	protected Collection<Widget> widgets = new ArrayList<>();
+	protected Collection<Widget> children = new ArrayList<>();
 	
 	protected int selected = 0;
 	
@@ -134,10 +134,10 @@ public class TabWidget extends Widget implements WidgetCollection {
 	protected void onLayoutChanged(LayoutChangedEvent event) {
 		super.onLayoutChanged(event);
 		
-		widgets.clear();
+		children.clear();
 		
 		for (var tabCollection : tabCollections) {
-			widgets.addAll(tabCollection.getChildren());
+			children.addAll(tabCollection.getChildren());
 		}
 	}
 	
@@ -166,7 +166,7 @@ public class TabWidget extends Widget implements WidgetCollection {
 	
 	@Override
 	public Collection<Widget> getChildren() {
-		return widgets;
+		return children;
 	}
 	
 	@Override
@@ -203,7 +203,7 @@ public class TabWidget extends Widget implements WidgetCollection {
 	}
 	
 	class TabCollection extends Widget implements WidgetCollection {
-		protected Collection<Widget> widgets;
+		protected Collection<Widget> children;
 		
 		protected int number;
 		
@@ -213,7 +213,7 @@ public class TabWidget extends Widget implements WidgetCollection {
 		
 		@Override
 		public Collection<Widget> getChildren() {
-			return widgets;
+			return children;
 		}
 		
 		@Override

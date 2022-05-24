@@ -27,16 +27,16 @@ public class ListWidget extends Widget implements WidgetCollection {
 	protected Supplier<Texture> scrollerTexture = () -> STANDARD_SCROLLER_TEXTURE;
 	protected Supplier<Texture> focusedScrollerTexture = () -> STANDARD_FOCUSED_SCROLLER_TEXTURE;
 	
-	protected Collection<Widget> widgets = new ArrayList<>();
+	protected Collection<Widget> children = new ArrayList<>();
 	
 	protected boolean scrollerHeld = false;
 	
 	protected Cached<Float> maxY = new Cached<>(() -> {
 		var maxY = 0.0F;
 		
-		for (var widget : widgets) {
-			if (widget.getY() + widget.getHeight() > maxY) {
-				maxY = widget.getY() + widget.getHeight();
+		for (var child : getChildren()) {
+			if (child.getY() + child.getHeight() > maxY) {
+				maxY = child.getY() + child.getHeight();
 			}
 		}
 		
@@ -46,9 +46,9 @@ public class ListWidget extends Widget implements WidgetCollection {
 	protected Cached<Float> minY = new Cached<>(() -> {
 		var minY = 0.0F;
 		
-		for (var widget : widgets) {
-			if (widget.getY() < minY) {
-				minY = widget.getY();
+		for (var child : getChildren()) {
+			if (child.getY() < minY) {
+				minY = child.getY();
 			}
 		}
 		
@@ -58,8 +58,8 @@ public class ListWidget extends Widget implements WidgetCollection {
 	protected Cached<Float> scrollerHeight = new Cached<>(() -> {
 		var height = 0.0F;
 		
-		for (var widget : widgets) {
-			height += widget.getHeight();
+		for (var child : getChildren()) {
+			height += child.getHeight();
 		}
 		
 		return Math.min(getHeight() - 2.0F, getHeight() / height * getHeight());
@@ -79,7 +79,7 @@ public class ListWidget extends Widget implements WidgetCollection {
 	
 	@Override
 	public Collection<Widget> getChildren() {
-		return widgets;
+		return children;
 	}
 	
 	@Override
@@ -126,30 +126,30 @@ public class ListWidget extends Widget implements WidgetCollection {
 		super.onMouseScrolled(event);
 		
 		if (focused || scrollerHeld) {
-			if (!widgets.isEmpty()) {
+			if (!children.isEmpty()) {
 				if (event.deltaY() > 0.0D && minY.get() < getY() + 2.0F) {
-					for (var widget : getAllChildren()) {
-						widget.setY(widget.getY() + (float) event.deltaY() * 2.5F);
-						widget.dispatchEvent(new LayoutChangedEvent());
+					for (var child : getAllChildren()) {
+						child.setY(child.getY() + (float) event.deltaY() * 2.5F);
+						child.dispatchEvent(new LayoutChangedEvent());
 						
-						if (widget.getY() >= getY() + getHeight()) {
-							widget.setHidden(true);
-						} else if (widget.getY() >= getY()) {
-							widget.setHidden(false);
+						if (child.getY() >= getY() + getHeight()) {
+							child.setHidden(true);
+						} else if (child.getY() >= getY()) {
+							child.setHidden(false);
 						}
 					}
 					
 					// This was inside the loop!
 					dispatchEvent(new LayoutChangedEvent());
 				} else if (event.deltaY() <= 0.0D && maxY.get() >= getY() + getHeight() - 2.0F) {
-					for (var widget : getAllChildren()) {
-						widget.setY(widget.getY() + (float) event.deltaY() * 2.5F);
-						widget.dispatchEvent(new LayoutChangedEvent());
+					for (var child : getAllChildren()) {
+						child.setY(child.getY() + (float) event.deltaY() * 2.5F);
+						child.dispatchEvent(new LayoutChangedEvent());
 						
-						if (widget.getY() >= getY() + getHeight()) {
-							widget.setHidden(true);
-						} else if (widget.getY() >= getY()) {
-							widget.setHidden(false);
+						if (child.getY() >= getY() + getHeight()) {
+							child.setHidden(true);
+						} else if (child.getY() >= getY()) {
+							child.setHidden(false);
 						}
 					}
 					
@@ -197,9 +197,9 @@ public class ListWidget extends Widget implements WidgetCollection {
 		
 		var scissors = new Scissors(getX(), getY(), getWidth(), getHeight(), provider);
 		
-		for (var widget : getChildren()) {
-			if (!widget.isHidden()) {
-				widget.draw(matrices, provider, tickDelta);
+		for (var child : getChildren()) {
+			if (!child.isHidden()) {
+				child.draw(matrices, provider, tickDelta);
 			}
 		}
 		

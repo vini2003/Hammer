@@ -25,21 +25,21 @@ import java.util.stream.Collectors;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin implements WidgetCollection, WidgetCollection.Root {
-	private final List<Widget> hammer$widgets = new ArrayList<>();
+	private final List<Widget> hammer$children = new ArrayList<>();
 	@Shadow
 	@Final
 	private MinecraftClient client;
 	
 	@Inject(at = @At("RETURN"), method = "<init>")
 	private void hammer$init(MinecraftClient client, CallbackInfo ci) {
-		hammer$widgets.clear();
+		hammer$children.clear();
 		
 		InGameHudEvents.INIT.invoker().onInit((InGameHud) (Object) this, this);
 		
 		onLayoutChanged();
 		
-		for (var widget : getAllChildren()) {
-			widget.dispatchEvent(new LayoutChangedEvent());
+		for (var child : getAllChildren()) {
+			child.dispatchEvent(new LayoutChangedEvent());
 		}
 	}
 	
@@ -110,7 +110,7 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 	@NotNull
 	@Override
 	public List<Widget> getChildren() {
-		return hammer$widgets;
+		return hammer$children;
 	}
 	
 	@Override

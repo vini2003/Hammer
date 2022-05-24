@@ -10,12 +10,10 @@ import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
 
 public class HUEvents {
-	// TODO: Add permission checks to all commands!
-	// TODO: Add command number argument ranges
 	public static void init() {
 		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
 			dispatcher.register(
-					CommandManager.literal("freeze").then(
+					CommandManager.literal("freeze").requires(source -> source.hasPermissionLevel(4)).then(
 							CommandManager.argument("players", EntityArgumentType.players()).executes(context -> {
 								var players = EntityArgumentType.getPlayers(context, "players");
 								
@@ -29,7 +27,7 @@ public class HUEvents {
 			);
 			
 			dispatcher.register(
-					CommandManager.literal("unfreeze").then(
+					CommandManager.literal("unfreeze").requires(source -> source.hasPermissionLevel(4)).then(
 							CommandManager.argument("players", EntityArgumentType.players()).executes(context -> {
 								var players = EntityArgumentType.getPlayers(context, "players");
 								
@@ -43,7 +41,7 @@ public class HUEvents {
 			);
 			
 			dispatcher.register(
-					CommandManager.literal("heal").then(
+					CommandManager.literal("heal").requires(source -> source.hasPermissionLevel(4)).then(
 							CommandManager.argument("players", EntityArgumentType.players()).executes(context -> {
 								var players = EntityArgumentType.getPlayers(context, "players");
 								
@@ -57,7 +55,7 @@ public class HUEvents {
 			);
 			
 			dispatcher.register(
-					CommandManager.literal("satiate").then(
+					CommandManager.literal("satiate").requires(source -> source.hasPermissionLevel(4)).then(
 							CommandManager.argument("players", EntityArgumentType.players()).executes(context -> {
 								var players = EntityArgumentType.getPlayers(context, "players");
 								
@@ -72,8 +70,8 @@ public class HUEvents {
 			);
 			
 			dispatcher.register(
-					CommandManager.literal("fly_speed").then(
-							CommandManager.argument("speed", IntegerArgumentType.integer()).then(
+					CommandManager.literal("fly_speed").requires(source -> source.hasPermissionLevel(4)).then(
+							CommandManager.argument("speed", IntegerArgumentType.integer(1, 200)).then(
 									CommandManager.argument("players", EntityArgumentType.players()).executes(context -> {
 										var speed = IntegerArgumentType.getInteger(context, "speed");
 										var players = EntityArgumentType.getPlayers(context, "players");
@@ -94,8 +92,8 @@ public class HUEvents {
 			);
 			
 			dispatcher.register(
-					CommandManager.literal("walk_speed").then(
-							CommandManager.argument("speed", IntegerArgumentType.integer()).then(
+					CommandManager.literal("walk_speed").requires(source -> source.hasPermissionLevel(4)).then(
+							CommandManager.argument("speed", IntegerArgumentType.integer(1, 200)).then(
 									CommandManager.argument("players", EntityArgumentType.players()).executes(context -> {
 										var speed = IntegerArgumentType.getInteger(context, "speed");
 										var players = EntityArgumentType.getPlayers(context, "players");

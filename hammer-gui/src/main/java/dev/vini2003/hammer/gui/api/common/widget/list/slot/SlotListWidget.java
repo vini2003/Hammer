@@ -38,7 +38,7 @@ public class SlotListWidget extends Widget implements WidgetCollection {
 	
 	protected int maxSlots = 0;
 	
-	protected Collection<Widget> widgets = new ArrayList<>();
+	protected Collection<Widget> children = new ArrayList<>();
 	
 	protected int row = 0;
 	
@@ -132,8 +132,8 @@ public class SlotListWidget extends Widget implements WidgetCollection {
 			if (event.deltaY() > 0.0D && row > 0) {
 				--row;
 				
-				for (var widget : getChildren()) {
-					var slotWidget = (SlotWidget) widget;
+				for (var child : getChildren()) {
+					var slotWidget = (SlotWidget) child;
 					
 					var slot = slotWidget.getSlot();
 					
@@ -146,8 +146,8 @@ public class SlotListWidget extends Widget implements WidgetCollection {
 			} else if (event.deltaY() <= 0.0D && row < getBottomRow()) {
 				++row;
 				
-				for (var widget : getChildren()) {
-					var slotWidget = (SlotWidget) widget;
+				for (var child : getChildren()) {
+					var slotWidget = (SlotWidget) child;
 					
 					var slot = slotWidget.getSlot();
 					
@@ -185,7 +185,7 @@ public class SlotListWidget extends Widget implements WidgetCollection {
 	
 	@Override
 	public Collection<Widget> getChildren() {
-		return widgets;
+		return children;
 	}
 	
 	@Override
@@ -202,9 +202,9 @@ public class SlotListWidget extends Widget implements WidgetCollection {
 		
 		var scissors = new Scissors(getX(), getY(), getWidth(), getHeight(), provider);
 		
-		for (var widget : getChildren()) {
-			if (!widget.isHidden()) {
-				widget.draw(matrices, provider, tickDelta);
+		for (var child : getChildren()) {
+			if (!child.isHidden()) {
+				child.draw(matrices, provider, tickDelta);
 			}
 		}
 		

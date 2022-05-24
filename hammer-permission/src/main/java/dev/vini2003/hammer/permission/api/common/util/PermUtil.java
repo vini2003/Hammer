@@ -11,6 +11,7 @@ import net.luckperms.api.node.Node;
 import net.luckperms.api.query.QueryOptions;
 import net.minecraft.entity.player.PlayerEntity;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class PermUtil {
@@ -34,6 +35,7 @@ public class PermUtil {
 		return getLuckPerms().getContextManager().getStaticQueryOptions();
 	}
 	
+	@Nullable
 	public static Group createGroup(String name) {
 		try {
 			return getGroupManager().createAndLoadGroup(name).get();
@@ -42,27 +44,37 @@ public class PermUtil {
 		}
 	}
 	
+	@Nullable
 	public static Group getOrCreateGroup(String name) {
 		var group = getGroupManager().getGroup(name);
 		
 		return group != null ? group : createGroup(name);
 	}
 	
+	@Nullable
 	public static User getUser(PlayerEntity player) {
 		return getUserManager().getUser(player.getUuid());
 	}
 	
+	@Nullable
 	public static User getUser(UUID uuid) {
 		return getUserManager().getUser(uuid);
 	}
 	
-	// TODO: Fix nullability issues!
 	public static void saveUser(PlayerEntity player) {
-		getUserManager().saveUser(getUser(player.getUuid()));
+		var user = getUser(player);
+		
+		if (user != null) {
+			getUserManager().saveUser(user);
+		}
 	}
 	
 	public static void saveUser(UUID uuid) {
-		getUserManager().saveUser(getUser(uuid));
+		var user = getUser(uuid);
+		
+		if (user != null) {
+			getUserManager().saveUser(user);
+		}
 	}
 	
 	public static void saveGroup(Group group) {

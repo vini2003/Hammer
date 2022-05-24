@@ -1,7 +1,7 @@
 package dev.vini2003.hammer.adventure;
 
+import dev.vini2003.hammer.adventure.registry.common.HAEvents;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.platform.fabric.FabricServerAudiences;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -13,9 +13,12 @@ public class HA implements ModInitializer {
 		return audiences;
 	}
 	
+	public static void setAudiences(FabricServerAudiences audiences) {
+		HA.audiences = audiences;
+	}
+	
 	@Override
 	public void onInitialize() {
-		ServerLifecycleEvents.SERVER_STARTED.register(server -> audiences = FabricServerAudiences.of(server));
-		ServerLifecycleEvents.SERVER_STOPPED.register(server -> audiences = null);
+		HAEvents.init();
 	}
 }

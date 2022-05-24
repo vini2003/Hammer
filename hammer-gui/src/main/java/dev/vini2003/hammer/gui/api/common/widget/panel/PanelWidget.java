@@ -17,11 +17,11 @@ public class PanelWidget extends Widget implements WidgetCollection {
 	
 	protected Supplier<Texture> texture = () -> STANDARD_TEXTURE;
 	
-	protected Collection<Widget> widgets = new ArrayList<>();
+	protected Collection<Widget> children = new ArrayList<>();
 	
 	@Override
 	public Collection<Widget> getChildren() {
-		return widgets;
+		return children;
 	}
 	
 	@Override
@@ -32,9 +32,9 @@ public class PanelWidget extends Widget implements WidgetCollection {
 			immediate.draw();
 		}
 		
-		for (var widget : getChildren()) {
-			if (!widget.isHidden()) {
-				widget.draw(matrices, provider, tickDelta);
+		for (var child : getChildren()) {
+			if (!child.isHidden()) {
+				child.draw(matrices, provider, tickDelta);
 			}
 		}
 	}

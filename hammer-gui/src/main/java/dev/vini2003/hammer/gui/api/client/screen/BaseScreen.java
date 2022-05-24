@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class BaseScreen extends Screen implements WidgetCollection.Root, Tickable {
-	protected Collection<Widget> widgets = new ArrayList<>();
+	protected Collection<Widget> children = new ArrayList<>();
 	
 	protected Shape shape = new Shape.ScreenRectangle(0.0F, 0.0F);
 	
@@ -19,7 +19,7 @@ public abstract class BaseScreen extends Screen implements WidgetCollection.Root
 	
 	@Override
 	protected void init() {
-		widgets.clear();
+		children.clear();
 		
 		super.init();
 		
@@ -142,7 +142,7 @@ public abstract class BaseScreen extends Screen implements WidgetCollection.Root
 	
 	@Override
 	public Collection<Widget> getChildren() {
-		return widgets;
+		return children;
 	}
 	
 	@Override

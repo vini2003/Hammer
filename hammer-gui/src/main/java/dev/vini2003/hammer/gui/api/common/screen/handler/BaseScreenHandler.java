@@ -20,7 +20,7 @@ import java.util.Collection;
 public abstract class BaseScreenHandler extends ScreenHandler implements WidgetCollection.Root, Tickable {
 	protected final PlayerEntity player;
 	
-	protected Collection<Widget> widgets = new ArrayList<>();
+	protected Collection<Widget> children = new ArrayList<>();
 	
 	protected Shape shape = new Shape.ScreenRectangle(0.0F, 0.0F);
 	
@@ -151,7 +151,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 	
 	@Override
 	public Collection<Widget> getChildren() {
-		return widgets;
+		return children;
 	}
 	
 	@Override

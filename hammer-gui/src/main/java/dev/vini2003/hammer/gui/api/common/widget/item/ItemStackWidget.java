@@ -21,7 +21,7 @@ public class ItemStackWidget extends Widget {
 			var stack = this.stack.get();
 			
 			if (stack.isEmpty()) {
-				return ImmutableList.of(TextUtil.EMPTY);
+				return ImmutableList.of(TextUtil.getEmpty());
 			} else {
 				var client = InstanceUtil.getClient();
 				

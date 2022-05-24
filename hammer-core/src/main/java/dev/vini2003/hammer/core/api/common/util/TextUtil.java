@@ -11,8 +11,9 @@ import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.text.WordUtils;
 
 public class TextUtil {
-	// TODO: Should return new instance!
-	public static final MutableText EMPTY = toLiteralText("text.hammer.empty").formatted(Formatting.GRAY);
+	public static MutableText getEmpty() {
+		return toLiteralText("text.hammer.empty").formatted(Formatting.GRAY);
+	}
 	
 	public static float getWidth(Text text) {
 		return DrawingUtil.getTextRenderer().getWidth(text);

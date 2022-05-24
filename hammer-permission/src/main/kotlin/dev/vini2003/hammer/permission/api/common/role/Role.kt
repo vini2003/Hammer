@@ -74,6 +74,10 @@ data class Role(
 		}
 	}
 	
+	fun isIn(player: PlayerEntity): Boolean {
+		return PermissionUtils.hasPermission(player, inheritanceNode.key)
+	}
+	
 	fun addToClient(uuid: UUID) = holders.add(uuid)
 	
 	fun addTo(player: PlayerEntity) {

@@ -41,9 +41,14 @@ public abstract class TextEditorWidget extends Widget {
 	
 	protected Selection selection = new Selection();
 	
-	// TODO: Call!
 	public void tick() {
-	
+		if (cursorTick > 0) {
+			--cursorTick;
+		} else {
+			cursorTick = 20;
+		}
+		
+		super.tick();
 	}
 	
 	@Override

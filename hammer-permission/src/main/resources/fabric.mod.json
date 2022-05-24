@@ -15,10 +15,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			{
-				"adapter": "kotlin",
-				"value": "dev.vini2003.hammer.permission.HP"
-			}
+			"dev.vini2003.hammer.permission.HP"
+		],
+		"client": [
+			"dev.vini2003.hammer.permission.HPClient"
 		]
 	},
 	"depends": {

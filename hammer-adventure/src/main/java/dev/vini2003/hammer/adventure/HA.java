@@ -3,7 +3,9 @@ package dev.vini2003.hammer.adventure;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.platform.fabric.FabricServerAudiences;
+import org.jetbrains.annotations.ApiStatus;
 
+@ApiStatus.Internal
 public class HA implements ModInitializer {
 	private static FabricServerAudiences audiences;
 	

@@ -15,11 +15,8 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			{
-				"adapter": "kotlin",
-				"value": "dev.vini2003.hammer.adventure.HA"
-			}
-		]
+			"dev.vini2003.hammer.adventure.HA"
+		],
 	},
 	"depends": {
 		"fabricloader": ">=0.12.9",

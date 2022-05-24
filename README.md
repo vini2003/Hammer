@@ -2,7 +2,7 @@
 
 ![](https://img.shields.io/badge/-Hammer-orange?style=for-the-badge&logo=appveyor)
 
-A modular library to assist in mod development for the [Fabric](https://fabricmc.net) toolchain, compatible with Java and Kotlin, offering utility classes for Java developers and extensions for Kotlin developers.
+A modular library to assist in mod development for the [Fabric](https://fabricmc.net) toolchain.
 
 All modules use the same version, which can be found in `gradle.properties`.
 

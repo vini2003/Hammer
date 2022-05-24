@@ -15,16 +15,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			{
-				"adapter": "kotlin",
-				"value": "dev.vini2003.hammer.gravity.HG"
-			}
+			"dev.vini2003.hammer.gravity.HG"
 		],
 		"client": [
-			{
-				"adapter": "kotlin",
-				"value": "dev.vini2003.hammer.gravity.HGClient"
-			}
+			"dev.vini2003.hammer.gravity.HGClient"
 		]
 	},
 	"accessWidener": "hammer.gravity.accesswidener",

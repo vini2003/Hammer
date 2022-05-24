@@ -15,17 +15,11 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			{
-				"adapter": "kotlin",
-				"value": "dev.vini2003.hammer.chat.HC"
-			}
+			"dev.vini2003.hammer.chat.HC"
 		],
 		"client": [
-			{
-				"adapter": "kotlin",
-				"value": "dev.vini2003.hammer.chat.HCClient"
-			}
-		]
+			"dev.vini2003.hammer.chat.HCClient"
+		],
 	},
 	"depends": {
 		"fabricloader": ">=0.12.9",

@@ -1,11 +1,16 @@
 package dev.vini2003.hammer.permission.api.common.manager;
 
+import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.permission.api.common.role.Role;
+import dev.vini2003.hammer.permission.registry.common.HPNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TextColor;
 
 import java.util.*;
@@ -55,12 +60,30 @@ public class RoleManager {
 		return ROLES.iterator();
 	}
 	
-	private static void syncWith(List<>)
+	private static void syncWith(List<ServerPlayerEntity> players) {
+		for (var role : ROLES) {
+			var buf = PacketByteBufs.create();
+			buf.writeString(role.getName());
+			
+			buf.writeInt(role.getHolders().size());
+			
+			for (var holder : role.getHolders()) {
+				buf.writeUuid(holder);
+			}
+			
+			for (var player : players) {
+				ServerPlayNetworking.send(player, HPNetworking.SYNC_ROLES, PacketByteBufs.duplicate(buf));
+			}
+		}
+		
+	}
 	
 	public static final class JoinListener implements ServerPlayConnectionEvents.Join {
 		@Override
 		public void onPlayReady(ServerPlayNetworkHandler handler, PacketSender sender, MinecraftServer server) {
-		
+			var players = ImmutableList.<ServerPlayerEntity>builder().addAll(server.getPlayerManager().getPlayerList()).add(handler.getPlayer()).build();
+			
+			syncWith(players);
 		}
 	}
 }

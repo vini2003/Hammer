@@ -5,12 +5,6 @@ plugins {
     // Maven Publish
     id "maven-publish"
 
-	// Kotlin
-	id "org.jetbrains.kotlin.jvm"
-
-	// KotlinX Serialization
-	id "org.jetbrains.kotlin.plugin.serialization"
-
 	// Licenser
 	id "org.cadixdev.licenser"
 }
@@ -23,20 +17,11 @@ allprojects {
 
 		ignoreFailures = true
 	}
-
-	tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-		kotlinOptions {
-			freeCompilerArgs = ['-Xjvm-default=all'] //enable or compatibility
-			jvmTarget = "1.8"
-		}
-	}
 }
 
 subprojects {
 	apply plugin: "fabric-loom"
 	apply plugin: "maven-publish"
-	apply plugin: "org.jetbrains.kotlin.jvm"
-	apply plugin: "org.jetbrains.kotlin.plugin.serialization"
 
 	group = projectGroup
 	version = projectVersion
@@ -89,23 +74,6 @@ subprojects {
 
 		// Fabric API
 		modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
-
-		// Fabric Language Kotlin
-		modImplementation("net.fabricmc:fabric-language-kotlin:${fabricLanguageKotlinVersion}")
-
-		// KotlinX Serialization Json
-		modImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinxSerializationJsonVersion}")
-		include("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinxSerializationJsonVersion}")
-
-		// KotlinX Serialization Protobuf
-		modImplementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:${kotlinxSerializationProtoBufVersion}")
-		include("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:${kotlinxSerializationProtoBufVersion}")
-	}
-
-	compileKotlin {
-		kotlinOptions {
-			jvmTarget = "1.8"
-		}
 	}
 
 	publishing {

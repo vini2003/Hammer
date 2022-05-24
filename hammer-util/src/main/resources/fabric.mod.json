@@ -15,16 +15,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			{
-				"adapter": "kotlin",
-				"value": "dev.vini2003.hammer.util.HU"
-			}
+			"dev.vini2003.hammer.util.HU"
 		],
 		"client": [
-			{
-				"adapter": "kotlin",
-				"value": "dev.vini2003.hammer.util.HUClient"
-			}
+			"dev.vini2003.hammer.util.HUClient"
 		]
 	},
 	"depends": {

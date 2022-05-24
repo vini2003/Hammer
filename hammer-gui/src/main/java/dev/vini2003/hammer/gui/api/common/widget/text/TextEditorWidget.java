@@ -134,7 +134,7 @@ public abstract class TextEditorWidget extends Widget {
 	@Override
 	protected void onMouseDragged(MouseDraggedEvent event) {
 		super.onMouseDragged(event);
-
+		
 		if (!isHidden() && editable && event.button() == 0 && held) {
 			cursorTick = 20;
 			
@@ -187,7 +187,7 @@ public abstract class TextEditorWidget extends Widget {
 	@Override
 	protected void onMouseScrolled(MouseScrolledEvent event) {
 		super.onMouseScrolled(event);
-
+		
 		var charHeight = getCharHeight();
 		
 		var textHeight = (lines.size() - 1) * charHeight;
@@ -288,7 +288,7 @@ public abstract class TextEditorWidget extends Widget {
 				
 				break;
 			}
-				
+			
 			case GLFW.GLFW_KEY_X: {
 				if (Screen.hasControlDown()) {
 					var client = InstanceUtil.getClient();
@@ -423,7 +423,7 @@ public abstract class TextEditorWidget extends Widget {
 				
 				break;
 			}
-		
+			
 			case GLFW.GLFW_KEY_RIGHT: {
 				if (!selection.isEmpty() && !Screen.hasShiftDown()) {
 					setSelection(new Selection());
@@ -737,7 +737,7 @@ public abstract class TextEditorWidget extends Widget {
 		
 		if (isEmpty() && !held) {
 			textRenderer.draw(matrices, text, innerX, innerY, 0xFFFFFF);
-
+			
 			return;
 		}
 		
@@ -761,7 +761,7 @@ public abstract class TextEditorWidget extends Widget {
 		matrices.push();
 		
 		matrices.translate(xOffset, yRenderOffset, 0.0F);
-
+		
 		for (var i = (int) lineOffset; i < lineOffset + getVisibleLines(); i++) {
 			if (i < 0 || !isLineVisible(i) || i > lines.size() - 1) {
 				continue;
@@ -772,7 +772,7 @@ public abstract class TextEditorWidget extends Widget {
 			var line = lines.get(i);
 			
 			textRenderer.draw(matrices, text, innerX, innerY + (charHeight + 2) * adjustedI, 0xFFFFFF);
-
+			
 			var selection = getSelection(i);
 			
 			if (selection != null) {

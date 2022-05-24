@@ -15,8 +15,7 @@ public interface WidgetCollection {
 	Collection<Widget> getChildren();
 	
 	/**
-	 * Returns all widgets attached to this collection, including
-	 * recursively searching for children's collections and so on.
+	 * Returns all widgets attached to this collection, including recursively searching for children's collections and so on.
 	 */
 	default Collection<Widget> getAllChildren() {
 		var widgets = new ArrayList<Widget>();
@@ -105,8 +104,7 @@ public interface WidgetCollection {
 		}
 		
 		/**
-		 * Called when any widget has its position or
-		 * size changed; or a widget is added or removed.
+		 * Called when any widget has its position or size changed; or a widget is added or removed.
 		 */
 		void onLayoutChanged();
 	}

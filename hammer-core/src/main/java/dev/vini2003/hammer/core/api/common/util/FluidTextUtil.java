@@ -23,7 +23,9 @@ public class FluidTextUtil {
 	public static final Map<FluidVariant, Color> COLOR_OVERRIDES = new HashMap<>();
 	
 	public static List<Text> getVariantTooltips(FluidVariant fluidVariant) {
-		if (fluidVariant.isBlank()) return ImmutableList.of(TextUtil.EMPTY.formatted(Formatting.GRAY));
+		if (fluidVariant.isBlank()) {
+			return ImmutableList.of(TextUtil.getEmpty());
+		}
 		
 		var overrideColor = COLOR_OVERRIDES.get(fluidVariant);
 		
@@ -47,7 +49,7 @@ public class FluidTextUtil {
 			tooltips.add(TextUtil.getModId(fluidId));
 		}
 		
-		return  tooltips;
+		return tooltips;
 	}
 	
 	public static List<Text> getDetailedStorageTooltips(StorageView<FluidVariant> fluidView) {
@@ -65,6 +67,6 @@ public class FluidTextUtil {
 			tooltips.add(TextUtil.getModId(fluidId));
 		}
 		
-		return  tooltips;
+		return tooltips;
 	}
 }

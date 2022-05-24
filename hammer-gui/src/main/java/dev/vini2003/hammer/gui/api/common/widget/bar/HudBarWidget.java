@@ -36,12 +36,12 @@ public class HudBarWidget extends ImageBarWidget {
 		this.type = type;
 	}
 	
-	enum Side {
+	public enum Side {
 		LEFT,
 		RIGHT
 	}
 	
-	enum Type {
+	public enum Type {
 		CONTINUOS,
 		TILED
 	}

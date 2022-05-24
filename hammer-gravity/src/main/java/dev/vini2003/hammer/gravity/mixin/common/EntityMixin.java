@@ -34,7 +34,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
-	@Shadow public World world;
+	@Shadow
+	public World world;
 	
 	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FFLnet/minecraft/entity/damage/DamageSource;)Z", index = 1)
 	float hammer$handleFallDamage$getDamageMultiplier(float damageMultiplier) {

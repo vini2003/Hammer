@@ -1,5 +1,3 @@
-
-
 ![](https://img.shields.io/badge/-Hammer-orange?style=for-the-badge&logo=appveyor)
 
 A modular library to assist in mod development for the [Fabric](https://fabricmc.net) toolchain.
@@ -7,8 +5,8 @@ A modular library to assist in mod development for the [Fabric](https://fabricmc
 All modules use the same version, which can be found in `gradle.properties`.
 
 - **How do I import them?**
-    
-    They are individually published, and their repository should be added using Gradle.
+
+  They are individually published, and their repository should be added using Gradle.
     ```groovy
     repositories {
         maven {
@@ -26,22 +24,22 @@ A module containing compatibility tools used with Kyori's [Adventure](https://gi
 
 - **What can I use it for?**
 
-    This module adds compatibility with the Adventure API, making message, boss bar and title/subtitle management simpler.
+  This module adds compatibility with the Adventure API, making message, boss bar and title/subtitle management simpler.
 
 
 - **Where can I find its documentation?**
 
-    This module's documentation can be found in its [Wiki](https://github.com/vini2003/Hammer/wiki/Hammer-Adventure).
+  This module's documentation can be found in its [Wiki](https://github.com/vini2003/Hammer/wiki/Hammer-Adventure).
 
 
 - **How do I import it?**
-    
-    This module should be imported using Gradle.
+
+  This module should be imported using Gradle.
 
     ```groovy
     modImplementation("dev.vini2003:hammer-adventure:${hammerVersion}")
     ```
-  
+
 <br>
 
 ![](https://img.shields.io/badge/-Hammer%20Border-blue?style=for-the-badge&logo=appveyor)
@@ -146,7 +144,7 @@ A module containing a complete toolset for creating in-game interfaces.
 
 - **What can I use it for?**
 
-  This module is useful for when Minecraft's screen system is insufficient or too complicated for your use cases. 
+  This module is useful for when Minecraft's screen system is insufficient or too complicated for your use cases.
 
 
 - **Where can I find its documentation?**

@@ -6,7 +6,6 @@ import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import dev.vini2003.hammer.interaction.api.common.interaction.InteractionMode;
 import dev.vini2003.hammer.interaction.api.common.interaction.InteractionRule;
 import dev.vini2003.hammer.interaction.api.common.interaction.InteractionType;
-import dev.vini2003.hammer.interaction.mixin.common.BlockItemMixin;
 import dev.vini2003.hammer.interaction.registry.common.HINetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.player.*;

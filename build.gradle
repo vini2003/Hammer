@@ -5,108 +5,115 @@ plugins {
     // Maven Publish
     id "maven-publish"
 
-	// Licenser
-	id "org.cadixdev.licenser"
+    // Licenser
+    id "org.cadixdev.licenser"
 }
 
 allprojects {
-	apply plugin: 'org.cadixdev.licenser'
+    apply plugin: 'org.cadixdev.licenser'
 
-	license {
-		header = rootProject.file("LICENSE")
+    license {
+        header = rootProject.file("LICENSE")
 
-		ignoreFailures = true
-	}
+        ignoreFailures = true
+    }
 }
 
 subprojects {
-	apply plugin: "fabric-loom"
-	apply plugin: "maven-publish"
+    apply plugin: "fabric-loom"
+    apply plugin: "maven-publish"
 
-	group = projectGroup
-	version = projectVersion
+    group = projectGroup
+    version = projectVersion
 
-	java {
-		sourceCompatibility = JavaVersion.VERSION_17
-		targetCompatibility = JavaVersion.VERSION_17
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
 
-		withSourcesJar()
-	}
+        withSourcesJar()
+    }
 
-	loom {
-		runs {
-			client {
-				client()
-				setConfigName("Minecraft Client ($projectName)")
-				ideConfigGenerated(true)
-				runDir("run")
-			}
-		}
-	}
+    loom {
+        runs {
+            client {
+                client()
+                setConfigName("Minecraft Client ($projectName)")
+                ideConfigGenerated(true)
+                runDir("run")
+            }
 
-	repositories {
-		// vini2003
-		maven {
-			name = "vini2003"
-			url = "https://maven.vini2003.dev/releases"
-		}
+            server {
+                server()
+                setConfigName("Minecraft Server ($projectName)")
+                ideConfigGenerated(true)
+                runDir("run")
+            }
+        }
+    }
 
-		// Fabric
-		maven {
-			name = "FabricMC"
-			url = "https://maven.fabricmc.net/"
-		}
-	}
+    repositories {
+        // vini2003
+        maven {
+            name = "vini2003"
+            url = "https://maven.vini2003.dev/releases"
+        }
 
-	configurations.all {
-		exclude(module: "colonel")
-	}
+        // Fabric
+        maven {
+            name = "FabricMC"
+            url = "https://maven.fabricmc.net/"
+        }
+    }
 
-	dependencies {
-		// Minecraft
-		minecraft("com.mojang:minecraft:${minecraftVersion}")
+    configurations.all {
+        exclude(module: "colonel")
+    }
 
-		// Yarn
-		mappings("net.fabricmc:yarn:${yarnVersion}:v2")
+    dependencies {
+        // Minecraft
+        minecraft("com.mojang:minecraft:${minecraftVersion}")
 
-		// Fabric Loader
-		modImplementation("net.fabricmc:fabric-loader:${fabricLoaderVersion}")
+        // Yarn
+        mappings("net.fabricmc:yarn:${yarnVersion}:v2")
 
-		// Fabric API
-		modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
-	}
+        // Fabric Loader
+        modImplementation("net.fabricmc:fabric-loader:${fabricLoaderVersion}")
 
-	publishing {
-		publications {
-			mavenJava(MavenPublication) {
-				artifactId = archivesBaseName
-				groupId = projectGroup
-				version = projectVersion
+        // Fabric API
+        modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
+    }
 
-				artifact(remapJar) {
-					builtBy remapJar
-				}
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId = archivesBaseName
+                groupId = projectGroup
+                version = projectVersion
 
-				artifact(sourcesJar) {
-					builtBy remapSourcesJar
-				}
-			}
-		}
+                artifact(remapJar) {
+                    builtBy remapJar
+                }
 
-		repositories {
-			maven {
-				name = "vini2003"
-				url = "https://maven.vini2003.dev/releases"
+                artifact(sourcesJar) {
+                    builtBy remapSourcesJar
+                }
+            }
+        }
 
-				credentials {
-					username = System.getenv("MVN_USERNAME")
-					password = System.getenv("MVN_TOKEN")
-				}
+        repositories {
+            maven {
+                name = "vini2003"
+                url = "https://maven.vini2003.dev/releases"
 
-				authentication {
-					basic(BasicAuthentication)
-				}
-			}
-		}
-	}
+                credentials {
+                    username = System.getenv("MVN_USERNAME")
+                    password = System.getenv("MVN_TOKEN")
+                }
+
+                authentication {
+                    basic(BasicAuthentication)
+                }
+            }
+        }
+    }
 }

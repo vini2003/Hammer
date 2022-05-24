@@ -4,8 +4,7 @@ import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.client.event.InGameHudEvents;
 import dev.vini2003.hammer.gui.api.common.event.LayoutChangedEvent;
-import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
-import dev.vini2003.hammer.gui.api.common.util.InGameHudUtils;
+import dev.vini2003.hammer.gui.api.common.util.InGameHudUtil;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.bar.HudBarWidget;
@@ -13,7 +12,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -46,7 +44,6 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 	}
 	
 	
-	
 	@Inject(at = @At("RETURN"), method = "render")
 	private void hammer$render(MatrixStack matrices, float delta, CallbackInfo ci) {
 		if (client == null) {
@@ -55,24 +52,25 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 		
 		var provider = client.getBufferBuilders().getEffectVertexConsumers();
 		
-		var bars = getChildren().stream()
-								.filter(widget -> widget instanceof HudBarWidget)
-								.map(widget -> (HudBarWidget) widget)
-								.filter(widget -> {
-						if (!widget.shouldShow()) {
-							widget.setHidden(true);
-							
-							return false;
-						} else {
-							widget.setHidden(false);
-							
-							return true;
-						}
-					})
-								.collect(Collectors.toList());
+		var bars = getChildren()
+				.stream()
+				.filter(widget -> widget instanceof HudBarWidget)
+				.map(widget -> (HudBarWidget) widget)
+				.filter(widget -> {
+					if (!widget.shouldShow()) {
+						widget.setHidden(true);
+						
+						return false;
+					} else {
+						widget.setHidden(false);
+						
+						return true;
+					}
+				})
+				.collect(Collectors.toList());
 		
-		var leftPos = InGameHudUtils.getLeftBarPos((InGameHud) (Object) this, client.player);
-		var rightPos = InGameHudUtils.getRightBarPos((InGameHud) (Object) this, client.player);
+		var leftPos = InGameHudUtil.getLeftBarPos(client.player);
+		var rightPos = InGameHudUtil.getRightBarPos(client.player);
 		
 		for (var bar : bars) {
 			switch (bar.getSide()) {
@@ -102,7 +100,7 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 		
 		getChildren().stream()
 					 .filter(widget -> !widget.isHidden())
-					 .forEach(widget -> widget.drawWidget(matrices, provider, delta));
+					 .forEach(widget -> widget.draw(matrices, provider, delta));
 		
 		provider.draw();
 		
@@ -118,22 +116,5 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 	@Override
 	public void onLayoutChanged() {
 	
-	}
-	
-	@Override
-	public boolean isClient() {
-		return true;
-	}
-	
-	@Nullable
-	@Override
-	public int getSyncId() {
-		return -1;
-	}
-	
-	@Nullable
-	@Override
-	public BaseScreenHandler getScreenHandler() {
-		return null;
 	}
 }

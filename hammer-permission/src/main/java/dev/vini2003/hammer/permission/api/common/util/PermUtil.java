@@ -8,10 +8,8 @@ import net.luckperms.api.model.group.GroupManager;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.Node;
-import net.luckperms.api.node.types.PermissionNode;
 import net.luckperms.api.query.QueryOptions;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.PlayerManager;
 
 import java.util.UUID;
 
@@ -75,7 +73,7 @@ public class PermUtil {
 		addNode(player.getUuid(), node);
 	}
 	
-	public static  void addNode(UUID uuid, Node node) {
+	public static void addNode(UUID uuid, Node node) {
 		var user = getUser(uuid);
 		
 		if (user != null) {
@@ -91,7 +89,7 @@ public class PermUtil {
 		removeNode(player.getUuid(), node);
 	}
 	
-	public static  void removeNode(UUID uuid, Node node) {
+	public static void removeNode(UUID uuid, Node node) {
 		var user = getUser(uuid);
 		
 		if (user != null) {

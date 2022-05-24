@@ -41,7 +41,7 @@ public class WorldBorderCenterChangedS2CPacketMixin implements CubicWorldBorderC
 	@Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/world/border/WorldBorder;)V")
 	private void hammer$init_0(WorldBorder border, CallbackInfo ci) {
 		var extendedBorder = (CubicWorldBorder) border;
-			
+		
 		centerY = extendedBorder.getCenterY();
 	}
 	

@@ -44,24 +44,33 @@ import java.util.List;
 
 @Mixin(WorldBorder.class)
 public abstract class WorldBorderMixin implements CubicWorldBorder {
-	@Shadow private double centerX;
-	@Shadow private double centerZ;
+	@Shadow
+	private double centerX;
+	@Shadow
+	private double centerZ;
 	
 	private double centerY;
 	
-	@Shadow protected abstract List<WorldBorderListener> getListeners();
+	@Shadow
+	protected abstract List<WorldBorderListener> getListeners();
 	
-	@Shadow private int maxRadius;
+	@Shadow
+	private int maxRadius;
 	
-	@Shadow public abstract double getBoundWest();
+	@Shadow
+	public abstract double getBoundWest();
 	
-	@Shadow public abstract double getBoundEast();
+	@Shadow
+	public abstract double getBoundEast();
 	
-	@Shadow public abstract double getBoundNorth();
+	@Shadow
+	public abstract double getBoundNorth();
 	
-	@Shadow public abstract double getBoundSouth();
+	@Shadow
+	public abstract double getBoundSouth();
 	
-	@Shadow public abstract double getDistanceInsideBorder(Entity entity);
+	@Shadow
+	public abstract double getDistanceInsideBorder(Entity entity);
 	
 	private CubicWorldBorderArea hammer$area = new CubicWorldBorderStaticArea((WorldBorder) (Object) this, 5.9999968E7);
 	
@@ -102,27 +111,27 @@ public abstract class WorldBorderMixin implements CubicWorldBorder {
 	
 	@Inject(at = @At("HEAD"), method = "contains(Lnet/minecraft/util/math/BlockPos;)Z", cancellable = true)
 	private void hammer$contains$1(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-		cir.setReturnValue(pos.getX() > getBoundWest()  - 1
-						&& pos.getX() < getBoundEast()
-						&& pos.getY() < getBoundUp()
-						&& pos.getY() > getBoundDown()
-						&& pos.getZ() > getBoundNorth() - 1
-						&& pos.getZ() < getBoundSouth());
+		cir.setReturnValue(pos.getX() > getBoundWest() - 1
+				&& pos.getX() < getBoundEast()
+				&& pos.getY() < getBoundUp()
+				&& pos.getY() > getBoundDown()
+				&& pos.getZ() > getBoundNorth() - 1
+				&& pos.getZ() < getBoundSouth());
 	}
 	
 	@Inject(at = @At("HEAD"), method = "contains(Lnet/minecraft/util/math/Box;)Z", cancellable = true)
 	private void hammer$contains$2(Box box, CallbackInfoReturnable<Boolean> cir) {
 		cir.setReturnValue(box.maxX > getBoundWest()
-						&& box.minX < getBoundEast()
-						&& box.maxY < getBoundUp()
-						&& box.minY > getBoundDown()
-						&& box.maxZ > getBoundNorth()
-						&& box.minZ < getBoundSouth());
+				&& box.minX < getBoundEast()
+				&& box.maxY < getBoundUp()
+				&& box.minY > getBoundDown()
+				&& box.maxZ > getBoundNorth()
+				&& box.minZ < getBoundSouth());
 	}
 	
 	@Override
 	public boolean contains(double x, double y, double z) {
-		return 	   x > getBoundWest() - 1
+		return x > getBoundWest() - 1
 				&& x < getBoundEast()
 				&& y < getBoundUp()
 				&& y > getBoundDown()
@@ -137,11 +146,12 @@ public abstract class WorldBorderMixin implements CubicWorldBorder {
 		var c = y < getBoundUp() + margin;
 		var d = y > getBoundDown() - margin;
 		var e = z > getBoundNorth() - 1 - margin;
-		var f = z < getBoundSouth() + margin;;
+		var f = z < getBoundSouth() + margin;
+		;
 		
 		return a && b && c && d && e && f;
 	}
-
+	
 	@Inject(at = @At("HEAD"), method = "clamp", cancellable = true)
 	private void hammer$clamp(double x, double y, double z, CallbackInfoReturnable<BlockPos> cir) {
 		cir.setReturnValue(new BlockPos(MathHelper.clamp(x, getBoundWest(), getBoundEast()), MathHelper.clamp(y, getBoundDown(), getBoundUp()), MathHelper.clamp(z, getBoundNorth(), getBoundSouth())));
@@ -172,7 +182,7 @@ public abstract class WorldBorderMixin implements CubicWorldBorder {
 	@Inject(at = @At("HEAD"), method = "canCollide", cancellable = true)
 	private void hammer$canCollide(Entity entity, Box box, CallbackInfoReturnable<Boolean> cir) {
 		var length = Math.max(MathHelper.absMax(box.getXLength(), MathHelper.absMax(box.getYLength(), box.getZLength())), 1.0);
-			
+		
 		cir.setReturnValue(getDistanceInsideBorder(entity) < length * 2.0 && contains(entity.getX(), entity.getY(), entity.getZ(), length));
 	}
 	
@@ -265,11 +275,11 @@ public abstract class WorldBorderMixin implements CubicWorldBorder {
 	private void hammer$load_setCenter(WorldBorder instance, double x, double z) {
 		instance.setCenter(x, z);
 	}
-
+	
 	@Inject(at = @At("HEAD"), method = "load")
 	private void hammer$load(WorldBorder.Properties properties, CallbackInfo ci) {
 		var cubicProperties = (CubicWorldBorderProperties) properties;
-			
+		
 		setCenter(properties.getCenterX(), cubicProperties.getCenterY(), properties.getCenterZ());
 	}
 }

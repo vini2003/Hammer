@@ -39,7 +39,7 @@ public class NumberUtil {
 		
 		var shortenedNumber = number.doubleValue();
 		
-		while(exponent > 0) {
+		while (exponent > 0) {
 			--exponent;
 			
 			shortenedNumber /= 1000;

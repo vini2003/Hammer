@@ -1,7 +1,6 @@
 package dev.vini2003.hammer.chat.api.common.util;
 
 import dev.vini2003.hammer.chat.registry.common.HCNetworking;
-import dev.vini2003.hammer.core.api.common.util.BufUtils;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.network.ServerPlayerEntity;

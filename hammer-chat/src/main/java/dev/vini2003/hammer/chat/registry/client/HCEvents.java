@@ -49,7 +49,7 @@ public class HCEvents {
 		HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
 			if (HCValues.SHOW_WARNINGS) {
 				var client = InstanceUtil.getClient();
-						
+				
 				var window = client.getWindow();
 				var scaledWidth = window.getScaledWidth();
 				var scaledHeight = window.getScaledHeight();

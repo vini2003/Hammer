@@ -29,19 +29,19 @@ public class LayerUtil {
 	public static RenderLayer get(Identifier texture) {
 		LAYERS.computeIfAbsent(texture, ($) ->
 				RenderLayer.of(
-					texture.toUnderscoreSeparatedString(),
-					VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
-					VertexFormat.DrawMode.QUADS,
-					256,
-					true,
-					true,
-					RenderLayer.MultiPhaseParameters.builder()
-													.shader(new RenderPhase.Shader(GameRenderer::getPositionColorTexLightmapShader))
-													.texture(new RenderPhase.Texture(texture, false, false))
-													.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
-													.overlay(RenderPhase.DISABLE_OVERLAY_COLOR)
-													.build(true)
-		));
+						texture.toUnderscoreSeparatedString(),
+						VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
+						VertexFormat.DrawMode.QUADS,
+						256,
+						true,
+						true,
+						RenderLayer.MultiPhaseParameters.builder()
+														.shader(new RenderPhase.Shader(GameRenderer::getPositionColorTexLightmapShader))
+														.texture(new RenderPhase.Texture(texture, false, false))
+														.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
+														.overlay(RenderPhase.DISABLE_OVERLAY_COLOR)
+														.build(true)
+				));
 		
 		return LAYERS.get(texture);
 	}

@@ -109,6 +109,7 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	 * <p>Returns whether the given event type should be synced.</p>
 	 *
 	 * @param type the type.
+	 *
 	 * @return the result.
 	 */
 	public boolean shouldSync(EventType type) {
@@ -118,7 +119,7 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	/**
 	 * <p>Adds a listener for a given event type to this widget.</p>
 	 *
-	 * @param type the type.
+	 * @param type     the type.
 	 * @param listener the listener.
 	 */
 	public <T extends Event> void onEvent(EventType type, EventListener<T> listener) {
@@ -130,6 +131,7 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	 * <p>Returns all listeners of for given event type in this widget.</p>
 	 *
 	 * @param type the type.
+	 *
 	 * @return the listeners.
 	 */
 	public <T extends Event> Collection<EventListener<T>> getListeners(EventType type) {
@@ -186,6 +188,7 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	 *
 	 * @param x the point's X component.
 	 * @param y the point's Y component.
+	 *
 	 * @return the result.
 	 */
 	public boolean isPointWithin(float x, float y) {
@@ -195,14 +198,15 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	/**
 	 * Draws this widget.
 	 *
-	 * @param matrices the position and normal matrices.
-	 * @param provider the buffer provider.
+	 * @param matrices  the position and normal matrices.
+	 * @param provider  the buffer provider.
 	 * @param tickDelta the time elapsed since the last tick.
 	 */
 	public abstract void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta);
 	
 	/**
 	 * Returns this widget's tooltips.
+	 *
 	 * @return the tooltips.
 	 */
 	public Collection<Text> getTooltips() {

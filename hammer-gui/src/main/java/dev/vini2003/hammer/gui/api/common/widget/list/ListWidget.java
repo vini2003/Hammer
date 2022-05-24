@@ -85,7 +85,7 @@ public class ListWidget extends Widget implements WidgetCollection {
 	@Override
 	protected void onMouseClicked(MouseClickedEvent event) {
 		super.onMouseClicked(event);
-
+		
 		var pos = new Position(event.x(), event.y());
 		
 		if (scrollerRectangle.get().isPositionWithin(pos)) {
@@ -93,7 +93,7 @@ public class ListWidget extends Widget implements WidgetCollection {
 		} else {
 			if (scrollbarRectangle.get().isPositionWithin(pos)) {
 				if (event.y() > scrollerY.get()) {
-					dispatchEvent(new MouseScrolledEvent(event.x(), event.y(), - 1.0D));
+					dispatchEvent(new MouseScrolledEvent(event.x(), event.y(), -1.0D));
 				} else if (event.y() < scrollerY.get()) {
 					dispatchEvent(new MouseScrolledEvent(event.x(), event.y(), 1.0D));
 				}
@@ -104,18 +104,18 @@ public class ListWidget extends Widget implements WidgetCollection {
 	@Override
 	protected void onMouseReleased(MouseReleasedEvent event) {
 		super.onMouseReleased(event);
-
+		
 		scrollerHeld = false;
 	}
 	
 	@Override
 	protected void onMouseDragged(MouseDraggedEvent event) {
 		super.onMouseDragged(event);
-
+		
 		if (scrollerHeld) {
 			if (event.deltaY() > 0.0D) {
 				dispatchEvent(new MouseScrolledEvent(event.x(), event.y(), -event.deltaY()));
-			} else if (event.deltaY() < 0.0D){
+			} else if (event.deltaY() < 0.0D) {
 				dispatchEvent(new MouseScrolledEvent(event.x(), event.y(), -event.deltaY()));
 			}
 		}
@@ -124,7 +124,7 @@ public class ListWidget extends Widget implements WidgetCollection {
 	@Override
 	protected void onMouseScrolled(MouseScrolledEvent event) {
 		super.onMouseScrolled(event);
-
+		
 		if (focused || scrollerHeld) {
 			if (!widgets.isEmpty()) {
 				if (event.deltaY() > 0.0D && minY.get() < getY() + 2.0F) {
@@ -172,7 +172,7 @@ public class ListWidget extends Widget implements WidgetCollection {
 	@Override
 	protected void onLayoutChanged(LayoutChangedEvent event) {
 		super.onLayoutChanged(event);
-
+		
 		maxY.refresh();
 		minY.refresh();
 		

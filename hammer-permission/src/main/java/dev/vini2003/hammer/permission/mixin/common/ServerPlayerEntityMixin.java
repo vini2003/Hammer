@@ -43,11 +43,15 @@ import java.util.UUID;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin {
-	@Shadow protected abstract boolean acceptsMessage(MessageType type);
+	@Shadow
+	protected abstract boolean acceptsMessage(MessageType type);
 	
-	@Shadow public ServerPlayNetworkHandler networkHandler;
+	@Shadow
+	public ServerPlayNetworkHandler networkHandler;
 	
-	@Shadow @Final public MinecraftServer server;
+	@Shadow
+	@Final
+	public MinecraftServer server;
 	
 	@Inject(at = @At("HEAD"), method = "sendMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/MessageType;Ljava/util/UUID;)V", cancellable = true)
 	private void hammer$sendMessage(Text message, MessageType type, UUID sender, CallbackInfo ci) {

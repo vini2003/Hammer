@@ -49,7 +49,7 @@ public class SpriteBarWidget extends BarWidget {
 	@Override
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
 		var foregroundWidth = getWidth() / getMaximum() * getCurrent();
-		var foregroundHeight = getHeight() /  getMaximum() * getCurrent();
+		var foregroundHeight = getHeight() / getMaximum() * getCurrent();
 		
 		if (stepWidth != 1.0F) {
 			foregroundWidth -= foregroundWidth % stepWidth;

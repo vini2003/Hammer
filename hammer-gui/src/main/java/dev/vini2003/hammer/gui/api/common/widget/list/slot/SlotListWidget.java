@@ -70,7 +70,7 @@ public class SlotListWidget extends Widget implements WidgetCollection {
 	@Override
 	protected void onAdded(AddedEvent event) {
 		super.onAdded(event);
-
+		
 		for (var h = 0; h < heightInSlots; ++h) {
 			for (var w = 0; w < widthInSlots; ++w) {
 				if (inventory.size() > h + w) {
@@ -96,7 +96,7 @@ public class SlotListWidget extends Widget implements WidgetCollection {
 		} else {
 			if (scrollbarRectangle.get().isPositionWithin(pos)) {
 				if (event.y() > scrollerY.get()) {
-					dispatchEvent(new MouseScrolledEvent(event.x(), event.y(), - 1.0D));
+					dispatchEvent(new MouseScrolledEvent(event.x(), event.y(), -1.0D));
 				} else if (event.y() < scrollerY.get()) {
 					dispatchEvent(new MouseScrolledEvent(event.x(), event.y(), 1.0D));
 				}
@@ -118,7 +118,7 @@ public class SlotListWidget extends Widget implements WidgetCollection {
 		if (scrollerHeld) {
 			if (event.deltaY() > 0.0D) {
 				dispatchEvent(new MouseScrolledEvent(event.x(), event.y(), -event.deltaY()));
-			} else if (event.deltaY() < 0.0D){
+			} else if (event.deltaY() < 0.0D) {
 				dispatchEvent(new MouseScrolledEvent(event.x(), event.y(), -event.deltaY()));
 			}
 		}

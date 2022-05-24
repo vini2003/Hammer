@@ -6,7 +6,6 @@ import dev.vini2003.hammer.core.api.client.texture.TiledFluidTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.common.util.FluidTextUtil;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
-import dev.vini2003.hammer.gui.api.common.event.AddedEvent;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.minecraft.client.gui.screen.Screen;
@@ -131,7 +130,7 @@ public class FluidBarWidget extends BarWidget {
 	public void setCurrent(double current) {
 		setCurrent(() -> current);
 	}
-
+	
 	public void setForegroundTexture(Supplier<Texture> foregroundTextureSupplier) {
 		this.foregroundTexture = foregroundTextureSupplier;
 	}
@@ -139,7 +138,7 @@ public class FluidBarWidget extends BarWidget {
 	public void setForegroundTexture(Texture foregroundTexture) {
 		setForegroundTexture(() -> foregroundTexture);
 	}
-
+	
 	public void setBackgroundTexture(Supplier<Texture> backgroundTextureSupplier) {
 		this.backgroundTexture = backgroundTextureSupplier;
 	}

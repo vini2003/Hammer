@@ -6,11 +6,6 @@ import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-import org.w3c.dom.Text;
-
-import java.util.function.Supplier;
 
 public abstract class BarWidget extends Widget {
 	public static final Texture STANDARD_FOREGROUND_TEXTURE = new PartitionedTexture(HC.id("textures/widget/bar_foreground.png"), 18.0F, 18.0F, 0.055F, 0.055F, 0.055F, 0.055F);

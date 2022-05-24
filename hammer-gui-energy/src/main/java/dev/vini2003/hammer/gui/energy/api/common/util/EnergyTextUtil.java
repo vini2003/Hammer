@@ -3,8 +3,6 @@ package dev.vini2003.hammer.gui.energy.api.common.util;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.common.util.NumberUtil;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
-import dev.vini2003.hammer.core.registry.common.HCConfig;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -28,7 +26,7 @@ public class EnergyTextUtil {
 		
 		return tooltips;
 	}
-
+	
 	public static List<Text> getShortenedTooltips(EnergyStorage storage) {
 		var tooltips = new ArrayList<Text>();
 		

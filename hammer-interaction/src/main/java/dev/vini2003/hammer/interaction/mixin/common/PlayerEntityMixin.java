@@ -43,7 +43,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
 	}
-
+	
 	@Inject(at = @At("RETURN"), method = "isBlockBreakingRestricted", cancellable = true)
 	private void hammer$isBlockBreakingRestricted(World world, BlockPos pos, GameMode gameMode, CallbackInfoReturnable<Boolean> cir) {
 		if (!InteractionRuleManager.allows((PlayerEntity) (Object) this, InteractionType.BLOCK_BREAK, world.getBlockState(pos).getBlock())) {

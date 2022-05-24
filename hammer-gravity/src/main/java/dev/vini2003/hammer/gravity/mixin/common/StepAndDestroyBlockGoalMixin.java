@@ -35,7 +35,9 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(StepAndDestroyBlockGoal.class)
 public class StepAndDestroyBlockGoalMixin {
-	@Shadow @Final private MobEntity stepAndDestroyMob;
+	@Shadow
+	@Final
+	private MobEntity stepAndDestroyMob;
 	
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.08D))
 	double getGravity(double original) {

@@ -28,7 +28,7 @@ public class TextAreaWidget extends TextEditorWidget {
 			return true;
 		}
 	}
-
+	
 	protected int getNewlinedLineLength(int index) {
 		var lineLength = getLineLength(index);
 		

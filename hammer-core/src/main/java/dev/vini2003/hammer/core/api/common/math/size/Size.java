@@ -2,7 +2,7 @@ package dev.vini2003.hammer.core.api.common.math.size;
 
 import java.util.Objects;
 
-public class Size implements SizeHolder{
+public class Size implements SizeHolder {
 	private final float width;
 	private final float height;
 	private final float length;
@@ -10,9 +10,10 @@ public class Size implements SizeHolder{
 	/**
 	 * Constructs a position.
 	 *
-	 * @param width the width size component.
+	 * @param width  the width size component.
 	 * @param height the height size component.
 	 * @param length the length size component.
+	 *
 	 * @return the position.
 	 */
 	public Size(float width, float height, float length) {
@@ -24,8 +25,9 @@ public class Size implements SizeHolder{
 	/**
 	 * Constructs a size.
 	 *
-	 * @param width the width size component
+	 * @param width  the width size component
 	 * @param height the height size component.
+	 *
 	 * @return the size.
 	 */
 	public Size(float width, float height) {
@@ -38,9 +40,10 @@ public class Size implements SizeHolder{
 	 * Constructs an anchored size.
 	 *
 	 * @param anchor the anchor.
-	 * @param width the relative with size component.
+	 * @param width  the relative with size component.
 	 * @param height the relative height size component.
 	 * @param length the relative length size component.
+	 *
 	 * @return the size.
 	 */
 	public Size(SizeHolder anchor, float width, float height, float length) {
@@ -51,8 +54,9 @@ public class Size implements SizeHolder{
 	 * Constructs an anchored size.
 	 *
 	 * @param anchor the anchor.
-	 * @param width the relative with size component.
+	 * @param width  the relative with size component.
 	 * @param height the relative height size component.
+	 *
 	 * @return the size.
 	 */
 	public Size(SizeHolder anchor, float width, float height) {
@@ -63,6 +67,7 @@ public class Size implements SizeHolder{
 	 * Constructs an anchor's size.
 	 *
 	 * @param anchor the anchor.
+	 *
 	 * @return the size.
 	 */
 	public Size(SizeHolder holder) {
@@ -73,6 +78,7 @@ public class Size implements SizeHolder{
 	 * Returns this size, adding another size to it.
 	 *
 	 * @param size the size.
+	 *
 	 * @return the resulting size.
 	 */
 	public Size plus(Size size) {
@@ -83,6 +89,7 @@ public class Size implements SizeHolder{
 	 * Returns this size, subtracting another size from it.
 	 *
 	 * @param size the size.
+	 *
 	 * @return the resulting size.
 	 */
 	public Size minus(Size size) {
@@ -93,6 +100,7 @@ public class Size implements SizeHolder{
 	 * Returns this size, multiplying its components by a given number.
 	 *
 	 * @param number the number.
+	 *
 	 * @return the resulting size.
 	 */
 	public Size times(float number) {
@@ -103,6 +111,7 @@ public class Size implements SizeHolder{
 	 * Returns this size, dividing its components by a given number.
 	 *
 	 * @param number the number.
+	 *
 	 * @return the resulting size.
 	 */
 	public Size div(float number) {

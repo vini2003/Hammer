@@ -1,12 +1,10 @@
 package dev.vini2003.hammer.permission.api.common.util;
 
 import dev.vini2003.hammer.adventure.api.common.util.AdventureUtil;
-import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.permission.HP;
 import net.minecraft.network.MessageType;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
@@ -24,9 +22,9 @@ public class LuckPermsUtil {
 		
 		try {
 			var user = HP.getLuckPerms().getUserManager().getUser(sender);
-					
+			
 			var group = HP.getLuckPerms().getGroupManager().getGroup(user.getPrimaryGroup());
-					
+			
 			var groupPrefix = group.getCachedData().getMetaData().getPrefix();
 			var groupSuffix = group.getCachedData().getMetaData().getSuffix();
 			
@@ -45,7 +43,9 @@ public class LuckPermsUtil {
 				} else {
 					result += senderPlayer.getName().asString();
 				}
-				if (suffix == null && groupSuffix == null) result += "&7";
+				if (suffix == null && groupSuffix == null) {
+					result += "&7";
+				}
 			} else if (groupPrefix != null) {
 				result += "$groupPrefix ";
 				
@@ -54,7 +54,9 @@ public class LuckPermsUtil {
 				} else {
 					result += senderPlayer.getName().asString();
 				}
-				if (suffix == null && groupSuffix == null) result += "&7";
+				if (suffix == null && groupSuffix == null) {
+					result += "&7";
+				}
 			} else {
 				if (color != null) {
 					result += color + "" + senderPlayer.getName().asString() + "";

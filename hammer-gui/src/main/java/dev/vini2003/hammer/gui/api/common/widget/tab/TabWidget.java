@@ -16,7 +16,6 @@ import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 

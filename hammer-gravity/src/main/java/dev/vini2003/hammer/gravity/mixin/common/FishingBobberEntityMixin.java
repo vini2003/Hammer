@@ -42,7 +42,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
 	@ModifyConstant(method = "use(Lnet/minecraft/item/ItemStack;)I", constant = @Constant(doubleValue = 0.08D))
 	double getGravity(double original) {
 		var gravity = GravityManager.get(world.getRegistryKey());
-
+		
 		return gravity;
 	}
 }

@@ -18,7 +18,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.slot.Slot;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class SlotWidget extends Widget {
@@ -47,7 +46,7 @@ public class SlotWidget extends Widget {
 	@Override
 	protected void onAdded(AddedEvent event) {
 		super.onAdded(event);
-
+		
 		slot = slotSupplier.apply(inventory, index, getSlotX(), getSlotY());
 		slot.index = index;
 		
@@ -59,7 +58,7 @@ public class SlotWidget extends Widget {
 	@Override
 	protected void onRemoved(RemovedEvent event) {
 		super.onRemoved(event);
-
+		
 		if (rootCollection instanceof BaseScreenHandler handler) {
 			handler.removeSlot(slot);
 		}

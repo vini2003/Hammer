@@ -2,25 +2,25 @@ package dev.vini2003.hammer.core.api.common.math.position;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.chunk.Chunk;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 /**
  * A {@link Position} is 3-dimensional coordinate, which contains X, Y and Z components.
  */
-public class Position implements PositionHolder{
+public class Position implements PositionHolder {
 	private final float x;
 	private final float y;
 	private final float z;
 	
 	/**
 	 * Returns a collection of all positions within the two given positions.
+	 *
 	 * @param startPosition the start position.
-	 * @param endPosition the end position.
+	 * @param endPosition   the end position.
+	 *
 	 * @return the collection.
 	 */
 	public static Collection<Position> getPositionsWithin(Position startPosition, Position endPosition) {
@@ -56,6 +56,7 @@ public class Position implements PositionHolder{
 	 * @param x the X position component.
 	 * @param y the Y position component.
 	 * @param z the Z position component.
+	 *
 	 * @return the position.
 	 */
 	public Position(float x, float y, float z) {
@@ -69,6 +70,7 @@ public class Position implements PositionHolder{
 	 *
 	 * @param x the X position component.
 	 * @param y the Y position component.
+	 *
 	 * @return the position.
 	 */
 	public Position(float x, float y) {
@@ -80,8 +82,9 @@ public class Position implements PositionHolder{
 	/**
 	 * Constructs an anchored position.
 	 *
-	 * @param anchor the anchor.
+	 * @param anchor           the anchor.
 	 * @param relativePosition the relative position.
+	 *
 	 * @return the position.
 	 */
 	public Position(PositionHolder anchor, Position relativePosition) {
@@ -91,10 +94,11 @@ public class Position implements PositionHolder{
 	/**
 	 * Constructs an anchored position.
 	 *
-	 * @param anchor the anchor.
+	 * @param anchor    the anchor.
 	 * @param relativeX the relative X component.
 	 * @param relativeY the relative Y component.
 	 * @param relativeZ the relative Z component.
+	 *
 	 * @return the position.
 	 */
 	public Position(PositionHolder anchor, float relativeX, float relativeY, float relativeZ) {
@@ -104,9 +108,10 @@ public class Position implements PositionHolder{
 	/**
 	 * Constructs an anchored position.
 	 *
-	 * @param anchor the anchor.
+	 * @param anchor    the anchor.
 	 * @param relativeX the relative X component.
 	 * @param relativeY the relative Y component.
+	 *
 	 * @return the position.
 	 */
 	public Position(PositionHolder anchor, float relativeX, float relativeY) {
@@ -117,6 +122,7 @@ public class Position implements PositionHolder{
 	 * Constructs an anchor's position.
 	 *
 	 * @param anchor the anchor.
+	 *
 	 * @return the position.
 	 */
 	public Position(PositionHolder anchor) {
@@ -127,6 +133,7 @@ public class Position implements PositionHolder{
 	 * Converts a {@link BlockPos} to a position.
 	 *
 	 * @param blockPos the block pos.
+	 *
 	 * @return the position.
 	 */
 	public Position(BlockPos blockPos) {
@@ -137,6 +144,7 @@ public class Position implements PositionHolder{
 	 * Converts a [ChunkPos] to a position.
 	 *
 	 * @param chunkPos the chunk pos.
+	 *
 	 * @return the position.
 	 */
 	public Position(ChunkPos chunkPos) {
@@ -165,6 +173,7 @@ public class Position implements PositionHolder{
 	 * Returns the distance between this and the distant position.
 	 *
 	 * @param position the distant position.
+	 *
 	 * @return the distance.
 	 */
 	public float distanceTo(Position position) {
@@ -175,6 +184,7 @@ public class Position implements PositionHolder{
 	 * Returns the squared distance between this and the distant position.
 	 *
 	 * @param position the distant position.
+	 *
 	 * @return the distance.
 	 */
 	public float squaredDistanceTo(Position position) {
@@ -187,6 +197,7 @@ public class Position implements PositionHolder{
 	 * @param x the X component to offset this position by.
 	 * @param y the Y component to offset this position by.
 	 * @param z the Z component to offset this position by.
+	 *
 	 * @return the resulting position.
 	 */
 	public Position offset(float x, float y, float z) {
@@ -198,6 +209,7 @@ public class Position implements PositionHolder{
 	 *
 	 * @param x the X component to offset this position by.
 	 * @param y the Y component to offset this position by.
+	 *
 	 * @return the resulting position.
 	 */
 	public Position offset(float x, float y) {
@@ -208,6 +220,7 @@ public class Position implements PositionHolder{
 	 * Returns this position, adding another position to it.
 	 *
 	 * @param position the position.
+	 *
 	 * @return the resulting position.
 	 */
 	public Position plus(Position position) {
@@ -218,6 +231,7 @@ public class Position implements PositionHolder{
 	 * Returns this position, subtracting another position from it.
 	 *
 	 * @param position the position.
+	 *
 	 * @return the resulting position.
 	 */
 	public Position minus(Position position) {
@@ -228,6 +242,7 @@ public class Position implements PositionHolder{
 	 * Returns this position, multiplying its components by a given number.
 	 *
 	 * @param number the number.
+	 *
 	 * @return the resulting position.
 	 */
 	public Position times(float number) {
@@ -238,6 +253,7 @@ public class Position implements PositionHolder{
 	 * Returns this position, dividing its components by a given number.
 	 *
 	 * @param number the number.
+	 *
 	 * @return the resulting position.
 	 */
 	public Position div(float number) {

@@ -19,8 +19,8 @@ public class Shape implements SizeHolder {
 	 * Constructs a shape.
 	 *
 	 * @param eequation the shape's equation, checks whether a point is within the shape or not.
-	 * @param startPos the shape's start position.
-	 * @param endPos the shape's end position.
+	 * @param startPos  the shape's start position.
+	 * @param endPos    the shape's end position.
 	 */
 	public Shape(Position startPos, Position endPos) {
 		this.startPos = startPos;
@@ -30,8 +30,8 @@ public class Shape implements SizeHolder {
 	/**
 	 * Constructs a shape.
 	 *
-	 * @param startPos the shape's start position.
-	 * @param endPos the shape's end position.
+	 * @param startPos  the shape's start position.
+	 * @param endPos    the shape's end position.
 	 * @param eequation the shape's equation, checks whether a point is within the shape or not.
 	 */
 	public Shape(Position startPos, Position endPos, BiPredicate<Shape, Position> equation) {
@@ -44,8 +44,9 @@ public class Shape implements SizeHolder {
 	/**
 	 * Returns whether the position is within this shape or not.
 	 *
-	 * @parma position the position.
 	 * @return the result.
+	 *
+	 * @parma position the position.
 	 */
 	public boolean isPositionWithin(Position pos) {
 		return pos.getZ() >= startPos.getZ() &&
@@ -61,6 +62,7 @@ public class Shape implements SizeHolder {
 	 * Applies a modifier to this shape.
 	 *
 	 * @param modifier the modifier.
+	 *
 	 * @return a new shape with the modifier.
 	 */
 	public Shape applyModifier(Modifier modifier) {
@@ -136,7 +138,7 @@ public class Shape implements SizeHolder {
 			
 			this.equation = (shape, pos) -> {
 				return (pos.getY() - startPos.getY()) > 0.0F &&
-					   (pos.getY() - startPos.getY()) <= 1.0F;
+						(pos.getY() - startPos.getY()) <= 1.0F;
 			};
 		}
 	}
@@ -147,8 +149,8 @@ public class Shape implements SizeHolder {
 			
 			this.equation = (shape, pos) -> {
 				return (Math.pow(pos.getX() - startPos.getX(), 2.0D) / Math.pow(a, 2.0D)) + (Math.pow(pos.getZ() - startPos.getZ(), 2.0D) / Math.pow(b, 2.0D)) < 1.0F &&
-					   (pos.getY() - startPos.getY()) > 0.0F &&
-					   (pos.getY() - startPos.getY()) <= 1.0F;
+						(pos.getY() - startPos.getY()) > 0.0F &&
+						(pos.getY() - startPos.getY()) <= 1.0F;
 			};
 		}
 	}
@@ -160,7 +162,7 @@ public class Shape implements SizeHolder {
 			this.equation = (shape, pos) -> {
 				return (Math.pow(pos.getZ() - startPos.getZ(), 2.0D) / Math.pow(a, 2.0D)) + (Math.pow(pos.getZ() - startPos.getZ(), 2.0D) / Math.pow(b, 2.0D)) < 1.0F &&
 						(pos.getY() - startPos.getY()) > -height / 2.0F &&
-						(pos.getY() - startPos.getY()) <  height / 2.0F;
+						(pos.getY() - startPos.getY()) < height / 2.0F;
 			};
 		}
 	}
@@ -170,12 +172,12 @@ public class Shape implements SizeHolder {
 			super(new Position(width / 2.0F, height / 2.0F, depth / 2.0F), new Position(-width / 2.0F, -height / 2.0F, -depth / 2.0F));
 			
 			this.equation = (shape, pos) -> {
-				return  (pos.getZ() - startPos.getZ()) > -width / 2.0F &&
-						(pos.getZ() - startPos.getZ()) <  width / 2.0F &&
+				return (pos.getZ() - startPos.getZ()) > -width / 2.0F &&
+						(pos.getZ() - startPos.getZ()) < width / 2.0F &&
 						(pos.getY() - startPos.getY()) > -height / 2.0F &&
-						(pos.getY() - startPos.getY()) <  height / 2.0F &&
+						(pos.getY() - startPos.getY()) < height / 2.0F &&
 						(pos.getZ() - startPos.getZ()) > -depth / 2.0F &&
-						(pos.getZ() - startPos.getZ()) <  depth / 2.0F;
+						(pos.getZ() - startPos.getZ()) < depth / 2.0F;
 			};
 		}
 	}
@@ -186,11 +188,11 @@ public class Shape implements SizeHolder {
 			
 			this.equation = (shape, pos) -> {
 				return (pos.getZ() - startPos.getZ()) > -(width / 2.0F) &&
-						(pos.getZ() - startPos.getZ()) <  (width / 2.0F) &&
+						(pos.getZ() - startPos.getZ()) < (width / 2.0F) &&
 						(pos.getY() - startPos.getY()) > -(height / 2.0F) &&
-						(pos.getY() - startPos.getY()) <  (height / 2.0F) &&
+						(pos.getY() - startPos.getY()) < (height / 2.0F) &&
 						(pos.getZ() - startPos.getZ()) > -(depth * (1.0F - (((pos.getY() - startPos.getY()) + height / 2.0F) / height))) / 2.0F &&
-						(pos.getZ() - startPos.getZ()) <  (depth * (1.0F - (((pos.getY() - startPos.getY()) + height / 2.0F) / height))) / 2.0F;
+						(pos.getZ() - startPos.getZ()) < (depth * (1.0F - (((pos.getY() - startPos.getY()) + height / 2.0F) / height))) / 2.0F;
 			};
 		}
 	}
@@ -201,10 +203,10 @@ public class Shape implements SizeHolder {
 			
 			this.equation = (shape, pos) -> {
 				return (pos.getZ() - startPos.getZ()) > -(width * (1.0F - ((pos.getY() - startPos.getY()) / height))) / 2.0F &&
-						(pos.getZ() - startPos.getZ()) <  (width * (1.0F - ((pos.getY() - startPos.getY()) / height))) / 2.0F &&
-						(pos.getY() - startPos.getY()) >  0.0F && (pos.getY() - startPos.getY()) < height &&
+						(pos.getZ() - startPos.getZ()) < (width * (1.0F - ((pos.getY() - startPos.getY()) / height))) / 2.0F &&
+						(pos.getY() - startPos.getY()) > 0.0F && (pos.getY() - startPos.getY()) < height &&
 						(pos.getZ() - startPos.getZ()) > -(depth * (1.0F - ((pos.getY() - startPos.getY()) / height))) / 2.0F &&
-						(pos.getZ() - startPos.getZ()) <  (depth * (1.0F - ((pos.getY() - startPos.getY()) / height))) / 2.0F;
+						(pos.getZ() - startPos.getZ()) < (depth * (1.0F - ((pos.getY() - startPos.getY()) / height))) / 2.0F;
 			};
 		}
 	}

@@ -40,16 +40,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(WorldRenderer.class)
 public class WorldRendererMixin {
-	@Shadow @Nullable private ClientWorld world;
+	@Shadow
+	@Nullable
+	private ClientWorld world;
 	
-	@Shadow @Final private MinecraftClient client;
+	@Shadow
+	@Final
+	private MinecraftClient client;
 	
-	@Shadow @Final private static Identifier FORCEFIELD;
+	@Shadow
+	@Final
+	private static Identifier FORCEFIELD;
 	
 	@Inject(at = @At("HEAD"), method = "renderWorldBorder", cancellable = true)
 	private void hammer$renderWorldBorder(Camera camera, CallbackInfo ci) {
 		WorldBorderRenderer.render(client, world, camera, FORCEFIELD);
-			
+		
 		ci.cancel();
 	}
 }

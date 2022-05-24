@@ -35,7 +35,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin {
-	@Shadow public abstract ServerWorld getWorld();
+	@Shadow
+	public abstract ServerWorld getWorld();
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/border/WorldBorder;getDistanceInsideBorder(DD)D"), method = "moveToSpawn")
 	private double hammer$moveToSpawn$getDistanceInsideBorder(WorldBorder instance, double x, double z) {

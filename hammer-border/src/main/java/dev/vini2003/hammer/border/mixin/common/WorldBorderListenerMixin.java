@@ -44,9 +44,9 @@ public class WorldBorderListenerMixin {
 	private void hammer$onCenterChanged(WorldBorder border, double centerX, double centerZ, CallbackInfo ci) {
 		var extendedBorder = (CubicWorldBorder) border;
 		var thisExtendedBorder = (CubicWorldBorder) this.border;
-			
+		
 		thisExtendedBorder.setCenter(border.getCenterX(), extendedBorder.getCenterY(), border.getCenterZ());
-			
+		
 		ci.cancel();
 	}
 }

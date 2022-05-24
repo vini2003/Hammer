@@ -42,7 +42,7 @@ public class CubicWorldBorderStaticArea implements CubicWorldBorderArea {
 	
 	@Override
 	public double getBoundDown() {
-		return  MathHelper.clamp(cubicBorder.getCenterY() - border.getSize() / 2.0D, (-border.getMaxRadius()), border.getMaxRadius());
+		return MathHelper.clamp(cubicBorder.getCenterY() - border.getSize() / 2.0D, (-border.getMaxRadius()), border.getMaxRadius());
 	}
 	
 	@Override

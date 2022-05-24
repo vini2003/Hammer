@@ -59,7 +59,8 @@ public class GravityManager {
 			} else {
 				syncOnClient();
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception ignored) {
+		}
 	}
 	
 	private static void syncOnClient() {

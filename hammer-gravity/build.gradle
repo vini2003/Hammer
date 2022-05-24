@@ -5,9 +5,6 @@ loom {
 dependencies {
     // Hammer
     implementation project(path: ":hammer-core", configuration: "namedElements")
-
-    // Hammer Command
-    implementation project(path: ":hammer-command", configuration: "namedElements")
 }
 
 jar {

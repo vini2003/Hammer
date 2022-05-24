@@ -54,8 +54,11 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEntityAccessor {
-	@Shadow protected HungerManager hungerManager;
-	@Shadow @Final private PlayerAbilities abilities;
+	@Shadow
+	protected HungerManager hungerManager;
+	@Shadow
+	@Final
+	private PlayerAbilities abilities;
 	
 	@Unique
 	private static final TrackedData<Boolean> FROZEN = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);

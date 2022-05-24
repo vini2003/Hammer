@@ -2,7 +2,6 @@ package dev.vini2003.hammer.gui.registry.common;
 
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.gui.api.common.event.base.Event;
-import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;

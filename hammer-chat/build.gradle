@@ -1,9 +1,6 @@
 dependencies {
     // Hammer Core
     implementation project(path: ":hammer-core", configuration: "namedElements")
-
-    // Hammer Command
-    implementation project(path: ":hammer-command", configuration: "namedElements")
 }
 
 jar {

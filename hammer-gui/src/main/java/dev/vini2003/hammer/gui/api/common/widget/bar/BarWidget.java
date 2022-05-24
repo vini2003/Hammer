@@ -13,34 +13,14 @@ import org.w3c.dom.Text;
 import java.util.function.Supplier;
 
 public abstract class BarWidget extends Widget {
-	public static final Texture STANDARD_FOREGROUND_TEXTURE = new PartitionedTexture(
-			HC.id("textures/widget/bar_foreground.png"),
-			18.0F,
-			18.0F,
-			0.055F,
-			0.055F,
-			0.055F,
-			0.055F
-	);
-	
-	public static final Texture STANDARD_BACKGROUND_TEXTURE = new PartitionedTexture(
-			HC.id("textures/widget/bar_background.png"),
-			18.0F,
-			18.0F,
-			0.055F,
-			0.055F,
-			0.055F,
-			0.055F
-	);
+	public static final Texture STANDARD_FOREGROUND_TEXTURE = new PartitionedTexture(HC.id("textures/widget/bar_foreground.png"), 18.0F, 18.0F, 0.055F, 0.055F, 0.055F, 0.055F);
+	public static final Texture STANDARD_BACKGROUND_TEXTURE = new PartitionedTexture(HC.id("textures/widget/bar_background.png"), 18.0F, 18.0F, 0.055F, 0.055F, 0.055F, 0.055F);
 	
 	protected boolean horizontal = false;
-	protected boolean vertical = false;
+	protected boolean vertical = true;
 	
 	protected BarWidget() {
 		super();
-		
-		setHorizontal(false);
-		setVertical(true);
 		
 		setTooltipSupplier(() -> {
 			return ImmutableList.of(TextUtil.getPercentage(getCurrent(), getMaximum()));

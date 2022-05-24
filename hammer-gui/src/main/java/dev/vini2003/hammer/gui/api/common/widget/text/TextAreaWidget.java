@@ -3,7 +3,6 @@ package dev.vini2003.hammer.gui.api.common.widget.text;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
-import dev.vini2003.hammer.core.api.common.supplier.TextureSupplier;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -11,11 +10,12 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class TextAreaWidget extends TextEditorWidget {
 	public static final Texture STANDARD_TEXTURE = new PartitionedTexture(HC.id("textures/widget/text_area.png"), 18.0F, 18.0F, 0.055F, 0.055F, 0.055F, 0.055F);
 	
-	protected TextureSupplier texture = () -> STANDARD_TEXTURE;
+	protected Supplier<Texture> texture = () -> STANDARD_TEXTURE;
 	
 	protected List<Boolean> newLines = new ArrayList<>();
 	
@@ -151,5 +151,13 @@ public class TextAreaWidget extends TextEditorWidget {
 		}
 		
 		renderField(matrices, provider);
+	}
+	
+	public void setTexture(Supplier<Texture> texture) {
+		this.texture = texture;
+	}
+	
+	public void setTexture(Texture texture) {
+		setTexture(() -> texture);
 	}
 }

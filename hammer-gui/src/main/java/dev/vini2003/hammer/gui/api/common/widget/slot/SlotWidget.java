@@ -4,15 +4,12 @@ import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.core.api.common.function.QuadFunction;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.core.api.common.supplier.SlotSupplier;
-import dev.vini2003.hammer.core.api.common.supplier.TextureSupplier;
 import dev.vini2003.hammer.gui.api.common.event.AddedEvent;
 import dev.vini2003.hammer.gui.api.common.event.LayoutChangedEvent;
 import dev.vini2003.hammer.gui.api.common.event.RemovedEvent;
-import dev.vini2003.hammer.gui.api.common.event.annotation.EventSubscriber;
-import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
@@ -21,20 +18,23 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.slot.Slot;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 public class SlotWidget extends Widget {
 	public static final Texture STANDARD_TEXTURE = new PartitionedTexture(HC.id("textures/widget/slot.png"), 18.0F, 18.0F, 0.055F, 0.055F, 0.055F, 0.055F);
 	
-	protected TextureSupplier texture = () -> STANDARD_TEXTURE;
+	protected Supplier<Texture> texture = () -> STANDARD_TEXTURE;
 	
 	protected Inventory inventory;
 	
-	protected SlotSupplier slotSupplier;
+	protected QuadFunction<Inventory, Integer, Integer, Integer, Slot> slotSupplier;
 	
 	protected Slot slot = null;
 	
 	protected int index;
 	
-	public SlotWidget(Inventory inventory, int index, SlotSupplier slotSupplier) {
+	public SlotWidget(Inventory inventory, int index, QuadFunction<Inventory, Integer, Integer, Integer, Slot> slotSupplier) {
 		super();
 		
 		this.inventory = inventory;
@@ -48,7 +48,7 @@ public class SlotWidget extends Widget {
 	protected void onAdded(AddedEvent event) {
 		super.onAdded(event);
 
-		slot = slotSupplier.get(inventory, index, getSlotX(), getSlotY());
+		slot = slotSupplier.apply(inventory, index, getSlotX(), getSlotY());
 		slot.index = index;
 		
 		if (rootCollection instanceof BaseScreenHandler handler) {
@@ -133,5 +133,13 @@ public class SlotWidget extends Widget {
 	
 	public Slot getSlot() {
 		return slot;
+	}
+	
+	public void setTexture(Supplier<Texture> texture) {
+		this.texture = texture;
+	}
+	
+	public void setTexture(Texture texture) {
+		setTexture(() -> texture);
 	}
 }

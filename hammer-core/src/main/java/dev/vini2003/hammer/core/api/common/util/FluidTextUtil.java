@@ -23,7 +23,7 @@ public class FluidTextUtil {
 	public static final Map<FluidVariant, Color> COLOR_OVERRIDES = new HashMap<>();
 	
 	public static List<Text> getVariantTooltips(FluidVariant fluidVariant) {
-		if (fluidVariant.isBlank()) return ImmutableList.of(TextUtils.EMPTY.formatted(Formatting.GRAY));
+		if (fluidVariant.isBlank()) return ImmutableList.of(TextUtil.EMPTY.formatted(Formatting.GRAY));
 		
 		var overrideColor = COLOR_OVERRIDES.get(fluidVariant);
 		
@@ -37,7 +37,7 @@ public class FluidTextUtil {
 		
 		var tooltips = new ArrayList<Text>();
 		
-		if (HCConfig.shouldUseDroplets()) {
+		if (HCConfig.USE_DROPLETS) {
 			tooltips.addAll(getVariantTooltips(fluidView.getResource()));
 			tooltips.add(TextUtil.toLiteralText(NumberUtil.getPrettyShortenedString(fluidView.getAmount(), "d") + " / " + NumberUtil.getPrettyShortenedString(fluidView.getCapacity(), "d")).formatted(Formatting.GRAY));
 			tooltips.add(TextUtil.getModId(fluidId));
@@ -55,7 +55,7 @@ public class FluidTextUtil {
 		
 		var tooltips = new ArrayList<Text>();
 		
-		if (HCConfig.shouldUseDroplets()) {
+		if (HCConfig.USE_DROPLETS) {
 			tooltips.addAll(getVariantTooltips(fluidView.getResource()));
 			tooltips.add(TextUtil.toLiteralText(NumberUtil.getPrettyString(fluidView.getAmount(), "d") + " / " + NumberUtil.getPrettyString(fluidView.getCapacity(), "d")).formatted(Formatting.GRAY));
 			tooltips.add(TextUtil.getModId(fluidId));

@@ -5,11 +5,8 @@ import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.core.api.common.supplier.LabelSupplier;
-import dev.vini2003.hammer.core.api.common.supplier.TextureSupplier;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
-import dev.vini2003.hammer.gui.api.common.event.annotation.EventSubscriber;
 import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -19,19 +16,20 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 public class ButtonWidget extends Widget {
 	public static final Texture STANDARD_ENABLED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/button_enabled.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 	public static final Texture STANDARD_DISABLED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/button_disabled.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 	public static final Texture STANDARD_FOCUSED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/button_focused.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 	
-	protected TextureSupplier enabledTextureSupplier = () -> STANDARD_ENABLED_TEXTURE;
-	protected TextureSupplier disabledTextureSupplier = () -> STANDARD_DISABLED_TEXTURE;
-	protected TextureSupplier focusedTextureSupplier = () -> STANDARD_FOCUSED_TEXTURE;
+	protected Supplier<Texture> enabledTextureSupplier = () -> STANDARD_ENABLED_TEXTURE;
+	protected Supplier<Texture> disabledTextureSupplier = () -> STANDARD_DISABLED_TEXTURE;
+	protected Supplier<Texture> focusedTextureSupplier = () -> STANDARD_FOCUSED_TEXTURE;
 	
 	protected BooleanSupplier disabledSupplier = () -> false;
 	
-	protected LabelSupplier labelSupplier = () -> null;
+	protected Supplier<Text> label = () -> null;
 	
 	@Override
 	protected void onMouseClicked(MouseClickedEvent event) {
@@ -65,7 +63,7 @@ public class ButtonWidget extends Widget {
 			immediate.draw();
 		}
 		
-		var label = labelSupplier.get();
+		var label = this.label.get();
 		
 		if (label != null) {
 			var textRenderer = DrawingUtil.getTextRenderer();
@@ -80,7 +78,7 @@ public class ButtonWidget extends Widget {
 		client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 	}
 	
-	public void setEnabledTexture(TextureSupplier enabledTextureSupplier) {
+	public void setEnabledTexture(Supplier<Texture> enabledTextureSupplier) {
 		this.enabledTextureSupplier = enabledTextureSupplier;
 	}
 	
@@ -88,7 +86,7 @@ public class ButtonWidget extends Widget {
 		setEnabledTexture(() -> enabledTexture);
 	}
 	
-	public void setDisabledTexture(TextureSupplier disabledTextureSupplier) {
+	public void setDisabledTexture(Supplier<Texture> disabledTextureSupplier) {
 		this.disabledTextureSupplier = disabledTextureSupplier;
 	}
 	
@@ -96,7 +94,7 @@ public class ButtonWidget extends Widget {
 		setDisabledTexture(() -> disabledTexture);
 	}
 	
-	public void setFocusedTexture(TextureSupplier focusedTextureSupplier) {
+	public void setFocusedTexture(Supplier<Texture> focusedTextureSupplier) {
 		this.focusedTextureSupplier = focusedTextureSupplier;
 	}
 	
@@ -116,8 +114,8 @@ public class ButtonWidget extends Widget {
 		setDisabled(() -> disabled);
 	}
 	
-	public void setLabel(LabelSupplier labelSupplier) {
-		this.labelSupplier = labelSupplier;
+	public void setLabel(Supplier<Text> labelSupplier) {
+		this.label = labelSupplier;
 	}
 	
 	public void setLabel(Text label) {

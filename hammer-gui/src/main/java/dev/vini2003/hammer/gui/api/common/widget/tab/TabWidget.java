@@ -1,15 +1,12 @@
 package dev.vini2003.hammer.gui.api.common.widget.tab;
 
+import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
-import dev.vini2003.hammer.core.api.common.supplier.ItemStackSupplier;
-import dev.vini2003.hammer.core.api.common.supplier.ItemSupplier;
-import dev.vini2003.hammer.core.api.common.supplier.TextureSupplier;
-import dev.vini2003.hammer.core.api.common.supplier.TooltipSupplier;
 import dev.vini2003.hammer.gui.api.common.event.AddedEvent;
 import dev.vini2003.hammer.gui.api.common.event.LayoutChangedEvent;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
@@ -19,11 +16,14 @@ import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class TabWidget extends Widget implements WidgetCollection {
 	public static final Texture STANDARD_ACTIVE_LEFT_TEXTURE = new ImageTexture(HC.id("textures/widget/tab_left_active.png"));
@@ -33,20 +33,20 @@ public class TabWidget extends Widget implements WidgetCollection {
 	public static final Texture STANDARD_INACTIVE_MIDDLE_TEXTURE = new ImageTexture(HC.id("textures/widget/tab_middle_inactive.png"));
 	public static final Texture STANDARD_INACTIVE_RIGHT_TEXTURE = new ImageTexture(HC.id("textures/widget/tab_right_inactive.png"));
 	
-	protected TextureSupplier activeLeftTexture = () -> STANDARD_ACTIVE_LEFT_TEXTURE;
-	protected TextureSupplier activeMiddleTexture = () -> STANDARD_ACTIVE_MIDDLE_TEXTURE;
-	protected TextureSupplier activeRightTexture = () -> STANDARD_ACTIVE_RIGHT_TEXTURE;
+	protected Supplier<Texture> activeLeftTexture = () -> STANDARD_ACTIVE_LEFT_TEXTURE;
+	protected Supplier<Texture> activeMiddleTexture = () -> STANDARD_ACTIVE_MIDDLE_TEXTURE;
+	protected Supplier<Texture> activeRightTexture = () -> STANDARD_ACTIVE_RIGHT_TEXTURE;
 	
-	protected TextureSupplier inactiveLeftTexture = () -> STANDARD_INACTIVE_LEFT_TEXTURE;
-	protected TextureSupplier inactiveMiddleTexture = () -> STANDARD_INACTIVE_MIDDLE_TEXTURE;
-	protected TextureSupplier inactiveRightTexture = () -> STANDARD_INACTIVE_RIGHT_TEXTURE;
+	protected Supplier<Texture> inactiveLeftTexture = () -> STANDARD_INACTIVE_LEFT_TEXTURE;
+	protected Supplier<Texture> inactiveMiddleTexture = () -> STANDARD_INACTIVE_MIDDLE_TEXTURE;
+	protected Supplier<Texture> inactiveRightTexture = () -> STANDARD_INACTIVE_RIGHT_TEXTURE;
 	
-	protected TextureSupplier panelTexture = () -> PanelWidget.STANDARD_TEXTURE;
+	protected Supplier<Texture> panelTexture = () -> PanelWidget.STANDARD_TEXTURE;
 	
 	protected List<Shape> tabRectangles = new ArrayList<>();
 	protected List<TabCollection> tabCollections = new ArrayList<>();
-	protected List<ItemStackSupplier> tabSymbols = new ArrayList<>();
-	protected List<TooltipSupplier> tabTooltips = new ArrayList<>();
+	protected List<Supplier<ItemStack>> tabSymbols = new ArrayList<>();
+	protected List<Supplier<List<Text>>> tabTooltips = new ArrayList<>();
 	
 	protected Collection<Widget> widgets = new ArrayList<>();
 	
@@ -59,28 +59,22 @@ public class TabWidget extends Widget implements WidgetCollection {
 			for (var tabRectangle : tabRectangles) {
 				if (tabRectangle.isPositionWithin(PositionUtil.getMousePosition())) {
 					if (tabTooltips.size() >= tabIndex) {
-						return tabTooltips.get(tabIndex);
+						return tabTooltips.get(tabIndex).get();
 					}
 				}
 				
 				tabIndex += 1;
 			}
+			
+			return ImmutableList.of();
 		});
 	}
 	
-	public TabCollection addTab(ItemSupplier symbol) {
+	public TabCollection addTab(Supplier<ItemStack> symbol) {
 		return addTab(symbol, () -> null);
 	}
 	
-	public TabCollection addTab(ItemSupplier symbol, TooltipSupplier tooltip) {
-		return addTab(() -> symbol.get().getDefaultStack(), tooltip);
-	}
-	
-	public TabCollection addTab(ItemStackSupplier symbol) {
-		return addTab(symbol, () -> null);
-	}
-	
-	public TabCollection addTab(ItemStackSupplier symbol, TooltipSupplier tooltip) {
+	public TabCollection addTab(Supplier<ItemStack> symbol, Supplier<List<Text>> tooltip) {
 		var collection = new TabCollection(tabCollections.size());
 		collection.setRootCollection(rootCollection);
 		collection.setCollection(this);
@@ -232,5 +226,53 @@ public class TabWidget extends Widget implements WidgetCollection {
 		
 		@Override
 		public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {}
+	}
+	
+	public void setActiveLeftTexture(Supplier<Texture> activeLeftTexture) {
+		this.activeLeftTexture = activeLeftTexture;
+	}
+	
+	public void setActiveLeftTexture(Texture activeLeftTexture) {
+		setActiveLeftTexture(() -> activeLeftTexture);
+	}
+	
+	public void setActiveMiddleTexture(Supplier<Texture> activeMiddleTexture) {
+		this.activeMiddleTexture = activeMiddleTexture;
+	}
+	
+	public void setActiveMiddleTexture(Texture activeMiddleTexture) {
+		setActiveMiddleTexture(() -> activeMiddleTexture);
+	}
+	
+	public void setActiveRightTexture(Supplier<Texture> activeRightTexture) {
+		this.activeRightTexture = activeRightTexture;
+	}
+	
+	public void setActiveRightTexture(Texture activeRightTexture) {
+		setActiveRightTexture(() -> activeRightTexture);
+	}
+	
+	public void setInactiveLeftTexture(Supplier<Texture> inactiveLeftTexture) {
+		this.inactiveLeftTexture = inactiveLeftTexture;
+	}
+	
+	public void setInactiveLeftTexture(Texture inactiveLeftTexture) {
+		setInactiveLeftTexture(() -> inactiveLeftTexture);
+	}
+	
+	public void setInactiveMiddleTexture(Supplier<Texture> inactiveMiddleTexture) {
+		this.inactiveMiddleTexture = inactiveMiddleTexture;
+	}
+	
+	public void setInactiveMiddleTexture(Texture inactiveMiddleTexture) {
+		setInactiveMiddleTexture(() -> inactiveMiddleTexture);
+	}
+	
+	public void setInactiveRightTexture(Supplier<Texture> inactiveRightTexture) {
+		this.inactiveRightTexture = inactiveRightTexture;
+	}
+	
+	public void setInactiveRightTexture(Texture inactiveRightTexture) {
+		setInactiveRightTexture(() -> inactiveRightTexture);
 	}
 }

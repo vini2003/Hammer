@@ -13,7 +13,9 @@ public interface Event {
 		var type = buf.readEnumConstant(EventType.class);
 		
 		var event = switch (type) {
-			case NONE -> null; // TODO: Fix!
+			case NONE -> null;
+			case ADDED -> null;
+			case REMOVED -> null;
 			case CHARACTER_TYPED -> CharacterTypedEvent.readFromBuf(buf);
 			case FOCUS_GAINED -> FocusGainedEvent.readFromBuf(buf);
 			case FOCUS_RELEASED -> FocusReleasedEvent.readFromBuf(buf);

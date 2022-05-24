@@ -70,7 +70,7 @@ public interface WidgetCollection {
 		}
 	}
 	
-	interface Root {
+	interface Root extends WidgetCollection {
 		/**
 		 * Whether this is attached on the client or not.
 		 */
@@ -91,14 +91,18 @@ public interface WidgetCollection {
 		}
 		
 		/**
-		 * The attached screen handler's ID..
+		 * The attached screen handler's sync ID.
 		 */
-		int getId();
+		default int getSyncId() {
+			return -1;
+		}
 		
 		/**
 		 * The attached screen handler.
 		 */
-		BaseScreenHandler getScreenHandler();
+		default BaseScreenHandler getScreenHandler() {
+			return null;
+		}
 		
 		/**
 		 * Called when any widget has its position or

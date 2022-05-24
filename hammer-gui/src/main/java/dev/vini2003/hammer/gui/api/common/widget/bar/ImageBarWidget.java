@@ -2,7 +2,6 @@ package dev.vini2003.hammer.gui.api.common.widget.bar;
 
 import dev.vini2003.hammer.core.api.client.scissor.Scissors;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
-import dev.vini2003.hammer.core.api.common.supplier.TextureSupplier;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -10,11 +9,11 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class ImageBarWidget extends BarWidget {
-	protected DoubleSupplier maximumSupplier = () -> 1.0F;
-	protected DoubleSupplier currentSupplier = () -> 0.5F;
+	protected DoubleSupplier maximum = () -> 1.0D;
+	protected DoubleSupplier current = () -> 0.5D;
 	
-	protected TextureSupplier foregroundTextureSupplier = () -> STANDARD_FOREGROUND_TEXTURE;
-	protected TextureSupplier backgroundTextureSupplier = () -> STANDARD_BACKGROUND_TEXTURE;
+	protected Supplier<Texture> foregroundTexture = () -> STANDARD_FOREGROUND_TEXTURE;
+	protected Supplier<Texture> backgroundTexture = () -> STANDARD_BACKGROUND_TEXTURE;
 	
 	protected boolean smooth = false;
 	protected boolean scissor = true;
@@ -76,26 +75,26 @@ public class ImageBarWidget extends BarWidget {
 	
 	@Override
 	public double getMaximum() {
-		return maximumSupplier.getAsDouble();
+		return maximum.getAsDouble();
 	}
 	
 	@Override
 	public double getCurrent() {
-		return currentSupplier.getAsDouble();
+		return current.getAsDouble();
 	}
 	
 	@Override
 	public Texture getForegroundTexture() {
-		return foregroundTextureSupplier.get();
+		return foregroundTexture.get();
 	}
 	
 	@Override
 	public Texture getBackgroundTexture() {
-		return backgroundTextureSupplier.get();
+		return backgroundTexture.get();
 	}
 	
 	public void setMaximum(DoubleSupplier maximumSupplier) {
-		this.maximumSupplier = maximumSupplier;
+		this.maximum = maximumSupplier;
 	}
 	
 	public void setMaximum(double maximum) {
@@ -103,23 +102,23 @@ public class ImageBarWidget extends BarWidget {
 	}
 	
 	public void setCurrent(DoubleSupplier currentSupplier) {
-		this.currentSupplier = currentSupplier;
+		this.current = currentSupplier;
 	}
 	
 	public void setCurrent(double current) {
 		setCurrent(() -> current);
 	}
 	
-	public void setForegroundTexture(TextureSupplier foregroundTextureSupplier) {
-		this.foregroundTextureSupplier = foregroundTextureSupplier;
+	public void setForegroundTexture(Supplier<Texture> foregroundTextureSupplier) {
+		this.foregroundTexture = foregroundTextureSupplier;
 	}
 	
 	public void setForegroundTexture(Texture foregroundTexture) {
 		setForegroundTexture(() -> foregroundTexture);
 	}
 	
-	public void setBackgroundTexture(TextureSupplier backgroundTextureSupplier) {
-		this.backgroundTextureSupplier = backgroundTextureSupplier;
+	public void setBackgroundTexture(Supplier<Texture> backgroundTextureSupplier) {
+		this.backgroundTexture = backgroundTextureSupplier;
 	}
 	
 	public void setBackgroundTexture(Texture backgroundTexture) {

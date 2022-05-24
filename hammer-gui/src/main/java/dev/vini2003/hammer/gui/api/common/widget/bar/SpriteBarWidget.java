@@ -3,8 +3,6 @@ package dev.vini2003.hammer.gui.api.common.widget.bar;
 import dev.vini2003.hammer.core.api.client.scissor.Scissors;
 import dev.vini2003.hammer.core.api.client.texture.TiledSpriteTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
-import dev.vini2003.hammer.core.api.common.supplier.SpriteSupplier;
-import dev.vini2003.hammer.core.api.common.supplier.TextureSupplier;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
@@ -13,42 +11,20 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class SpriteBarWidget extends BarWidget {
-	private static final DoubleSupplier STANDARD_MAXIMUM_SUPPLIER = () -> 1.0F;
-	private static final DoubleSupplier STANDARD_CURRENT_SUPPLIER = () -> 0.5F;
+	protected DoubleSupplier maximumSupplier = () -> 1.0D;
+	protected DoubleSupplier currentSupplier = () -> 0.5D;
 	
-	private static final SpriteSupplier STANDARD_FOREGROUND_SPRITE_SUPPLIER = () -> null;
-	private static final SpriteSupplier STANDARD_BACKGROUND_SPRITE_SUPPLIER = () -> null;
+	protected Supplier<Sprite> foregroundSpriteSupplier = () -> null;
+	protected Supplier<Sprite> backgroundSpriteSupplier = () -> null;
 	
-	protected DoubleSupplier maximumSupplier;
-	protected DoubleSupplier currentSupplier;
+	protected Supplier<Texture> foregroundTextureSupplier = () -> STANDARD_FOREGROUND_TEXTURE;
+	protected Supplier<Texture> backgroundTextureSupplier = () -> STANDARD_BACKGROUND_TEXTURE;
 	
-	protected SpriteSupplier foregroundSpriteSupplier;
-	protected SpriteSupplier backgroundSpriteSupplier;
+	protected float stepWidth = -1.0F;
+	protected float stepHeight = -1.0F;
 	
-	protected TextureSupplier foregroundTextureSupplier;
-	protected TextureSupplier backgroundTextureSupplier;
-	
-	protected float stepWidth;
-	protected float stepHeight;
-	
-	protected boolean smooth;
-	protected boolean invert;
-	
-	public SpriteBarWidget() {
-		super();
-		
-		setMaximum(STANDARD_MAXIMUM_SUPPLIER);
-		setCurrent(STANDARD_CURRENT_SUPPLIER);
-		
-		setForegroundSprite(STANDARD_FOREGROUND_SPRITE_SUPPLIER);
-		setBackgroundSprite(STANDARD_BACKGROUND_SPRITE_SUPPLIER);
-		
-		setStepWidth(-1.0F);
-		setStepHeight(-1.0F);
-		
-		setSmooth(false);
-		setInvert(false);
-	}
+	protected boolean smooth = false;
+	protected boolean invert = false;
 	
 	@Override
 	public double getMaximum() {
@@ -164,7 +140,7 @@ public class SpriteBarWidget extends BarWidget {
 		setCurrent(() -> current);
 	}
 	
-	public void setForegroundSprite(SpriteSupplier foregroundSpriteSupplier) {
+	public void setForegroundSprite(Supplier<Sprite> foregroundSpriteSupplier) {
 		this.foregroundSpriteSupplier = foregroundSpriteSupplier;
 		
 		setForegroundTexture(() -> new TiledSpriteTexture(getForegroundSprite()));
@@ -174,7 +150,7 @@ public class SpriteBarWidget extends BarWidget {
 		setForegroundSprite(() -> foregroundSprite);
 	}
 	
-	public void setBackgroundSprite(SpriteSupplier backgroundSpriteSupplier) {
+	public void setBackgroundSprite(Supplier<Sprite> backgroundSpriteSupplier) {
 		this.backgroundSpriteSupplier = backgroundSpriteSupplier;
 		
 		setBackgroundTexture(() -> new TiledSpriteTexture(getBackgroundSprite()));
@@ -184,7 +160,7 @@ public class SpriteBarWidget extends BarWidget {
 		setBackgroundSprite(() -> backgroundSprite);
 	}
 	
-	public void setForegroundTexture(TextureSupplier foregroundTextureSupplier) {
+	public void setForegroundTexture(Supplier<Texture> foregroundTextureSupplier) {
 		this.foregroundTextureSupplier = foregroundTextureSupplier;
 	}
 	
@@ -192,7 +168,7 @@ public class SpriteBarWidget extends BarWidget {
 		setForegroundTexture(() -> foregroundTexture);
 	}
 	
-	public void setBackgroundTexture(TextureSupplier backgroundTextureSupplier) {
+	public void setBackgroundTexture(Supplier<Texture> backgroundTextureSupplier) {
 		this.backgroundTextureSupplier = backgroundTextureSupplier;
 	}
 	

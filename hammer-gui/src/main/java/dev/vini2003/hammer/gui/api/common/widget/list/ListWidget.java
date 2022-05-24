@@ -8,11 +8,7 @@ import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.cache.Cached;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
-import dev.vini2003.hammer.core.api.common.math.shape.modifier.TranslateModifier;
-import dev.vini2003.hammer.core.api.common.supplier.TextureSupplier;
 import dev.vini2003.hammer.gui.api.common.event.*;
-import dev.vini2003.hammer.gui.api.common.event.annotation.EventSubscriber;
-import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -20,15 +16,16 @@ import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Supplier;
 
 public class ListWidget extends Widget implements WidgetCollection {
 	public static final Texture STANDARD_SCROLLBAR_TEXTURE = new PartitionedTexture(HC.id("textures/widget/scrollbar.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 	public static final Texture STANDARD_SCROLLER_TEXTURE = new PartitionedTexture(HC.id("textures/widget/scroller.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.11F);
 	public static final Texture STANDARD_FOCUSED_SCROLLER_TEXTURE = new PartitionedTexture(HC.id("textures/widget/scroller_focus.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.11F);
 	
-	protected TextureSupplier scrollbarTexture = () -> STANDARD_SCROLLBAR_TEXTURE;
-	protected TextureSupplier scrollerTexture = () -> STANDARD_SCROLLER_TEXTURE;
-	protected TextureSupplier focusedScrollerTexture = () -> STANDARD_FOCUSED_SCROLLER_TEXTURE;
+	protected Supplier<Texture> scrollbarTexture = () -> STANDARD_SCROLLBAR_TEXTURE;
+	protected Supplier<Texture> scrollerTexture = () -> STANDARD_SCROLLER_TEXTURE;
+	protected Supplier<Texture> focusedScrollerTexture = () -> STANDARD_FOCUSED_SCROLLER_TEXTURE;
 	
 	protected Collection<Widget> widgets = new ArrayList<>();
 	

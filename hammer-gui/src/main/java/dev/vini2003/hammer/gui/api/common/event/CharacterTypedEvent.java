@@ -11,7 +11,7 @@ import net.minecraft.network.PacketByteBuf;
  *
  * <p><b>This event is disapatched even when the mouse is outside the associated widget's boundaries - for that, check the widget's {@link Widget#isFocused()}!</b></p>
  */
-public record CharacterTypedEvent(char character, int keyCode) implements Event {
+public record CharacterTypedEvent(char character, int keyModifiers) implements Event {
 	@Override
 	public EventType type() {
 		return EventType.CHARACTER_TYPED;
@@ -23,7 +23,7 @@ public record CharacterTypedEvent(char character, int keyCode) implements Event 
 		
 		buf.writeEnumConstant(type());
 		buf.writeChar(character);
-		buf.writeInt(keyCode);
+		buf.writeInt(keyModifiers);
 		
 		return buf;
 	}

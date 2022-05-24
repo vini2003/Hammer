@@ -27,4 +27,20 @@ public class TextWidget extends Widget {
 			}
 		}
 	}
+	
+	public void setText(Supplier<Text> text) {
+		this.text = text;
+	}
+	
+	public void setText(Text text) {
+		setText(() -> text);
+	}
+	
+	public void setShadow(boolean shadow) {
+		this.shadow = shadow;
+	}
+	
+	public void setColor(int color) {
+		this.color = color;
+	}
 }

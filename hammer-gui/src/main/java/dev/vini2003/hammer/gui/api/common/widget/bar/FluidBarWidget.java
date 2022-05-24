@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.api.client.scissor.Scissors;
 import dev.vini2003.hammer.core.api.client.texture.TiledFluidTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
-import dev.vini2003.hammer.core.api.common.supplier.TextureSupplier;
 import dev.vini2003.hammer.core.api.common.util.FluidTextUtil;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
+import dev.vini2003.hammer.gui.api.common.event.AddedEvent;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.minecraft.client.gui.screen.Screen;
@@ -20,8 +20,8 @@ public class FluidBarWidget extends BarWidget {
 	protected DoubleSupplier maximumSupplier = () -> 1.0D;
 	protected DoubleSupplier currentSupplier = () -> 0.5D;
 	
-	protected TextureSupplier foregroundTexture = () -> STANDARD_FOREGROUND_TEXTURE;
-	protected TextureSupplier backgroundTexture = () -> STANDARD_BACKGROUND_TEXTURE;
+	protected Supplier<Texture> foregroundTexture = () -> STANDARD_FOREGROUND_TEXTURE;
+	protected Supplier<Texture> backgroundTexture = () -> STANDARD_BACKGROUND_TEXTURE;
 	
 	protected Supplier<StorageView<FluidVariant>> storageView = () -> null;
 	
@@ -132,7 +132,7 @@ public class FluidBarWidget extends BarWidget {
 		setCurrent(() -> current);
 	}
 
-	public void setForegroundTexture(TextureSupplier foregroundTextureSupplier) {
+	public void setForegroundTexture(Supplier<Texture> foregroundTextureSupplier) {
 		this.foregroundTexture = foregroundTextureSupplier;
 	}
 	
@@ -140,7 +140,7 @@ public class FluidBarWidget extends BarWidget {
 		setForegroundTexture(() -> foregroundTexture);
 	}
 
-	public void setBackgroundTexture(TextureSupplier backgroundTextureSupplier) {
+	public void setBackgroundTexture(Supplier<Texture> backgroundTextureSupplier) {
 		this.backgroundTexture = backgroundTextureSupplier;
 	}
 	

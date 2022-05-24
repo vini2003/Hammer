@@ -127,8 +127,8 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 	
 	@Nullable
 	@Override
-	public Integer getId() {
-		return null;
+	public int getSyncId() {
+		return -1;
 	}
 	
 	@Nullable

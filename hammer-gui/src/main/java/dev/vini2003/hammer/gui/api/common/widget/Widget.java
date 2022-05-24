@@ -5,9 +5,8 @@ import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.position.Positioned;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.math.size.Sized;
-import dev.vini2003.hammer.core.api.common.supplier.TooltipSupplier;
+import dev.vini2003.hammer.core.api.common.tick.Tickable;
 import dev.vini2003.hammer.gui.api.common.event.*;
-import dev.vini2003.hammer.gui.api.common.event.annotation.EventSubscriber;
 import dev.vini2003.hammer.gui.api.common.event.base.Event;
 import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.listener.EventListener;
@@ -16,8 +15,9 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 import java.util.*;
+import java.util.function.Supplier;
 
-public abstract class Widget implements Positioned, Sized, EventListener {
+public abstract class Widget implements Positioned, Sized, EventListener, Tickable {
 	protected Position position;
 	protected Size size;
 	
@@ -26,7 +26,7 @@ public abstract class Widget implements Positioned, Sized, EventListener {
 	
 	protected Widget parent;
 	
-	protected TooltipSupplier tooltipSupplier;
+	protected Supplier<List<Text>> tooltipSupplier;
 	
 	protected boolean hidden = false;
 	protected boolean focused = false;
@@ -116,24 +116,6 @@ public abstract class Widget implements Positioned, Sized, EventListener {
 	}
 	
 	/**
-	 * Adds this widget's annotated listeners.
-	 */
-	public void addAnnotatedListeners() {
-		Arrays.stream(getClass().getMethods()).filter(method -> {
-			return method.isAnnotationPresent(EventSubscriber.class);
-		}).forEach(method -> {
-			var annotation = method.getAnnotation(EventSubscriber.class);
-			
-			onEvent(annotation.type(), (event) -> {
-				try {
-					method.invoke(event);
-				} catch (Exception ignored) {
-				}
-			});
-		});
-	}
-	
-	/**
 	 * <p>Adds a listener for a given event type to this widget.</p>
 	 *
 	 * @param type the type.
@@ -206,7 +188,7 @@ public abstract class Widget implements Positioned, Sized, EventListener {
 	 * @param y the point's Y component.
 	 * @return the result.
 	 */
-	protected boolean isPointWithin(float x, float y) {
+	public boolean isPointWithin(float x, float y) {
 		return x > getX() && x < getX() + getWidth() && y > getY() && y < getY() + getHeight();
 	}
 	
@@ -223,7 +205,7 @@ public abstract class Widget implements Positioned, Sized, EventListener {
 	 * Returns this widget's tooltips.
 	 * @return the tooltips.
 	 */
-	protected Collection<Text> getTooltips() {
+	public Collection<Text> getTooltips() {
 		if (tooltipSupplier != null) {
 			return tooltipSupplier.get();
 		}
@@ -233,7 +215,7 @@ public abstract class Widget implements Positioned, Sized, EventListener {
 	
 	@Override
 	public Position getPosition() {
-		return null;
+		return position;
 	}
 	
 	@Override
@@ -279,11 +261,11 @@ public abstract class Widget implements Positioned, Sized, EventListener {
 		this.parent = parent;
 	}
 	
-	public TooltipSupplier getTooltipSupplier() {
+	public Supplier<List<Text>> getTooltipSupplier() {
 		return tooltipSupplier;
 	}
 	
-	public void setTooltipSupplier(TooltipSupplier tooltipSupplier) {
+	public void setTooltipSupplier(Supplier<List<Text>> tooltipSupplier) {
 		this.tooltipSupplier = tooltipSupplier;
 	}
 	

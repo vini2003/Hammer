@@ -24,6 +24,8 @@
 
 package dev.vini2003.hammer.chat.impl.common.accessor;
 
+import dev.vini2003.hammer.chat.api.common.channel.Channel;
+
 public interface PlayerEntityAccessor {
 	void hammer$setShowChat(boolean showChat);
 	
@@ -44,4 +46,8 @@ public interface PlayerEntityAccessor {
 	void hammer$setMuted(boolean muted);
 	
 	boolean hammer$isMuted();
+	
+	void hammer$setSelectedChannel(Channel selectedChannel);
+	
+	Channel hammer$getSelectedChannel();
 }

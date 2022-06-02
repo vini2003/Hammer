@@ -12,6 +12,8 @@
   "command.hammer.unmute.self": "You have been umuted",
   "command.hammer.unmute.other": "%s has been unmuted",
   "text.hammer.muted": "You are muted!",
+  "text.hammer.channel.none": "You are not in an any channels",
+  "text.hammer.channel.select": "Selected channel %s",
   "text.hammer.feedback.warning": "Command feedback/errors enabled!",
   "text.hammer.feedback.toggle": "Use /toggle_feedback to toggle.",
   "text.hammer.chat.warning": "Chat muted!",

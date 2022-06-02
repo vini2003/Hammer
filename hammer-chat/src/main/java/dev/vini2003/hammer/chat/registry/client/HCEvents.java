@@ -26,20 +26,44 @@ package dev.vini2003.hammer.chat.registry.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
+import dev.vini2003.hammer.chat.registry.common.HCNetworking;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 
 public class HCEvents {
+	private static long LAST_TAB_MS = System.currentTimeMillis();
+	
 	public static void init() {
 		HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
 			var client = InstanceUtil.getClient();
+			
+			var isPageUpPressed = InputUtil.isKeyPressed(client.getWindow().getHandle(), GLFW.GLFW_KEY_PAGE_UP);
+			var isPageDownPressed = InputUtil.isKeyPressed(client.getWindow().getHandle(), GLFW.GLFW_KEY_PAGE_DOWN);
+			
+			if (isPageUpPressed || isPageDownPressed) {
+				var currentTabMs = System.currentTimeMillis();
+				
+				if (currentTabMs - LAST_TAB_MS > 400) {
+					var buf = PacketByteBufs.create();
+					
+					buf.writeBoolean(isPageUpPressed);
+					
+					ClientPlayNetworking.send(HCNetworking.SWITCH_SELECTED_CHANNEL, buf);
+					
+					LAST_TAB_MS = currentTabMs;
+				}
+			}
 			
 			if (ChatUtil.shouldShowWarnings(client.player)) {
 				var window = client.getWindow();

@@ -28,6 +28,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import dev.vini2003.hammer.chat.api.common.manager.ChannelManager;
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
+import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
 import dev.vini2003.hammer.core.api.common.event.ChatEvents;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -50,29 +51,10 @@ public class HCEvents {
 				return TypedActionResult.pass(message);
 			}
 			
-			var ourChannels = 0;
-			var theirChannels = 0;
+			var ourChannel = ((PlayerEntityAccessor) us).hammer$getSelectedChannel();
+			var theirChannel = ((PlayerEntityAccessor) them).hammer$getSelectedChannel();
 			
-			var shared = false;
-			
-			for (var channel : ChannelManager.channels()) {
-				var o = ourChannels;
-				var t = theirChannels;
-				
-				if (channel.isIn(us)) {
-					++ourChannels;
-				}
-				
-				if (channel.isIn(them)) {
-					++theirChannels;
-				}
-				
-				if (ourChannels != o && theirChannels != t) {
-					shared = true;
-				}
-			}
-			
-			if ((ourChannels != 0 || theirChannels != 0) && !shared) {
+			if (ourChannel != theirChannel) {
 				return TypedActionResult.fail(message);
 			}
 			

@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.chat.mixin.common;
 
+import dev.vini2003.hammer.chat.api.common.channel.Channel;
 import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -55,6 +56,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	
 	@Unique
 	private static final TrackedData<Boolean> MUTED = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	
+	private Channel hammer$selectedChannel = null;
 	
 	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
@@ -151,5 +154,15 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	@Override
 	public boolean hammer$isMuted() {
 		return dataTracker.get(MUTED);
+	}
+	
+	@Override
+	public void hammer$setSelectedChannel(Channel hammer$selectedChannel) {
+		this.hammer$selectedChannel = hammer$selectedChannel;
+	}
+	
+	@Override
+	public Channel hammer$getSelectedChannel() {
+		return hammer$selectedChannel;
 	}
 }

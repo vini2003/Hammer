@@ -78,7 +78,7 @@ public class HCNetworking {
 					
 					((PlayerEntityAccessor) player).hammer$setSelectedChannel(selectedChannel);
 					
-					player.sendMessage(new TranslatableText("text.hammer.channel.select", new LiteralText("#" + selectedChannel.getName()).formatted(Formatting.DARK_GRAY)), false);
+					player.sendMessage(new TranslatableText("text.hammer.channel.select.self", new LiteralText("#" + selectedChannel.getName()).formatted(Formatting.DARK_GRAY)), false);
 				}
 			});
 		});

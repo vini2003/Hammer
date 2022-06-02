@@ -23,7 +23,7 @@ public class ItemWidget extends Widget {
 			var item = this.item.get();
 			
 			if (item == Items.AIR) {
-				return ImmutableList.of(TextUtil.EMPTY);
+				return ImmutableList.of(TextUtil.getEmpty());
 			} else {
 				var client = InstanceUtil.getClient();
 				

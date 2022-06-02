@@ -18,8 +18,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 	@Override
 	protected void init() {
 		handler.getChildren().clear();
-		
-		handler.slots.clear();
+		handler.getSlots().clear();
 		
 		backgroundWidth = width;
 		backgroundHeight = height;

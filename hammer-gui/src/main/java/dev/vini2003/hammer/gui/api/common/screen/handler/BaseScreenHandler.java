@@ -126,6 +126,10 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 		}
 	}
 	
+	public Slot addSlot(Slot slot) {
+		return super.addSlot(slot);
+	}
+	
 	public void removeSlot(Slot slot) {
 		var id = slot.id;
 		
@@ -147,6 +151,10 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 	
 	public PlayerEntity getPlayer() {
 		return player;
+	}
+	
+	public Collection<Slot> getSlots() {
+		return slots;
 	}
 	
 	@Override

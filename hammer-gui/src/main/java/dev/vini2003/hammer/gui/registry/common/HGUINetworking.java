@@ -19,8 +19,7 @@ public class HGUINetworking {
 				var screenHandler = (BaseScreenHandler) player.currentScreenHandler;
 				
 				screenHandler.getChildren().clear();
-				
-				screenHandler.slots.clear();
+				screenHandler.getSlots().clear();
 				
 				screenHandler.init(width, height);
 			});

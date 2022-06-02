@@ -1,36 +1,46 @@
 package dev.vini2003.hammer.chat.api.common.util;
 
-import dev.vini2003.hammer.chat.registry.common.HCNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.server.network.ServerPlayerEntity;
+import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class ChatUtil {
-	public static void toggleChat(ServerPlayerEntity player, Boolean state) {
-		var buf = PacketByteBufs.create();
-		buf.writeBoolean(state);
-		
-		ServerPlayNetworking.send(player, HCNetworking.TOGGLE_CHAT, buf);
+	public static void setShowChat(PlayerEntity player, boolean showChat) {
+		((PlayerEntityAccessor) player).hammer$setShowChat(showChat);
 	}
 	
-	public static void toggleGlobalChat(ServerPlayerEntity player, Boolean state) {
-		var buf = PacketByteBufs.create();
-		buf.writeBoolean(state);
-		
-		ServerPlayNetworking.send(player, HCNetworking.TOGGLE_GLOBAL_CHAT, buf);
+	public static boolean shouldShowChat(PlayerEntity player) {
+		return ((PlayerEntityAccessor) player).hammer$shouldShowChat();
 	}
 	
-	public static void toggleFeedback(ServerPlayerEntity player, Boolean state) {
-		var buf = PacketByteBufs.create();
-		buf.writeBoolean(state);
-		
-		ServerPlayNetworking.send(player, HCNetworking.TOGGLE_FEEDBACK, buf);
+	public static void setShowGlobalChat(PlayerEntity player, boolean showGlobalChat) {
+		((PlayerEntityAccessor) player).hammer$setShowGlobalChat(showGlobalChat);
 	}
 	
-	public static void toggleWarnings(ServerPlayerEntity player, Boolean state) {
-		var buf = PacketByteBufs.create();
-		buf.writeBoolean(state);
-		
-		ServerPlayNetworking.send(player, HCNetworking.TOGGLE_WARNINGS, buf);
+	public static boolean shouldShowGlobalChat(PlayerEntity player) {
+		return ((PlayerEntityAccessor) player).hammer$shouldShowGlobalChat();
+	}
+	
+	public static void setShowCommandFeedback(PlayerEntity player, boolean showFeedback) {
+		((PlayerEntityAccessor) player).hammer$setShowCommandFeedback(showFeedback);
+	}
+	
+	public static boolean shouldShowCommandFeedback(PlayerEntity player) {
+		return ((PlayerEntityAccessor) player).hammer$shouldShowCommandFeedback();
+	}
+	
+	public static void setShowWarnings(PlayerEntity player, boolean showWarnings) {
+		((PlayerEntityAccessor) player).hammer$setShowWarnings(showWarnings);
+	}
+	
+	public static boolean shouldShowWarnings(PlayerEntity player) {
+		return ((PlayerEntityAccessor) player).hammer$shouldShowWarnings();
+	}
+	
+	public static void setMuted(PlayerEntity player, boolean muted) {
+		((PlayerEntityAccessor) player).hammer$setMuted(muted);
+	}
+	
+	public static boolean isMuted(PlayerEntity player) {
+		return ((PlayerEntityAccessor) player).hammer$isMuted();
 	}
 }

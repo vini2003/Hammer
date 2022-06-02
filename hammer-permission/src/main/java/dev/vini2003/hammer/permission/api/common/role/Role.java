@@ -1,7 +1,7 @@
 package dev.vini2003.hammer.permission.api.common.role;
 
 import dev.vini2003.hammer.core.api.common.cache.Cached;
-import dev.vini2003.hammer.permission.api.common.util.PermissionUtils;
+import dev.vini2003.hammer.permission.api.common.util.PermUtil;
 import dev.vini2003.hammer.permission.registry.common.HPNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -22,11 +22,39 @@ public class Role {
 	private int prefixWeight = -1;
 	private int prefixColor = -1;
 	
-	private Cached<Group> group = new Cached<>(() -> PermissionUtils.getOrCreateGroup(name));
+	private boolean init = false;
 	
-	private Cached<InheritanceNode> inheritanceNode = new Cached<>(() -> InheritanceNode.builder(group.get()).build());
-	private Cached<PermissionNode> permissionNode = new Cached<>(() -> PermissionNode.builder("hammer." + name).value(true).build());
-	private Cached<PrefixNode> prefixNode = new Cached<>(() -> PrefixNode.builder(prefix, prefixWeight).build());
+	private Cached<Group> group = new Cached<>(() -> {
+		if (!init) {
+			init();
+		}
+		
+		return PermUtil.getOrCreateGroup(name);
+	});
+	
+	private Cached<InheritanceNode> inheritanceNode = new Cached<>(() -> {
+		if (!init) {
+			init();
+		}
+		
+		return InheritanceNode.builder(group.get()).build();
+	});
+	
+	private Cached<PermissionNode> permissionNode = new Cached<>(() -> {
+		if (!init) {
+			init();
+		}
+		
+		return PermissionNode.builder("hammer." + name).value(true).build();
+	});
+	
+	private Cached<PrefixNode> prefixNode = new Cached<>(() -> {
+		if (!init) {
+			init();
+		}
+		
+		return PrefixNode.builder(prefix, prefixWeight).build();
+	});
 	
 	private Collection<UUID> holders = new ArrayList<>();
 	
@@ -43,6 +71,8 @@ public class Role {
 	}
 	
 	public void init() {
+		init = true;
+		
 		var data = group.get().data();
 		
 		if (prefixNode.get() != null) {
@@ -52,11 +82,11 @@ public class Role {
 		data.add(permissionNode.get());
 		data.add(inheritanceNode.get());
 		
-		PermissionUtils.saveGroup(group.get());
+		PermUtil.saveGroup(group.get());
 	}
 	
 	public boolean isIn(PlayerEntity player) {
-		return PermissionUtils.hasPermission(player, inheritanceNode.get().getKey());
+		return PermUtil.hasPermission(player, inheritanceNode.get().getKey());
 	}
 	
 	public void addToClient(UUID uuid) {
@@ -65,7 +95,7 @@ public class Role {
 	
 	public void addTo(PlayerEntity player) {
 		if (!player.world.isClient) {
-			PermissionUtils.addNode(player.getUuid(), inheritanceNode.get());
+			PermUtil.addNode(player.getUuid(), inheritanceNode.get());
 			
 			var buf = PacketByteBufs.create();
 			buf.writeString(name);
@@ -85,7 +115,7 @@ public class Role {
 	
 	public void removeFrom(PlayerEntity player) {
 		if (!player.world.isClient) {
-			PermissionUtils.removeNode(player.getUuid(), inheritanceNode.get());
+			PermUtil.removeNode(player.getUuid(), inheritanceNode.get());
 			
 			var buf = PacketByteBufs.create();
 			buf.writeString(name);

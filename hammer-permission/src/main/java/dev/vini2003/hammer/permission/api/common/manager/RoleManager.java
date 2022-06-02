@@ -56,8 +56,8 @@ public class RoleManager {
 		return maxRole != null ? TextColor.fromRgb(maxRole.getPrefixColor()) : null;
 	}
 	
-	public static Iterator<Role> roles() {
-		return ROLES.iterator();
+	public static Collection<Role> roles() {
+		return ROLES;
 	}
 	
 	private static void syncWith(List<ServerPlayerEntity> players) {

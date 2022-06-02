@@ -1,6 +1,12 @@
 dependencies {
     // Hammer Core
     implementation project(path: ":hammer-core", configuration: "namedElements")
+
+	// Hammer Adventure
+	implementation project(path: ":hammer-adventure", configuration: "namedElements")
+
+	// Hammer Permission
+	implementation project(path: ":hammer-permission", configuration: "namedElements")
 }
 
 jar {

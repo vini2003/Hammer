@@ -202,7 +202,7 @@ public class TabWidget extends Widget implements WidgetCollection {
 		}
 	}
 	
-	class TabCollection extends Widget implements WidgetCollection {
+	public static class TabCollection extends Widget implements WidgetCollection {
 		protected Collection<Widget> children;
 		
 		protected int number;

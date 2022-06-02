@@ -1,5 +1,6 @@
 package dev.vini2003.hammer.permission;
 
+import dev.vini2003.hammer.permission.registry.common.HPCommands;
 import dev.vini2003.hammer.permission.registry.common.HPEvents;
 import dev.vini2003.hammer.permission.registry.common.HPNetworking;
 import net.fabricmc.api.ModInitializer;
@@ -17,5 +18,6 @@ public class HP implements ModInitializer {
 	public void onInitialize() {
 		HPEvents.init();
 		HPNetworking.init();
+		HPCommands.init();
 	}
 }

@@ -6,6 +6,7 @@ import dev.vini2003.hammer.gui.api.common.event.*;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +15,10 @@ public abstract class BaseScreen extends Screen implements WidgetCollection.Root
 	protected Collection<Widget> children = new ArrayList<>();
 	
 	protected Shape shape = new Shape.ScreenRectangle(0.0F, 0.0F);
+	
+	protected BaseScreen(Text text) {
+		super(text);
+	}
 	
 	public abstract void init(int width, int height);
 	

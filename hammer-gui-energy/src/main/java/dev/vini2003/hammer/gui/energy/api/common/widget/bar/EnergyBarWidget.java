@@ -24,7 +24,7 @@ public class EnergyBarWidget extends ImageBarWidget {
 		
 		setTooltipSupplier(() -> {
 			if (storage.get() == null) {
-				return ImmutableList.of(TextUtil.EMPTY);
+				return ImmutableList.of(TextUtil.getEmpty());
 			}
 			
 			if (Screen.hasShiftDown()) {

@@ -4,14 +4,15 @@
   "package": "dev.vini2003.hammer.core.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "dev.vini2003.hammer.core.mixin.common.EndPortalBlockMixin",
-    "dev.vini2003.hammer.core.mixin.common.LivingEntityMixin",
-    "dev.vini2003.hammer.core.mixin.common.NetherPortalBlockMixin",
-    "dev.vini2003.hammer.core.mixin.common.PlayerEntityMixin",
-    "dev.vini2003.hammer.core.mixin.common.ServerPlayNetworkHandlerMixin"
+    "common.EndPortalBlockMixin",
+    "common.LivingEntityMixin",
+    "common.NetherPortalBlockMixin",
+    "common.PlayerEntityMixin",
+    "common.ServerPlayNetworkHandlerMixin",
+    "common.ServerPlayerEntityMixin"
   ],
   "client": [
-    "dev.vini2003.hammer.core.mixin.client.WorldRendererMixin"
+    "client.WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

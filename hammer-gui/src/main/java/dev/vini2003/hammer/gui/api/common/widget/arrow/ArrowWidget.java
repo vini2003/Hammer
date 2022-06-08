@@ -50,20 +50,16 @@ public class ArrowWidget extends ImageBarWidget {
 	public void setHorizontal(boolean horizontal) {
 		super.setHorizontal(horizontal);
 		
-		if (horizontal && foregroundTexture.get() == STANDARD_HORIZONTAL_FOREGROUND_TEXTURE && backgroundTexture.get() == STANDARD_HORIZONTAL_BACKGROUND_TEXTURE) {
-			foregroundTexture = () -> STANDARD_HORIZONTAL_FOREGROUND_TEXTURE;
-			backgroundTexture = () -> STANDARD_HORIZONTAL_BACKGROUND_TEXTURE;
-		}
+		foregroundTexture = () -> STANDARD_HORIZONTAL_FOREGROUND_TEXTURE;
+		backgroundTexture = () -> STANDARD_HORIZONTAL_BACKGROUND_TEXTURE;
 	}
 	
 	@Override
 	public void setVertical(boolean vertical) {
 		super.setVertical(vertical);
 		
-		if (vertical && foregroundTexture.get() == STANDARD_VERTICAL_FOREGROUND_TEXTURE && backgroundTexture.get() == STANDARD_VERTICAL_BACKGROUND_TEXTURE) {
-			foregroundTexture = () -> STANDARD_VERTICAL_FOREGROUND_TEXTURE;
-			backgroundTexture = () -> STANDARD_VERTICAL_BACKGROUND_TEXTURE;
-		}
+		foregroundTexture = () -> STANDARD_VERTICAL_FOREGROUND_TEXTURE;
+		backgroundTexture = () -> STANDARD_VERTICAL_BACKGROUND_TEXTURE;
 	}
 }
 

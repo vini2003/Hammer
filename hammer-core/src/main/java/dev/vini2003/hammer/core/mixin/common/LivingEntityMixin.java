@@ -44,30 +44,24 @@ public abstract class LivingEntityMixin extends Entity {
 	
 	@Inject(at = @At("RETURN"), method = "computeFallDamage", cancellable = true)
 	private void hammer$computeFallDamage(float fallDistance, float damageMultiplier, CallbackInfoReturnable<Integer> cir) {
-		if (HCConfig.ENABLE_FALL_DAMAGE_MULTIPLIER) {
-			if (this instanceof PlayerEntityAccessor player) {
-				cir.setReturnValue((int) (cir.getReturnValueI() * player.hammer$getFallDamageMultiplier()));
-			}
+		if (this instanceof PlayerEntityAccessor player) {
+			cir.setReturnValue((int) (cir.getReturnValueI() * player.hammer$getFallDamageMultiplier()));
 		}
 	}
 	
 	@Inject(at = @At("RETURN"), method = "getJumpVelocity", cancellable = true)
 	private void hammer$getJumpVelocity(CallbackInfoReturnable<Float> cir) {
-		if (HCConfig.ENABLE_JUMP_MULTIPLIER) {
-			if (this instanceof PlayerEntityAccessor player) {
-				cir.setReturnValue(cir.getReturnValueF() * player.hammer$getJumpMultiplier());
-			}
+		if (this instanceof PlayerEntityAccessor player) {
+			cir.setReturnValue(cir.getReturnValueF() * player.hammer$getJumpMultiplier());
 		}
 	}
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), method = "heal")
 	private void hammer$heal_setHealth(LivingEntity instance, float health) {
-		if (HCConfig.ENABLE_HEAL_MULTIPLIER) {
-			if (this instanceof PlayerEntityAccessor player) {
-				var amount = health - instance.getHealth();
-				
-				instance.setHealth(instance.getHealth() + (amount * player.hammer$getHealMultiplier()));
-			}
+		if (this instanceof PlayerEntityAccessor player) {
+			var amount = health - instance.getHealth();
+			
+			instance.setHealth(instance.getHealth() + (amount * player.hammer$getHealMultiplier()));
 		}
 	}
 }

@@ -42,20 +42,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEntityAccessor {
-	@Unique
-	private static final TrackedData<Boolean> SHOW_CHAT = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-	
-	@Unique
-	private static final TrackedData<Boolean> SHOW_GLOBAL_CHAT = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-	
-	@Unique
-	private static final TrackedData<Boolean> SHOW_COMMAND_FEEDBACK = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-	
-	@Unique
-	private static final TrackedData<Boolean> SHOW_WARNINGS = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-	
-	@Unique
-	private static final TrackedData<Boolean> MUTED = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	private static final TrackedData<Boolean> HAMMER$SHOW_CHAT = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	private static final TrackedData<Boolean> HAMMER$SHOW_GLOBAL_CHAT = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	private static final TrackedData<Boolean> HAMMER$SHOW_COMMAND_FEEDBACK = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	private static final TrackedData<Boolean> HAMMER$SHOW_WARNINGS = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	private static final TrackedData<Boolean> HAMMER$MUTED = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	
 	private Channel hammer$selectedChannel = null;
 	
@@ -65,95 +56,95 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	
 	@Inject(at = @At("HEAD"), method = "initDataTracker")
 	private void hammer$initDataTracker(CallbackInfo ci) {
-		dataTracker.startTracking(SHOW_CHAT, true);
-		dataTracker.startTracking(SHOW_GLOBAL_CHAT, true);
-		dataTracker.startTracking(SHOW_COMMAND_FEEDBACK, true);
-		dataTracker.startTracking(SHOW_WARNINGS, true);
+		dataTracker.startTracking(HAMMER$SHOW_CHAT, true);
+		dataTracker.startTracking(HAMMER$SHOW_GLOBAL_CHAT, true);
+		dataTracker.startTracking(HAMMER$SHOW_COMMAND_FEEDBACK, true);
+		dataTracker.startTracking(HAMMER$SHOW_WARNINGS, true);
 		
-		dataTracker.startTracking(MUTED, false);
+		dataTracker.startTracking(HAMMER$MUTED, false);
 	}
 	
 	@Inject(at = @At("HEAD"), method = "writeCustomDataToNbt")
 	private void hammer$writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
-		nbt.putBoolean("Hammer$ShowChat", dataTracker.get(SHOW_CHAT));
-		nbt.putBoolean("Hammer$ShowGlobalChat", dataTracker.get(SHOW_GLOBAL_CHAT));
-		nbt.putBoolean("Hammer$ShowCommandFeedback", dataTracker.get(SHOW_COMMAND_FEEDBACK));
-		nbt.putBoolean("Hammer$ShowWarnings", dataTracker.get(SHOW_WARNINGS));
+		nbt.putBoolean("Hammer$ShowChat", dataTracker.get(HAMMER$SHOW_CHAT));
+		nbt.putBoolean("Hammer$ShowGlobalChat", dataTracker.get(HAMMER$SHOW_GLOBAL_CHAT));
+		nbt.putBoolean("Hammer$ShowCommandFeedback", dataTracker.get(HAMMER$SHOW_COMMAND_FEEDBACK));
+		nbt.putBoolean("Hammer$ShowWarnings", dataTracker.get(HAMMER$SHOW_WARNINGS));
 		
-		nbt.putBoolean("Hammer$Muted", dataTracker.get(MUTED));
+		nbt.putBoolean("Hammer$Muted", dataTracker.get(HAMMER$MUTED));
 	}
 	
 	@Inject(at = @At("HEAD"), method = "readCustomDataFromNbt")
 	private void hammer$readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
 		if (nbt.contains("Hammer$ShowChat")) {
-			dataTracker.set(SHOW_CHAT, nbt.getBoolean("Hammer$ShowChat"));
+			dataTracker.set(HAMMER$SHOW_CHAT, nbt.getBoolean("Hammer$ShowChat"));
 		}
 		
 		if (nbt.contains("Hammer$ShowGlobalChat")) {
-			dataTracker.set(SHOW_GLOBAL_CHAT, nbt.getBoolean("Hammer$ShowGlobalChat"));
+			dataTracker.set(HAMMER$SHOW_GLOBAL_CHAT, nbt.getBoolean("Hammer$ShowGlobalChat"));
 		}
 		
 		if (nbt.contains("Hammer$ShowCommandFeedback")) {
-			dataTracker.set(SHOW_COMMAND_FEEDBACK, nbt.getBoolean("Hammer$ShowCommandFeedback"));
+			dataTracker.set(HAMMER$SHOW_COMMAND_FEEDBACK, nbt.getBoolean("Hammer$ShowCommandFeedback"));
 		}
 		
 		if (nbt.contains("Hammer$ShowWarnings")) {
-			dataTracker.set(SHOW_WARNINGS, nbt.getBoolean("Hammer$ShowWarnings"));
+			dataTracker.set(HAMMER$SHOW_WARNINGS, nbt.getBoolean("Hammer$ShowWarnings"));
 		}
 		
 		if (nbt.contains("Hammer$Muted")) {
-			dataTracker.set(MUTED, nbt.getBoolean("Hammer$Muted"));
+			dataTracker.set(HAMMER$MUTED, nbt.getBoolean("Hammer$Muted"));
 		}
 	}
 	
 	@Override
 	public void hammer$setShowChat(boolean showChat) {
-		dataTracker.set(SHOW_CHAT, showChat);
+		dataTracker.set(HAMMER$SHOW_CHAT, showChat);
 	}
 	
 	@Override
 	public boolean hammer$shouldShowChat() {
-		return dataTracker.get(SHOW_CHAT);
+		return dataTracker.get(HAMMER$SHOW_CHAT);
 	}
 	
 	@Override
 	public void hammer$setShowGlobalChat(boolean showGlobalChat) {
-		dataTracker.set(SHOW_GLOBAL_CHAT, showGlobalChat);
+		dataTracker.set(HAMMER$SHOW_GLOBAL_CHAT, showGlobalChat);
 	}
 	
 	@Override
 	public boolean hammer$shouldShowGlobalChat() {
-		return dataTracker.get(SHOW_GLOBAL_CHAT);
+		return dataTracker.get(HAMMER$SHOW_GLOBAL_CHAT);
 	}
 	
 	@Override
 	public void hammer$setShowCommandFeedback(boolean showFeedback) {
-		dataTracker.set(SHOW_COMMAND_FEEDBACK, showFeedback);
+		dataTracker.set(HAMMER$SHOW_COMMAND_FEEDBACK, showFeedback);
 	}
 	
 	@Override
 	public boolean hammer$shouldShowCommandFeedback() {
-		return dataTracker.get(SHOW_COMMAND_FEEDBACK);
+		return dataTracker.get(HAMMER$SHOW_COMMAND_FEEDBACK);
 	}
 	
 	@Override
 	public void hammer$setShowWarnings(boolean showWarnings) {
-		dataTracker.set(SHOW_WARNINGS, showWarnings);
+		dataTracker.set(HAMMER$SHOW_WARNINGS, showWarnings);
 	}
 	
 	@Override
 	public boolean hammer$shouldShowWarnings() {
-		return dataTracker.get(SHOW_WARNINGS);
+		return dataTracker.get(HAMMER$SHOW_WARNINGS);
 	}
 	
 	@Override
 	public void hammer$setMuted(boolean muted) {
-		dataTracker.set(MUTED, muted);
+		dataTracker.set(HAMMER$MUTED, muted);
 	}
 	
 	@Override
 	public boolean hammer$isMuted() {
-		return dataTracker.get(MUTED);
+		return dataTracker.get(HAMMER$MUTED);
 	}
 	
 	@Override

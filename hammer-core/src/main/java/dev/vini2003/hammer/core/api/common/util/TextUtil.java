@@ -64,7 +64,7 @@ public class TextUtil {
 	}
 	
 	public static Text getPercentage(Number a, Number b) {
-		return toLiteralText((int) ((float) a / (float) b * 100.0F) + "%").formatted(Formatting.GRAY);
+		return toLiteralText((int) (a.floatValue() / b.floatValue() * 100.0F) + "%").formatted(Formatting.GRAY);
 	}
 	
 	public static MutableText getModId(Identifier id) {

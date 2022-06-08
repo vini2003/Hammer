@@ -40,12 +40,8 @@ public record FocusGainedEvent() implements Event {
 	}
 	
 	@Override
-	public PacketByteBuf writeToBuf() {
-		var buf = PacketByteBufs.create();
-		
+	public void writeToBuf(PacketByteBuf buf) {
 		buf.writeEnumConstant(type());
-		
-		return buf;
 	}
 	
 	public static FocusGainedEvent readFromBuf(PacketByteBuf buf) {

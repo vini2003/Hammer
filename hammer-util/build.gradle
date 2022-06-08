@@ -1,6 +1,13 @@
 dependencies {
     // Hammer
     implementation project(path: ":hammer-core", configuration: "namedElements")
+
+	// Hammer Chat
+	implementation project(path: ":hammer-chat", configuration: "namedElements")
+}
+
+loom {
+	accessWidenerPath = file("src/main/resources/hammer.util.accesswidener")
 }
 
 jar {

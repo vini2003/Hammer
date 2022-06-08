@@ -6,7 +6,8 @@ dependencies {
     implementation project(path: ":hammer-adventure", configuration: "namedElements")
 
     // LuckPerms
-    modApi "net.luckperms:api:${luckPermsVersion}"
+	modApi "net.luckperms:api:${luckPermsVersion}"
+	include "net.luckperms:api:${luckPermsVersion}"
 }
 
 jar {

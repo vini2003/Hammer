@@ -42,15 +42,11 @@ public record MouseReleasedEvent(float x, float y, int button) implements Event 
 	}
 	
 	@Override
-	public PacketByteBuf writeToBuf() {
-		var buf = PacketByteBufs.create();
-		
+	public void writeToBuf(PacketByteBuf buf) {
 		buf.writeEnumConstant(type());
 		buf.writeFloat(x);
 		buf.writeFloat(y);
 		buf.writeInt(button);
-		
-		return buf;
 	}
 	
 	public static MouseReleasedEvent readFromBuf(PacketByteBuf buf) {

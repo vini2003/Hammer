@@ -42,15 +42,11 @@ public record KeyReleasedEvent(int keyCode, int scanCode, int keyModifiers) impl
 	}
 	
 	@Override
-	public PacketByteBuf writeToBuf() {
-		var buf = PacketByteBufs.create();
-		
+	public void writeToBuf(PacketByteBuf buf) {
 		buf.writeEnumConstant(type());
 		buf.writeInt(keyCode);
 		buf.writeInt(scanCode);
 		buf.writeInt(keyModifiers);
-		
-		return buf;
 	}
 	
 	public static KeyReleasedEvent readFromBuf(PacketByteBuf buf) {

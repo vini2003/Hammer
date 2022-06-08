@@ -25,8 +25,17 @@
 package dev.vini2003.hammer.core.api.common.math.shape.modifier;
 
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 
 @FunctionalInterface
 public interface Modifier {
-	Position modify(Position pos);
+	Position modifyEquation(Position pos);
+	
+	default Position modifyStartPos(Shape shape) {
+		return shape.getStartPos();
+	}
+	
+	default Position modifyEndPos(Shape shape) {
+		return shape.getEndPos();
+	}
 }

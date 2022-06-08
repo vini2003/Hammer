@@ -46,7 +46,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 	
 	protected Collection<Widget> children = new ArrayList<>();
 	
-	protected Shape shape = new Shape.ScreenRectangle(0.0F, 0.0F);
+	protected Shape shape = new Shape.Rectangle2D(0.0F, 0.0F);
 	
 	public BaseScreenHandler(@Nullable ScreenHandlerType<?> screenHandlerType, int syncId, PlayerEntity player) {
 		super(screenHandlerType, syncId);
@@ -82,7 +82,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 			}
 		}
 		
-		shape = new Shape.ScreenRectangle(maximumX - minimumX, maximumY - minimumY).translate(minimumX, minimumY, 0.0F);
+		shape = new Shape.Rectangle2D(maximumX - minimumX, maximumY - minimumY).translate(minimumX, minimumY, 0.0F);
 		
 		if (isClient()) {
 			onLayoutChangedClient();
@@ -150,6 +150,14 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 		}
 	}
 	
+	@Override
+	public void add(Widget child) {
+		child.setCollection(this);
+		child.setRootCollection(this);
+		
+		Root.super.add(child);
+	}
+	
 	public Slot addSlot(Slot slot) {
 		return super.addSlot(slot);
 	}
@@ -171,6 +179,10 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 		for (var child : getChildren()) {
 			child.tick();
 		}
+	}
+	
+	public Shape getShape() {
+		return shape;
 	}
 	
 	public PlayerEntity getPlayer() {

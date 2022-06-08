@@ -38,7 +38,7 @@ import java.util.Collection;
 public abstract class BaseScreen extends Screen implements WidgetCollection.Root, Tickable {
 	protected Collection<Widget> children = new ArrayList<>();
 	
-	protected Shape shape = new Shape.ScreenRectangle(0.0F, 0.0F);
+	protected Shape shape = new Shape.Rectangle2D(0.0F, 0.0F);
 	
 	protected BaseScreen(Text text) {
 		super(text);
@@ -87,7 +87,7 @@ public abstract class BaseScreen extends Screen implements WidgetCollection.Root
 			}
 		}
 		
-		shape = new Shape.ScreenRectangle(maximumX - minimumX, maximumY - minimumY).translate(minimumX, minimumY, 0.0F);
+		shape = new Shape.Rectangle2D(maximumX - minimumX, maximumY - minimumY).translate(minimumX, minimumY, 0.0F);
 	}
 	
 	@Override
@@ -177,5 +177,13 @@ public abstract class BaseScreen extends Screen implements WidgetCollection.Root
 	@Override
 	public boolean isClient() {
 		return true;
+	}
+	
+	@Override
+	public void add(Widget child) {
+		child.setCollection(this);
+		child.setRootCollection(this);
+		
+		Root.super.add(child);
 	}
 }

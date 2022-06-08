@@ -8,7 +8,8 @@
     "common.PlayerEntityMixin"
   ],
   "client": [
-    "client.InGameHudMixin"
+    "client.InGameHudMixin",
+    "client.ChatOptionsScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

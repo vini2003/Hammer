@@ -24,16 +24,32 @@
 
 package dev.vini2003.hammer.core.mixin.common;
 
+import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin {
+	@Shadow
+	public ServerPlayerEntity player;
+	
 	// Stop movement speed warnings!
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;isHost()Z"), method = "onPlayerMove")
 	private boolean hammer$onPlayerMove$isHost(ServerPlayNetworkHandler instance) {
 		return true;
+	}
+	
+	@Inject(at = @At("HEAD"), method = "onPlayerMove", cancellable = true)
+	private void hammer$onPlayerMove(PlayerMoveC2SPacket packet, CallbackInfo ci) {
+		if (PlayerUtil.isFrozen(player)) {
+			ci.cancel();
+		}
 	}
 }

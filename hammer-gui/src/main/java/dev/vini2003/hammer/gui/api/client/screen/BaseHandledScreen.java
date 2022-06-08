@@ -27,6 +27,9 @@ package dev.vini2003.hammer.gui.api.client.screen;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.gui.api.common.event.*;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
+import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
@@ -56,6 +59,12 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 		for (var child : handler.getAllChildren()) {
 			child.dispatchEvent(new LayoutChangedEvent());
 		}
+		
+		var buf = PacketByteBufs.create();
+		buf.writeInt(width);
+		buf.writeInt(height);
+		
+		ClientPlayNetworking.send(HGUINetworking.SYNC_SCREEN_HANDLER, buf);
 	}
 	
 	@Override
@@ -65,7 +74,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 	protected boolean isClickOutsideBounds(double mouseX, double mouseY, int left, int top, int button) {
 		for (var child : handler.getAllChildren()) {
 			if (child.isPointWithin((float) mouseX, (float) mouseY)) {
-				return true;
+				return false;
 			}
 		}
 		
@@ -160,7 +169,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 		
 		for (var child : handler.getAllChildren()) {
 			if (!child.isHidden() && child.isFocused()) {
-				renderTooltip(matrices, (List<Text>) child.getTooltips(), mouseX, mouseX);
+				renderTooltip(matrices, (List<Text>) child.getTooltips(), mouseX, mouseY);
 			}
 		}
 		

@@ -42,15 +42,11 @@ public record MouseScrolledEvent(float x, float y, double deltaY) implements Eve
 	}
 	
 	@Override
-	public PacketByteBuf writeToBuf() {
-		var buf = PacketByteBufs.create();
-		
+	public void writeToBuf(PacketByteBuf buf) {
 		buf.writeEnumConstant(type());
 		buf.writeFloat(x);
 		buf.writeFloat(y);
 		buf.writeDouble(deltaY);
-		
-		return buf;
 	}
 	
 	public static MouseScrolledEvent readFromBuf(PacketByteBuf buf) {

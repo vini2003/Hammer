@@ -13,6 +13,7 @@
   "license": "MIT",
   "icon": "assets/hammer/icon.png",
   "environment": "*",
+  "accessWidener": "hammer.chat.accesswidener",
   "entrypoints": {
     "main": [
       "dev.vini2003.hammer.chat.HC"

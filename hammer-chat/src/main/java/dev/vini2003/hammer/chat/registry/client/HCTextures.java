@@ -29,4 +29,6 @@ import net.minecraft.util.Identifier;
 
 public class HCTextures {
 	public static final Identifier WARNING = HC.id("textures/gui/warning.png");
+	
+	public static final Identifier MUTED = HC.id("textures/gui/muted.png");
 }

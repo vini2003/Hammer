@@ -36,7 +36,7 @@ public record AddedEvent(WidgetCollection.Root rootCollection, WidgetCollection 
 	}
 	
 	@Override
-	public PacketByteBuf writeToBuf() {
-		return null;
+	public void writeToBuf(PacketByteBuf buf) {
+		return;
 	}
 }

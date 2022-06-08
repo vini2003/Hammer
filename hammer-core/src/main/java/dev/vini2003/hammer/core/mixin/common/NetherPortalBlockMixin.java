@@ -35,6 +35,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class NetherPortalBlockMixin {
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;canUsePortals()Z"), method = "onEntityCollision")
 	private boolean hammer$onEntityCollision$canUsePortal(Entity instance) {
-		return instance.canUsePortals() && HCConfig.ENABLE_END_PORTAL;
+		return instance.canUsePortals() && HCConfig.ENABLE_END;
 	}
 }

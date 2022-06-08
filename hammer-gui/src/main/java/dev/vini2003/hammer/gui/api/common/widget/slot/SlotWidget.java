@@ -57,6 +57,16 @@ public class SlotWidget extends Widget {
 	
 	protected int index;
 	
+	public SlotWidget(int index, Inventory inventory, QuadFunction<Inventory, Integer, Integer, Integer, Slot> slotSupplier) {
+		super();
+		
+		this.index = index;
+		
+		this.inventory = inventory;
+		
+		this.slotSupplier = slotSupplier;
+	}
+	
 	public SlotWidget(Inventory inventory, int index, QuadFunction<Inventory, Integer, Integer, Integer, Slot> slotSupplier) {
 		super();
 		
@@ -92,36 +102,44 @@ public class SlotWidget extends Widget {
 	protected void onLayoutChanged(LayoutChangedEvent event) {
 		super.onLayoutChanged(event);
 		
-		updateSlot();
+		if (slot != null) {
+			updateSlot();
+		}
 	}
 	
 	@Override
 	public void setPosition(Position position) {
 		super.setPosition(new Position((int) position.getX(), (int) position.getY(), (int) position.getZ()));
 		
-		updateSlot();
+		if (slot != null) {
+			updateSlot();
+		}
 	}
 	
 	@Override
 	public void setSize(Size size) {
 		super.setSize(new Size((int) size.getWidth(), (int) size.getHeight(), (int) size.getLength()));
 		
-		updateSlot();
+		if (slot != null) {
+			updateSlot();
+		}
 	}
 	
 	@Override
 	public void setHidden(boolean hidden) {
 		super.setHidden(hidden);
 		
-		updateSlot();
+		if (slot != null) {
+			updateSlot();
+		}
 	}
 	
 	public int getSlotX() {
-		return (int) (getX() + getWidth() <= 18.0F ? 1.0F : getWidth() / 2.0F - 9.0F);
+		return (int) (getX() + (getWidth() <= 18.0F ? 1.0F : getWidth() / 2.0F - 9.0F));
 	}
 	
 	public int getSlotY() {
-		return (int) (getY() + getHeight() <= 18.0F ? 1.0F : getHeight() / 2.0F - 9.0F);
+		return (int) (getY() + (getHeight() <= 18.0F ? 1.0F : getHeight() / 2.0F - 9.0F));
 	}
 	
 	protected void updateSlot() {
@@ -151,7 +169,11 @@ public class SlotWidget extends Widget {
 	
 	@Override
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
-		texture.get().draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
+		var client = InstanceUtil.getClient();
+		
+		var screen = (HandledScreen<?>) client.currentScreen;
+		
+		texture.get().draw(matrices, provider, slot.x + screen.x - 1.0F, slot.y + screen.y + 1.0F, getWidth(), getHeight());
 	}
 	
 	public Slot getSlot() {

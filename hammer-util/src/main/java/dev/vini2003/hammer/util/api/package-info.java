@@ -22,18 +22,10 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.util.registry;
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+package dev.vini2003.hammer.util.api;
 
-import dev.vini2003.hammer.util.registry.common.HUEvents;
-import dev.vini2003.hammer.util.registry.common.HUNetworking;
-import net.fabricmc.api.ModInitializer;
-import org.jetbrains.annotations.ApiStatus;
+import net.minecraft.util.annotation.MethodsReturnNonnullByDefault;
 
-@ApiStatus.Internal
-public class HU implements ModInitializer {
-	@Override
-	public void onInitialize() {
-		HUEvents.init();
-		HUNetworking.init();
-	}
-}
+import javax.annotation.ParametersAreNonnullByDefault;

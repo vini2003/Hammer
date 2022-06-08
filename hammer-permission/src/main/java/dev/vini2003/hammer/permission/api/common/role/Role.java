@@ -128,6 +128,8 @@ public class Role {
 			for (var otherPlayer : player.getServer().getPlayerManager().getPlayerList()) {
 				ServerPlayNetworking.send(otherPlayer, HPNetworking.ADD_ROLE, PacketByteBufs.duplicate(buf));
 			}
+			
+			holders.add(player.getUuid());
 		} else {
 			addToClient(player.getUuid());
 		}
@@ -148,6 +150,8 @@ public class Role {
 			for (var otherPlayer : player.getServer().getPlayerManager().getPlayerList()) {
 				ServerPlayNetworking.send(otherPlayer, HPNetworking.REMOVE_ROLE, PacketByteBufs.duplicate(buf));
 			}
+			
+			holders.remove(player.getUuid());
 		} else {
 			removeFromClient(player.getUuid());
 		}

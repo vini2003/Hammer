@@ -42,17 +42,17 @@ public interface WidgetCollection {
 	 * Returns all widgets attached to this collection, including recursively searching for children's collections and so on.
 	 */
 	default Collection<Widget> getAllChildren() {
-		var widgets = new ArrayList<Widget>();
+		var allChildren = new ArrayList<Widget>();
 		
-		for (var widget : widgets) {
-			widgets.add(widget);
+		for (var child : getChildren()) {
+			allChildren.add(child);
 			
-			if (widget instanceof WidgetCollection collection) {
-				widgets.addAll(collection.getAllChildren());
+			if (child instanceof WidgetCollection collection) {
+				allChildren.addAll(collection.getAllChildren());
 			}
 		}
 		
-		return widgets;
+		return allChildren;
 	}
 	
 	/**

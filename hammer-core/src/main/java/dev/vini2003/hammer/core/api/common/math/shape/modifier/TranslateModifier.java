@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.core.api.common.math.shape.modifier;
 
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 
 public class TranslateModifier implements Modifier {
 	private final float x;
@@ -38,7 +39,17 @@ public class TranslateModifier implements Modifier {
 	}
 	
 	@Override
-	public Position modify(Position pos) {
+	public Position modifyEquation(Position pos) {
 		return new Position(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
+	}
+	
+	@Override
+	public Position modifyStartPos(Shape shape) {
+		return shape.getStartPos().offset(x, y, z);
+	}
+	
+	@Override
+	public Position modifyEndPos(Shape shape) {
+		return shape.getEndPos().offset(x, y, z);
 	}
 }

@@ -64,7 +64,7 @@ public class HCEvents {
 		ChatEvents.SEND_MESSAGE.register((receiver, message, type, sender) -> {
 			var us = receiver;
 			
-			if (ChatUtil.isMuted(us)) {
+			if (sender.equals(us.getUuid()) && ChatUtil.isMuted(us)) {
 				us.sendMessage(new TranslatableText("text.hammer.muted").formatted(Formatting.RED), false);
 				
 				return TypedActionResult.fail(message);
@@ -74,6 +74,10 @@ public class HCEvents {
 			
 			if (them == null) {
 				return TypedActionResult.pass(message);
+			}
+			
+			if (!sender.equals(us.getUuid()) && ChatUtil.isMuted(them)) {
+				return TypedActionResult.fail(message);
 			}
 			
 			return TypedActionResult.success(message);

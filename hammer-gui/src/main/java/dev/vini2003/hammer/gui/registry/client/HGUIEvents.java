@@ -30,7 +30,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 public class HGUIEvents {
 	public static void init() {
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			if (client.player.currentScreenHandler instanceof BaseScreenHandler screenHandler) {
+			if (client.player != null && client.player.currentScreenHandler instanceof BaseScreenHandler screenHandler) {
 				screenHandler.tick();
 			}
 		});

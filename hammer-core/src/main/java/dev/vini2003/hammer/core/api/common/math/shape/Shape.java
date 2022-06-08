@@ -27,9 +27,12 @@ package dev.vini2003.hammer.core.api.common.math.shape;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.shape.modifier.Modifier;
 import dev.vini2003.hammer.core.api.common.math.shape.modifier.NoiseModifier;
+import dev.vini2003.hammer.core.api.common.math.shape.modifier.RotateModifier;
 import dev.vini2003.hammer.core.api.common.math.shape.modifier.TranslateModifier;
 import dev.vini2003.hammer.core.api.common.math.size.SizeHolder;
+import net.minecraft.util.math.Quaternion;
 
+import java.util.Collection;
 import java.util.Random;
 import java.util.function.BiPredicate;
 
@@ -73,13 +76,22 @@ public class Shape implements SizeHolder {
 	 * @parma position the position.
 	 */
 	public boolean isPositionWithin(Position pos) {
-		return pos.getZ() >= startPos.getZ() &&
-				pos.getZ() <= endPos.getZ() &&
+		return pos.getX() >= startPos.getX() &&
+				pos.getX() <= endPos.getX() &&
 				pos.getY() >= startPos.getY() &&
 				pos.getY() <= endPos.getY() &&
 				pos.getZ() >= startPos.getZ() &&
 				pos.getZ() <= endPos.getZ() &&
 				equation.test(this, pos.minus(startPos));
+	}
+	
+	/**
+	 * Returns the positions within this shaope.
+	 *
+	 * @return the result.
+ 	 */
+	public Collection<Position> getPositions() {
+		return Position.collect(startPos, endPos);
 	}
 	
 	/**
@@ -92,7 +104,7 @@ public class Shape implements SizeHolder {
 	public Shape applyModifier(Modifier modifier) {
 		var chainEquation = equation;
 		
-		return new Shape(startPos, endPos, (shape, pos) -> chainEquation.test(this, modifier.modify(pos)));
+		return new Shape(modifier.modifyStartPos(this), modifier.modifyEndPos(this), (shape, pos) -> chainEquation.test(this, modifier.modifyEquation(pos)));
 	}
 	
 	/**
@@ -105,12 +117,39 @@ public class Shape implements SizeHolder {
 	}
 	
 	/**
+	 * Applies a translate modifier to this shape.
+	 *
+	 * @return a new shape with the modifier.
+	 */
+	public Shape translate(float x, float y) {
+		return applyModifier(new TranslateModifier(x, y, 0.0F));
+	}
+	
+	/**
+	 * Applies a translate modifier to this shape.
+	 *
+	 * @return a new shape with the modifier.
+	 */
+	public Shape translate(Position pos) {
+		return applyModifier(new TranslateModifier(pos.getX(), pos.getY(), pos.getZ()));
+	}
+	
+	/**
 	 * Applies a noise modifier to this shape.
 	 *
 	 * @return a new shape with the modifier.
 	 */
 	public Shape noise(Random random, float magnitude) {
 		return applyModifier(new NoiseModifier(random, magnitude));
+	}
+	
+	/**
+	 * Applies a rotation modifier to this shape.
+	 *
+	 * @return a new shape with the modifier.
+	 */
+	public Shape rotate(Quaternion rotation) {
+		return applyModifier(new RotateModifier(rotation));
 	}
 	
 	@Override
@@ -136,8 +175,8 @@ public class Shape implements SizeHolder {
 		return endPos;
 	}
 	
-	public static class ScreenRectangle extends Shape {
-		public ScreenRectangle(float width, float height) {
+	public static class Rectangle2D extends Shape {
+		public Rectangle2D(float width, float height) {
 			super(new Position(0.0F, 0.0F), new Position(width, height));
 			
 			this.equation = (shape, pos) -> {
@@ -146,8 +185,8 @@ public class Shape implements SizeHolder {
 		}
 	}
 	
-	public static class ScreenEllipse extends Shape {
-		public ScreenEllipse(float a, float b) {
+	public static class Ellipse2D extends Shape {
+		public Ellipse2D(float a, float b) {
 			super(new Position(0.0F, 0.0F), new Position(a, b));
 			
 			this.equation = (shape, pos) -> {
@@ -156,8 +195,8 @@ public class Shape implements SizeHolder {
 		}
 	}
 	
-	public static class Rectangle extends Shape {
-		public Rectangle(float width, float depth) {
+	public static class Rectangle3D extends Shape {
+		public Rectangle3D(float width, float depth) {
 			super(new Position(width / 2.0F, 0.0F, depth / 2.0F), new Position(-width / 2.0F, 0.0F, -depth / 2.0F));
 			
 			this.equation = (shape, pos) -> {
@@ -167,8 +206,8 @@ public class Shape implements SizeHolder {
 		}
 	}
 	
-	public static class Ellipse extends Shape {
-		public Ellipse(float a, float b) {
+	public static class Ellipse3D extends Shape {
+		public Ellipse3D(float a, float b) {
 			super(new Position(a, 0.0F, b), new Position(-a, 0.0F, -b));
 			
 			this.equation = (shape, pos) -> {
@@ -179,8 +218,8 @@ public class Shape implements SizeHolder {
 		}
 	}
 	
-	public static class EllipitcalPrism extends Shape {
-		public EllipitcalPrism(float a, float b, float height) {
+	public static class EllipitcalPrism3D extends Shape {
+		public EllipitcalPrism3D(float a, float b, float height) {
 			super(new Position(a, height / 2.0F, b), new Position(-a, -height / 2.0F, -b));
 			
 			this.equation = (shape, pos) -> {
@@ -191,8 +230,8 @@ public class Shape implements SizeHolder {
 		}
 	}
 	
-	public static class RectangularPrism extends Shape {
-		public RectangularPrism(float width, float height, float depth) {
+	public static class RectangularPrism3D extends Shape {
+		public RectangularPrism3D(float width, float height, float depth) {
 			super(new Position(width / 2.0F, height / 2.0F, depth / 2.0F), new Position(-width / 2.0F, -height / 2.0F, -depth / 2.0F));
 			
 			this.equation = (shape, pos) -> {
@@ -206,8 +245,8 @@ public class Shape implements SizeHolder {
 		}
 	}
 	
-	public static class TriangularPrism extends Shape {
-		public TriangularPrism(float width, float height, float depth) {
+	public static class TriangularPrism3D extends Shape {
+		public TriangularPrism3D(float width, float height, float depth) {
 			super(new Position(width / 2.0F, height / 2.0F, depth / 2.0F), new Position(-width / 2.0F, -height / 2.0F, -depth / 2.0F));
 			
 			this.equation = (shape, pos) -> {
@@ -221,8 +260,8 @@ public class Shape implements SizeHolder {
 		}
 	}
 	
-	public static class RectangularPyramid extends Shape {
-		public RectangularPyramid(float width, float height, float depth) {
+	public static class RectangularPyramid3D extends Shape {
+		public RectangularPyramid3D(float width, float height, float depth) {
 			super(new Position(width / 2.0F, height, depth / 2.0F), new Position(-width / 2.0F, 0.0F, -depth / 2.0F));
 			
 			this.equation = (shape, pos) -> {
@@ -235,8 +274,8 @@ public class Shape implements SizeHolder {
 		}
 	}
 	
-	public static class EllipticalPyramid extends Shape {
-		public EllipticalPyramid(float a, float b, float height) {
+	public static class EllipticalPyramid3D extends Shape {
+		public EllipticalPyramid3D(float a, float b, float height) {
 			super(new Position(a, height, b), new Position(-a, 0.0F, -b));
 			
 			this.equation = (shape, pos) -> {
@@ -248,8 +287,8 @@ public class Shape implements SizeHolder {
 		}
 	}
 	
-	public static class Ellipsoid extends Shape {
-		public Ellipsoid(float a, float b, float c) {
+	public static class Ellipsoid3D extends Shape {
+		public Ellipsoid3D(float a, float b, float c) {
 			super(new Position(a, c, b), new Position(-a, -c, -b));
 			
 			this.equation = (shape, pos) -> {
@@ -260,8 +299,8 @@ public class Shape implements SizeHolder {
 		}
 	}
 	
-	public static class HemiEllipsoid extends Shape {
-		public HemiEllipsoid(float a, float b, float c) {
+	public static class HemiEllipsoid3D extends Shape {
+		public HemiEllipsoid3D(float a, float b, float c) {
 			super(new Position(a, c, b), new Position(-a, 0.0F, -b));
 			
 			this.equation = (shape, pos) -> {

@@ -45,7 +45,22 @@ public class HPCommands {
 						}
 						
 						return builder.buildFuture();
-					}).executes(context -> {
+					}).then(
+							CommandManager.argument("players", EntityArgumentType.players()).executes(context -> {
+								var roleName = StringArgumentType.getString(context, "role_name");
+								var role = RoleManager.getRoleByName(roleName);
+								
+								var players = EntityArgumentType.getPlayers(context, "players");
+								
+								for (var player : players) {
+									if (!role.isIn(player)) {
+										role.addTo(player);
+									}
+								}
+								
+								return Command.SINGLE_SUCCESS;
+							})
+					).executes(context -> {
 						var roleName = StringArgumentType.getString(context, "role_name");
 						var role = RoleManager.getRoleByName(roleName);
 						
@@ -54,21 +69,6 @@ public class HPCommands {
 						
 						if (!role.isIn(player)) {
 							role.addTo(player);
-						}
-						
-						return Command.SINGLE_SUCCESS;
-					})
-			).then(
-					CommandManager.argument("players", EntityArgumentType.players()).executes(context -> {
-						var roleName = StringArgumentType.getString(context, "role_name");
-						var role = RoleManager.getRoleByName(roleName);
-						
-						var players = EntityArgumentType.getPlayers(context, "players");
-						
-						for (var player : players) {
-							if (!role.isIn(player)) {
-								role.addTo(player);
-							}
 						}
 						
 						return Command.SINGLE_SUCCESS;
@@ -89,7 +89,22 @@ public class HPCommands {
 						}
 						
 						return builder.buildFuture();
-					}).executes(context -> {
+					}).then(
+							CommandManager.argument("players", EntityArgumentType.players()).executes(context -> {
+								var roleName = StringArgumentType.getString(context, "role_name");
+								var role = RoleManager.getRoleByName(roleName);
+								
+								var players = EntityArgumentType.getPlayers(context, "players");
+								
+								for (var player : players) {
+									if (role.isIn(player)) {
+										role.removeFrom(player);
+									}
+								}
+								
+								return Command.SINGLE_SUCCESS;
+							})
+					).executes(context -> {
 						var roleName = StringArgumentType.getString(context, "role_name");
 						var role = RoleManager.getRoleByName(roleName);
 						
@@ -98,21 +113,6 @@ public class HPCommands {
 						
 						if (role.isIn(player)) {
 							role.removeFrom(player);
-						}
-						
-						return Command.SINGLE_SUCCESS;
-					})
-			).then(
-					CommandManager.argument("players", EntityArgumentType.players()).executes(context -> {
-						var roleName = StringArgumentType.getString(context, "role_name");
-						var role = RoleManager.getRoleByName(roleName);
-						
-						var players = EntityArgumentType.getPlayers(context, "players");
-						
-						for (var player : players) {
-							if (role.isIn(player)) {
-								role.removeFrom(player);
-							}
 						}
 						
 						return Command.SINGLE_SUCCESS;

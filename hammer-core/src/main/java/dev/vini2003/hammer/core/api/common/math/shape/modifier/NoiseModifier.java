@@ -39,7 +39,7 @@ public class NoiseModifier implements Modifier {
 	}
 	
 	@Override
-	public Position modify(Position pos) {
+	public Position modifyEquation(Position pos) {
 		return new Position(
 				pos.getX() + (random.nextFloat() * magnitude) * (random.nextFloat() * magnitude),
 				pos.getY() + (random.nextFloat() * magnitude) * (random.nextFloat() * magnitude),

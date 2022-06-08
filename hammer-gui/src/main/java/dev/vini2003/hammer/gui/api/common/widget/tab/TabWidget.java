@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
+import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
@@ -101,6 +102,7 @@ public class TabWidget extends Widget implements WidgetCollection {
 		var collection = new TabCollection(tabCollections.size());
 		collection.setRootCollection(rootCollection);
 		collection.setCollection(this);
+		collection.setParent(this);
 		
 		tabCollections.add(collection);
 		tabSymbols.add(symbol);
@@ -111,7 +113,7 @@ public class TabWidget extends Widget implements WidgetCollection {
 		var tabIndex = 0;
 		
 		for (var tabCollection : tabCollections) {
-			tabRectangles.add(new Shape.ScreenRectangle(26.0F, 25.0F).translate(tabIndex * 26.0F, 0.0F, 0.0F));
+			tabRectangles.add(new Shape.Rectangle2D(26.0F, 25.0F).translate(getX() + tabIndex * 26.0F, getY()));
 			
 			tabIndex += 1;
 		}
@@ -125,7 +127,7 @@ public class TabWidget extends Widget implements WidgetCollection {
 		
 		var pos = new Position(event.x(), event.y());
 		
-		var focusedTabRectangle = (Shape) null;
+		Shape focusedTabRectangle = null;
 		
 		for (var tabRectangle : tabRectangles) {
 			if (tabRectangle.isPositionWithin(pos)) {
@@ -139,7 +141,7 @@ public class TabWidget extends Widget implements WidgetCollection {
 			var tabIndex = 0;
 			
 			for (var tabRectangle : tabRectangles) {
-				var hidden = !tabRectangle.isPositionWithin(pos);
+				var hidden = tabRectangle != focusedTabRectangle;
 				
 				for (var widget : tabCollections.get(tabIndex).getChildren()) {
 					widget.setHidden(hidden);
@@ -174,6 +176,7 @@ public class TabWidget extends Widget implements WidgetCollection {
 		for (var tabCollection : tabCollections) {
 			tabCollection.setRootCollection(rootCollection);
 			tabCollection.setCollection(this);
+			tabCollection.setParent(this);
 			
 			if (tabIndex != 0) {
 				for (var widget : tabCollection.getChildren()) {
@@ -195,6 +198,8 @@ public class TabWidget extends Widget implements WidgetCollection {
 	
 	@Override
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		var itemRenderer = DrawingUtil.getItemRenderer();
+		
 		panelTexture.get().draw(matrices, provider, getX(), getY() + 25.0F, getWidth(), getHeight() - 25.0F);
 		
 		if (provider instanceof VertexConsumerProvider.Immediate immediate) {
@@ -222,12 +227,21 @@ public class TabWidget extends Widget implements WidgetCollection {
 				}
 			}
 			
+			
+			itemRenderer.renderGuiItemIcon(tabSymbols.get(tabIndex).get(), (int) (getX() + (26.0F * tabIndex) + 4.5F), (int) (getY() + 7));
+			
 			tabIndex += 1;
+		}
+		
+		for (var child : getChildren()) {
+			if (!child.isHidden()) {
+				child.draw(matrices, provider, tickDelta);
+			}
 		}
 	}
 	
 	public static class TabCollection extends Widget implements WidgetCollection {
-		protected Collection<Widget> children;
+		protected Collection<Widget> children = new ArrayList<>();
 		
 		protected int number;
 		
@@ -248,7 +262,13 @@ public class TabWidget extends Widget implements WidgetCollection {
 		}
 		
 		@Override
-		public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {}
+		public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+			for (var child : getChildren()) {
+				if (!child.isHidden()) {
+					child.draw(matrices, provider, tickDelta);
+				}
+			}
+		}
 	}
 	
 	public void setActiveLeftTexture(Supplier<Texture> activeLeftTexture) {

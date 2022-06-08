@@ -42,17 +42,13 @@ public record MouseDraggedEvent(float x, float y, int button, double deltaX, dou
 	}
 	
 	@Override
-	public PacketByteBuf writeToBuf() {
-		var buf = PacketByteBufs.create();
-		
+	public void writeToBuf(PacketByteBuf buf) {
 		buf.writeEnumConstant(type());
 		buf.writeFloat(x);
 		buf.writeFloat(y);
 		buf.writeInt(button);
 		buf.writeDouble(deltaX);
 		buf.writeDouble(deltaY);
-		
-		return buf;
 	}
 	
 	public static MouseDraggedEvent readFromBuf(PacketByteBuf buf) {

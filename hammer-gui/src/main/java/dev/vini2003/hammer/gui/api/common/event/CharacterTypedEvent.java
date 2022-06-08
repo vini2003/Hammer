@@ -42,14 +42,10 @@ public record CharacterTypedEvent(char character, int keyModifiers) implements E
 	}
 	
 	@Override
-	public PacketByteBuf writeToBuf() {
-		var buf = PacketByteBufs.create();
-		
+	public void writeToBuf(PacketByteBuf buf) {
 		buf.writeEnumConstant(type());
 		buf.writeChar(character);
 		buf.writeInt(keyModifiers);
-		
-		return buf;
 	}
 	
 	public static CharacterTypedEvent readFromBuf(PacketByteBuf buf) {

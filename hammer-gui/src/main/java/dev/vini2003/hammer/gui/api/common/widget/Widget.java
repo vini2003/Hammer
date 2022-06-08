@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.gui.api.common.widget;
 
+import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.position.Positioned;
@@ -34,6 +35,9 @@ import dev.vini2003.hammer.gui.api.common.event.*;
 import dev.vini2003.hammer.gui.api.common.event.base.Event;
 import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.listener.EventListener;
+import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -42,15 +46,15 @@ import java.util.*;
 import java.util.function.Supplier;
 
 public abstract class Widget implements Positioned, Sized, EventListener, Tickable {
-	protected Position position;
-	protected Size size;
+	protected Position position = new Position(0.0F, 0.0F);
+	protected Size size = new Size(0.0F, 0.0F);
 	
 	protected WidgetCollection collection;
 	protected WidgetCollection.Root rootCollection;
 	
 	protected Widget parent;
 	
-	protected Supplier<List<Text>> tooltipSupplier;
+	protected Supplier<List<Text>> tooltipSupplier = () -> ImmutableList.of();
 	
 	protected boolean hidden = false;
 	protected boolean focused = false;
@@ -174,8 +178,19 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	 */
 	@Override
 	public void dispatchEvent(Event event) {
-		if (shouldSync(event.type()) && isFocused() && rootCollection != null && rootCollection.isScreenHandler()) {
+		if (!allowsEvents()) {
+			return;
+		}
 		
+		var rootCollection = getRootCollection();
+		
+		if (shouldSync(event.type()) && isFocused() || rootCollection != null && rootCollection.isScreenHandler() && rootCollection.isClient()) {
+			var buf = PacketByteBufs.create();
+			buf.writeInt(hashCode());
+			
+			event.writeToBuf(buf);
+			
+			ClientPlayNetworking.send(HGUINetworking.SYNC_WIDGET_EVENT, buf);
 		}
 		
 		for (var listener : getListeners(event.type())) {
@@ -265,6 +280,10 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 		dispatchEvent(new LayoutChangedEvent());
 	}
 	
+	public boolean allowsEvents() {
+		return !(this instanceof WidgetCollection.Root) || collection != null || rootCollection != null;
+	}
+	
 	public WidgetCollection getCollection() {
 		return collection;
 	}
@@ -274,6 +293,10 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	}
 	
 	public WidgetCollection.Root getRootCollection() {
+		if (this instanceof WidgetCollection.Root rootCollection) {
+			return rootCollection;
+		}
+		
 		return rootCollection;
 	}
 	
@@ -302,7 +325,11 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	}
 	
 	public boolean isHidden() {
-		return hidden;
+		if (parent != null) {
+			return parent.isHidden() || hidden;
+		} else {
+			return hidden;
+		}
 	}
 	
 	public void setFocused(boolean focused) {
@@ -310,7 +337,11 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	}
 	
 	public boolean isFocused() {
-		return focused;
+		if (parent != null) {
+			return !parent.isHidden() && !isHidden() && focused;
+		} else {
+			return !isHidden() && focused;
+		}
 	}
 	
 	public void setHeld(boolean held) {
@@ -318,7 +349,11 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	}
 	
 	public boolean isHeld() {
-		return held;
+		if (parent != null) {
+			return !parent.isHidden() && !isHidden() && held;
+		} else {
+			return !isHidden() && held;
+		}
 	}
 	
 	public void setLocking(boolean locking) {

@@ -216,15 +216,15 @@ public class HCCommands {
 		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
 			dispatcher.register(
 					CommandManager.literal("show_global_chat").then(
-							CommandManager.argument("players", EntityArgumentType.players()).requires(source -> {
-								return source.hasPermissionLevel(4);
-							}).then(
-									CommandManager.argument("state", BoolArgumentType.bool()).executes(context -> {
+							CommandManager.argument("state", BoolArgumentType.bool()).then(
+									CommandManager.argument("players", EntityArgumentType.players()).requires(source -> {
+										return source.hasPermissionLevel(4);
+									}).executes(context -> {
 										var players = EntityArgumentType.getPlayers(context, "players");
 										var state = BoolArgumentType.getBool(context, "state");
 										
 										var source = context.getSource();
-
+										
 										for (var player : players) {
 											ChatUtil.setShowGlobalChat(player, state);
 											
@@ -233,9 +233,7 @@ public class HCCommands {
 										
 										return Command.SINGLE_SUCCESS;
 									})
-							)
-					).then(
-							CommandManager.argument("state", BoolArgumentType.bool()).executes(context -> {
+							).executes(context -> {
 								var state = BoolArgumentType.getBool(context, "state");
 								
 								var source = context.getSource();
@@ -253,10 +251,10 @@ public class HCCommands {
 		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
 			dispatcher.register(
 					CommandManager.literal("show_chat").then(
-							CommandManager.argument("players", EntityArgumentType.players()).requires(source -> {
-								return source.hasPermissionLevel(4);
-							}).then(
-									CommandManager.argument("state", BoolArgumentType.bool()).executes(context -> {
+							CommandManager.argument("state", BoolArgumentType.bool()).then(
+									CommandManager.argument("players", EntityArgumentType.players()).requires(source -> {
+										return source.hasPermissionLevel(4);
+									}).executes(context -> {
 										var players = EntityArgumentType.getPlayers(context, "players");
 										var state = BoolArgumentType.getBool(context, "state");
 										
@@ -270,9 +268,7 @@ public class HCCommands {
 										
 										return Command.SINGLE_SUCCESS;
 									})
-							)
-					).then(
-							CommandManager.argument("state", BoolArgumentType.bool()).executes(context -> {
+							).executes(context -> {
 								var state = BoolArgumentType.getBool(context, "state");
 								
 								var source = context.getSource();
@@ -290,10 +286,10 @@ public class HCCommands {
 		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
 			dispatcher.register(
 					CommandManager.literal("show_command_feedback").then(
-							CommandManager.argument("players", EntityArgumentType.players()).requires(source -> {
-								return source.hasPermissionLevel(4);
-							}).then(
-									CommandManager.argument("state", BoolArgumentType.bool()).executes(context -> {
+							CommandManager.argument("state", BoolArgumentType.bool()).then(
+									CommandManager.argument("players", EntityArgumentType.players()).requires(source -> {
+										return source.hasPermissionLevel(4);
+									}).executes(context -> {
 										var players = EntityArgumentType.getPlayers(context, "players");
 										var state = BoolArgumentType.getBool(context, "state");
 										
@@ -307,9 +303,7 @@ public class HCCommands {
 										
 										return Command.SINGLE_SUCCESS;
 									})
-							)
-					).then(
-							CommandManager.argument("state", BoolArgumentType.bool()).executes(context -> {
+							).executes(context -> {
 								var state = BoolArgumentType.getBool(context, "state");
 								
 								var source = context.getSource();
@@ -327,15 +321,15 @@ public class HCCommands {
 		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
 			dispatcher.register(
 					CommandManager.literal("show_warnings").then(
-							CommandManager.argument("players", EntityArgumentType.players()).requires(source -> {
-								return source.hasPermissionLevel(4);
-							}).then(
-									CommandManager.argument("state", BoolArgumentType.bool()).executes(context -> {
+							CommandManager.argument("state", BoolArgumentType.bool()).then(
+									CommandManager.argument("players", EntityArgumentType.players()).requires(source -> {
+										return source.hasPermissionLevel(4);
+									}).executes(context -> {
 										var players = EntityArgumentType.getPlayers(context, "players");
 										var state = BoolArgumentType.getBool(context, "state");
 										
 										var source = context.getSource();
-
+										
 										for (var player : players) {
 											ChatUtil.setShowWarnings(player, state);
 											
@@ -344,9 +338,7 @@ public class HCCommands {
 										
 										return Command.SINGLE_SUCCESS;
 									})
-							)
-					).then(
-							CommandManager.argument("state", BoolArgumentType.bool()).executes(context -> {
+							).executes(context -> {
 								var state = BoolArgumentType.getBool(context, "state");
 								
 								var source = context.getSource();
@@ -360,67 +352,5 @@ public class HCCommands {
 					)
 			);
 		});
-		
-		CommandRegistrationCallback.EVENT.register(((dispatcher, dedicated) -> {
-			dispatcher.register(
-					CommandManager.literal("mute").then(
-							CommandManager.argument("players", EntityArgumentType.players()).requires(source -> {
-								return source.hasPermissionLevel(4);
-							}).executes(context -> {
-								var players = EntityArgumentType.getPlayers(context, "players");
-								
-								var source = context.getSource();
-								
-								for (var player : players) {
-									ChatUtil.setMuted(player, true);
-									
-									source.sendFeedback(new TranslatableText("command.hammer.mute.other", player.getDisplayName()), true);
-								}
-								
-								return Command.SINGLE_SUCCESS;
-							})
-					).executes(context -> {
-						var source = context.getSource();
-						var player = source.getPlayer();
-						
-						ChatUtil.setMuted(player, true);
-						
-						source.sendFeedback(new TranslatableText("command.hammer.mute.self"), true);
-						
-						return Command.SINGLE_SUCCESS;
-					})
-			);
-		}));
-		
-		CommandRegistrationCallback.EVENT.register(((dispatcher, dedicated) -> {
-			dispatcher.register(
-					CommandManager.literal("unmute").then(
-							CommandManager.argument("players", EntityArgumentType.players()).requires(source -> {
-								return source.hasPermissionLevel(4);
-							}).executes(context -> {
-								var players = EntityArgumentType.getPlayers(context, "players");
-								
-								var source = context.getSource();
-								
-								for (var player : players) {
-									ChatUtil.setMuted(player, false);
-									
-									source.sendFeedback(new TranslatableText("command.hammer.unmute.other", player.getDisplayName()), true);
-								}
-								
-								return Command.SINGLE_SUCCESS;
-							})
-					).executes(context -> {
-						var source = context.getSource();
-						var player = source.getPlayer();
-						
-						ChatUtil.setMuted(player, false);
-						
-						source.sendFeedback(new TranslatableText("command.hammer.unmute.self"), true);
-						
-						return Command.SINGLE_SUCCESS;
-					})
-			);
-		}));
 	}
 }

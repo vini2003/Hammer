@@ -34,7 +34,7 @@ public class PositionUtil {
 	public static float getMouseX() {
 		var client = InstanceUtil.getClient();
 		
-		if (client == null) {
+		if (client == null || client.mouse == null) {
 			return 0.0F;
 		}
 		
@@ -44,7 +44,7 @@ public class PositionUtil {
 	public static float getMouseY() {
 		var client = InstanceUtil.getClient();
 		
-		if (client == null) {
+		if (client == null || client.mouse == null) {
 			return 0.0F;
 		}
 		

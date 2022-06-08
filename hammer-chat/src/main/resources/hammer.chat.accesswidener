@@ -1,0 +1,4 @@
+accessWidener v1 named
+
+accessible field net/minecraft/client/gui/screen/option/ChatOptionsScreen OPTIONS [Lnet/minecraft/client/option/Option;
+mutable field net/minecraft/client/gui/screen/option/ChatOptionsScreen OPTIONS [Lnet/minecraft/client/option/Option;

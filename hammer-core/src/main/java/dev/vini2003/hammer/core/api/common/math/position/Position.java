@@ -26,6 +26,7 @@ package dev.vini2003.hammer.core.api.common.math.position;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Quaternion;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,7 +48,7 @@ public class Position implements PositionHolder {
 	 *
 	 * @return the collection.
 	 */
-	public static Collection<Position> getPositionsWithin(Position startPosition, Position endPosition) {
+	public static Collection<Position> collect(Position startPosition, Position endPosition) {
 		var minPosition = new Position(Math.min(startPosition.x, endPosition.x), Math.min(startPosition.y, endPosition.y), Math.min(startPosition.z, endPosition.z));
 		var maxPosition = new Position(Math.max(startPosition.x, endPosition.y), Math.max(startPosition.y, endPosition.y), Math.max(startPosition.z, endPosition.z));
 		
@@ -282,6 +283,21 @@ public class Position implements PositionHolder {
 	 */
 	public Position div(float number) {
 		return new Position(x / number, y / number, z / number);
+	}
+	
+	/**
+	 * Returns this position, rotated by the given quaternion.
+	 *
+	 * @return the resulting position.
+	 */
+	public Position rotate(Quaternion quaternion) {
+		var q1 = new Quaternion(quaternion);
+		q1.hamiltonProduct(new Quaternion(this.getX(), this.getY(), this.getZ(), 0.0F));
+		var q2 = new Quaternion(quaternion);
+		q2.conjugate();
+		q1.hamiltonProduct(q2);
+		
+		return new Position(q1.getX(), q1.getY(), q1.getZ());
 	}
 	
 	@Override

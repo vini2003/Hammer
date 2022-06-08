@@ -13,6 +13,11 @@
   "license": "MIT",
   "icon": "assets/hammer/icon.png",
   "environment": "*",
+  "entrypoints": {
+    "client": [
+      "dev.vini2003.hammer.core.HCClient"
+    ]
+  },
   "accessWidener": "hammer.core.accesswidener",
   "depends": {
     "fabricloader": ">=0.12.9",

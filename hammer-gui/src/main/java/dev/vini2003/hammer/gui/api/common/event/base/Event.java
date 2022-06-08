@@ -31,7 +31,7 @@ import net.minecraft.network.PacketByteBuf;
 public interface Event {
 	EventType type();
 	
-	PacketByteBuf writeToBuf();
+	void writeToBuf(PacketByteBuf buf);
 	
 	static Event fromBuf(PacketByteBuf buf) {
 		var type = buf.readEnumConstant(EventType.class);

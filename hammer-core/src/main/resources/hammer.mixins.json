@@ -9,7 +9,8 @@
     "common.NetherPortalBlockMixin",
     "common.PlayerEntityMixin",
     "common.ServerPlayNetworkHandlerMixin",
-    "common.ServerPlayerEntityMixin"
+    "common.ServerPlayerEntityMixin",
+    "common.EntityMixin"
   ],
   "client": [
     "client.WorldRendererMixin"

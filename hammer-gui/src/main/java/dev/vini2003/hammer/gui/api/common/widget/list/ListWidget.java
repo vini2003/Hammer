@@ -94,11 +94,11 @@ public class ListWidget extends Widget implements WidgetCollection {
 	});
 	
 	protected Cached<Shape> scrollerRectangle = new Cached<>(() -> {
-		return new Shape.ScreenRectangle(16.0F, scrollerHeight.get()).translate(getX() + getWidth() - 1.0F - 16.0F, scrollerY.get() - 1.0F, 0.0F);
+		return new Shape.Rectangle2D(16.0F, scrollerHeight.get()).translate(getX() + getWidth() - 1.0F - 16.0F, scrollerY.get() - 1.0F, 0.0F);
 	});
 	
 	protected Cached<Shape> scrollbarRectangle = new Cached<>(() -> {
-		return new Shape.ScreenRectangle(16.0F, getHeight() - 2.0F).translate(getX() + getWidth() - 1.0F - 16.0F, getY() + 1.0F, 0.0F);
+		return new Shape.Rectangle2D(16.0F, getHeight() - 2.0F).translate(getX() + getWidth() - 1.0F - 16.0F, getY() + 1.0F, 0.0F);
 	});
 	
 	@Override

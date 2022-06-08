@@ -42,14 +42,10 @@ public record MouseMovedEvent(float x, float y) implements Event {
 	}
 	
 	@Override
-	public PacketByteBuf writeToBuf() {
-		var buf = PacketByteBufs.create();
-		
+	public void writeToBuf(PacketByteBuf buf) {
 		buf.writeEnumConstant(type());
 		buf.writeFloat(x);
 		buf.writeFloat(y);
-		
-		return buf;
 	}
 	
 	public static MouseMovedEvent readFromBuf(PacketByteBuf buf) {

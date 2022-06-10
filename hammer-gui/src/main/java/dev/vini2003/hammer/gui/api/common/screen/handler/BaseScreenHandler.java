@@ -134,7 +134,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 							if (newSlot != slot && newSlot.inventory != slot.inventory) {
 								StackUtil.merge(slot.getStack(), newSlot.getStack(), (stackA, stackB) -> {
 									slot.setStack(stackA);
-									slot.setStack(stackB);
+									newSlot.setStack(stackB);
 								});
 							}
 							

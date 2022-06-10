@@ -1,4 +1,4 @@
-package dev.vini2003.hammer.util.api.common.util;
+package dev.vini2003.hammer.core.api.common.util;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;

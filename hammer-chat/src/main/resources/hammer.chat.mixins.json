@@ -9,7 +9,8 @@
   ],
   "client": [
     "client.InGameHudMixin",
-    "client.ChatOptionsScreenMixin"
+    "client.ChatOptionsScreenMixin",
+    "client.ChatScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

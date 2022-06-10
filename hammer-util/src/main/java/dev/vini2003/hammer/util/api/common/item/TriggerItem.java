@@ -1,7 +1,7 @@
 package dev.vini2003.hammer.util.api.common.item;
 
 import com.google.common.base.Predicates;
-import dev.vini2003.hammer.util.api.common.util.RaycastUtil;
+import dev.vini2003.hammer.core.api.common.util.RaycastUtil;
 import dev.vini2003.hammer.util.api.common.trigger.Trigger;
 import dev.vini2003.hammer.util.api.common.trigger.RaycastTrigger;
 import net.minecraft.block.Block;

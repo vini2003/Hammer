@@ -173,7 +173,7 @@ public class SlotWidget extends Widget {
 		
 		var screen = (HandledScreen<?>) client.currentScreen;
 		
-		texture.get().draw(matrices, provider, slot.x + screen.x - 1.0F, slot.y + screen.y + 1.0F, getWidth(), getHeight());
+		texture.get().draw(matrices, provider, Math.round(slot.x + screen.x) - 1.0F, Math.round(slot.y + screen.y) - 1.0F, Math.round(getWidth()), Math.round(getHeight()));
 	}
 	
 	public Slot getSlot() {

@@ -49,7 +49,7 @@ public class HCEvents {
 					if (mouseX >= x1 && mouseY >= y1 && mouseX < x1 + size && mouseY < y1 + size) {
 						var tooltips = new ArrayList<Text>();
 						
-						tooltips.add(new TranslatableText("text.hammer.muted"));
+						tooltips.add(new TranslatableText("text.hammer.frozen"));
 						
 						screen.renderTooltip(matrices, tooltips, (int) mouseX, (int) mouseY);
 					}

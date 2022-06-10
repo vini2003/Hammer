@@ -2,7 +2,7 @@ package dev.vini2003.hammer.util.mixin.client;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.util.api.common.item.TriggerItem;
-import dev.vini2003.hammer.util.api.common.util.RaycastUtil;
+import dev.vini2003.hammer.core.api.common.util.RaycastUtil;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
@@ -44,8 +44,7 @@ public abstract class WorldRendererMixin {
 	@ModifyVariable(
 			method = "render",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/BufferBuilderStorage;getEntityVertexConsumers()Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;"),
-			ordinal = 4,
-			print = true
+			ordinal = 3
 	)
 	private boolean hammer$render$getEntityVertexConsumers(boolean original) {
 		var client = InstanceUtil.getClient();

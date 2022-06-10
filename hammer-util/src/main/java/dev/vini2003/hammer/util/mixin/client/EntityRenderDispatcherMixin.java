@@ -2,7 +2,7 @@ package dev.vini2003.hammer.util.mixin.client;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.util.api.common.item.TriggerItem;
-import dev.vini2003.hammer.util.api.common.util.RaycastUtil;
+import dev.vini2003.hammer.core.api.common.util.RaycastUtil;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;

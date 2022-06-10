@@ -118,7 +118,7 @@ public class HUItems {
 					   .trigger((world, user, hand) -> {
 						   HCConfig.ENABLE_NETHER = !HCConfig.ENABLE_NETHER;
 				
-						   user.getCommandSource().sendFeedback(new TranslatableText("command.hammer." + (HCConfig.ENABLE_END ? "enable" : "disable") + "_nether"), true);
+						   user.getCommandSource().sendFeedback(new TranslatableText("command.hammer." + (HCConfig.ENABLE_NETHER ? "enable" : "disable") + "_nether"), true);
 					   })
 					   .side(false, true)
 					   .raycast(false, false)

@@ -44,8 +44,8 @@ public class ImageTexture implements Texture {
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float x, float y, float width, float height) {
 		var client = InstanceUtil.getClient();
 		
-		var scaledX = x - (x % (client.getWindow().getScaledWidth() / (float) client.getWindow().getWidth()));
-		var scaledY = y - (y % (client.getWindow().getScaledHeight() / (float) client.getWindow().getHeight()));
+		var scaledX = x - ((int) x) == 0 ? (int) x : x - (x % (client.getWindow().getScaledWidth() / (float) client.getWindow().getWidth()));
+		var scaledY = y - ((int) y) == 0 ? (int) y : y - (y % (client.getWindow().getScaledHeight() / (float) client.getWindow().getHeight()));
 		
 		var layer = LayerUtil.get(textureId);
 		

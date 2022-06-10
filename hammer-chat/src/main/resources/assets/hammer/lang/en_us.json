@@ -8,6 +8,7 @@
   "command.hammer.show_warnings.self": "Your warnings have been %s",
   "command.hammer.show_warnings.other": "Warnings %s for %s",
   "text.hammer.muted": "You are muted!",
+  "text.hammer.frozen": "You are frozen!",
   "text.hammer.channel.none": "You are not in an any channels",
   "text.hammer.channel.select.self": "Selected channel %s",
   "text.hammer.channel.select.other": "Selected channel %s for %s",

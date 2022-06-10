@@ -51,8 +51,10 @@ public class HCEvents {
 		HudRenderCallback.EVENT.register((matrices, tickDelta) -> {
 			var client = InstanceUtil.getClient();
 			
-			var isPageUpPressed = InputUtil.isKeyPressed(client.getWindow().getHandle(), GLFW.GLFW_KEY_PAGE_UP);
-			var isPageDownPressed = InputUtil.isKeyPressed(client.getWindow().getHandle(), GLFW.GLFW_KEY_PAGE_DOWN);
+			var isShiftPressed = ChatScreen.hasShiftDown();
+			
+			var isPageUpPressed = isShiftPressed && InputUtil.isKeyPressed(client.getWindow().getHandle(), GLFW.GLFW_KEY_PAGE_UP);
+			var isPageDownPressed = isShiftPressed && InputUtil.isKeyPressed(client.getWindow().getHandle(), GLFW.GLFW_KEY_PAGE_DOWN);
 			
 			if (isPageUpPressed || isPageDownPressed) {
 				var currentTabMs = System.currentTimeMillis();

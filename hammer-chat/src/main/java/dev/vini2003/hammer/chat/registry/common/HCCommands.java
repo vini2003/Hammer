@@ -64,6 +64,8 @@ public class HCCommands {
 							for (var player : players) {
 								if (!channel.isIn(player)) {
 									channel.addTo(player);
+									
+									ChannelUtil.setSelected(player, channel);
 								}
 							}
 							
@@ -78,6 +80,8 @@ public class HCCommands {
 					
 					if (!channel.isIn(player)) {
 						channel.addTo(player);
+						
+						ChannelUtil.setSelected(player, channel);
 					}
 					
 					return Command.SINGLE_SUCCESS;
@@ -110,6 +114,8 @@ public class HCCommands {
 								for (var player : players) {
 									if (channel.isIn(player)) {
 										channel.removeFrom(player);
+										
+										ChannelUtil.setSelected(player, ChannelUtil.getPreviousSelected(player));
 									}
 								}
 								
@@ -124,6 +130,8 @@ public class HCCommands {
 						
 						if (channel.isIn(player)) {
 							channel.removeFrom(player);
+							
+							ChannelUtil.setSelected(player, ChannelUtil.getPreviousSelected(player));
 						}
 						
 						return Command.SINGLE_SUCCESS;

@@ -26,6 +26,8 @@ package dev.vini2003.hammer.chat.impl.common.accessor;
 
 import dev.vini2003.hammer.chat.api.common.channel.Channel;
 
+import java.util.List;
+
 public interface PlayerEntityAccessor {
 	void hammer$setShowChat(boolean showChat);
 	
@@ -50,4 +52,6 @@ public interface PlayerEntityAccessor {
 	void hammer$setSelectedChannel(Channel selectedChannel);
 	
 	Channel hammer$getSelectedChannel();
+	
+	List<Channel> hammer$getPreviousSelectedChannels();
 }

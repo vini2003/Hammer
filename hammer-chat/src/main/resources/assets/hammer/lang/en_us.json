@@ -13,9 +13,9 @@
   "text.hammer.channel.select.self": "Selected channel %s",
   "text.hammer.channel.select.other": "Selected channel %s for %s",
   "text.hammer.feedback.warning": "Command feedback/errors enabled!",
-  "text.hammer.feedback.toggle": "Use /toggle_feedback to toggle.",
+  "text.hammer.feedback.toggle": "Use Chat Settings (or /show_feedback true|false) to toggle.",
   "text.hammer.chat.warning": "Chat muted!",
-  "text.hammer.chat.toggle": "Use /toggle_chat to toggle.",
+  "text.hammer.chat.toggle": "Use Chat Settings (or /show_chat true|false) to toggle.",
   "text.hammer.global_chat.warning": "Global chat muted!",
-  "text.hammer.global_chat.toggle": "Use /toggle_global_chat to toggle!"
+  "text.hammer.global_chat.toggle": "Use Chat Settings (or /show_global_chat true|false) to toggle!"
 }

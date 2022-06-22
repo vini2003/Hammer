@@ -58,8 +58,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	private void hammer$initDataTracker(CallbackInfo ci) {
 		dataTracker.startTracking(HAMMER$SHOW_CHAT, true);
 		dataTracker.startTracking(HAMMER$SHOW_GLOBAL_CHAT, true);
-		dataTracker.startTracking(HAMMER$SHOW_COMMAND_FEEDBACK, true);
-		dataTracker.startTracking(HAMMER$SHOW_WARNINGS, true);
+		dataTracker.startTracking(HAMMER$SHOW_COMMAND_FEEDBACK, false);
+		dataTracker.startTracking(HAMMER$SHOW_WARNINGS, false);
 		
 		dataTracker.startTracking(HAMMER$MUTED, false);
 	}

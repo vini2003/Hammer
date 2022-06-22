@@ -28,6 +28,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.chat.registry.common.HCNetworking;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import dev.vini2003.hammer.core.registry.common.HCValues;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -138,70 +139,91 @@ public class HCEvents {
 						HCValues.HUD_ICON_X += 16 + 5;
 					}
 				}
-			} else {
-				HCValues.HUD_ICONS_DRAWN += 1;
 				
-				if (HCValues.HUD_ICONS_DRAWN >= HCValues.HUD_ICONS) {
-					HCValues.HUD_ICON_X = 5;
+				if (ChatUtil.isMuted(client.player)) {
+					var size = 16;
+					var yOffset = 0;
 					
-					HCValues.HUD_ICONS_DRAWN = 0;
-				}
-			}
-			
-			if (ChatUtil.isMuted(client.player)) {
-				var window = client.getWindow();
-				
-				var scaledWidth = window.getScaledWidth();
-				var scaledHeight = window.getScaledHeight();
-				
-				var size = 16;
-				var yOffset = 0;
-				
-				if (client.currentScreen instanceof ChatScreen) {
-					yOffset -= 14;
-				}
-				
-				var x1 = HCValues.HUD_ICON_X;
-				var y1 = scaledHeight - 5 - size + yOffset;
-				
-				RenderSystem.setShaderTexture(0, HCTextures.MUTED);
-				
-				// TODO: Make sending a message while muted bump this size!
-				DrawableHelper.drawTexture(matrices, HCValues.HUD_ICON_X, scaledHeight - 5 - size + yOffset, size, size, 0.0F, 0.0F, 16, 16, 16, 16);
-				
-				HCValues.HUD_ICON_X += 16 + 5;
-				
-				if (!client.mouse.isCursorLocked() && client.currentScreen instanceof ChatScreen) {
-					var screen = (ChatScreen) client.currentScreen;
+					if (client.currentScreen instanceof ChatScreen) {
+						yOffset -= 14;
+					}
 					
-					var mouseX = client.mouse.getX() * scaledWidth / window.getWidth();
-					var mouseY = client.mouse.getY() * scaledHeight / window.getHeight();
+					var x1 = HCValues.HUD_ICON_X;
+					var y1 = scaledHeight - 5 - size + yOffset;
 					
-					if (mouseX >= x1 && mouseY >= y1 && mouseX < x1 + size && mouseY < y1 + size) {
-						var tooltips = new ArrayList<Text>();
+					RenderSystem.setShaderTexture(0, HCTextures.MUTED);
+					
+					// TODO: Make sending a message while muted bump this size!
+					DrawableHelper.drawTexture(matrices, HCValues.HUD_ICON_X, scaledHeight - 5 - size + yOffset, size, size, 0.0F, 0.0F, 16, 16, 16, 16);
+					
+					HCValues.HUD_ICON_X += 16 + 5;
+					
+					if (!client.mouse.isCursorLocked() && client.currentScreen instanceof ChatScreen) {
+						var screen = (ChatScreen) client.currentScreen;
 						
-						tooltips.add(new TranslatableText("text.hammer.muted"));
+						var mouseX = client.mouse.getX() * scaledWidth / window.getWidth();
+						var mouseY = client.mouse.getY() * scaledHeight / window.getHeight();
 						
-						screen.renderTooltip(matrices, tooltips, (int) mouseX, (int) mouseY);
+						if (mouseX >= x1 && mouseY >= y1 && mouseX < x1 + size && mouseY < y1 + size) {
+							var tooltips = new ArrayList<Text>();
+							
+							tooltips.add(new TranslatableText("text.hammer.muted"));
+							
+							screen.renderTooltip(matrices, tooltips, (int) mouseX, (int) mouseY);
+						}
+					}
+					
+					HCValues.HUD_ICONS_DRAWN += 1;
+					
+					if (HCValues.HUD_ICONS_DRAWN >= HCValues.HUD_ICONS) {
+						HCValues.HUD_ICON_X = 5;
+						
+						HCValues.HUD_ICONS_DRAWN = 0;
+					} else {
+						HCValues.HUD_ICON_X += 16 + 5;
 					}
 				}
 				
-				HCValues.HUD_ICONS_DRAWN += 1;
-				
-				if (HCValues.HUD_ICONS_DRAWN >= HCValues.HUD_ICONS) {
-					HCValues.HUD_ICON_X = 5;
+				if (PlayerUtil.isFrozen(client.player)) {
+					var size = 16;
+					var yOffset = 0;
 					
-					HCValues.HUD_ICONS_DRAWN = 0;
-				} else {
-					HCValues.HUD_ICON_X += 16 + 5;
-				}
-			} else {
-				HCValues.HUD_ICONS_DRAWN += 1;
-				
-				if (HCValues.HUD_ICONS_DRAWN >= HCValues.HUD_ICONS) {
-					HCValues.HUD_ICON_X = 5;
+					if (client.currentScreen instanceof ChatScreen) {
+						yOffset -= 14;
+					}
 					
-					HCValues.HUD_ICONS_DRAWN = 0;
+					var x1 = HCValues.HUD_ICON_X;
+					var y1 = scaledHeight - 5 - size + yOffset;
+					
+					RenderSystem.setShaderTexture(0, dev.vini2003.hammer.core.registry.client.HCTextures.FROZEN);
+					
+					// TODO: Make sending a message while muted bump this size!
+					DrawableHelper.drawTexture(matrices, HCValues.HUD_ICON_X, scaledHeight - 5 - size + yOffset, size, size, 0.0F, 0.0F, 16, 16, 16, 16);
+					
+					if (!client.mouse.isCursorLocked() && client.currentScreen instanceof ChatScreen) {
+						var screen = (ChatScreen) client.currentScreen;
+						
+						var mouseX = client.mouse.getX() * scaledWidth / window.getWidth();
+						var mouseY = client.mouse.getY() * scaledHeight / window.getHeight();
+						
+						if (mouseX >= x1 && mouseY >= y1 && mouseX < x1 + size && mouseY < y1 + size) {
+							var tooltips = new ArrayList<Text>();
+							
+							tooltips.add(new TranslatableText("text.hammer.frozen"));
+							
+							screen.renderTooltip(matrices, tooltips, (int) mouseX, (int) mouseY);
+						}
+					}
+					
+					HCValues.HUD_ICONS_DRAWN += 1;
+					
+					if (HCValues.HUD_ICONS_DRAWN >= HCValues.HUD_ICONS) {
+						HCValues.HUD_ICON_X = 5;
+						
+						HCValues.HUD_ICONS_DRAWN = 0;
+					} else {
+						HCValues.HUD_ICON_X += 16 + 5;
+					}
 				}
 			}
 		});

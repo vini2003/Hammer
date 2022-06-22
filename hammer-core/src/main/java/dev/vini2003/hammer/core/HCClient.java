@@ -24,9 +24,7 @@
 
 package dev.vini2003.hammer.core;
 
-import dev.vini2003.hammer.core.registry.client.HCEvents;
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

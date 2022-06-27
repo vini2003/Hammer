@@ -28,5 +28,7 @@
   "itemGroup.hammer.hammer": "Hammer",
   "options.show_chat": "Show Chat",
   "options.show_command_feedback": "Show Command Feedback",
-  "options.show_warnings": "Show Warnings"
+  "options.show_warnings": "Show Warnings",
+  "options.show_direct_messages": "Show Direct Messages",
+  "options.fast_chat_fade": "Fast Chat Fade"
 }

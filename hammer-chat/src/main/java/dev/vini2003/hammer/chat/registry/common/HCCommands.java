@@ -360,5 +360,75 @@ public class HCCommands {
 					)
 			);
 		});
+		
+		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+			dispatcher.register(
+					CommandManager.literal("show_direct_messages").then(
+							CommandManager.argument("state", BoolArgumentType.bool()).then(
+									CommandManager.argument("players", EntityArgumentType.players()).requires(source -> {
+										return source.hasPermissionLevel(4);
+									}).executes(context -> {
+										var players = EntityArgumentType.getPlayers(context, "players");
+										var state = BoolArgumentType.getBool(context, "state");
+										
+										var source = context.getSource();
+										
+										for (var player : players) {
+											ChatUtil.setShowDirectMessages(player, state);
+											
+											source.sendFeedback(new TranslatableText("command.hammer.show_direct_messages.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
+										}
+										
+										return Command.SINGLE_SUCCESS;
+									})
+							).executes(context -> {
+								var state = BoolArgumentType.getBool(context, "state");
+								
+								var source = context.getSource();
+								
+								ChatUtil.setShowDirectMessages(context.getSource().getPlayer(), state);
+								
+								source.sendFeedback(new TranslatableText("command.hammer.show_direct_messages.self", state ? "enabled" : "disabled"), true);
+								
+								return Command.SINGLE_SUCCESS;
+							})
+					)
+			);
+		});
+		
+		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+			dispatcher.register(
+					CommandManager.literal("fast_chat_fade").then(
+							CommandManager.argument("state", BoolArgumentType.bool()).then(
+									CommandManager.argument("players", EntityArgumentType.players()).requires(source -> {
+										return source.hasPermissionLevel(4);
+									}).executes(context -> {
+										var players = EntityArgumentType.getPlayers(context, "players");
+										var state = BoolArgumentType.getBool(context, "state");
+										
+										var source = context.getSource();
+										
+										for (var player : players) {
+											ChatUtil.setFastChatFade(player, state);
+											
+											source.sendFeedback(new TranslatableText("command.hammer.fast_chat_fade.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
+										}
+										
+										return Command.SINGLE_SUCCESS;
+									})
+							).executes(context -> {
+								var state = BoolArgumentType.getBool(context, "state");
+								
+								var source = context.getSource();
+								
+								ChatUtil.setFastChatFade(context.getSource().getPlayer(), state);
+								
+								source.sendFeedback(new TranslatableText("command.hammer.fast_chat_fade.self", state ? "enabled" : "disabled"), true);
+								
+								return Command.SINGLE_SUCCESS;
+							})
+					)
+			);
+		});
 	}
 }

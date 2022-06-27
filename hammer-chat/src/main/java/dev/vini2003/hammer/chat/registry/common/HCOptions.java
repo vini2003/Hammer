@@ -59,4 +59,40 @@ public class HCOptions {
 		
 		ChatUtil.setShowWarnings(client.player, showChat);
 	}));
+	
+	public static final Option SHOW_DIRECT_MESSAGES = CyclingOption.create("options.show_direct_messages", gameOptions -> {
+		var client = InstanceUtil.getClient();
+		
+		if (client == null || client.player == null) {
+			return false;
+		}
+		
+		return ChatUtil.shouldShowDirectMessages(client.player);
+	}, ((gameOptions, option, showChat) -> {
+		var client = InstanceUtil.getClient();
+		
+		if (client == null || client.player == null) {
+			return;
+		}
+		
+		ChatUtil.setShowDirectMessages(client.player, showChat);
+	}));
+	
+	public static final Option FAST_CHAT_FADE = CyclingOption.create("options.fast_chat_fade", gameOptions -> {
+		var client = InstanceUtil.getClient();
+		
+		if (client == null || client.player == null) {
+			return false;
+		}
+		
+		return ChatUtil.hasFastChatFade(client.player);
+	}, ((gameOptions, option, fastChatFade) -> {
+		var client = InstanceUtil.getClient();
+		
+		if (client == null || client.player == null) {
+			return;
+		}
+		
+		ChatUtil.setFastChatFade(client.player, fastChatFade);
+	}));
 }

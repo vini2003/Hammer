@@ -22,15 +22,12 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.core;
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+@ApiStatus.Internal
+package dev.vini2003.hammer.permission.impl;
 
-import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.util.annotation.MethodsReturnNonnullByDefault;
 import org.jetbrains.annotations.ApiStatus;
 
-@ApiStatus.Internal
-public class HCClient implements ClientModInitializer {
-	@Override
-	public void onInitializeClient() {
-
-	}
-}
+import javax.annotation.ParametersAreNonnullByDefault;

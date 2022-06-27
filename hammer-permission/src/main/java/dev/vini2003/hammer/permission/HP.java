@@ -24,6 +24,8 @@
 
 package dev.vini2003.hammer.permission;
 
+import dev.vini2003.hammer.permission.api.common.manager.RoleManager;
+import dev.vini2003.hammer.permission.api.common.role.Role;
 import dev.vini2003.hammer.permission.registry.common.HPCommands;
 import dev.vini2003.hammer.permission.registry.common.HPEvents;
 import dev.vini2003.hammer.permission.registry.common.HPNetworking;
@@ -37,6 +39,8 @@ public class HP implements ModInitializer {
 	public static LuckPerms getLuckPerms() {
 		return LuckPermsProvider.get();
 	}
+	
+	public static final Role NEIN = new Role("nein", "N", 1, 0xFF0000);
 	
 	@Override
 	public void onInitialize() {

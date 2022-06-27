@@ -26,6 +26,7 @@ package dev.vini2003.hammer.chat.mixin.common;
 
 import dev.vini2003.hammer.chat.api.common.channel.Channel;
 import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
+import net.fabricmc.loader.impl.game.minecraft.launchwrapper.FabricServerTweaker;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
@@ -35,20 +36,30 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEntityAccessor {
+	@Shadow
+	public double prevCapeX;
 	private static final TrackedData<Boolean> HAMMER$SHOW_CHAT = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	private static final TrackedData<Boolean> HAMMER$SHOW_GLOBAL_CHAT = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	private static final TrackedData<Boolean> HAMMER$SHOW_COMMAND_FEEDBACK = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	private static final TrackedData<Boolean> HAMMER$SHOW_WARNINGS = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	private static final TrackedData<Boolean> HAMMER$SHOW_DIRECT_MESSAGES = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	private static final TrackedData<Boolean> HAMMER$FAST_CHATE_FADE = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	private static final TrackedData<Boolean> HAMMER$MUTED = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	
 	private Channel hammer$selectedChannel = null;
+	
+	private List<Channel> hammer$previousSelectedChannels = new ArrayList<>();
 	
 	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
@@ -60,6 +71,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 		dataTracker.startTracking(HAMMER$SHOW_GLOBAL_CHAT, true);
 		dataTracker.startTracking(HAMMER$SHOW_COMMAND_FEEDBACK, false);
 		dataTracker.startTracking(HAMMER$SHOW_WARNINGS, false);
+		dataTracker.startTracking(HAMMER$SHOW_DIRECT_MESSAGES, false);
+		dataTracker.startTracking(HAMMER$FAST_CHATE_FADE, true);
 		
 		dataTracker.startTracking(HAMMER$MUTED, false);
 	}
@@ -70,6 +83,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 		nbt.putBoolean("Hammer$ShowGlobalChat", dataTracker.get(HAMMER$SHOW_GLOBAL_CHAT));
 		nbt.putBoolean("Hammer$ShowCommandFeedback", dataTracker.get(HAMMER$SHOW_COMMAND_FEEDBACK));
 		nbt.putBoolean("Hammer$ShowWarnings", dataTracker.get(HAMMER$SHOW_WARNINGS));
+		nbt.putBoolean("Hammer$ShowDirectMessages", dataTracker.get(HAMMER$SHOW_DIRECT_MESSAGES));
+		nbt.putBoolean("Hammer$FastChatFade", dataTracker.get(HAMMER$FAST_CHATE_FADE));
 		
 		nbt.putBoolean("Hammer$Muted", dataTracker.get(HAMMER$MUTED));
 	}
@@ -90,6 +105,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 		
 		if (nbt.contains("Hammer$ShowWarnings")) {
 			dataTracker.set(HAMMER$SHOW_WARNINGS, nbt.getBoolean("Hammer$ShowWarnings"));
+		}
+		
+		if (nbt.contains("Hammer$ShowDirectMessages")) {
+			dataTracker.set(HAMMER$SHOW_DIRECT_MESSAGES, nbt.getBoolean("Hammer$ShowDirectMessages"));
+		}
+		
+		if (nbt.contains("Hammer$FastChatFade")) {
+			dataTracker.set(HAMMER$FAST_CHATE_FADE, nbt.getBoolean("Hammer$FastChatFade"));
 		}
 		
 		if (nbt.contains("Hammer$Muted")) {
@@ -138,6 +161,16 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	}
 	
 	@Override
+	public void hammer$setShowDirectMessages(boolean showDirectMessages) {
+		dataTracker.set(HAMMER$SHOW_DIRECT_MESSAGES, showDirectMessages);
+	}
+	
+	@Override
+	public boolean hammer$shouldShowDirectMessages() {
+		return dataTracker.get(HAMMER$SHOW_DIRECT_MESSAGES);
+	}
+	
+	@Override
 	public void hammer$setMuted(boolean muted) {
 		dataTracker.set(HAMMER$MUTED, muted);
 	}
@@ -148,6 +181,16 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	}
 	
 	@Override
+	public void hammer$setFastChatFade(boolean fastChatFade) {
+		dataTracker.set(HAMMER$FAST_CHATE_FADE, fastChatFade);
+	}
+	
+	@Override
+	public boolean hammer$hasFastChatFade() {
+		return dataTracker.get(HAMMER$FAST_CHATE_FADE);
+	}
+	
+	@Override
 	public void hammer$setSelectedChannel(Channel hammer$selectedChannel) {
 		this.hammer$selectedChannel = hammer$selectedChannel;
 	}
@@ -155,5 +198,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	@Override
 	public Channel hammer$getSelectedChannel() {
 		return hammer$selectedChannel;
+	}
+	
+	@Override
+	public List<Channel> hammer$getPreviousSelectedChannels() {
+		return hammer$previousSelectedChannels;
 	}
 }

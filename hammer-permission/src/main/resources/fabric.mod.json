@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "hammer-permission",
-  "version": "0.6.5",
+  "version": "0.8.68",
   "name": "Hammer Permission",
   "description": "A library module.",
   "authors": [
@@ -13,6 +13,7 @@
   "license": "MIT",
   "icon": "assets/hammer/icon.png",
   "environment": "*",
+  "accessWidener": "hammer.permission.accesswidener",
   "entrypoints": {
     "main": [
       "dev.vini2003.hammer.permission.HP"
@@ -25,5 +26,8 @@
     "fabricloader": ">=0.12.9",
     "fabric": ">=0.44.0+1.18",
     "minecraft": ">=1.18"
-  }
+  },
+  "mixins": [
+    "hammer.permission.mixins.json"
+  ]
 }

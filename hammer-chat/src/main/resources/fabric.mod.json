@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "hammer-chat",
-  "version": "0.6.5",
+  "version": "0.8.68",
   "name": "Hammer Chat",
   "description": "A library module.",
   "authors": [

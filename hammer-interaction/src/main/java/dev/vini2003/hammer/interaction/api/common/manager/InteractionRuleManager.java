@@ -80,6 +80,10 @@ public class InteractionRuleManager {
 	public static void add(PlayerEntity player, InteractionRule<?> rule) {
 		RULES.computeIfAbsent(player.getUuid(), ($) -> new ArrayList<>());
 		
+		if (contains(player, rule)) {
+			return;
+		}
+		
 		RULES.get(player.getUuid()).add(rule);
 		
 		if (player instanceof ServerPlayerEntity serverPlayer) {
@@ -95,6 +99,10 @@ public class InteractionRuleManager {
 		if (player instanceof ServerPlayerEntity serverPlayer) {
 			syncWith(ImmutableList.of(serverPlayer));
 		}
+	}
+	
+	public static boolean contains(PlayerEntity player, InteractionRule<?> rule) {
+		return get(player).contains(rule);
 	}
 	
 	public static Collection<InteractionRule<?>> get(PlayerEntity player) {

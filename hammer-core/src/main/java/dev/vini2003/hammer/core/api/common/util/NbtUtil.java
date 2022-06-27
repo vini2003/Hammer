@@ -24,17 +24,27 @@
 
 package dev.vini2003.hammer.core.api.common.util;
 
+import com.mojang.brigadier.StringReader;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.client.util.math.Vector2f;
 import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.minecraft.util.registry.RegistryKey;
 
 public class NbtUtil {
+	public static NbtCompound parseNbt(String nbtString) {
+		try {
+			return new StringNbtReader(new StringReader(nbtString)).parseCompound();
+		} catch (Exception ignore) {
+			return new NbtCompound();
+		}
+	}
+	
 	public static void putPosition(NbtCompound nbt, String key, Position value) {
 		nbt.putFloat(key + "X", value.getX());
 		nbt.putFloat(key + "Y", value.getY());

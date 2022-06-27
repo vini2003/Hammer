@@ -26,6 +26,7 @@ package dev.vini2003.hammer.chat.api.common.util;
 
 import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.TranslatableText;
 
 public class ChatUtil {
 	public static void setShowChat(PlayerEntity player, boolean showChat) {
@@ -58,6 +59,22 @@ public class ChatUtil {
 	
 	public static boolean shouldShowWarnings(PlayerEntity player) {
 		return ((PlayerEntityAccessor) player).hammer$shouldShowWarnings();
+	}
+	
+	public static void setShowDirectMessages(PlayerEntity player, boolean showDirectMessages) {
+		((PlayerEntityAccessor) player).hammer$setShowDirectMessages(showDirectMessages);
+	}
+	
+	public static boolean shouldShowDirectMessages(PlayerEntity player) {
+		return ((PlayerEntityAccessor) player).hammer$shouldShowDirectMessages();
+	}
+
+	public static void setFastChatFade(PlayerEntity player, boolean fastChatFade) {
+		((PlayerEntityAccessor) player).hammer$setFastChatFade(fastChatFade);
+	}
+	
+	public static boolean hasFastChatFade(PlayerEntity player) {
+		return ((PlayerEntityAccessor) player).hammer$hasFastChatFade();
 	}
 	
 	public static void setMuted(PlayerEntity player, boolean muted) {

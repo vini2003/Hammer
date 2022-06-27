@@ -41,33 +41,6 @@ public abstract class WorldRendererMixin {
 	@Shadow
 	public abstract void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f positionMatrix);
 	
-	@ModifyVariable(
-			method = "render",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/BufferBuilderStorage;getEntityVertexConsumers()Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;"),
-			ordinal = 3
-	)
-	private boolean hammer$render$getEntityVertexConsumers(boolean original) {
-		var client = InstanceUtil.getClient();
-		
-		var player = client.player;
-		
-		if (player == null) {
-			return original;
-		}
-		
-		var hand = player.getActiveHand();
-		
-		var stack = player.getStackInHand(hand);
-		
-		if (stack.getItem() instanceof TriggerItem triggerItem) {
-			if (triggerItem.shouldEnableOutline()) {
-				return true;
-			}
-		}
-		
-		return original;
-	}
-	
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;drawCurrentLayer()V"), method = "render")
 	private void hammer$render$drawCurrentLayer(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f positionMatrix, CallbackInfo ci) {
 		var client = InstanceUtil.getClient();

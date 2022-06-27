@@ -20,14 +20,16 @@ public class ChatOptionsScreenMixin {
 	private static void hammer$init(CallbackInfo ci) {
 		var prevOptions = OPTIONS;
 		
-		OPTIONS = new Option[OPTIONS.length + 3];
+		OPTIONS = new Option[OPTIONS.length + 5];
 		
-		for (var i = 0; i < OPTIONS.length - 3; ++i) {
+		for (var i = 0; i < OPTIONS.length - 5; ++i) {
 			OPTIONS[i] = prevOptions[i];
 		}
 		
 		OPTIONS[prevOptions.length] = HCOptions.SHOW_CHAT;
 		OPTIONS[prevOptions.length + 1] = HCOptions.SHOW_COMMAND_FEEDBACK;
 		OPTIONS[prevOptions.length + 2] = HCOptions.SHOW_WARNINGS;
+		OPTIONS[prevOptions.length + 3] = HCOptions.SHOW_DIRECT_MESSAGES;
+		OPTIONS[prevOptions.length + 4] = HCOptions.FAST_CHAT_FADE;
 	}
 }

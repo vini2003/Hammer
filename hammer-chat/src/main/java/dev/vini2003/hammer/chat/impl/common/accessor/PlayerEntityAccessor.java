@@ -47,9 +47,17 @@ public interface PlayerEntityAccessor {
 	
 	void hammer$setMuted(boolean muted);
 	
+	boolean hammer$shouldShowDirectMessages();
+	
+	void hammer$setShowDirectMessages(boolean showDirectMessages);
+	
 	boolean hammer$isMuted();
 	
 	void hammer$setSelectedChannel(Channel selectedChannel);
+	
+	boolean hammer$hasFastChatFade();
+	
+	void hammer$setFastChatFade(boolean fastChatFade);
 	
 	Channel hammer$getSelectedChannel();
 	

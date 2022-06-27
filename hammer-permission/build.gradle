@@ -10,6 +10,10 @@ dependencies {
 	include "net.luckperms:api:${luckPermsVersion}"
 }
 
+loom {
+	accessWidenerPath = file("src/main/resources/hammer.permission.accesswidener")
+}
+
 jar {
     baseName("hammer-permission")
 }

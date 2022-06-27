@@ -1,3 +1,5 @@
 {
-  "command.hammer.role.self": "%s role %s"
+  "command.hammer.role.self": "%s role %s",
+  "argument.entity.options.role.invalid": "Invalid role",
+  "argument.entity.options.role.description": "Player role"
 }

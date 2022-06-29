@@ -92,16 +92,16 @@ public class HC implements ModInitializer {
 		
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			for (var world : server.getWorlds()) {
-				var comp = WORLD_COMPONENT.get(world);
-				System.out.println("in server -> " + comp.foo);
+				var component = WORLD_COMPONENT.get(world);
+				System.out.println("in server -> " + component.foo);
 				WORLD_COMPONENT.sync(world);
 			}
 		});
 		
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (client.world != null) {
-				var comp = WORLD_COMPONENT.get(client.world);
-				System.out.println("in client -> " + comp.foo);
+				var component = WORLD_COMPONENT.get(client.world);
+				System.out.println("in client -> " + component.foo);
 			}
 		});
 		

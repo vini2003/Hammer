@@ -2,7 +2,7 @@ package dev.vini2003.hammer.component.api.common.manager;
 
 import dev.vini2003.hammer.component.api.common.component.Component;
 import dev.vini2003.hammer.component.api.common.component.ComponentKey;
-import dev.vini2003.hammer.component.impl.common.util.ComponentUtil;
+import dev.vini2003.hammer.component.impl.common.misc.ComponentUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -26,11 +26,11 @@ public class ComponentManager {
 		return (ComponentKey<C>) KEYS.get(id);
 	}
 	
-	public static <C extends Component> void registerForEntity(ComponentKey<C> key, Function<Entity, C> func) {
-		ComponentUtil.ENTITY_ATTACHERS.put(key, func);
+	public static <C extends Component> void registerForEntity(ComponentKey<C> key, Function<Entity, C> function) {
+		ComponentUtil.ENTITY_ATTACHERS.put(key, function);
 	}
 	
-	public static <C extends Component> void registerForWorld(ComponentKey<C> key, Function<World, C> func) {
-		ComponentUtil.WORLD_ATTACHERS.put(key, func);
+	public static <C extends Component> void registerForWorld(ComponentKey<C> key, Function<World, C> function) {
+		ComponentUtil.WORLD_ATTACHERS.put(key, function);
 	}
 }

@@ -46,8 +46,8 @@ public class HCNetworking {
 					
 					client.execute(() -> {
 						if (client.world.getEntityById(entityId) instanceof ComponentHolder holder) {
-							var comp = holder.getComponentContainer().get(compKey);
-							comp.readFromNbt(compNbt);
+							var component = holder.getComponentContainer().get(compKey);
+							component.readFromNbt(compNbt);
 						}
 					});
 				}
@@ -55,8 +55,8 @@ public class HCNetworking {
 				case ComponentHolder.WORLD -> {
 					client.execute(() -> {
 						if (client.world instanceof ComponentHolder holder) {
-							var comp = holder.getComponentContainer().get(compKey);
-							comp.readFromNbt(compNbt);
+							var component = holder.getComponentContainer().get(compKey);
+							component.readFromNbt(compNbt);
 						}
 					});
 				}

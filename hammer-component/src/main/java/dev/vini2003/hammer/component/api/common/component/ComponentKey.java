@@ -1,20 +1,19 @@
 package dev.vini2003.hammer.component.api.common.component;
 
 import dev.vini2003.hammer.component.impl.common.component.ComponentHolder;
-import dev.vini2003.hammer.component.registry.common.HCNetworking;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.component.impl.common.misc.ComponentUtil;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
 
+/**
+ * A {@link ComponentKey} is the key with which a {@link Component}'s instances
+ * are associated.
+ */
 public class ComponentKey<C extends Component> {
 	private Identifier id;
 	
@@ -26,6 +25,13 @@ public class ComponentKey<C extends Component> {
 		return id;
 	}
 	
+	/**
+	 * <p>Returns the associated component in the given object,
+	 * if any.</p>
+	 *
+	 * @param obj the object.
+	 * @return the component, or <code>null</code> if not present.
+	 */
 	@Nullable
 	public C get(Object obj) {
 		if (obj instanceof ComponentHolder holder) {
@@ -35,12 +41,18 @@ public class ComponentKey<C extends Component> {
 		}
 	}
 	
+	/**
+	 * <p>Synchronizes the associated component in the given object,
+	 * if any.</p>
+	 *
+	 * @param obj the object.
+	 */
 	public void sync(Object obj) {
 		if (obj instanceof ComponentHolder holder) {
-			var comp = holder.getComponentContainer().get(this);
+			var component = holder.getComponentContainer().get(this);
 			
-			var compNbt = new NbtCompound();
-			comp.writeToNbt(compNbt);
+			var componentNbt = new NbtCompound();
+			component.writeToNbt(componentNbt);
 			
 			var buf = PacketByteBufs.create();
 			buf.writeIdentifier(id);
@@ -53,35 +65,13 @@ public class ComponentKey<C extends Component> {
 				buf.writeInt(ComponentHolder.WORLD);
 			}
 			
-			buf.writeNbt(compNbt);
+			buf.writeNbt(componentNbt);
 			
 			if (obj instanceof Entity entity) {
 				buf.writeInt(entity.getId());
 			}
 			
-			if (InstanceUtil.isServer()) {
-				syncOnSever(buf);
-			} else {
-				syncOnClient(buf);
-			}
-		}
-	}
-	
-	private void syncOnClient(PacketByteBuf buf) {
-		var server = InstanceUtil.getClient().getServer();
-		
-		syncWith(server.getPlayerManager().getPlayerList(), buf);
-	}
-	
-	private void syncOnSever(PacketByteBuf buf) {
-		var server = InstanceUtil.getServer();
-		
-		syncWith(server.getPlayerManager().getPlayerList(), buf);
-	}
-	
-	private void syncWith(Collection<ServerPlayerEntity> players, PacketByteBuf buf) {
-		for (var p : players) {
-			ServerPlayNetworking.send(p, HCNetworking.SYNC_COMPONENT, PacketByteBufs.duplicate(buf));
+			ComponentUtil.syncKey(buf);
 		}
 	}
 }

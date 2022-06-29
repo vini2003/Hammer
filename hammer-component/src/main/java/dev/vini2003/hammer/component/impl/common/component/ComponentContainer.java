@@ -32,37 +32,40 @@ public class ComponentContainer {
 	}
 	
 	public void writeToNbt(NbtCompound nbt) {
-		var nbtList = new NbtList();
+		var entryNbtList = new NbtList();
 		
 		for (var entry : entrySet()) {
+			var key = entry.getKey();
+			var component = entry.getValue();
+			
 			var entryNbt = new NbtCompound();
 			
-			NbtUtil.putIdentifier(entryNbt, HAMMER$ID_KEY, entry.getKey().getId());
+			NbtUtil.putIdentifier(entryNbt, HAMMER$ID_KEY, key.getId());
 			
-			var compNbt = new NbtCompound();
-			entry.getValue().writeToNbt(compNbt);
+			var componentNbt = new NbtCompound();
+			component.writeToNbt(componentNbt);
 			
-			entryNbt.put(HAMMER$COMPONENT_KEY, compNbt);
+			entryNbt.put(HAMMER$COMPONENT_KEY, componentNbt);
 			
-			nbtList.add(entryNbt);
+			entryNbtList.add(entryNbt);
 		}
 		
-		nbt.put(HAMMER$COMPONENTS_KEY, nbtList);
+		nbt.put(HAMMER$COMPONENTS_KEY, entryNbtList);
 	}
 	
 	public void readFromNbt(NbtCompound nbt) {
-		var nbtList = nbt.getList(HAMMER$COMPONENTS_KEY, NbtElement.COMPOUND_TYPE);
+		var entryNbtList = nbt.getList(HAMMER$COMPONENTS_KEY, NbtElement.COMPOUND_TYPE);
 		
-		for (var entryElement : nbtList) {
+		for (var entryElement : entryNbtList) {
 			var entryNbt = (NbtCompound) entryElement;
 			
-			var compId = NbtUtil.getIdentifier(entryNbt, HAMMER$ID_KEY);
-			var compKey = ComponentManager.getKey(compId);
+			var componentId = NbtUtil.getIdentifier(entryNbt, HAMMER$ID_KEY);
+			var componentKey = ComponentManager.getKey(componentId);
 			
-			var comp = get(compKey);
+			var component = get(componentKey);
 			
-			var compNbt = entryNbt.getCompound(HAMMER$COMPONENT_KEY);
-			comp.readFromNbt(compNbt);
+			var componentNbt = entryNbt.getCompound(HAMMER$COMPONENT_KEY);
+			component.readFromNbt(componentNbt);
 		}
 	}
 	

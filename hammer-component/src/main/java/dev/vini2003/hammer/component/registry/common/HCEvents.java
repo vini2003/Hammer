@@ -19,15 +19,15 @@ public class HCEvents {
 				if (newPlayer instanceof ComponentHolder newHolder) {
 					for (var entry : oldHolder.getComponentContainer().entrySet()) {
 						var key = entry.getKey();
-						var comp = entry.getValue();
+						var component = entry.getValue();
 						
-						if (comp instanceof PlayerComponent playerComp) {
+						if (component instanceof PlayerComponent playerComp) {
 							if (alive || (!alive && playerComp.shouldCopyOnDeath())) {
-								newHolder.getComponentContainer().put(key, comp);
+								newHolder.getComponentContainer().put(key, component);
 							}
 						} else {
 							if (alive) {
-								newHolder.getComponentContainer().put(key, comp);
+								newHolder.getComponentContainer().put(key, component);
 							}
 						}
 					}

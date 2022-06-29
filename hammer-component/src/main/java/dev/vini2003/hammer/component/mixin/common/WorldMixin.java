@@ -1,6 +1,6 @@
 package dev.vini2003.hammer.component.mixin.common;
 
-import dev.vini2003.hammer.component.impl.common.util.ComponentUtil;
+import dev.vini2003.hammer.component.impl.common.misc.ComponentUtil;
 import dev.vini2003.hammer.component.impl.common.component.ComponentContainer;
 import dev.vini2003.hammer.component.impl.common.component.ComponentHolder;
 import dev.vini2003.hammer.component.impl.common.state.ComponentPersistentState;

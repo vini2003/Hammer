@@ -1,4 +1,4 @@
-package dev.vini2003.hammer.chat.mixin.common;
+package dev.vini2003.hammer.chat.mixin.client;
 
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.chat.registry.client.HCKeyBinds;
@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ChatHud.class)
-public class ChadHudMixin {
+public class ChatHudMixin {
 	@Inject(method = "isChatFocused", at = @At("RETURN"), cancellable = true)
 	private void isChatFocused(CallbackInfoReturnable<Boolean> cir) {
 		if (!cir.getReturnValueZ() && HCKeyBinds.SHOW_CHAT.isPressed()) {

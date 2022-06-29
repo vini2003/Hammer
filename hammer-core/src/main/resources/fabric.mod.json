@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "hammer",
-  "version": "0.8.68",
+  "version": "0.8.70",
   "name": "Hammer",
   "description": "A library module.",
   "authors": [
@@ -14,6 +14,9 @@
   "icon": "assets/hammer/icon.png",
   "environment": "*",
   "entrypoints": {
+    "main": [
+      "dev.vini2003.hammer.core.HC"
+    ],
     "client": [
       "dev.vini2003.hammer.core.HCClient"
     ]

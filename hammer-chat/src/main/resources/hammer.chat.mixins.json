@@ -5,12 +5,16 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "common.ServerCommandSourceMixin",
-    "common.PlayerEntityMixin"
+    "common.PlayerEntityMixin",
+    "common.MessageCommandMixin",
+    "common.TextVisitFactoryMixin",
+    "common.SharedConstantsMixin"
   ],
   "client": [
     "client.InGameHudMixin",
     "client.ChatOptionsScreenMixin",
-    "client.ChatScreenMixin"
+    "client.ChatScreenMixin",
+    "client.ChatHudMixin",
   ],
   "injectors": {
     "defaultRequire": 1

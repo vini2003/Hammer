@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.permission.api.common.role;
 
 import dev.vini2003.hammer.core.api.common.cache.Cached;
+import dev.vini2003.hammer.permission.api.common.event.RoleEvents;
 import dev.vini2003.hammer.permission.api.common.util.PermUtil;
 import dev.vini2003.hammer.permission.registry.common.HPNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -133,6 +134,8 @@ public class Role {
 		} else {
 			addToClient(player.getUuid());
 		}
+		
+		RoleEvents.ADD.invoker().onAdd(player, this);
 	}
 	
 	public void removeFromClient(UUID uuid) {
@@ -155,6 +158,8 @@ public class Role {
 		} else {
 			removeFromClient(player.getUuid());
 		}
+		
+		RoleEvents.REMOVE.invoker().onRemove(player, this);
 	}
 	
 	public void clearOnClient() {

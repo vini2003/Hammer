@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "hammer-util",
-  "version": "0.8.68",
+  "version": "0.8.70",
   "name": "Hammer Util",
   "description": "A library module.",
   "authors": [

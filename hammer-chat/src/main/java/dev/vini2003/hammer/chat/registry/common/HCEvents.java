@@ -30,7 +30,9 @@ import dev.vini2003.hammer.chat.api.common.manager.ChannelManager;
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
 import dev.vini2003.hammer.core.api.common.event.ChatEvents;
+import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -43,6 +45,19 @@ import net.minecraft.util.TypedActionResult;
 
 public class HCEvents {
 	public static void init() {
+		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
+			ChatUtil.setShowChat(newPlayer, ChatUtil.shouldShowChat(oldPlayer));
+			ChatUtil.setShowGlobalChat(newPlayer, ChatUtil.shouldShowGlobalChat(oldPlayer));
+			ChatUtil.setShowCommandFeedback(newPlayer, ChatUtil.shouldShowCommandFeedback(oldPlayer));
+			ChatUtil.setShowWarnings(newPlayer, ChatUtil.shouldShowWarnings(oldPlayer));
+			
+			ChatUtil.setShowDirectMessages(newPlayer, ChatUtil.shouldShowDirectMessages(oldPlayer));
+			
+			ChatUtil.setFastChatFade(newPlayer, ChatUtil.hasFastChatFade(oldPlayer));
+			
+			ChatUtil.setMuted(newPlayer, ChatUtil.isMuted(oldPlayer));
+		});
+		
 		ChatEvents.SEND_MESSAGE.register((receiver, message, type, sender) -> {
 			var us = receiver;
 			var them = receiver.getServer().getPlayerManager().getPlayer(sender);

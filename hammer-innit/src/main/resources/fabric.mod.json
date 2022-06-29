@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "hammer-innit",
+  "version": "0.8.70",
+  "name": "Hammer Innit",
+  "description": "A library module.",
+  "authors": [
+    "vini2003"
+  ],
+  "contact": {
+    "email": "contact@vini2003.dev"
+  },
+  "license": "MIT",
+  "icon": "assets/hammer/icon.png",
+  "environment": "*",
+  "accessWidener": "hammer.innit.accesswidener",
+  "entrypoints": {
+    "main": [
+      "dev.vini2003.hammer.innit.HI"
+    ],
+    "client": [
+      "dev.vini2003.hammer.innit.HIClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.12.9",
+    "fabric": ">=0.44.0+1.18",
+    "minecraft": ">=1.18"
+  },
+  "mixins": [
+    "hammer.innit.mixins.json"
+  ]
+}

@@ -24,14 +24,21 @@
 
 package dev.vini2003.hammer.core;
 
+import dev.vini2003.hammer.core.registry.common.HCEvents;
+import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class HC {
+public class HC implements ModInitializer {
 	public static final String ID = "hammer";
 	
 	public static Identifier id(String path) {
 		return new Identifier(ID, path);
+	}
+	
+	@Override
+	public void onInitialize() {
+		HCEvents.init();
 	}
 }

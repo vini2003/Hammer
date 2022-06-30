@@ -24,10 +24,12 @@
 
 package dev.vini2003.hammer.zone.registry.client;
 
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.util.BufUtil;
 import dev.vini2003.hammer.zone.api.common.util.ZoneDrawingUtil;
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
 import dev.vini2003.hammer.zone.api.common.zone.ZoneGroup;
@@ -47,8 +49,7 @@ import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.UUID;
 
 public class HZEvents {
 	private static long TICKS = 5L;
@@ -65,34 +66,33 @@ public class HZEvents {
 	
 	@Nullable
 	private static ZoneGroup COPIED_ZONE_GROUP = null;
+	
 	@Nullable
 	private static Color COPIED_ZONE_COLOR = null;
 	
-	// TODO: Select only the closest zone side!
-	// TODO: Creation and deletion of zones!
 	public static void init() {
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			if (TICKS - PREV_TICKS >= 2) {
+			var window = client.getWindow();
+			var handle = window.getHandle();
+			
+			if (TICKS - PREV_TICKS >= 2 && client.currentScreen == null && HZValues.ZONE_EDITOR) {
 				if (SELECTED_ZONE == null) {
-					var window = client.getWindow();
-					var handle = window.getHandle();
+					// TODO: Move Identifier UUID method to utility class!
 					
 					// Create
 					if (InputUtil.isKeyPressed(handle, GLFW.GLFW_KEY_INSERT)) {
 						var buf = PacketByteBufs.create();
+						buf.writeIdentifier(HC.id(UUID.randomUUID().toString().replace("-", "")));
 						
-						ClientPlayNetworking.send(HZNetworking.ZONE_CREATED, buf);
+						ClientPlayNetworking.send(HZNetworking.ZONE_CREATE, buf);
 					}
 				} else {
-					var window = client.getWindow();
-					var handle = window.getHandle();
-					
 					// Delete
 					if (InputUtil.isKeyPressed(handle, GLFW.GLFW_KEY_DELETE)) {
 						var buf = PacketByteBufs.create();
 						buf.writeIdentifier(SELECTED_ZONE.getId());
 						
-						ClientPlayNetworking.send(HZNetworking.ZONE_DELETED, buf);
+						ClientPlayNetworking.send(HZNetworking.ZONE_DELETE, buf);
 					}
 					
 					if (Screen.hasControlDown()) {
@@ -113,31 +113,30 @@ public class HZEvents {
 								buf.writeBoolean(false);
 							}
 							
-							ClientPlayNetworking.send(HZNetworking.ZONE_PASTED, buf);
+							ClientPlayNetworking.send(HZNetworking.ZONE_PASTE, buf);
 						}
 					}
 				}
 				
 				if (SELECTED_ZONE != null && !SELECTED_ZONE.isRemoved()) {
-					if (client.player.getStackInHand(Hand.MAIN_HAND).getItem() instanceof DyeItem dye) {
-						if (client.mouse.wasRightButtonClicked()) {
-							var components = dye.getColor().getColorComponents();
-							
-							var color = new Color(components[0], components[1], components[2], SELECTED_ZONE.getColor().getA());
-							
-							var buf = PacketByteBufs.create();
-							buf.writeIdentifier(SELECTED_ZONE.getId());
-							buf.writeLong(color.toRgba());
-							
-							ClientPlayNetworking.send(HZNetworking.ZONE_COLORED, buf);
+					if (client.player != null) {
+						if (client.player.getStackInHand(Hand.MAIN_HAND).getItem() instanceof DyeItem dye) {
+							if (client.mouse.wasRightButtonClicked()) {
+								var components = dye.getColor().getColorComponents();
+								
+								var color = new Color(components[0], components[1], components[2], SELECTED_ZONE.getColor().getA());
+								
+								var buf = PacketByteBufs.create();
+								buf.writeIdentifier(SELECTED_ZONE.getId());
+								buf.writeLong(color.toRgba());
+								
+								ClientPlayNetworking.send(HZNetworking.ZONE_COLOR_CHANGED, buf);
+							}
 						}
 					}
 				}
 
 				if (SELECTED_ZONE != null && SELECTED_ZONE_SIDE != null && (WAS_UP_PRESSED || WAS_DOWN_PRESSED) && !SELECTED_ZONE.isRemoved()) {
-					var window = client.getWindow();
-					var handle = window.getHandle();
-					
 					var buf = PacketByteBufs.create();
 					buf.writeIdentifier(SELECTED_ZONE.getId());
 					buf.writeEnumConstant(SELECTED_ZONE_SIDE);
@@ -176,14 +175,14 @@ public class HZEvents {
 						}
 					}
 					
-					ClientPlayNetworking.send(HZNetworking.ZONE_INTERACTION, buf);
+					ClientPlayNetworking.send(HZNetworking.ZONE_INTERACT, buf);
 				}
 			}
 			
 			++TICKS;
 		});
 		
-		// Draw all the zones contained in the world.
+		// Draw all the zones in the world.
 		WorldRenderEvents.AFTER_ENTITIES.register(context -> {
 			var client = InstanceUtil.getClient();
 			
@@ -209,14 +208,13 @@ public class HZEvents {
 			
 			var zonesToRemove = new ArrayList<Zone>();
 			
-			// TODO: Optimize!
 			record ZoneData(
 					Zone zone,
-					Direction side
+					Direction side,
+					double distance
 			) {}
 			
-			var zonesToChooseFrom = new ArrayList<ZoneData>();
-			var zonesBySideDistance = new HashMap<ZoneData, Double>();
+			var zoneData = new ArrayList<ZoneData>();
 			
 			for (var zone : component.getZones()) {
 				var minPos = zone.getLerpedMinPos(context.tickDelta() / 64.0F);
@@ -229,7 +227,7 @@ public class HZEvents {
 				);
 				
 				if (zone.isRemoved()) {
-					if (centerPos.distanceTo(minPos) <= 0.015F) {
+					if (centerPos.distanceTo(minPos) <= 0.05F) {
 						zonesToRemove.add(zone);
 						
 						continue;
@@ -259,12 +257,12 @@ public class HZEvents {
 				var endPos = player.getPos().add(rotation.x * 256.0F, rotation.y * 256.0F, rotation.z * 256.0F);
 				
 				var distance = new double[] { 1.0 };
-
+				
 				var side = Box.traceCollisionSide(box, startPos, distance, null, endPos.getX() - startPos.getX(), endPos.getY() - startPos.getY(), endPos.getZ() - startPos.getZ());
 				
 				if (side != null) {
-					zonesToChooseFrom.add(new ZoneData(zone, side));
-					zonesBySideDistance.put(new ZoneData(zone, side), startPos.add(distance[0] * width, distance[0] * height, distance[0] * handle).distanceTo(player.getPos()));
+					var sidePos = startPos.add(distance[0] * width, distance[0] * height, distance[0] * handle);
+					zoneData.add(new ZoneData(zone, side, sidePos.distanceTo(player.getPos())));
 				}
 				
 				if (zone != SELECTED_ZONE) {
@@ -298,14 +296,16 @@ public class HZEvents {
 			SELECTED_ZONE = null;
 			SELECTED_ZONE_SIDE = null;
 			
-			for (var entry : zonesBySideDistance.entrySet()) {
-				if (entry.getValue() < selectedZoneDistance) {
-					SELECTED_ZONE = entry.getKey().zone();
-					SELECTED_ZONE_SIDE = entry.getKey().side();
+			for (var data : zoneData) {
+				if (data.distance < selectedZoneDistance) {
+					SELECTED_ZONE = data.zone();
+					SELECTED_ZONE_SIDE = data.side();
 					
-					selectedZoneDistance = entry.getValue();
+					selectedZoneDistance = data.distance();
 				}
 			}
+			
+			HZValues.setMouseSelectedZone(SELECTED_ZONE);
 			
 			for (var zone : zonesToRemove) {
 				component.remove(zone);

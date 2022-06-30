@@ -48,6 +48,8 @@ public class MessageCommandMixin {
 		for (var target : targets) {
 			if (!ChatUtil.shouldShowDirectMessages(target)) {
 				source.sendFeedback(new TranslatableText("text.hammer.message_command.direct_messages_disabled", target.getDisplayName()), false);
+				
+				targetsToRemove.add(target);
 			}
 		}
 		

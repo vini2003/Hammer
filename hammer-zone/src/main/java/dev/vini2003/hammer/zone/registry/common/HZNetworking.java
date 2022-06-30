@@ -27,12 +27,10 @@ package dev.vini2003.hammer.zone.registry.common;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.util.NbtUtil;
-import dev.vini2003.hammer.zone.HZ;
+import dev.vini2003.hammer.core.api.common.util.BufUtil;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneGroupManager;
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -40,19 +38,16 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.UUID;
-
 public class HZNetworking {
-	public static final Identifier ZONE_CREATED = HC.id("zone_created");
-	public static final Identifier ZONE_DELETED = HC.id("zone_deleted");
-	public static final Identifier ZONE_COLORED = HC.id("zone_colored");
-	public static final Identifier ZONE_PASTED = HC.id("zone_pasted");
-	public static final Identifier ZONE_INTERACTION = HC.id("zone_interaction");
+	public static final Identifier ZONE_CREATE = HC.id("zone_create");
+	public static final Identifier ZONE_DELETE = HC.id("zone_delete");
+	public static final Identifier ZONE_COLOR_CHANGED = HC.id("zone_color_changed");
+	public static final Identifier ZONE_GROUP_CHANGED = HC.id("zone_group_changed");
+	public static final Identifier ZONE_PASTE = HC.id("zone_paste");
+	public static final Identifier ZONE_INTERACT = HC.id("zone_interact");
 	
-	// TODO: Make shift-right-click copy settings between zones!
-	// TODO: Make zoning require OP!
 	public static void init() {
-		ServerPlayNetworking.registerGlobalReceiver(ZONE_PASTED, (server, player, handler, buf, responseSender) -> {
+		ServerPlayNetworking.registerGlobalReceiver(ZONE_PASTE, (server, player, handler, buf, responseSender) -> {
 			var zoneId = buf.readIdentifier();
 			
 			var rgba = buf.readLong();
@@ -60,13 +55,17 @@ public class HZNetworking {
 			
 			var hasGroup = buf.readBoolean();
 			
-			Identifier[] groupId = { null };
+			var groupId = new Identifier[] { null };
 			
 			if (hasGroup) {
 				groupId[0] = buf.readIdentifier();
 			}
 			
 			server.execute(() -> {
+				if (!player.hasPermissionLevel(4)) {
+					return;
+				}
+				
 				var component = HZComponents.ZONES.get(player.world);
 				
 				var zone = component.getZoneById(zoneId);
@@ -78,11 +77,19 @@ public class HZNetworking {
 				}
 				
 				zone.setColor(color);
+				
+				HZComponents.ZONES.sync(player.world);
 			});
 		});
 		
-		ServerPlayNetworking.registerGlobalReceiver(ZONE_CREATED, (server, player, handler, buf, responseSender) -> {
+		ServerPlayNetworking.registerGlobalReceiver(ZONE_CREATE, (server, player, handler, buf, responseSender) -> {
+			var id = buf.readIdentifier();
+			
 			server.execute(() -> {
+				if (!player.hasPermissionLevel(4)) {
+					return;
+				}
+				
 				var hitResult = player.raycast(32.0D, 0.0F, false);
 				
 				if (hitResult.getType() != HitResult.Type.MISS) {
@@ -97,11 +104,9 @@ public class HZNetworking {
 					}
 					
 					var zone = new Zone(
-							null,
-							HC.id(UUID.randomUUID().toString().replace("-", "")),
+							id,
 							new Position((float) (pos.getX() - 0.5F), (float) (pos.getY() - 0.5F), (float) (pos.getZ() - 0.5F)),
-							new Position((float) (pos.getX() + 0.5F), (float) (pos.getY() + 0.5F), (float) (pos.getZ() + 0.5F)),
-							new Color((long) 0x25ABFF7E)
+							new Position((float) (pos.getX() + 0.5F), (float) (pos.getY() + 0.5F), (float) (pos.getZ() + 0.5F))
 					);
 					
 					var component = HZComponents.ZONES.get(player.world);
@@ -116,41 +121,76 @@ public class HZNetworking {
 					
 					component.add(zone);
 				}
+				
+				HZComponents.ZONES.sync(player.world);
 			});
 		});
 		
-		ServerPlayNetworking.registerGlobalReceiver(ZONE_DELETED, (server, player, handler, buf, responseSender) -> {
+		ServerPlayNetworking.registerGlobalReceiver(ZONE_DELETE, (server, player, handler, buf, responseSender) -> {
 			var id = buf.readIdentifier();
 			
 			server.execute(() -> {
+				if (!player.hasPermissionLevel(4)) {
+					return;
+				}
+				
 				var component = HZComponents.ZONES.get(player.world);
 				
 				var zone = component.getZoneById(id);
 				
 				zone.setColor(new Color((long) 0xF500497E));
-				
+					
 				zone.markRemoved();
 				
 				HZComponents.ZONES.sync(player.world);
 				
 				component.remove(zone);
+				
+				HZComponents.ZONES.sync(player.world);
 			});
 		});
 		
-		ServerPlayNetworking.registerGlobalReceiver(ZONE_COLORED, (server, player, handler, buf, responseSender) -> {
+		ServerPlayNetworking.registerGlobalReceiver(ZONE_COLOR_CHANGED, (server, player, handler, buf, responseSender) -> {
 			var id = buf.readIdentifier();
 			var rgba = buf.readLong();
 			
 			server.execute(() -> {
+				if (!player.hasPermissionLevel(4)) {
+					return;
+				}
+				
 				var component = HZComponents.ZONES.get(player.world);
 				
 				var zone = component.getZoneById(id);
 				
 				zone.setColor(new Color(rgba));
+				
+				HZComponents.ZONES.sync(player.world);
 			});
 		});
 		
-		ServerPlayNetworking.registerGlobalReceiver(ZONE_INTERACTION, (server, player, handler, buf, responseSender) -> {
+		ServerPlayNetworking.registerGlobalReceiver(ZONE_GROUP_CHANGED, (server, player, handler, buf, responseSender) -> {
+			var id = buf.readIdentifier();
+			var groupId = buf.readIdentifier();
+			
+			server.execute(() -> {
+				if (!player.hasPermissionLevel(4)) {
+					return;
+				}
+				
+				var component = HZComponents.ZONES.get(player.world);
+				
+				var zone = component.getZoneById(id);
+				
+				var zoneGroup = ZoneGroupManager.getOrCreate(groupId);
+				
+				zone.setGroup(zoneGroup);
+				
+				HZComponents.ZONES.sync(player.world);
+			});
+		});
+		
+		ServerPlayNetworking.registerGlobalReceiver(ZONE_INTERACT, (server, player, handler, buf, responseSender) -> {
 			var id = buf.readIdentifier();
 			var side = buf.readEnumConstant(Direction.class);
 			var hasAltDown = buf.readBoolean();
@@ -158,6 +198,10 @@ public class HZNetworking {
 			var key = buf.readInt();
 			
 			server.execute(() -> {
+				if (!player.hasPermissionLevel(4)) {
+					return;
+				}
+				
 				var component = HZComponents.ZONES.get(player.world);
 				
 				var zone = component.getZoneById(id);
@@ -185,6 +229,8 @@ public class HZNetworking {
 						zone.move(side, 1);
 					}
 				}
+				
+				HZComponents.ZONES.sync(player.world);
 			});
 		});
 	}

@@ -37,8 +37,8 @@ public class ZoneNbtUtil {
 		NbtUtil.putIdentifier(nbt, key + "Id", value.getId());
 		NbtUtil.putPosition(nbt, key + "MinPos", value.getMinPos());
 		NbtUtil.putPosition(nbt, key + "MaxPos", value.getMaxPos());
+		NbtUtil.putColor(nbt, key + "Color", value.getColor());
 		
-		nbt.putLong(key + "Color", value.getColor().toRgba());
 		nbt.putBoolean(key + "Removed", value.isRemoved());
 		
 		var group = value.getGroup();
@@ -49,20 +49,20 @@ public class ZoneNbtUtil {
 	}
 	
 	public static Zone getZone(NbtCompound nbt, String key) {
-		ZoneGroup group = null;
+		var zone = new Zone(
+				NbtUtil.getIdentifier(nbt, key + "Id"),
+				NbtUtil.getPosition(nbt, key + "MinPos"),
+				NbtUtil.getPosition(nbt, key + "MaxPos")
+		);
+		
+		zone.setColor(NbtUtil.getColor(nbt, key + "Color"));
 		
 		if (nbt.contains(key + "GroupId")) {
 			var groupId = NbtUtil.getIdentifier(nbt, key + "GroupId");
-			group = ZoneGroupManager.getOrCreate(groupId);
+			var group = ZoneGroupManager.getOrCreate(groupId);
+			
+			zone.setGroup(group);
 		}
-		
-		var zone = new Zone(
-				group,
-				NbtUtil.getIdentifier(nbt, key + "Id"),
-				NbtUtil.getPosition(nbt, key + "MinPos"),
-				NbtUtil.getPosition(nbt, key + "MaxPos"),
-				new Color(nbt.getLong(key + "Color"))
-		);
 		
 		if (nbt.getBoolean(key + "Removed")) {
 			zone.markRemoved();

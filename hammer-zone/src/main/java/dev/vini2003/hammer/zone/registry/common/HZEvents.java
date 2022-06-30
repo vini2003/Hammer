@@ -24,16 +24,22 @@
 
 package dev.vini2003.hammer.zone.registry.common;
 
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
 import java.util.ArrayList;
 
 public class HZEvents {
 	public static void init() {
-		ServerTickEvents.END_SERVER_TICK.register(server -> {
-			for (var world : server.getWorlds()) {
-				HZComponents.ZONES.sync(world);
-			}
+		// Update zones upon joining.
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+			HZComponents.ZONES.sync(handler.player.world);
+		});
+		
+		// Update zones upon changing dimensions.
+		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
+			HZComponents.ZONES.sync(newPlayer.world);
 		});
 	}
 }

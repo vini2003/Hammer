@@ -34,6 +34,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -56,6 +57,7 @@ public class ZoneComponent implements Component {
 		return zones;
 	}
 	
+	@Nullable
 	public Zone getZoneById(Identifier id) {
 		return zonesById.get(id);
 	}
@@ -86,7 +88,6 @@ public class ZoneComponent implements Component {
 	
 	@Override
 	public void readFromNbt(NbtCompound nbt) {
-		// TODO: Make sure this doesn't crash with a CME!
 		var zoneNbtList = nbt.getList(HAMMER$ZONES_KEY, NbtElement.COMPOUND_TYPE);
 		
 		for (var zoneElement : zoneNbtList) {

@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.core.api.common.util;
 
+import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.client.util.math.Vector2f;
@@ -34,6 +35,14 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.registry.RegistryKey;
 
 public class BufUtil {
+	public static void writeColor(PacketByteBuf buf, Color value) {
+		buf.writeLong(value.toRgba());
+	}
+	
+	public static Color readColor(PacketByteBuf buf) {
+		return new Color(buf.readLong());
+	}
+	
 	public static void writePosition(PacketByteBuf buf, Position value) {
 		buf.writeFloat(value.getX());
 		buf.writeFloat(value.getY());

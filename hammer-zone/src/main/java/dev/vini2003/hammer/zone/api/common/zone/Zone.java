@@ -42,19 +42,17 @@ public class Zone {
 	private Position lerpedMinPos;
 	private Position lerpedMaxPos;
 	
-	private Color color;
+	private Color color = new Color((long) 0x25ABFF7E);
 	
 	private ZoneGroup group;
 	
 	private boolean removed = false;
 	
-	public Zone(@Nullable ZoneGroup group, Identifier id, Position startPos, Position endPos, Color color) {
+	public Zone(Identifier id, Position startPos, Position endPos) {
 		this.id = id;
 		
 		this.minPos = Position.min(startPos, endPos);
 		this.maxPos = Position.max(startPos, endPos);
-		
-		this.color = color;
 		
 		this.lerpedMinPos = getCenterPos();
 		this.lerpedMaxPos = getCenterPos();
@@ -157,8 +155,8 @@ public class Zone {
 	 * @param amount the amount.
 	 */
 	public void scale(int amount) {
-		minPos = minPos.offset(-amount, -amount, -amount);
-		maxPos = maxPos.offset(amount, amount, amount);
+		setMinPos(minPos.offset(-amount, -amount, -amount));
+		setMaxPos(maxPos.offset(amount, amount, amount));
 	}
 	
 	/**
@@ -169,12 +167,12 @@ public class Zone {
 	 */
 	public void stretch(Direction axis, int amount) {
 		switch (axis) {
-			case EAST -> maxPos = maxPos.offset(amount, 0, 0);
-			case WEST -> minPos = minPos.offset(-amount, 0, 0);
-			case SOUTH -> maxPos = maxPos.offset(0, 0, amount);
-			case NORTH -> minPos = minPos.offset(0, 0, -amount);
-			case UP -> maxPos = maxPos.offset(0, amount, 0);
-			case DOWN -> maxPos = maxPos.offset(0, -amount, 0);
+			case EAST -> setMaxPos(maxPos.offset(amount, 0, 0));
+			case WEST -> setMinPos(minPos.offset(-amount, 0, 0));
+			case SOUTH -> setMaxPos(maxPos.offset(0, 0, amount));
+			case NORTH -> setMinPos(minPos.offset(0, 0, -amount));
+			case UP -> setMaxPos(maxPos.offset(0, amount, 0));
+			case DOWN -> setMaxPos(maxPos.offset(0, -amount, 0));
 			
 		}
 	}
@@ -188,33 +186,33 @@ public class Zone {
 	public void move(Direction axis, int amount) {
 		switch (axis) {
 			case EAST -> {
-				minPos = minPos.offset(amount, 0, 0);
-				maxPos = maxPos.offset(amount, 0, 0);
+				setMinPos(minPos.offset(amount, 0, 0));
+				setMaxPos(maxPos.offset(amount, 0, 0));
 			}
 			
 			case WEST -> {
-				minPos = minPos.offset(-amount, 0, 0);
-				maxPos = maxPos.offset(-amount, 0, 0);
+				setMinPos(minPos.offset(-amount, 0, 0));
+				setMaxPos(maxPos.offset(-amount, 0, 0));
 			}
 			
 			case SOUTH -> {
-				minPos = minPos.offset(0, 0, amount);
-				maxPos = maxPos.offset(0, 0, amount);
+				setMinPos(minPos.offset(0, 0, amount));
+				setMaxPos(maxPos.offset(0, 0, amount));
 			}
 			
 			case NORTH -> {
-				minPos = minPos.offset(0, 0, -amount);
-				maxPos = maxPos.offset(0, 0, -amount);
+				setMinPos(minPos.offset(0, 0, -amount));
+				setMaxPos(maxPos.offset(0, 0, -amount));
 			}
 			
 			case UP -> {
-				minPos = minPos.offset(0, amount, 0);
-				maxPos = maxPos.offset(0, amount, 0);
+				setMinPos(minPos.offset(0, amount, 0));
+				setMaxPos(maxPos.offset(0, amount, 0));
 			}
 			
 			case DOWN -> {
-				minPos = minPos.offset(0, -amount, 0);
-				maxPos = maxPos.offset(0, -amount, 0);
+				setMinPos(minPos.offset(0, -amount, 0));
+				setMaxPos(maxPos.offset(0, -amount, 0));
 			}
 		}
 	}

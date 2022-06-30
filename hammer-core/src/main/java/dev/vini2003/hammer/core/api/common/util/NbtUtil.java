@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.core.api.common.util;
 
 import com.mojang.brigadier.StringReader;
+import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.client.util.math.Vector2f;
@@ -43,6 +44,14 @@ public class NbtUtil {
 		} catch (Exception ignore) {
 			return new NbtCompound();
 		}
+	}
+	
+	public static void putColor(NbtCompound nbt, String key, Color value) {
+		nbt.putLong(key + "Rgba", value.toRgba());
+	}
+	
+	public static Color getColor(NbtCompound nbt, String key) {
+		return new Color(nbt.getLong(key + "Rgba"));
 	}
 	
 	public static void putPosition(NbtCompound nbt, String key, Position value) {

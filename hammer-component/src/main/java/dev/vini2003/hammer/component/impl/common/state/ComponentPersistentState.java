@@ -1,8 +1,8 @@
 package dev.vini2003.hammer.component.impl.common.state;
 
-import dev.vini2003.hammer.component.impl.common.misc.ComponentUtil;
-import dev.vini2003.hammer.component.impl.common.component.ComponentContainer;
-import dev.vini2003.hammer.component.impl.common.component.ComponentHolder;
+import dev.vini2003.hammer.component.impl.common.util.ComponentUtil;
+import dev.vini2003.hammer.component.impl.common.component.container.ComponentContainer;
+import dev.vini2003.hammer.component.impl.common.component.holder.ComponentHolder;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.World;

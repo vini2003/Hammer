@@ -1,7 +1,7 @@
 package dev.vini2003.hammer.component.registry.common;
 
 import dev.vini2003.hammer.component.api.common.component.PlayerComponent;
-import dev.vini2003.hammer.component.impl.common.component.ComponentHolder;
+import dev.vini2003.hammer.component.impl.common.component.holder.ComponentHolder;
 import dev.vini2003.hammer.component.impl.common.state.ComponentPersistentState;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;

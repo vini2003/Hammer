@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.core.api.common.math.position;
 
+import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Quaternion;
@@ -31,6 +32,8 @@ import net.minecraft.util.math.Quaternion;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.IntFunction;
 
 /**
  * A {@link Position} is 3-dimensional coordinate, which contains X, Y and Z components.
@@ -298,6 +301,56 @@ public class Position implements PositionHolder {
 		q1.hamiltonProduct(q2);
 		
 		return new Position(q1.getX(), q1.getY(), q1.getZ());
+	}
+	
+	/**
+	 * Returns the maximum position by the given function.
+	 *
+	 * @return the maximum position.
+	 */
+	public static Position maxBy(Position a, Position b, Function<Position, Float> function) {
+		var resA = function.apply(a);
+		var resB = function.apply(b);
+		
+		if (resA >= resB) {
+			return a;
+		} else {
+			return b;
+		}
+	}
+	
+	/**
+	 * Returns the minimum position by the given function.
+	 *
+	 * @return the minimum position.
+	 */
+	public static Position minBy(Position a, Position b, Function<Position, Float> function) {
+		var resA = function.apply(a);
+		var resB = function.apply(b);
+		
+		if (resA <= resB) {
+			return a;
+		} else {
+			return b;
+		}
+	}
+	
+	/**
+	 * Returns the maximum position.
+	 *
+	 * @return the maximum position.
+	 */
+	public static Position max(Position a, Position b) {
+		return new Position(Math.max(a.x, b.x), Math.max(a.y, b.y), Math.max(a.z, b.z));
+	}
+	
+	/**
+	 * Returns the minimum position.
+	 *
+	 * @return the minimum position.
+	 */
+	public static Position min(Position a, Position b) {
+		return new Position(Math.min(a.x, b.x), Math.min(a.y, b.y), Math.min(a.z, b.z));
 	}
 	
 	@Override

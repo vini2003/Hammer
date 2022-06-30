@@ -25,7 +25,7 @@
 package dev.vini2003.hammer.component;
 
 import dev.vini2003.hammer.component.api.common.component.Component;
-import dev.vini2003.hammer.component.api.common.component.ComponentKey;
+import dev.vini2003.hammer.component.api.common.component.key.ComponentKey;
 import dev.vini2003.hammer.component.api.common.manager.ComponentManager;
 import dev.vini2003.hammer.component.registry.common.HCEvents;
 import dev.vini2003.hammer.component.registry.common.HCNetworking;
@@ -40,71 +40,8 @@ import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
 public class HC implements ModInitializer {
-	// todo: copy on player death n stuff
-	
-	class WorldComponent implements Component {
-		private int foo = 0;
-		
-		private World world;
-		
-		public WorldComponent(World world) {
-			this.world = world;
-		}
-		
-		@Override
-		public void writeToNbt(NbtCompound nbt) {
-			nbt.putInt("Foo", 47);
-		}
-		
-		@Override
-		public void readFromNbt(NbtCompound nbt) {
-			foo = nbt.getInt("Foo");
-		}
-	}
-	
-	class EntityComponent implements Component {
-		private String bar = "foo";
-		
-		private Entity entity;
-		
-		public EntityComponent(Entity entity) {
-			this.entity = entity;
-		}
-		
-		@Override
-		public void writeToNbt(NbtCompound nbt) {
-			nbt.putString("Bar", bar);
-		}
-		
-		@Override
-		public void readFromNbt(NbtCompound nbt) {
-			bar = nbt.getString("Bar");
-		}
-	}
-	
-	public static final ComponentKey<WorldComponent> WORLD_COMPONENT = ComponentManager.registerKey(new Identifier("hammer", "world_component"));
-	public static final ComponentKey<EntityComponent> ENTITY_COMPONENT = ComponentManager.registerKey(new Identifier("hammer", "entity_component"));
-	
 	@Override
 	public void onInitialize() {
-		ComponentManager.registerForWorld(WORLD_COMPONENT, WorldComponent::new);
-		ComponentManager.registerForEntity(ENTITY_COMPONENT, EntityComponent::new);
-		
-		ServerTickEvents.END_SERVER_TICK.register(server -> {
-			for (var world : server.getWorlds()) {
-				var component = WORLD_COMPONENT.get(world);
-				System.out.println("in server -> " + component.foo);
-				WORLD_COMPONENT.sync(world);
-			}
-		});
-		
-		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			if (client.world != null) {
-				var component = WORLD_COMPONENT.get(client.world);
-				System.out.println("in client -> " + component.foo);
-			}
-		});
-		
 		HCEvents.init();
 		HCNetworking.init();
 	}

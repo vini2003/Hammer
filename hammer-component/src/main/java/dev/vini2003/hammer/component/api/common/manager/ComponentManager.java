@@ -1,8 +1,8 @@
 package dev.vini2003.hammer.component.api.common.manager;
 
 import dev.vini2003.hammer.component.api.common.component.Component;
-import dev.vini2003.hammer.component.api.common.component.ComponentKey;
-import dev.vini2003.hammer.component.impl.common.misc.ComponentUtil;
+import dev.vini2003.hammer.component.api.common.component.key.ComponentKey;
+import dev.vini2003.hammer.component.impl.common.util.ComponentUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;

@@ -2,9 +2,6 @@ dependencies {
     // Hammer
     implementation project(path: ":hammer-core", configuration: "namedElements")
 
-    // Hammer Adventure
-    implementation project(path: ":hammer-adventure", configuration: "namedElements")
-
     // LuckPerms
 	modApi "net.luckperms:api:${luckPermsVersion}"
 	include "net.luckperms:api:${luckPermsVersion}"

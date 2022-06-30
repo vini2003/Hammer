@@ -1,6 +1,6 @@
 package dev.vini2003.hammer.component.mixin.common;
 
-import dev.vini2003.hammer.component.impl.common.component.ComponentHolder;
+import dev.vini2003.hammer.component.impl.common.component.holder.ComponentHolder;
 import dev.vini2003.hammer.component.registry.common.HCNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

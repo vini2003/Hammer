@@ -12,7 +12,7 @@ dependencies {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/hammer.innit.accesswidener")
+	accessWidenerPath = file("src/main/resources/hammer.component.accesswidener")
 }
 
 jar {

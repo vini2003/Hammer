@@ -1,7 +1,7 @@
 package dev.vini2003.hammer.component.registry.client;
 
 import dev.vini2003.hammer.component.api.common.manager.ComponentManager;
-import dev.vini2003.hammer.component.impl.common.component.ComponentHolder;
+import dev.vini2003.hammer.component.impl.common.component.holder.ComponentHolder;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 import static dev.vini2003.hammer.component.registry.common.HCNetworking.SYNC_COMPONENT;

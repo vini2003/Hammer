@@ -1,0 +1,21 @@
+dependencies {
+    // Hammer
+	implementation project(path: ":hammer-core", configuration: "namedElements")
+	include project(path: ":hammer-core", configuration: "namedElements")
+
+	// Hammer Component
+	implementation project(path: ":hammer-component", configuration: "namedElements")
+	include project(path: ":hammer-component", configuration: "namedElements")
+
+	// Hammer Util
+	implementation project(path: ":hammer-util", configuration: "namedElements")
+	include project(path: ":hammer-util", configuration: "namedElements")
+}
+
+loom {
+	accessWidenerPath = file("src/main/resources/hammer.zone.accesswidener")
+}
+
+jar {
+    baseName("hammer-zone")
+}

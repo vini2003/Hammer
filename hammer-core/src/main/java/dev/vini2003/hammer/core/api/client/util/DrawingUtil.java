@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.core.api.client.util;
 
 import dev.vini2003.hammer.core.api.client.color.Color;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
@@ -36,6 +37,8 @@ import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+
+import javax.swing.plaf.synth.ColorType;
 
 public class DrawingUtil {
 	public static final int DEFAULT_OVERLAY = OverlayTexture.DEFAULT_UV;
@@ -111,6 +114,129 @@ public class DrawingUtil {
 		consumer.vertex(peek.getPositionMatrix(), x + width, y + height, z).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(uEnd, vEnd).overlay(overlay).light(light).normal(peek.getNormalMatrix(), normalX, normalY, normalZ).next();
 		consumer.vertex(peek.getPositionMatrix(), x + width, y, z).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(uEnd, vStart).overlay(overlay).light(light).normal(peek.getNormalMatrix(), normalX, normalY, normalZ).next();
 		consumer.vertex(peek.getPositionMatrix(), x, y, z).color(color.getR(), color.getG(), color.getB(), color.getA()).texture(uStart, vStart).overlay(overlay).light(light).normal(peek.getNormalMatrix(), normalX, normalY, normalZ).next();
+	}
+	
+	public static void drawCube(
+			MatrixStack matrices,
+			VertexConsumerProvider provider,
+			float x, float y, float z,
+			float width, float height, float depth,
+			Color color,
+			RenderLayer layer
+	) {
+		var consumer = provider.getBuffer(layer);
+		
+		var peek = matrices.peek();
+		
+		// Bottom
+		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// Top
+		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// Front
+		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// Back
+		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// Left
+		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x - (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// Right
+		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), x + (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F)).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+	}
+	
+	public static void drawLineCube(
+			MatrixStack matrices,
+			VertexConsumerProvider provider,
+			float x, float y, float z,
+			float width, float height, float depth,
+			Color color,
+			RenderLayer layer
+	) {
+		var consumer = provider.getBuffer(layer);
+		
+		var peek = matrices.peek();
+		
+		var a = new Position(x - (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F));
+		var b = new Position(x + (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F));
+		
+		var c = new Position(x - (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F));
+		var d = new Position(x + (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F));
+				
+		var e = new Position(x - (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F));
+		var f = new Position(x + (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F));
+				
+		var g = new Position(x - (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F));
+		var h = new Position(x + (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F));
+		
+		
+		// A to B
+		consumer.vertex(peek.getPositionMatrix(), a.getX(), a.getY(), a.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), b.getX(), b.getY(), b.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// A to C
+		consumer.vertex(peek.getPositionMatrix(), a.getX(), a.getY(), a.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), c.getX(), c.getY(), c.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// A to E
+		consumer.vertex(peek.getPositionMatrix(), a.getX(), a.getY(), a.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), e.getX(), e.getY(), e.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// D to C
+		consumer.vertex(peek.getPositionMatrix(), d.getX(), d.getY(), d.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), c.getX(), c.getY(), c.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// D to H
+		consumer.vertex(peek.getPositionMatrix(), d.getX(), d.getY(), d.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), h.getX(), h.getY(), h.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// D to B
+		consumer.vertex(peek.getPositionMatrix(), d.getX(), d.getY(), d.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), b.getX(), b.getY(), b.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// G to C
+		consumer.vertex(peek.getPositionMatrix(), g.getX(), g.getY(), g.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), c.getX(), c.getY(), c.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// G to E
+		consumer.vertex(peek.getPositionMatrix(), g.getX(), g.getY(), g.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), e.getX(), e.getY(), e.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// G to H
+		consumer.vertex(peek.getPositionMatrix(), g.getX(), g.getY(), g.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), h.getX(), h.getY(), h.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// F to B
+		consumer.vertex(peek.getPositionMatrix(), f.getX(), f.getY(), f.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), b.getX(), b.getY(), b.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// F to E
+		consumer.vertex(peek.getPositionMatrix(), f.getX(), f.getY(), f.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), e.getX(), e.getY(), e.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		
+		// F to H
+		consumer.vertex(peek.getPositionMatrix(), f.getX(), f.getY(), f.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
+		consumer.vertex(peek.getPositionMatrix(), h.getX(), h.getY(), h.getZ()).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
 	}
 	
 	public static void drawTiledTexturedQuad(

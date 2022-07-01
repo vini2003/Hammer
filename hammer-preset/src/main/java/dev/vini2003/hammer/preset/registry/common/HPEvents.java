@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.preset.registry.common;
 
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
+import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.text.TranslatableText;
 
@@ -37,7 +38,12 @@ public class HPEvents {
 			ChatUtil.setShowGlobalChat(player, false);
 			ChatUtil.setShowWarnings(player, false);
 			ChatUtil.setShowCommandFeedback(player, false);
-			ChatUtil.setFastChatFade(player, true);
+			
+			ChatUtil.setFastChatFade(player, false);
+			
+			ServerTaskQueue.enqueue(($) -> {
+				ChatUtil.setFastChatFade(handler.player, true);
+			}, 200L);
 			
 			for (var i = 0; i < 5; ++i) {
 				player.sendMessage(new TranslatableText("text.hammer.welcome_" + i), false);

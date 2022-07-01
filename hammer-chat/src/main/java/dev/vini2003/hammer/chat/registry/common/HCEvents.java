@@ -54,9 +54,7 @@ public class HCEvents {
 			
 			ChatUtil.setShowDirectMessages(newPlayer, ChatUtil.shouldShowDirectMessages(oldPlayer));
 			
-			ServerTaskQueue.enqueue((server) -> {
-				ChatUtil.setFastChatFade(newPlayer, ChatUtil.hasFastChatFade(oldPlayer));
-			}, 100L);
+			ChatUtil.setFastChatFade(newPlayer, ChatUtil.hasFastChatFade(oldPlayer));
 			
 			ChatUtil.setMuted(newPlayer, ChatUtil.isMuted(oldPlayer));
 		});

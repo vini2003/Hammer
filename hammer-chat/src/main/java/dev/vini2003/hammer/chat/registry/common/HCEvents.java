@@ -30,6 +30,7 @@ import dev.vini2003.hammer.chat.api.common.manager.ChannelManager;
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
 import dev.vini2003.hammer.core.api.common.event.ChatEvents;
+import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -53,7 +54,9 @@ public class HCEvents {
 			
 			ChatUtil.setShowDirectMessages(newPlayer, ChatUtil.shouldShowDirectMessages(oldPlayer));
 			
-			ChatUtil.setFastChatFade(newPlayer, ChatUtil.hasFastChatFade(oldPlayer));
+			ServerTaskQueue.enqueue((server) -> {
+				ChatUtil.setFastChatFade(newPlayer, ChatUtil.hasFastChatFade(oldPlayer));
+			}, 100L);
 			
 			ChatUtil.setMuted(newPlayer, ChatUtil.isMuted(oldPlayer));
 		});

@@ -28,6 +28,7 @@ import dev.vini2003.hammer.zone.api.common.zone.Zone;
 import dev.vini2003.hammer.zone.api.common.zone.ZoneGroup;
 import net.minecraft.util.Identifier;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,5 +59,11 @@ public class ZoneGroupManager {
 			
 			groups.remove(group);
 		}
+	}
+	
+	public static Collection<ZoneGroup> getGroups() {
+		var groups = GROUPS.get();
+		
+		return groups.values();
 	}
 }

@@ -134,6 +134,12 @@ public class Zone {
 	}
 	
 	public void setGroup(ZoneGroup group) {
+		if (this.group != null && group == null) {
+			this.group.remove(this);
+		} else if (this.group == null && group != null) {
+			group.add(this);
+		}
+		
 		this.group = group;
 	}
 	

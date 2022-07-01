@@ -40,7 +40,9 @@ import org.lwjgl.glfw.GLFW;
 
 public class HZNetworking {
 	public static final Identifier ZONE_CREATE = HC.id("zone_create");
+	public static final Identifier ZONE_GROUP_CREATE = HC.id("zone_group_create");
 	public static final Identifier ZONE_DELETE = HC.id("zone_delete");
+	public static final Identifier ZONE_GROUP_DELETE = HC.id("zone_group_delete");
 	public static final Identifier ZONE_COLOR_CHANGED = HC.id("zone_color_changed");
 	public static final Identifier ZONE_GROUP_CHANGED = HC.id("zone_group_changed");
 	public static final Identifier ZONE_PASTE = HC.id("zone_paste");
@@ -123,6 +125,22 @@ public class HZNetworking {
 				}
 				
 				HZComponents.ZONES.sync(player.world);
+			});
+		});
+		
+		ServerPlayNetworking.registerGlobalReceiver(ZONE_GROUP_CREATE, (server, player, handler, buf, responseSender) -> {
+			var id = buf.readIdentifier();
+			
+			server.execute(() -> {
+				ZoneGroupManager.getOrCreate(id);
+			});
+		});
+		
+		ServerPlayNetworking.registerGlobalReceiver(ZONE_GROUP_DELETE, (server, player, handler, buf, responseSender) -> {
+			var id = buf.readIdentifier();
+			
+			server.execute(() -> {
+				ZoneGroupManager.remove(id);
 			});
 		});
 		

@@ -63,4 +63,9 @@ public class ComponentPersistentState extends PersistentState implements Compone
 	public ComponentContainer getComponentContainer() {
 		return componentContainer;
 	}
+	
+	@Override
+	public boolean isDirty() {
+		return true;
+	}
 }

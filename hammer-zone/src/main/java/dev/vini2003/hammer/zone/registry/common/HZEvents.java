@@ -24,17 +24,24 @@
 
 package dev.vini2003.hammer.zone.registry.common;
 
+import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HZEvents {
 	public static void init() {
 		// Update zones upon joining.
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-			HZComponents.ZONES.sync(handler.player.world);
+			// The player isn't loaded yet at this stage.
+			// However, they will be loaded in the next tick.
+			ServerTaskQueue.enqueue(($) -> {
+				HZComponents.ZONES.sync(handler.player.world);
+			}, 1L);
 		});
 		
 		// Update zones upon changing dimensions.

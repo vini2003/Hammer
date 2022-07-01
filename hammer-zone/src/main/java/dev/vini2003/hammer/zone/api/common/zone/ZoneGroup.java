@@ -41,6 +41,10 @@ public class ZoneGroup implements Iterable<Zone> {
 		this.id = id;
 	}
 	
+	public Collection<Zone> getZones() {
+		return zones;
+	}
+	
 	public Identifier getId() {
 		return id;
 	}

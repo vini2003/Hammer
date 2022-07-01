@@ -227,7 +227,7 @@ public class HZEvents {
 				);
 				
 				if (zone.isRemoved()) {
-					if (centerPos.distanceTo(minPos) <= 0.05F) {
+					if (centerPos.distanceTo(minPos) <= 0.02F) {
 						zonesToRemove.add(zone);
 						
 						continue;

@@ -11,6 +11,8 @@ import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.command.argument.ColorArgumentType;
 import dev.vini2003.hammer.core.api.common.util.BufUtil;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneGroupManager;
+import dev.vini2003.hammer.zone.api.common.zone.Zone;
+import dev.vini2003.hammer.zone.api.common.zone.ZoneGroup;
 import dev.vini2003.hammer.zone.registry.common.HZComponents;
 import dev.vini2003.hammer.zone.registry.common.HZNetworking;
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
@@ -21,6 +23,7 @@ import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
+import java.util.HashSet;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -35,6 +38,18 @@ public class HZCommands {
 		
 		for (var zone : component.getZones()) {
 			builder.suggest(zone.getId().toString());
+		}
+		
+		return builder.buildFuture();
+	}
+	
+	private static CompletableFuture<Suggestions> zoneGroupSuggestIds(CommandContext<FabricClientCommandSource> context, SuggestionsBuilder builder) {
+		var client = InstanceUtil.getClient();
+		
+		var component = HZComponents.ZONES.get(client.world);
+		
+		for (var group : ZoneGroupManager.getGroups()) {
+			builder.suggest(group.getId().toString());
 		}
 		
 		return builder.buildFuture();
@@ -198,18 +213,28 @@ public class HZCommands {
 		
 		var index = 0;
 		
+		var zones = component.getZones();
+		
+		if (zones.isEmpty()) {
+			source.sendFeedback(new TranslatableText("command.hammer.zone.list.none"));
+			
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		source.sendFeedback(new TranslatableText("command.hammer.zone.list.start"));
 		
-		for (var zone : component.getZones()) {
+		for (var zone : zones) {
 			if (index >= 10) {
 				break;
 			}
 			
+			index += 1;
+			
 			source.sendFeedback(new TranslatableText("command.hammer.zone.list.entry", zone.getId(), String.format("#%08X", zone.getColor().toRgba())));
 		}
 		
-		if (component.getZones().size() / 10 > 0) {
-			source.sendFeedback(new TranslatableText("command.hammer.zone.list.end", 0, component.getZones().size() / 10));
+		if (zones.size() / 10 > 0) {
+			source.sendFeedback(new TranslatableText("command.hammer.zone.list.end", 0, zones.size() / 10));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -226,16 +251,26 @@ public class HZCommands {
 		
 		var index = 0;
 		
+		var zones = component.getZones();
+		
+		if (zones.isEmpty()) {
+			source.sendFeedback(new TranslatableText("command.hammer.zone.list.none"));
+			
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		source.sendFeedback(new TranslatableText("command.hammer.zone.list"));
 		
-		for (var zone : component.getZones()) {
+		for (var zone : zones) {
 			if (index > (page * 10) && index < ((page + 1) * 10)) {
 				source.sendFeedback(new TranslatableText("command.hammer.zone.list.entry", zone.getId(), String.format("#%08X", zone.getColor().toRgba())));
 			}
+			
+			index += 1;
 		}
 		
-		if (component.getZones().size() / 10 > 0) {
-			source.sendFeedback(new TranslatableText("command.hammer.zone.list.end", page, component.getZones().size() / 10));
+		if (zones.size() / 10 > 0) {
+			source.sendFeedback(new TranslatableText("command.hammer.zone.list.end", page, zones.size() / 10));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -282,14 +317,136 @@ public class HZCommands {
 			
 			ClientPlayNetworking.send(HZNetworking.ZONE_GROUP_CHANGED, buf);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.zone.group", zone.getGroup().getId()));
+			source.sendFeedback(new TranslatableText("command.hammer.zone.group", zoneGroupId));
 		} else {
 			source.sendError(new TranslatableText("command.hammer.zone.not_found"));
 		}
 		
 		return Command.SINGLE_SUCCESS;
 	}
+	
+	// Lists the ten first zone groups in the world.
+	private static int zoneGroupList(CommandContext<FabricClientCommandSource> context) {
+		var source = context.getSource();
+		var player = source.getPlayer();
+		
+		var component = HZComponents.ZONES.get(player.world);
+		
+		var index = 0;
+		
+		var groups = ZoneGroupManager.getGroups();
+		
+		if (groups.isEmpty()) {
+			source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.none"));
+			
+			return Command.SINGLE_SUCCESS;
+		}
+		
+		source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.start"));
+		
+		for (var group : groups) {
+			if (index >= 10) {
+				break;
+			}
+			
+			index += 1;
+			
+			source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.entry.outer", group.getId()));
+			
+			for (var zone : group.getZones()) {
+				source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.entry.inner", zone.getId()));
+			}
+		}
+		
+		for (var group : groups) {
 
+		}
+		
+		if (groups.size() / 10 > 0) {
+			source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.end", 0, groups.size() / 10));
+		}
+		
+		return Command.SINGLE_SUCCESS;
+	}
+	
+	// Lists ten of the zone groups in the world at the given page.
+	private static int zoneGroupListPage(CommandContext<FabricClientCommandSource> context) {
+		var source = context.getSource();
+		var player = source.getPlayer();
+		
+		var page = context.getArgument("page", int.class);
+		
+		var component = HZComponents.ZONES.get(player.world);
+		
+		var index = 0;
+		
+		var groups = ZoneGroupManager.getGroups();
+		
+		if (groups.isEmpty()) {
+			source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.none"));
+			
+			return Command.SINGLE_SUCCESS;
+		}
+		
+		source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.start"));
+		
+		for (var group : groups) {
+			if (index > (page * 10) && index < ((page + 1) * 10)) {
+				source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.entry.outer", group.getId()));
+				
+				for (var zone : group.getZones()) {
+					source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.entry.inner", zone.getId()));
+				}
+			}
+			
+			index += 1;
+		}
+		
+		if (groups.size() / 10 > 0) {
+			source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.end", 0, groups.size() / 10));
+		}
+		
+		return Command.SINGLE_SUCCESS;
+	}
+	
+	// Creates a zone group.
+	private static int zoneGroupCreate(CommandContext<FabricClientCommandSource> context) {
+		var source = context.getSource();
+		var player = source.getPlayer();
+		
+		var groupId = context.getArgument("id", Identifier.class);
+		
+		var buf = PacketByteBufs.create();
+		buf.writeIdentifier(groupId);
+		
+		ClientPlayNetworking.send(HZNetworking.ZONE_GROUP_CREATE, buf);
+		
+		ZoneGroupManager.getOrCreate(groupId);
+		
+		source.sendFeedback(new TranslatableText("command.hammer.zone.group.create", groupId));
+		
+		return Command.SINGLE_SUCCESS;
+	}
+	
+	// Deletes a zone group.
+	private static int zoneGroupDelete(CommandContext<FabricClientCommandSource> context) {
+		var source = context.getSource();
+		var player = source.getPlayer();
+		
+		var groupId = context.getArgument("id", Identifier.class);
+		
+		var buf = PacketByteBufs.create();
+		buf.writeIdentifier(groupId);
+		
+		ClientPlayNetworking.send(HZNetworking.ZONE_GROUP_DELETE, buf);
+		
+		ZoneGroupManager.remove(groupId);
+		
+		source.sendFeedback(new TranslatableText("command.hammer.zone.group.delete", groupId));
+		
+		return Command.SINGLE_SUCCESS;
+	}
+	
 	public static void init() {
 		ClientCommandManager.DISPATCHER.register(
 			literal("zone").requires(source -> {
@@ -316,11 +473,27 @@ public class HZCommands {
 					)
 			).then(
 					literal("color").then(
-							argument("color", ColorArgumentType.color()).executes(HZCommands::zoneColor)
+							literal("set").then(
+									argument("color", ColorArgumentType.color()).executes(HZCommands::zoneColor)
+							)
 					)
 			).then(
 					literal("group").then(
-							argument("id", IdentifierArgumentType.identifier()).executes(HZCommands::zoneGroup)
+							literal("set").then(
+									argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneGroupSuggestIds).executes(HZCommands::zoneGroup)
+							)
+					).then(
+							literal("list").executes(HZCommands::zoneGroupList).then(
+									argument("page", IntegerArgumentType.integer()).executes(HZCommands::zoneGroupListPage)
+							)
+					).then(
+							literal("delete").then(
+									argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneGroupSuggestIds).executes(HZCommands::zoneGroupDelete)
+							)
+					).then(
+							literal("create").then(
+									argument("id", IdentifierArgumentType.identifier()).executes(HZCommands::zoneGroupCreate)
+							)
 					)
 			)
 		);

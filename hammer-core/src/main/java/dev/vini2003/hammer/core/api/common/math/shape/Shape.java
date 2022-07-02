@@ -223,7 +223,7 @@ public class Shape implements SizeHolder {
 			super(new Position(a, height / 2.0F, b), new Position(-a, -height / 2.0F, -b));
 			
 			this.equation = (shape, pos) -> {
-				return (Math.pow(pos.getZ() - startPos.getZ(), 2.0D) / Math.pow(a, 2.0D)) + (Math.pow(pos.getZ() - startPos.getZ(), 2.0D) / Math.pow(b, 2.0D)) < 1.0F &&
+				return (Math.pow(pos.getX() - startPos.getX(), 2.0D) / Math.pow(a, 2.0D)) + (Math.pow(pos.getZ() - startPos.getZ(), 2.0D) / Math.pow(b, 2.0D)) < 1.0F &&
 						(pos.getY() - startPos.getY()) > -height / 2.0F &&
 						(pos.getY() - startPos.getY()) < height / 2.0F;
 			};
@@ -235,8 +235,8 @@ public class Shape implements SizeHolder {
 			super(new Position(width / 2.0F, height / 2.0F, depth / 2.0F), new Position(-width / 2.0F, -height / 2.0F, -depth / 2.0F));
 			
 			this.equation = (shape, pos) -> {
-				return (pos.getZ() - startPos.getZ()) > -width / 2.0F &&
-						(pos.getZ() - startPos.getZ()) < width / 2.0F &&
+				return (pos.getX() - startPos.getX()) > -width / 2.0F &&
+						(pos.getX() - startPos.getX()) < width / 2.0F &&
 						(pos.getY() - startPos.getY()) > -height / 2.0F &&
 						(pos.getY() - startPos.getY()) < height / 2.0F &&
 						(pos.getZ() - startPos.getZ()) > -depth / 2.0F &&
@@ -250,8 +250,8 @@ public class Shape implements SizeHolder {
 			super(new Position(width / 2.0F, height / 2.0F, depth / 2.0F), new Position(-width / 2.0F, -height / 2.0F, -depth / 2.0F));
 			
 			this.equation = (shape, pos) -> {
-				return (pos.getZ() - startPos.getZ()) > -(width / 2.0F) &&
-						(pos.getZ() - startPos.getZ()) < (width / 2.0F) &&
+				return (pos.getX() - startPos.getX()) > -(width / 2.0F) &&
+						(pos.getX() - startPos.getX()) < (width / 2.0F) &&
 						(pos.getY() - startPos.getY()) > -(height / 2.0F) &&
 						(pos.getY() - startPos.getY()) < (height / 2.0F) &&
 						(pos.getZ() - startPos.getZ()) > -(depth * (1.0F - (((pos.getY() - startPos.getY()) + height / 2.0F) / height))) / 2.0F &&
@@ -265,8 +265,8 @@ public class Shape implements SizeHolder {
 			super(new Position(width / 2.0F, height, depth / 2.0F), new Position(-width / 2.0F, 0.0F, -depth / 2.0F));
 			
 			this.equation = (shape, pos) -> {
-				return (pos.getZ() - startPos.getZ()) > -(width * (1.0F - ((pos.getY() - startPos.getY()) / height))) / 2.0F &&
-						(pos.getZ() - startPos.getZ()) < (width * (1.0F - ((pos.getY() - startPos.getY()) / height))) / 2.0F &&
+				return (pos.getX() - startPos.getX()) > -(width * (1.0F - ((pos.getY() - startPos.getY()) / height))) / 2.0F &&
+						(pos.getX() - startPos.getX()) < (width * (1.0F - ((pos.getY() - startPos.getY()) / height))) / 2.0F &&
 						(pos.getY() - startPos.getY()) > 0.0F && (pos.getY() - startPos.getY()) < height &&
 						(pos.getZ() - startPos.getZ()) > -(depth * (1.0F - ((pos.getY() - startPos.getY()) / height))) / 2.0F &&
 						(pos.getZ() - startPos.getZ()) < (depth * (1.0F - ((pos.getY() - startPos.getY()) / height))) / 2.0F;
@@ -279,7 +279,7 @@ public class Shape implements SizeHolder {
 			super(new Position(a, height, b), new Position(-a, 0.0F, -b));
 			
 			this.equation = (shape, pos) -> {
-				return (Math.pow(pos.getZ() - startPos.getZ(), 2.0D) / Math.pow(a * (1.0F - ((pos.getY() - startPos.getY()) / height)), 2.0D)) +
+				return (Math.pow(pos.getX() - startPos.getX(), 2.0D) / Math.pow(a * (1.0F - ((pos.getY() - startPos.getY()) / height)), 2.0D)) +
 						(Math.pow(pos.getZ() - startPos.getZ(), 2.0D) / Math.pow(b * (1.0F - ((pos.getY() - startPos.getY()) / height)), 2.0D)) < 1.0F &&
 						(pos.getY() - startPos.getY()) > 0.0F &&
 						(pos.getY() - startPos.getY()) < height;
@@ -292,7 +292,7 @@ public class Shape implements SizeHolder {
 			super(new Position(a, c, b), new Position(-a, -c, -b));
 			
 			this.equation = (shape, pos) -> {
-				return (Math.pow(pos.getZ() - startPos.getZ(), 2.0D) / Math.pow(a, 2.0D)) +
+				return (Math.pow(pos.getX() - startPos.getX(), 2.0D) / Math.pow(a, 2.0D)) +
 						(Math.pow(pos.getY() - startPos.getY(), 2.0D) / Math.pow(b, 2.0D)) +
 						(Math.pow(pos.getZ() - startPos.getZ(), 2.0D) / Math.pow(c, 2.0D)) < 1.0F;
 			};
@@ -304,7 +304,7 @@ public class Shape implements SizeHolder {
 			super(new Position(a, c, b), new Position(-a, 0.0F, -b));
 			
 			this.equation = (shape, pos) -> {
-				return (Math.pow(pos.getZ() - startPos.getZ(), 2.0D) / Math.pow(a, 2.0D)) +
+				return (Math.pow(pos.getX() - startPos.getX(), 2.0D) / Math.pow(a, 2.0D)) +
 						(Math.pow(pos.getZ() - startPos.getZ(), 2.0D) / Math.pow(b, 2.0D)) +
 						(Math.pow(pos.getY() - startPos.getY(), 2.0D) / Math.pow(c, 2.0D)) > 0.0F;
 			};

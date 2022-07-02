@@ -51,6 +51,12 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.UUID;
 
+// TODO: Add Stages!
+// TODO: Add zone information HUD display!
+// TODO: Add stage information HUD display!
+// TODO: Add zone and stage exports!
+// TODO: Add world synchronization mod!
+// TODO: Add whole-map ReplayMod recording!
 public class HZEvents {
 	private static long TICKS = 5L;
 	private static long PREV_TICKS = 0L;

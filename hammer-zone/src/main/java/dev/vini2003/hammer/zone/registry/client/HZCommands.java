@@ -341,7 +341,7 @@ public class HZCommands {
 			}
 			
 			try {
-				var zonePath = exportPath.resolve(zone.getId().toString() + ".json");
+				var zonePath = exportPath.resolve(zone.getId().toString().replace(":", "-") + ".json");
 
 				var writer = HC.GSON.newJsonWriter(Files.newBufferedWriter(zonePath));
 				
@@ -385,7 +385,7 @@ public class HZCommands {
 			}
 			
 			try {
-				var zonePath = exportPath.resolve(zone.getId().toString() + ".json");
+				var zonePath = exportPath.resolve(zone.getId().toString().replace(":", "-") + ".json");
 				
 				var writer = HC.GSON.newJsonWriter(Files.newBufferedWriter(zonePath));
 				
@@ -572,7 +572,7 @@ public class HZCommands {
 			var json = Zone.toJson(zone);
 			
 			try {
-				var zoneGroupPath = exportPath.resolve(zone.getId().toString() + ".json");
+				var zoneGroupPath = exportPath.resolve(zone.getId().toString().replace(":", "-") + ".json");
 				
 				var writer = HC.GSON.newJsonWriter(Files.newBufferedWriter(zoneGroupPath));
 				

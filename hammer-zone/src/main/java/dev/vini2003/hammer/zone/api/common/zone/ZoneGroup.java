@@ -61,7 +61,6 @@ public class ZoneGroup implements Iterable<Zone> {
 	 */
 	public void add(Zone zone) {
 		zones.add(zone);
-		zone.setGroup(this);
 	}
 	
 	/**
@@ -71,7 +70,6 @@ public class ZoneGroup implements Iterable<Zone> {
 	 */
 	public void remove(Zone zone) {
 		zones.remove(zone);
-		zone.setGroup(null);
 	}
 	
 	@NotNull

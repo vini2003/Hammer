@@ -29,6 +29,7 @@ import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneManager;
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
@@ -38,7 +39,7 @@ import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-public class ZoneReloadListener implements IdentifiableResourceReloadListener {
+public class ZoneReloadListener implements SimpleSynchronousResourceReloadListener {
 	private static final Identifier ID = HC.id("zone_reload");
 	
 	@Override
@@ -47,29 +48,27 @@ public class ZoneReloadListener implements IdentifiableResourceReloadListener {
 	}
 	
 	@Override
-	public CompletableFuture<Void> reload(Synchronizer synchronizer, ResourceManager manager, Profiler prepareProfiler, Profiler applyProfiler, Executor prepareExecutor, Executor applyExecutor) {
-		return CompletableFuture.runAsync(() -> {
-			var resourcesIds = manager.findResources("zones", (s) -> s.endsWith(".json"));
-			
-			for (var resourceId : resourcesIds) {
-				try {
-					var resource = manager.getResource(resourceId);
+	public void reload(ResourceManager manager) {
+		var resourcesIds = manager.findResources("zones", (s) -> s.endsWith(".json"));
+		
+		for (var resourceId : resourcesIds) {
+			try {
+				var resource = manager.getResource(resourceId);
+				
+				var resourceInputStream = resource.getInputStream();
+				
+				var resourceStrng = IOUtils.toString(resourceInputStream, "UTF-8");
+				
+				var zone = HC.GSON.fromJson(resourceStrng, Zone.class);
+				
+				ServerTaskQueue.enqueue((server) -> {
+					var zoneWorld = server.getWorld(zone.getWorld());
 					
-					var resourceInputStream = resource.getInputStream();
-
-					var resourceStrng = IOUtils.toString(resourceInputStream, "UTF-8");
-					
-					var zone = HC.GSON.fromJson(resourceStrng, Zone.class);
-					
-					ServerTaskQueue.enqueue((server) -> {
-						var zoneWorld = server.getWorld(zone.getWorld());
-						
-						ZoneManager.add(zoneWorld, zone);
-					}, 1);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+					ZoneManager.add(zoneWorld, zone);
+				}, 1);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		});
+		}
 	}
 }

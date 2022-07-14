@@ -35,19 +35,25 @@ import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.command.argument.ColorArgumentType;
 import dev.vini2003.hammer.core.api.common.util.BufUtil;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneGroupManager;
+import dev.vini2003.hammer.zone.api.common.manager.ZoneManager;
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
-import dev.vini2003.hammer.zone.api.common.zone.ZoneGroup;
 import dev.vini2003.hammer.zone.registry.common.HZComponents;
 import dev.vini2003.hammer.zone.registry.common.HZNetworking;
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.util.ScreenshotRecorder;
 import net.minecraft.command.argument.IdentifierArgumentType;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
-import java.util.HashSet;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -57,10 +63,8 @@ import static net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.lit
 public class HZCommands {
 	private static CompletableFuture<Suggestions> zoneSuggestIds(CommandContext<FabricClientCommandSource> context, SuggestionsBuilder builder) {
 		var client = InstanceUtil.getClient();
-		
-		var component = HZComponents.ZONES.get(client.world);
-		
-		for (var zone : component.getZones()) {
+
+		for (var zone : ZoneManager.getAll(client.world)) {
 			builder.suggest(zone.getId().toString());
 		}
 		
@@ -69,9 +73,7 @@ public class HZCommands {
 	
 	private static CompletableFuture<Suggestions> zoneGroupSuggestIds(CommandContext<FabricClientCommandSource> context, SuggestionsBuilder builder) {
 		var client = InstanceUtil.getClient();
-		
-		var component = HZComponents.ZONES.get(client.world);
-		
+
 		for (var group : ZoneGroupManager.getGroups()) {
 			builder.suggest(group.getId().toString());
 		}
@@ -113,11 +115,9 @@ public class HZCommands {
 	private static int zoneSelectId(CommandContext<FabricClientCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
-		
-		var component = HZComponents.ZONES.get(player.world);
-		
+
 		var zoneId = context.getArgument("id", Identifier.class);
-		var zone = component.getZoneById(zoneId);
+		var zone = ZoneManager.get(player.world, zoneId);
 		
 		if (zone != null) {
 			HZValues.setCommandSelectedZone(zone);
@@ -175,10 +175,8 @@ public class HZCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
-		var component = HZComponents.ZONES.get(player.world);
-		
 		var zoneId = context.getArgument("id", Identifier.class);
-		var zone = component.getZoneById(zoneId);
+		var zone = ZoneManager.get(player.world, zoneId);
 		
 		if (zone != null) {
 			var buf = PacketByteBufs.create();
@@ -233,11 +231,9 @@ public class HZCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
-		var component = HZComponents.ZONES.get(player.world);
-		
 		var index = 0;
 		
-		var zones = component.getZones();
+		var zones = ZoneManager.getAll(player.world);
 		
 		if (zones.isEmpty()) {
 			source.sendFeedback(new TranslatableText("command.hammer.zone.list.none"));
@@ -271,11 +267,9 @@ public class HZCommands {
 		
 		var page = context.getArgument("page", int.class);
 		
-		var component = HZComponents.ZONES.get(player.world);
-		
 		var index = 0;
 		
-		var zones = component.getZones();
+		var zones = ZoneManager.getAll(player.world);
 		
 		if (zones.isEmpty()) {
 			source.sendFeedback(new TranslatableText("command.hammer.zone.list.none"));
@@ -313,11 +307,98 @@ public class HZCommands {
 			var buf = PacketByteBufs.create();
 			buf.writeIdentifier(zone.getId());
 			
-			BufUtil.writeColor(buf, zoneColor);
+			Color.toBuf(zoneColor, buf);
 			
 			ClientPlayNetworking.send(HZNetworking.ZONE_COLOR_CHANGED, buf);
 			
 			source.sendFeedback(new TranslatableText("command.hammer.zone.color", String.format("#%08X", zone.getColor().toRgba())));
+		} else {
+			source.sendError(new TranslatableText("command.hammer.zone.not_found"));
+		}
+		
+		return Command.SINGLE_SUCCESS;
+	}
+	
+	// Exports the selected zone.
+	private static int zoneExport(CommandContext<FabricClientCommandSource> context) {
+		var source = context.getSource();
+		var player = source.getPlayer();
+		
+		var zone = HZValues.getSelectedZone();
+		
+		if (zone != null) {
+			var json = Zone.toJson(zone);
+			
+			var exportPath = InstanceUtil.getFabric().getGameDir();
+			exportPath = exportPath.resolve("export");
+			
+			if (!Files.exists(exportPath)) {
+				try {
+					Files.createDirectories(exportPath);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			try {
+				var zonePath = exportPath.resolve(zone.getId().toString() + ".json");
+
+				var writer = HC.GSON.newJsonWriter(Files.newBufferedWriter(zonePath));
+				
+				HC.GSON.toJson(json, writer);
+				
+				writer.close();
+				
+				source.sendFeedback(new TranslatableText("command.hammer.zone.export", zone.getId(), new LiteralText(zonePath.getFileName().toString()).formatted(Formatting.UNDERLINE).styled(style -> {
+					return style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, zonePath.toAbsolutePath().toString()));
+				})));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			source.sendError(new TranslatableText("command.hammer.zone.not_found"));
+		}
+		
+		return Command.SINGLE_SUCCESS;
+	}
+	
+	// Exports the zone with the given ID.
+	private static int zoneExportId(CommandContext<FabricClientCommandSource> context) {
+		var source = context.getSource();
+		var player = source.getPlayer();
+		
+		var zoneId = context.getArgument("id", Identifier.class);
+		var zone = ZoneManager.get(player.world, zoneId);
+		
+		if (zone != null) {
+			var json = Zone.toJson(zone);
+			
+			var exportPath = InstanceUtil.getFabric().getGameDir();
+			exportPath = exportPath.resolve("export");
+			
+			if (!Files.exists(exportPath)) {
+				try {
+					Files.createDirectories(exportPath);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			try {
+				var zonePath = exportPath.resolve(zone.getId().toString() + ".json");
+				
+				var writer = HC.GSON.newJsonWriter(Files.newBufferedWriter(zonePath));
+				
+				HC.GSON.toJson(json, writer);
+				
+				writer.close();
+				
+				source.sendFeedback(new TranslatableText("command.hammer.zone.export", zone.getId(), new LiteralText(zonePath.getFileName().toString()).formatted(Formatting.UNDERLINE).styled(style -> {
+					return style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, zonePath.toAbsolutePath().toString()));
+				})));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		} else {
 			source.sendError(new TranslatableText("command.hammer.zone.not_found"));
 		}
@@ -353,9 +434,7 @@ public class HZCommands {
 	private static int zoneGroupList(CommandContext<FabricClientCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
-		
-		var component = HZComponents.ZONES.get(player.world);
-		
+
 		var index = 0;
 		
 		var groups = ZoneGroupManager.getGroups();
@@ -377,7 +456,7 @@ public class HZCommands {
 			
 			source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.entry.outer", group.getId()));
 			
-			for (var zone : group.getZones()) {
+			for (var zone : group) {
 				source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.entry.inner", zone.getId()));
 			}
 		}
@@ -400,8 +479,6 @@ public class HZCommands {
 		
 		var page = context.getArgument("page", int.class);
 		
-		var component = HZComponents.ZONES.get(player.world);
-		
 		var index = 0;
 		
 		var groups = ZoneGroupManager.getGroups();
@@ -418,7 +495,7 @@ public class HZCommands {
 			if (index > (page * 10) && index < ((page + 1) * 10)) {
 				source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.entry.outer", group.getId()));
 				
-				for (var zone : group.getZones()) {
+				for (var zone : group) {
 					source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.entry.inner", zone.getId()));
 				}
 			}
@@ -471,6 +548,51 @@ public class HZCommands {
 		return Command.SINGLE_SUCCESS;
 	}
 	
+	// Exports a zone group.
+	private static int zoneGroupExport(CommandContext<FabricClientCommandSource> context) {
+		var source = context.getSource();
+		var player = source.getPlayer();
+		
+		var groupId = context.getArgument("id", Identifier.class);
+		
+		var group = ZoneGroupManager.getOrCreate(groupId);
+		
+		var exportPath = InstanceUtil.getFabric().getGameDir();
+		exportPath = exportPath.resolve("export");
+		
+		if (!Files.exists(exportPath)) {
+			try {
+				Files.createDirectories(exportPath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		for (var zone : group) {
+			var json = Zone.toJson(zone);
+			
+			try {
+				var zoneGroupPath = exportPath.resolve(zone.getId().toString() + ".json");
+				
+				var writer = HC.GSON.newJsonWriter(Files.newBufferedWriter(zoneGroupPath));
+				
+				HC.GSON.toJson(json, writer);
+				
+				writer.close();
+				
+				source.sendFeedback(new TranslatableText("command.hammer.zone.group.export", zone.getId(), new LiteralText(zoneGroupPath.getFileName().toString()).formatted(Formatting.UNDERLINE).styled(style -> {
+					return style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, zoneGroupPath.toAbsolutePath().toString()));
+				})));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		source.sendFeedback(new TranslatableText("command.hammer.zone.group.export", groupId));
+		
+		return Command.SINGLE_SUCCESS;
+	}
+	
 	public static void init() {
 		ClientCommandManager.DISPATCHER.register(
 			literal("zone").requires(source -> {
@@ -502,6 +624,10 @@ public class HZCommands {
 							)
 					)
 			).then(
+					literal("export").executes(HZCommands::zoneExport).then(
+							argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneSuggestIds).executes(HZCommands::zoneExportId)
+					)
+			).then(
 					literal("group").then(
 							literal("set").then(
 									argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneGroupSuggestIds).executes(HZCommands::zoneGroup)
@@ -517,6 +643,10 @@ public class HZCommands {
 					).then(
 							literal("create").then(
 									argument("id", IdentifierArgumentType.identifier()).executes(HZCommands::zoneGroupCreate)
+							)
+					).then(
+							literal("export").then(
+									argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneGroupSuggestIds).executes(HZCommands::zoneGroupExport)
 							)
 					)
 			)

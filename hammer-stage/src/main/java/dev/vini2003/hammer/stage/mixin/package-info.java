@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-@ApiStatus.Internal
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package dev.vini2003.hammer.adventure.registry;
+@ApiStatus.Internal
+package dev.vini2003.hammer.stage.mixin;
 
 import net.minecraft.util.annotation.MethodsReturnNonnullByDefault;
 import org.jetbrains.annotations.ApiStatus;

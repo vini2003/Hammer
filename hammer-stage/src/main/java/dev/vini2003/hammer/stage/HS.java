@@ -22,26 +22,14 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.core;
+package dev.vini2003.hammer.stage;
 
-import com.google.gson.Gson;
-import dev.vini2003.hammer.core.registry.common.HCEvents;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 
-@ApiStatus.Internal
-public class HC implements ModInitializer {
-	public static final String ID = "hammer";
-	
-	public static final Gson GSON = new Gson();
-	
-	public static Identifier id(String path) {
-		return new Identifier(ID, path);
-	}
-	
+public class HS implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		HCEvents.init();
+	
 	}
 }

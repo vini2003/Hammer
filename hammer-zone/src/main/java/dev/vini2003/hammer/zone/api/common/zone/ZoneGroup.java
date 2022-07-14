@@ -24,6 +24,8 @@
 
 package dev.vini2003.hammer.zone.api.common.zone;
 
+import dev.vini2003.hammer.core.api.common.util.NbtUtil;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +34,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
+/**
+ * A {@link ZoneGroup} represents a group of zones.
+ */
 public class ZoneGroup implements Iterable<Zone> {
 	private Collection<Zone> zones = new HashSet<>();
 	
@@ -56,6 +61,7 @@ public class ZoneGroup implements Iterable<Zone> {
 	 */
 	public void add(Zone zone) {
 		zones.add(zone);
+		zone.setGroup(this);
 	}
 	
 	/**
@@ -65,6 +71,7 @@ public class ZoneGroup implements Iterable<Zone> {
 	 */
 	public void remove(Zone zone) {
 		zones.remove(zone);
+		zone.setGroup(null);
 	}
 	
 	@NotNull

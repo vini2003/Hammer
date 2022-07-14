@@ -27,8 +27,8 @@ package dev.vini2003.hammer.zone.registry.common;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.util.BufUtil;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneGroupManager;
+import dev.vini2003.hammer.zone.api.common.manager.ZoneManager;
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
@@ -68,9 +68,11 @@ public class HZNetworking {
 					return;
 				}
 				
-				var component = HZComponents.ZONES.get(player.world);
+				var zone = ZoneManager.get(player.world, zoneId);
 				
-				var zone = component.getZoneById(zoneId);
+				if (zone.isLocked()) {
+					return;
+				}
 				
 				if (groupId[0] != null) {
 					var group = ZoneGroupManager.getOrCreate(groupId[0]);
@@ -80,7 +82,7 @@ public class HZNetworking {
 				
 				zone.setColor(color);
 				
-				HZComponents.ZONES.sync(player.world);
+				ZoneManager.sync(player.world);
 			});
 		});
 		
@@ -106,14 +108,13 @@ public class HZNetworking {
 					}
 					
 					var zone = new Zone(
+							player.getWorld().getRegistryKey(),
 							id,
 							new Position((float) (pos.getX() - 0.5F), (float) (pos.getY() - 0.5F), (float) (pos.getZ() - 0.5F)),
 							new Position((float) (pos.getX() + 0.5F), (float) (pos.getY() + 0.5F), (float) (pos.getZ() + 0.5F))
 					);
 					
-					var component = HZComponents.ZONES.get(player.world);
-					
-					for (var existingZone : component.getZones()) {
+					for (var existingZone : ZoneManager.getAll(player.world)) {
 						if (existingZone.getCenterPos().equals(zone.getCenterPos())) {
 							if (existingZone.getWidth() == zone.getWidth() && existingZone.getHeight() == zone.getHeight() && existingZone.getDepth() == zone.getDepth()) {
 								return;
@@ -121,10 +122,10 @@ public class HZNetworking {
 						}
 					}
 					
-					component.add(zone);
+					ZoneManager.add(player.world, zone);
 				}
 				
-				HZComponents.ZONES.sync(player.world);
+				ZoneManager.sync(player.world);
 			});
 		});
 		
@@ -152,19 +153,21 @@ public class HZNetworking {
 					return;
 				}
 				
-				var component = HZComponents.ZONES.get(player.world);
+				var zone = ZoneManager.get(player.world, id);
 				
-				var zone = component.getZoneById(id);
+				if (zone.isLocked()) {
+					return;
+				}
 				
 				zone.setColor(new Color((long) 0xF500497E));
 					
 				zone.markRemoved();
 				
-				HZComponents.ZONES.sync(player.world);
+				ZoneManager.sync(player.world);
 				
-				component.remove(zone);
+				ZoneManager.remove(player.world, zone);
 				
-				HZComponents.ZONES.sync(player.world);
+				ZoneManager.sync(player.world);
 			});
 		});
 		
@@ -177,13 +180,15 @@ public class HZNetworking {
 					return;
 				}
 				
-				var component = HZComponents.ZONES.get(player.world);
+				var zone = ZoneManager.get(player.world, id);
 				
-				var zone = component.getZoneById(id);
+				if (zone.isLocked()) {
+					return;
+				}
 				
 				zone.setColor(new Color(rgba));
 				
-				HZComponents.ZONES.sync(player.world);
+				ZoneManager.sync(player.world);
 			});
 		});
 		
@@ -196,15 +201,17 @@ public class HZNetworking {
 					return;
 				}
 				
-				var component = HZComponents.ZONES.get(player.world);
+				var zone = ZoneManager.get(player.world, id);
 				
-				var zone = component.getZoneById(id);
+				if (zone.isLocked()) {
+					return;
+				}
 				
 				var zoneGroup = ZoneGroupManager.getOrCreate(groupId);
 				
 				zone.setGroup(zoneGroup);
 				
-				HZComponents.ZONES.sync(player.world);
+				ZoneManager.sync(player.world);
 			});
 		});
 		
@@ -220,9 +227,11 @@ public class HZNetworking {
 					return;
 				}
 				
-				var component = HZComponents.ZONES.get(player.world);
+				var zone = ZoneManager.get(player.world, id);
 				
-				var zone = component.getZoneById(id);
+				if (zone.isLocked()) {
+					return;
+				}
 				
 				// Stretch || Scale
 				if (!hasAltDown) {
@@ -248,7 +257,7 @@ public class HZNetworking {
 					}
 				}
 				
-				HZComponents.ZONES.sync(player.world);
+				ZoneManager.sync(player.world);
 			});
 		});
 	}

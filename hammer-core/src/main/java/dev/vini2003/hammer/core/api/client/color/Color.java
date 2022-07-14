@@ -24,6 +24,30 @@
 
 package dev.vini2003.hammer.core.api.client.color;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtLong;
+import net.minecraft.network.PacketByteBuf;
+
+/**
+ * <p>A {@link Color} represents a color in the RGB color space.</p>
+ *
+ * <p>The following serialization methods are provided:</p>
+ * <ul>
+ *     <li>{@link #toJson(Color)} - from {@link Color} to {@link JsonElement}.</li>
+ *     <li>{@link #toNbt(Color)} - from {@link Color} to {@link NbtCompound}.</li>
+ *     <li>{@link #toBuf(Color, PacketByteBuf)} - from {@link Color} to {@link PacketByteBuf}.</li>
+ * </ul>
+
+ * <ul>
+ *     <li>{@link #fromJson(JsonElement)} from {@link JsonElement} to {@link Color}.</li>
+ *     <li>{@link #fromNbt(NbtCompound)} from {@link NbtCompound} to {@link Color}.</li>
+ *     <li>{@link #fromBuf(PacketByteBuf)} from {@link PacketByteBuf} to {@link Color}.</li>
+ * </ul>
+ */
 public class Color {
 	public static final Color DARK_RED = new Color(0.67F, 0.0F, 0.0F, 1.0F);
 	public static final Color RED = new Color(1.0F, 0.33F, 0.33F, 1.0F);
@@ -46,6 +70,73 @@ public class Color {
 	private final float g;
 	private final float b;
 	private final float a;
+	
+	/**
+	 * Serializes a color to a {@link PacketByteBuf}.
+	 * @param color The color to serialize.
+	 * @param buf The buffer to serialize to.
+	 * @return The buffer.
+	 */
+	public static PacketByteBuf toBuf(Color color, PacketByteBuf buf) {
+		buf.writeLong(color.toRgba());
+		
+		return buf;
+	}
+	
+	/**
+	 * Deserializes a color from a {@link PacketByteBuf}.
+	 * @param buf The buffer to deserialize from.
+	 * @return The color.
+	 */
+	public static Color fromBuf(PacketByteBuf buf) {
+		return new Color(buf.readLong());
+	}
+	
+	/**
+	 * Serializes a color to an {@link NbtCompound}.
+	 * @param color The color.
+	 * @return The serialized color.
+	 */
+	public static NbtCompound toNbt(Color color) {
+		var nbt = new NbtCompound();
+		
+		nbt.putLong("rgba", color.toRgba());
+		
+		return nbt;
+	}
+	
+	/**
+	 * Deserializes a color from an {@link NbtCompound}.
+	 * @param nbt The serialized color.
+	 * @return The color.
+	 */
+	public static Color fromNbt(NbtCompound nbt) {
+		var rgba = nbt.getLong("rgba");
+		
+		return new Color(rgba);
+	}
+	
+	/**
+	 * Serializes a color to a {@link JsonElement}.
+	 * @param color The color.
+	 * @return The serialized color.
+	 */
+	public static JsonElement toJson(Color color) {
+		var json = new JsonPrimitive(color.toRgba());
+		
+		return json;
+	}
+	
+	/**
+	 * Deserializes a color from a {@link JsonElement}.
+	 * @param json The serialized color.
+	 * @return The color.
+	 */
+	public static Color fromJson(JsonElement json) {
+		var rgba = json.getAsLong();
+		
+		return new Color(rgba);
+	}
 	
 	public Color(float r, float g, float b, float a) {
 		this.r = r;

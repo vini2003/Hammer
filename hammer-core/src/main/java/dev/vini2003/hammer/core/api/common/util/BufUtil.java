@@ -35,34 +35,6 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.registry.RegistryKey;
 
 public class BufUtil {
-	public static void writeColor(PacketByteBuf buf, Color value) {
-		buf.writeLong(value.toRgba());
-	}
-	
-	public static Color readColor(PacketByteBuf buf) {
-		return new Color(buf.readLong());
-	}
-	
-	public static void writePosition(PacketByteBuf buf, Position value) {
-		buf.writeFloat(value.getX());
-		buf.writeFloat(value.getY());
-		buf.writeFloat(value.getZ());
-	}
-	
-	public static Position readPosition(PacketByteBuf buf) {
-		return new Position(buf.readFloat(), buf.readFloat(), buf.readFloat());
-	}
-	
-	public static void writeSize(PacketByteBuf buf, Size value) {
-		buf.writeFloat(value.getWidth());
-		buf.writeFloat(value.getHeight());
-		buf.writeFloat(value.getLength());
-	}
-	
-	public static Size readSize(PacketByteBuf buf) {
-		return new Size(buf.readFloat(), buf.readFloat(), buf.readFloat());
-	}
-	
 	public static <T> void writeRegistryKey(PacketByteBuf buf, RegistryKey<T> value) {
 		buf.writeIdentifier(value.method_41185());
 		buf.writeIdentifier(value.getValue());

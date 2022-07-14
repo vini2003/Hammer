@@ -28,63 +28,100 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
-import dev.vini2003.hammer.core.api.client.color.Color;
-import net.minecraft.command.argument.IdentifierArgumentType;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.InvalidIdentifierException;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-public class ColorArgumentType implements ArgumentType<Color> {
-	private static final Collection<String> EXAMPLES = Arrays.asList("#7E337EAE");
+public class SizeArgumentType implements ArgumentType<Size> {
+	private static final Collection<String> EXAMPLES = Arrays.asList("0.0 0.0", "0.0 0.0 0.0");
 	
-	private static final DynamicCommandExceptionType INVALID_COLOR_EXCEPTION = new DynamicCommandExceptionType(id -> new TranslatableText("text.hammer.color.invalid", id));
+	private static final SimpleCommandExceptionType INCOMPLETE_EXCEPTION = new SimpleCommandExceptionType(new TranslatableText("text.hammer.size.incomplete"));
+	private static final SimpleCommandExceptionType INVALID_SIZE_EXCEPTION = new SimpleCommandExceptionType(new TranslatableText("text.hammer.size.invalid"));
 	
 	private static boolean isCharValid(char c, boolean[] b) {
 		if (!b[1]) {
-			b[0] = c == '#';
-			b[1] = true;
+			if (c == '.' || c == ',') {
+				b[0] = true;
+				b[1] = true;
+			}
 			
 			if (b[0]) {
 				return true;
 			}
 		}
 		
-		return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f');
+		return (c >= '0' && c <= '9');
 	}
 	
-	public static ColorArgumentType color() {
-		return new ColorArgumentType();
+	
+	public static SizeArgumentType size() {
+		return new SizeArgumentType();
 	}
 	
-	public static Color getColor(CommandContext<ServerCommandSource> context, String name) {
-		return context.getArgument(name, Color.class);
+	public static Size getSize(CommandContext<ServerCommandSource> context, String name) {
+		return context.getArgument(name, Size.class);
 	}
 	
 	@Override
-	public Color parse(StringReader reader) throws CommandSyntaxException {
+	public Size parse(StringReader reader) throws CommandSyntaxException {
 		var cursor = reader.getCursor();
 		
-		var foundHashTag = false;
+		float width;
+		float height;
+		float length;
 		
-		var b = new boolean[] { false, false };
+		var b = new boolean[2];
+		
+		b[0] = false;
+		b[1] = false;
 		
 		while (reader.canRead() && isCharValid(reader.peek(), b)) {
 			reader.skip();
 		}
 		
-		var input = reader.getString().substring(cursor, reader.getCursor());
+		width = Float.parseFloat(reader.getString().substring(cursor, reader.getCursor()));
+		cursor = reader.getCursor();
+		
+		if (!reader.canRead()) {
+			throw INCOMPLETE_EXCEPTION.createWithContext(reader);
+		}
+		
+		b[0] = false;
+		b[1] = false;
+		
+		while (reader.canRead() && isCharValid(reader.peek(), b)) {
+			reader.skip();
+		}
+		
+		height = Float.parseFloat(reader.getString().substring(cursor, reader.getCursor()));
+		cursor = reader.getCursor();
+
+		if (!reader.canRead()) {
+			try {
+				return new Size(width, height);
+			} catch (NumberFormatException exception) {
+				reader.setCursor(cursor);
+				
+				throw INVALID_SIZE_EXCEPTION.createWithContext(reader);
+			}
+		}
+		
+		b[0] = false;
+		b[1] = false;
+		
+		length = Float.parseFloat(reader.getString().substring(cursor, reader.getCursor()));
+		cursor = reader.getCursor();
 		
 		try {
-			return new Color(input.replace("#", ""));
+			return new Size(width, height, length);
 		} catch (NumberFormatException exception) {
 			reader.setCursor(cursor);
 			
-			throw INVALID_COLOR_EXCEPTION.createWithContext(reader, input);
+			throw INVALID_SIZE_EXCEPTION.createWithContext(reader);
 		}
 	}
 	

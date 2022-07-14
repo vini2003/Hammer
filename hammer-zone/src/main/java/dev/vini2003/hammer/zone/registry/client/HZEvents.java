@@ -29,7 +29,7 @@ import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.util.BufUtil;
+import dev.vini2003.hammer.zone.api.common.manager.ZoneManager;
 import dev.vini2003.hammer.zone.api.common.util.ZoneDrawingUtil;
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
 import dev.vini2003.hammer.zone.api.common.zone.ZoneGroup;
@@ -210,8 +210,6 @@ public class HZEvents {
 			var provider = context.consumers();
 			var world = context.world();
 			
-			var component = HZComponents.ZONES.get(world);
-			
 			var zonesToRemove = new ArrayList<Zone>();
 			
 			record ZoneData(
@@ -222,7 +220,7 @@ public class HZEvents {
 			
 			var zoneData = new ArrayList<ZoneData>();
 			
-			for (var zone : component.getZones()) {
+			for (var zone : ZoneManager.getAll(world)) {
 				var minPos = zone.getLerpedMinPos(context.tickDelta() / 64.0F);
 				var maxPos = zone.getLerpedMaxPos(context.tickDelta() / 64.0F);
 				
@@ -314,7 +312,7 @@ public class HZEvents {
 			HZValues.setMouseSelectedZone(SELECTED_ZONE);
 			
 			for (var zone : zonesToRemove) {
-				component.remove(zone);
+				ZoneManager.remove(world, zone);
 			}
 		});
 	}

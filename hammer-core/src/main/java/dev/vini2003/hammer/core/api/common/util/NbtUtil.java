@@ -46,34 +46,6 @@ public class NbtUtil {
 		}
 	}
 	
-	public static void putColor(NbtCompound nbt, String key, Color value) {
-		nbt.putLong(key + "Rgba", value.toRgba());
-	}
-	
-	public static Color getColor(NbtCompound nbt, String key) {
-		return new Color(nbt.getLong(key + "Rgba"));
-	}
-	
-	public static void putPosition(NbtCompound nbt, String key, Position value) {
-		nbt.putFloat(key + "X", value.getX());
-		nbt.putFloat(key + "Y", value.getY());
-		nbt.putFloat(key + "Z", value.getZ());
-	}
-	
-	public static Position getPosition(NbtCompound nbt, String key) {
-		return new Position(nbt.getFloat(key + "X"), nbt.getFloat(key + "Y"), nbt.getFloat(key + "Z"));
-	}
-	
-	public static void putSize(NbtCompound nbt, String key, Size value) {
-		nbt.putFloat(key + "Width", value.getWidth());
-		nbt.putFloat(key + "Height", value.getHeight());
-		nbt.putFloat(key + "Length", value.getHeight());
-	}
-	
-	public static Size getSize(NbtCompound nbt, String key) {
-		return new Size(nbt.getFloat(key + "Width"), nbt.getFloat(key + "Height"), nbt.getFloat(key + "Length"));
-	}
-	
 	public static void putBlockPos(NbtCompound nbt, String key, BlockPos value) {
 		nbt.putInt(key + "X", value.getX());
 		nbt.putInt(key + "Y", value.getY());

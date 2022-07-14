@@ -24,12 +24,111 @@
 
 package dev.vini2003.hammer.core.api.common.math.size;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
+
 import java.util.Objects;
 
+/**
+ * <p>A {@link Size} represents a three-dimensional size.
+ *
+ * <p>The following serialization methods are provided:</p>
+ * <ul>
+ *     <li>{@link #toJson(Size)} - from {@link Size} to {@link JsonElement}.</li>
+ *     <li>{@link #toNbt(Size)} - from {@link Size} to {@link NbtCompound}.</li>
+ *     <li>{@link #toBuf(Size, PacketByteBuf)} - from {@link Size} to {@link PacketByteBuf}.</li>
+ * </ul>
+ 
+ * <ul>
+ *     <li>{@link #fromJson(JsonElement)} - from {@link JsonElement} to {@link Size}.</li>
+ *     <li>{@link #fromNbt(NbtCompound)} - from {@link NbtCompound} to {@link Size}.</li>
+ *     <li>{@link #fromBuf(PacketByteBuf)} - from {@link PacketByteBuf} to {@link Size}.</li>
+ * </ul>
+ */
 public class Size implements SizeHolder {
 	private final float width;
 	private final float height;
 	private final float length;
+	
+	/**
+	 * Serializes a size to a {@link PacketByteBuf}.
+	 * @param size The size to serialize.
+	 * @param buf The buffer to serialize to.
+	 * @return The buffer.
+	 */
+	public static PacketByteBuf toBuf(Size size, PacketByteBuf buf) {
+		buf.writeFloat(size.getWidth());
+		buf.writeFloat(size.getHeight());
+		buf.writeFloat(size.getLength());
+		
+		return buf;
+	}
+	
+	/**
+	 * Deserializes a size from a {@link PacketByteBuf}.
+	 * @param buf The buffer to deserialize from.
+	 * @return The size.
+	 */
+	public static Size fromBuf(PacketByteBuf buf) {
+		return new Size(buf.readFloat(), buf.readFloat(), buf.readFloat());
+	}
+	
+	/**
+	 * Serializes a size to an {@link NbtCompound}.
+	 * @param size The size.
+	 * @return The serialized size.
+	 */
+	public static NbtCompound toNbt(Size size) {
+		var nbt = new NbtCompound();
+		
+		nbt.putFloat("width", size.getWidth());
+		nbt.putFloat("height", size.getHeight());
+		nbt.putFloat("length", size.getLength());
+		
+		return nbt;
+	}
+	
+	/**
+	 * Deserializes a size from an {@link NbtCompound}.
+	 * @param nbt The serialized size.
+	 * @return The size.
+	 */
+	public static Size fromNbt(NbtCompound nbt) {
+		return new Size(nbt.getFloat("width"), nbt.getFloat("height"), nbt.getFloat("length"));
+	}
+	
+	/**
+	 * Serializes a size to a {@link JsonElement}.
+	 * @param size The size.
+	 * @return The serialized size.
+	 */
+	public static JsonElement toJson(Size size) {
+		var json = new JsonObject();
+		
+		json.addProperty("width", size.getWidth());
+		json.addProperty("height", size.getHeight());
+		json.addProperty("length", size.getLength());
+		
+		return json;
+	}
+	
+	
+	/**
+	 * Deserializes a size from a {@link JsonElement}.
+	 * @param json The serialized size.
+	 * @return The size.
+	 */
+	public static Size fromJson(JsonElement json) {
+		var object = json.getAsJsonObject();
+		
+		return new Size(
+				object.get("width").getAsFloat(),
+				object.get("height").getAsFloat(),
+				object.get("length").getAsFloat()
+		);
+	}
 	
 	/**
 	 * Constructs a position.

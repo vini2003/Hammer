@@ -22,10 +22,14 @@
  * SOFTWARE.
  */
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
-package dev.vini2003.hammer.adventure.api;
+package dev.vini2003.hammer.stage;
 
-import net.minecraft.util.annotation.MethodsReturnNonnullByDefault;
+import net.fabricmc.api.ClientModInitializer;
+import org.jetbrains.annotations.ApiStatus;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+public class HSClient implements ClientModInitializer {
+	@Override
+	public void onInitializeClient() {
+	
+	}
+}

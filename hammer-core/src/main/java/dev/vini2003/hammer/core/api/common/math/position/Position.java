@@ -24,7 +24,12 @@
 
 package dev.vini2003.hammer.core.api.common.math.position;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Quaternion;
@@ -36,12 +41,98 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 
 /**
- * A {@link Position} is 3-dimensional coordinate, which contains X, Y and Z components.
+ * <p>A {@link Position} represents a three-dimensional position.
+ *
+ * <p>The following serialization methods are provided:</p>
+ * <ul>
+ *     <li>{@link #toJson(Position)} - from {@link Position} to {@link JsonElement}.</li>
+ *     <li>{@link #toNbt(Position)} - from {@link Position} to {@link NbtCompound}.</li>
+ *     <li>{@link #toBuf(Position, PacketByteBuf)} - from {@link Position} to {@link PacketByteBuf}.</li>
+ * </ul>
+ 
+ * <ul>
+ *     <li>{@link #fromJson(JsonElement)} - from {@link JsonElement} to {@link Position}.</li>
+ *     <li>{@link #fromNbt(NbtCompound)} - from {@link NbtCompound} to {@link Position}.</li>
+ *     <li>{@link #fromBuf(PacketByteBuf)} - from {@link PacketByteBuf} to {@link Position}.</li>
+ * </ul>
  */
 public class Position implements PositionHolder {
 	private final float x;
 	private final float y;
 	private final float z;
+	
+	/**
+	 * Serializes a position to a {@link PacketByteBuf}.
+	 * @param position The position to serialize.
+	 * @param buf The buffer to serialize to.
+	 * @return The buffer.
+	 */
+	public static PacketByteBuf toBuf(Position position, PacketByteBuf buf) {
+		buf.writeFloat(position.getX());
+		buf.writeFloat(position.getY());
+		buf.writeFloat(position.getZ());
+		
+		return buf;
+	}
+	
+	/**
+	 * Deserializes a position from a {@link PacketByteBuf}.
+	 * @param buf The buffer to deserialize from.
+	 * @return The position.
+	 */
+	public static Position fromBuf(PacketByteBuf buf) {
+		return new Position(buf.readFloat(), buf.readFloat(), buf.readFloat());
+	}
+	
+	/**
+	 * Serializes a position to an {@link NbtCompound}.
+	 * @param position The position.
+	 * @return The serialized position.
+	 */
+	public static NbtCompound toNbt(Position position) {
+		var nbt = new NbtCompound();
+		
+		nbt.putFloat("x", position.getX());
+		nbt.putFloat("y", position.getY());
+		nbt.putFloat("z", position.getZ());
+		
+		return nbt;
+	}
+	
+	/**
+	 * Deserializes a position from an {@link NbtCompound}.
+	 * @param nbt The serialized position.
+	 * @return The position.
+	 */
+	public static Position fromNbt(NbtCompound nbt) {
+		return new Position(nbt.getFloat("x"), nbt.getFloat("y"), nbt.getFloat("z"));
+	}
+	
+	/**
+	 * Serializes a position to a {@link JsonElement}.
+	 * @param position The position.
+	 * @return The serialized position.
+	 */
+	public static JsonElement toJson(Position position) {
+		var json = new JsonObject();
+		
+		json.addProperty("x", position.getX());
+		json.addProperty("y", position.getY());
+		json.addProperty("z", position.getZ());
+		
+		return json;
+	}
+	
+	/**
+	 * Deserializes a position from a {@link JsonElement}.
+	 * @param json The serialized position.
+	 * @return The position.
+	 */
+	public static Position fromJson(JsonElement json) {
+		var object = json.getAsJsonObject();
+		
+		return new Position(object.get("x").getAsFloat(), object.get("y").getAsFloat(), object.get("z").getAsFloat());
+	}
 	
 	/**
 	 * Returns a collection of all positions within the two given positions.

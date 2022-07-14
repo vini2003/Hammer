@@ -24,5 +24,10 @@
   "text.hammer.global_chat.toggle": "Use Chat Settings (or /show_global_chat &atrue&r|&cfalse&r) to toggle!",
   "text.hammer.message_command.direct_messages_disabled": "&cCould not message %s as they have direct messages disabled!",
   "key.hammer.show_chat": "Show Chat",
-  "key.categories.hammer": "Hammer"
+  "key.categories.hammer": "Hammer",
+  "options.show_chat": "Show Chat",
+  "options.show_command_feedback": "Show Command Feedback",
+  "options.show_warnings": "Show Warnings",
+  "options.show_direct_messages": "Show Direct Messages",
+  "options.fast_chat_fade": "Fast Chat Fade"
 }

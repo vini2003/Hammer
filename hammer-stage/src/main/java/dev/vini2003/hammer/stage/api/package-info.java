@@ -22,15 +22,10 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.adventure.registry.common;
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+package dev.vini2003.hammer.stage.api;
 
-import dev.vini2003.hammer.adventure.HA;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.kyori.adventure.platform.fabric.FabricServerAudiences;
+import net.minecraft.util.annotation.MethodsReturnNonnullByDefault;
 
-public class HAEvents {
-	public static void init() {
-		ServerLifecycleEvents.SERVER_STARTED.register(server -> HA.setAudiences(FabricServerAudiences.of(server)));
-		ServerLifecycleEvents.SERVER_STOPPED.register(server -> HA.setAudiences(null));
-	}
-}
+import javax.annotation.ParametersAreNonnullByDefault;

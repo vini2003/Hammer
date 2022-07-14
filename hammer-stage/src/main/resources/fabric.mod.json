@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "hammer-adventure",
+  "id": "hammer-stage",
   "version": "0.8.71",
-  "name": "Hammer Adventure",
+  "name": "Hammer Stage",
   "description": "A library module.",
   "authors": [
     "vini2003"
@@ -13,15 +13,21 @@
   "license": "MIT",
   "icon": "assets/hammer/icon.png",
   "environment": "*",
+  "accessWidener": "hammer.stage.accesswidener",
   "entrypoints": {
     "main": [
-      "dev.vini2003.hammer.adventure.HA"
+      "dev.vini2003.hammer.stage.HS"
+    ],
+    "client": [
+      "dev.vini2003.hammer.stage.HSClient"
     ]
   },
   "depends": {
     "fabricloader": ">=0.12.9",
     "fabric": ">=0.44.0+1.18",
-    "minecraft": ">=1.18",
-    "adventure-platform-fabric": ">=5.2.0"
-  }
+    "minecraft": ">=1.18"
+  },
+  "mixins": [
+    "hammer.stage.mixins.json"
+  ]
 }

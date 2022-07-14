@@ -25,8 +25,6 @@
 package dev.vini2003.hammer.zone.impl.common.component;
 
 import dev.vini2003.hammer.component.api.common.component.Component;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.zone.api.common.util.ZoneNbtUtil;
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -53,12 +51,12 @@ public class ZoneComponent implements Component {
 		this.world = world;
 	}
 	
-	public Collection<Zone> getZones() {
+	public Collection<Zone> getAll() {
 		return zones;
 	}
 	
 	@Nullable
-	public Zone getZoneById(Identifier id) {
+	public Zone getById(Identifier id) {
 		return zonesById.get(id);
 	}
 	
@@ -77,10 +75,7 @@ public class ZoneComponent implements Component {
 		var zoneNbtList = new NbtList();
 		
 		for (var zone : zones) {
-			var zoneNbt = new NbtCompound();
-			ZoneNbtUtil.putZone(zoneNbt, HAMMER$ZONE_KEY, zone);
-			
-			zoneNbtList.add(zoneNbt);
+			zoneNbtList.add(Zone.toNbt(zone));
 		}
 		
 		nbt.put(HAMMER$ZONES_KEY, zoneNbtList);
@@ -92,7 +87,7 @@ public class ZoneComponent implements Component {
 		
 		for (var zoneElement : zoneNbtList) {
 			var zoneNbt = (NbtCompound) zoneElement;
-			var zone = ZoneNbtUtil.getZone(zoneNbt, HAMMER$ZONE_KEY);
+			var zone = Zone.fromNbt(zoneNbt);
 			
 			if (!zonesById.containsKey(zone.getId())) {
 				zones.add(zone);

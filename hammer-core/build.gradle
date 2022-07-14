@@ -6,7 +6,6 @@ jar {
     baseName("hammer-core")
 }
 
-rootProject.project(":hammer-adventure").tasks.remapJar.dependsOn remapJar
 rootProject.project(":hammer-border").tasks.remapJar.dependsOn remapJar
 rootProject.project(":hammer-chat").tasks.remapJar.dependsOn remapJar
 rootProject.project(":hammer-gravity").tasks.remapJar.dependsOn remapJar

@@ -22,27 +22,51 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.adventure;
+package dev.vini2003.hammer.stage.api.common.manager;
 
-import dev.vini2003.hammer.adventure.registry.common.HAEvents;
-import net.fabricmc.api.ModInitializer;
-import net.kyori.adventure.platform.fabric.FabricServerAudiences;
-import org.jetbrains.annotations.ApiStatus;
+import dev.vini2003.hammer.stage.api.common.stage.Stage;
+import net.minecraft.util.Identifier;
 
-@ApiStatus.Internal
-public class HA implements ModInitializer {
-	private static FabricServerAudiences audiences;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
+public class StageManager {
+	private static final Map<Identifier, Supplier<Stage>> STAGES = new HashMap<>();
 	
-	public static FabricServerAudiences getAudiences() {
-		return audiences;
+	private static Stage ACTIVE;
+	
+	/**
+	 * Registers a stage supplier.
+	 * @param id The ID of the stage.
+	 * @param supplier The supplier of the stage.
+	 */
+	public static void register(Identifier id, Supplier<Stage> supplier) {
+		STAGES.put(id, supplier);
 	}
 	
-	public static void setAudiences(FabricServerAudiences audiences) {
-		HA.audiences = audiences;
+	/**
+	 * Creates a new stage with the given ID.
+	 * @param id The ID of the stage.
+	 * @return The new stage.
+	 */
+	public static Stage create(Identifier id) {
+		return STAGES.get(id).get();
 	}
 	
-	@Override
-	public void onInitialize() {
-		HAEvents.init();
+	/**
+	 * Returns the currently active stage.
+	 * @return The currently active stage.
+	 */
+	public static Stage getActive() {
+		return ACTIVE;
+	}
+	
+	/**
+	 * Sets the currently active stage.
+	 * @param active The new active stage.
+	 */
+	public static void setActive(Stage active) {
+		ACTIVE = active;
 	}
 }

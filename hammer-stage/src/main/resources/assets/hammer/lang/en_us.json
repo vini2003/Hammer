@@ -1,0 +1,14 @@
+{
+  "command.hammer.stage.load.failure": "Failed to load stage",
+  "command.hammer.stage.load.success": "Loaded stage %s",
+  "command.hammer.stage.unload.failure": "Failed to unload stage",
+  "command.hammer.stage.unload.success": "Unloaded stage %s",
+  "command.hammer.stage.start.failure": "Failed to start stage",
+  "command.hammer.stage.start.success": "Started stage",
+  "command.hammer.stage.stop.failure": "Failed to stop stage",
+  "command.hammer.stage.stop.success": "Stopped stage",
+  "command.hammer.stage.pause.failure": "Failed to pause stage",
+  "command.hammer.stage.pause.success": "Paused stage",
+  "command.hammer.stage.restart.failure": "Failed to restart stage",
+  "command.hammer.stage.restart.success": "Restarted stage"
+}

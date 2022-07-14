@@ -35,6 +35,12 @@ import java.util.Map;
 public class ZoneGroupManager {
 	private static final ThreadLocal<Map<Identifier, ZoneGroup>> GROUPS = ThreadLocal.withInitial(() -> new HashMap<>());
 	
+	/**
+	 * Returns the group with the given ID, or creates
+	 * and returns a new one if it does not exist.
+	 * @param id The ID of the group.
+	 * @return The group.
+	 */
 	public static ZoneGroup getOrCreate(Identifier id) {
 		var groups = GROUPS.get();
 		
@@ -47,6 +53,10 @@ public class ZoneGroupManager {
 		}
 	}
 	
+	/**
+	 * Removes the group with the given ID.
+	 * @param id The ID of the group.
+	 */
 	public static void remove(Identifier id) {
 		var groups = GROUPS.get();
 		
@@ -61,6 +71,10 @@ public class ZoneGroupManager {
 		}
 	}
 	
+	/**
+	 * Returns all zone groups.
+	 * @return All zone groups.
+	 */
 	public static Collection<ZoneGroup> getGroups() {
 		var groups = GROUPS.get();
 		

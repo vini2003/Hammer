@@ -1,3 +1,4 @@
+
 /*
  * MIT License
  *
@@ -22,36 +23,21 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.preset.registry.common;
+package dev.vini2003.hammer.preset.api.common.util;
 
-import dev.vini2003.hammer.chat.api.common.util.ChannelUtil;
-import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
-import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
-import dev.vini2003.hammer.preset.api.common.util.PlayerListUtil;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.minecraft.text.TranslatableText;
+import com.mojang.authlib.GameProfile;
+import dev.vini2003.hammer.preset.registry.common.HPValues;
 
-public class HPEvents {
-	public static void init() {
-		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-			var player = handler.getPlayer();
-			
-			ChannelUtil.setSelected(player, HPChannels.GENERAL);
-			
-			ChatUtil.setShowWarnings(player, false);
-			ChatUtil.setShowCommandFeedback(player, false);
-			
-			ChatUtil.setFastChatFade(player, false);
-			
-			ServerTaskQueue.enqueue(($) -> {
-				ChatUtil.setFastChatFade(handler.player, true);
-			}, 2500L);
-			
-			for (var i = 0; i < 2; ++i) {
-				player.sendMessage(new TranslatableText("text.hammer.welcome_" + i), false);
-			}
-			
-			PlayerListUtil.setHiddenOnPlayerList(player.getGameProfile(), false);
-		});
+public class PlayerListUtil {
+	public static void setHiddenOnPlayerList(GameProfile profile, boolean showOnPlayerList) {
+		if (showOnPlayerList) {
+			HPValues.HIDDEN_FROM_PLAYER_LIST.remove(profile.getId());
+		} else {
+			HPValues.HIDDEN_FROM_PLAYER_LIST.add(profile.getId());
+		}
+	}
+	
+	public static boolean isHiddenOnPlayerList(GameProfile profile) {
+		return HPValues.HIDDEN_FROM_PLAYER_LIST.contains(profile.getId());
 	}
 }

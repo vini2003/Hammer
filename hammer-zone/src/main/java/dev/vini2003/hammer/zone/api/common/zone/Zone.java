@@ -40,6 +40,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -318,6 +319,26 @@ public class Zone {
 		);
 		
 		return lerpedMaxPos;
+	}
+	
+	/**
+	 * Returns whether this zone contains a position.
+	 * @param position The position.
+	 * @return Whether this zone contains the position.
+	 */
+	public boolean isPositionWithin(Position position) {
+		return position.getX() >= minPos.getX() && position.getX() <= maxPos.getX() &&
+			   position.getY() >= minPos.getY() && position.getY() <= maxPos.getY() &&
+			   position.getZ() >= minPos.getZ() && position.getZ() <= maxPos.getZ();
+	}
+	
+	/**
+	 * Returns the positions within this zone.
+	 *
+	 * @return the result.
+	 */
+	public Collection<Position> getPositions() {
+		return Position.collect(minPos, maxPos);
 	}
 	
 	/**

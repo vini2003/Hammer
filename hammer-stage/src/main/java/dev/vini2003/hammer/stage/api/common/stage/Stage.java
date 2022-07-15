@@ -232,7 +232,7 @@ public abstract class Stage {
 		this.state = State.PREPARED;
 	}
 	
-	enum State {
+	public static enum State {
 		LOADED,
 		UNLOADED,
 		PREPARED,

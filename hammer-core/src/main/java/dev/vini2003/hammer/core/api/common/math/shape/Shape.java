@@ -76,17 +76,14 @@ public class Shape implements SizeHolder {
 	 * @parma position the position.
 	 */
 	public boolean isPositionWithin(Position pos) {
-		return pos.getX() >= startPos.getX() &&
-				pos.getX() <= endPos.getX() &&
-				pos.getY() >= startPos.getY() &&
-				pos.getY() <= endPos.getY() &&
-				pos.getZ() >= startPos.getZ() &&
-				pos.getZ() <= endPos.getZ() &&
-				equation.test(this, pos.minus(startPos));
+		return pos.getX() >= startPos.getX() && pos.getX() <= endPos.getX() &&
+			   pos.getY() >= startPos.getY() && pos.getY() <= endPos.getY() && pos.getZ() >= startPos.getZ() &&
+			   pos.getZ() <= endPos.getZ() &&
+			   equation.test(this, pos.minus(startPos));
 	}
 	
 	/**
-	 * Returns the positions within this shaope.
+	 * Returns the positions within this shape.
 	 *
 	 * @return the result.
  	 */

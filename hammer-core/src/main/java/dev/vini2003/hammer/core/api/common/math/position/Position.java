@@ -28,11 +28,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
+import net.minecraft.client.util.math.Vector2f;
+import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Quaternion;
+import net.minecraft.util.math.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -260,7 +260,7 @@ public class Position implements PositionHolder {
 	}
 	
 	/**
-	 * Converts a [ChunkPos] to a position.
+	 * Converts a {@link ChunkPos} to a position.
 	 *
 	 * @param chunkPos the chunk pos.
 	 *
@@ -271,7 +271,61 @@ public class Position implements PositionHolder {
 	}
 	
 	/**
-	 * Converts this position to a [BlockPos].
+	 * Converts a {@link Vec2f} to a position.
+	 * @param vec2f The vector.
+	 * @return The position.
+	 */
+	public Position(Vec2f vec2f) {
+		this(vec2f.x, vec2f.y);
+	}
+	
+	/**
+	 * Converts a {@link Vec3d} to a position.
+	 * @param vec3d The vector.
+	 * @return The position.
+	 */
+	public Position(Vec3d vec3d) {
+		this((float) vec3d.x, (float) vec3d.y, (float) vec3d.z);
+	}
+	
+	/**
+	 * Converts a {@link Vec3f} to a position.
+	 * @param vec3f The vector.
+	 * @return The position.
+	 */
+	public Position(Vec3f vec3f) {
+		this(vec3f.getX(), vec3f.getY(), vec3f.getZ());
+	}
+	
+	/**
+	 * Converts a {@link Vec3i} to a position.
+	 * @param vec3i The vector.
+	 * @return The position.
+	 */
+	public Position(Vec3i vec3i) {
+		this(vec3i.getX(), vec3i.getY(), vec3i.getZ());
+	}
+	
+	/**
+	 * Converts a {@link Vector2f} to a position.
+	 * @param vector2f The vector.
+	 * @return The position.
+	 */
+	public Position(Vector2f vector2f) {
+		this(vector2f.getX(), vector2f.getY());
+	}
+	
+	/**
+	 * Converts a {@link Vector3d} to a position.
+	 * @param vector3d The vector.
+	 * @return The position.
+	 */
+	 public Position(Vector3d vector3d) {
+		this((float) vector3d.x, (float) vector3d.y, (float) vector3d.z);
+	 }
+	
+	/**
+	 * Converts this position to a {@link BlockPos}.
 	 *
 	 * @return the block pos.
 	 */
@@ -280,12 +334,60 @@ public class Position implements PositionHolder {
 	}
 	
 	/**
-	 * Converts this position to a [ChunkPos].
+	 * Converts this position to a {@link ChunkPos}
 	 *
 	 * @return the chunk pos.
 	 */
 	public ChunkPos toChunkPos() {
 		return new ChunkPos((int) x, (int) z);
+	}
+	
+	/**
+	 * Converts this position to a {@link Vec2f}.
+	 * @return The vector.
+	 */
+	public Vec2f toVec2f() {
+		return new Vec2f(x, y);
+	}
+	
+	/**
+	 * Converts this position to a {@link Vec3d}.
+	 * @return The vector.
+	 */
+	public Vec3d toVec3d() {
+		return new Vec3d(x, y, z);
+	}
+	
+	/**
+	 * Converts this position to a {@link Vec3f}.
+	 * @return The vector.
+	 */
+	public Vec3f toVec3f() {
+		return new Vec3f(x, y, z);
+	}
+	
+	/**
+	 * Converts this position to a {@link Vec3i}.
+	 * @return The vector.
+	 */
+	public Vec3i toVec3i() {
+		return new Vec3i((int) x, (int) y, (int) z);
+	}
+	
+	/**
+	 * Converts this position to a {@link Vector2f}.
+	 * @return The vector.
+	 */
+	public Vector2f toVector2f() {
+		return new Vector2f(x, y);
+	}
+	
+	/**
+	 * Converts this position to a {@link Vector3d}.
+	 * @return The vector.
+	 */
+	public Vector3d toVector3d() {
+		return new Vector3d(x, y, z);
 	}
 	
 	/**

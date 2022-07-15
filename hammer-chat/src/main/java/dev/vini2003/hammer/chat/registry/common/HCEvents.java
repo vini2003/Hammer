@@ -27,6 +27,7 @@ package dev.vini2003.hammer.chat.registry.common;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import dev.vini2003.hammer.chat.api.common.manager.ChannelManager;
+import dev.vini2003.hammer.chat.api.common.util.ChannelUtil;
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
 import dev.vini2003.hammer.core.api.common.event.ChatEvents;
@@ -57,6 +58,8 @@ public class HCEvents {
 			ChatUtil.setFastChatFade(newPlayer, ChatUtil.hasFastChatFade(oldPlayer));
 			
 			ChatUtil.setMuted(newPlayer, ChatUtil.isMuted(oldPlayer));
+			
+			ChannelUtil.setSelected(newPlayer, ChannelUtil.getSelected(oldPlayer));
 		});
 		
 		ChatEvents.SEND_MESSAGE.register((receiver, message, type, sender) -> {

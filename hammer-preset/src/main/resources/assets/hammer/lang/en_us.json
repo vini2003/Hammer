@@ -1,8 +1,5 @@
 {
   "text.hammer.fabulous_graphics_warning": "Fabulous graphics are disabled due to inherent compatibility issues!",
-  "text.hammer.welcome_0": "§r§7Some of your settings have been changed to improve the recording - you may change them in §6Chat Settings§r§7!",
-  "text.hammer.welcome_1": "§r§7 • Your chat has been §chidden§r§7!",
-  "text.hammer.welcome_2": "§r§7 • Your global chat has been §chidden§r§7!",
-  "text.hammer.welcome_3": "§r§7 • Your command feedback has been §chidden§r§7",
-  "text.hammer.welcome_4": "§r§7Have fun and ask §bvini2003§r§7#§r§d0875§r§7 or §bCubxity§r§7#§r§d7801§r§7 if you require help!"
+  "text.hammer.welcome_0": "§r§7Some settings have been tweaked to improve your recording - they may be changed in §6Chat Settings§r§7!",
+  "text.hammer.welcome_1": "§r§7Have fun and ask &#fb00c4\uD83D\uDD2E Staff&r&7 if you require help!"
 }

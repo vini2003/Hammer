@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.preset.registry.common;
 
+import dev.vini2003.hammer.chat.api.common.util.ChannelUtil;
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -34,8 +35,8 @@ public class HPEvents {
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			var player = handler.getPlayer();
 			
-			ChatUtil.setShowChat(player, false);
-			ChatUtil.setShowGlobalChat(player, false);
+			ChannelUtil.setSelected(player, HPChannels.GENERAL);
+			
 			ChatUtil.setShowWarnings(player, false);
 			ChatUtil.setShowCommandFeedback(player, false);
 			
@@ -43,9 +44,9 @@ public class HPEvents {
 			
 			ServerTaskQueue.enqueue(($) -> {
 				ChatUtil.setFastChatFade(handler.player, true);
-			}, 200L);
+			}, 2500L);
 			
-			for (var i = 0; i < 5; ++i) {
+			for (var i = 0; i < 2; ++i) {
 				player.sendMessage(new TranslatableText("text.hammer.welcome_" + i), false);
 			}
 		});

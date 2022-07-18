@@ -2,5 +2,6 @@
   "text.hammer.discord": "Discord",
   "text.hammer.empty": "Empty",
   "text.hammer.fluid": "Fluid",
-  "text.hammer.color.invalid": "Invalid color: %s"
+  "text.hammer.color.invalid": "Invalid color: %s",
+  "itemGroup.hammer.hammer": "Hammer"
 }

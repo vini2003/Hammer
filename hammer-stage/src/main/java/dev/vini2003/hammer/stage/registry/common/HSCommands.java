@@ -33,6 +33,7 @@ import dev.vini2003.hammer.core.api.common.command.argument.SizeArgumentType;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.stage.api.common.manager.StageManager;
+import dev.vini2003.hammer.stage.api.common.stage.Stage;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.server.command.CommandManager;
@@ -55,7 +56,7 @@ public class HSCommands {
 		
 		var stageSize = context.getArgument("size", Size.class);
 		
-		var active = StageManager.getActive();
+		var active = StageManager.getActive(source.getWorld().getRegistryKey());
 		
 		if (active != null) {
 			source.sendFeedback(new TranslatableText("command.hammer.stage.load.failure"), false);
@@ -65,7 +66,7 @@ public class HSCommands {
 		stage.setPosition(stagePosition);
 		stage.setSize(stageSize);
 		
-		StageManager.setActive(stage);
+		StageManager.setActive(source.getWorld().getRegistryKey(), stage);
 		
 		stage.load(player.world);
 		
@@ -79,12 +80,12 @@ public class HSCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
-		var stage = StageManager.getActive();
+		var stage = StageManager.getActive(source.getWorld().getRegistryKey());
 		
 		if (stage != null) {
 			stage.unload(player.world);
 			
-			StageManager.setActive(null);
+			StageManager.setActive(source.getWorld().getRegistryKey(), null);
 			
 			source.sendFeedback(new TranslatableText("command.hammer.stage.unload.success"), true);
 		} else {
@@ -99,7 +100,7 @@ public class HSCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
-		var stage = StageManager.getActive();
+		var stage = StageManager.getActive(source.getWorld().getRegistryKey());
 		
 		if (stage != null) {
 			stage.prepare(player.world);
@@ -117,7 +118,7 @@ public class HSCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
-		var stage = StageManager.getActive();
+		var stage = StageManager.getActive(source.getWorld().getRegistryKey());
 		
 		if (stage != null) {
 			stage.start(player.world);
@@ -135,7 +136,7 @@ public class HSCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
-		var stage = StageManager.getActive();
+		var stage = StageManager.getActive(source.getWorld().getRegistryKey());
 		
 		if (stage != null) {
 			stage.stop(player.world);
@@ -153,12 +154,16 @@ public class HSCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
-		var stage = StageManager.getActive();
+		var stage = StageManager.getActive(source.getWorld().getRegistryKey());
 		
 		if (stage != null) {
 			stage.pause(player.world);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.stage.pause.success"), true);
+			if (stage.getState() == Stage.State.PAUSED) {
+				source.sendFeedback(new TranslatableText("command.hammer.stage.pause.success"), true);
+			} else {
+				source.sendFeedback(new TranslatableText("command.hammer.stage.unpause.success"), true);
+			}
 		} else {
 			source.sendFeedback(new TranslatableText("command.hammer.stage.pause.failure"), true);
 		}
@@ -171,7 +176,7 @@ public class HSCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
-		var stage = StageManager.getActive();
+		var stage = StageManager.getActive(source.getWorld().getRegistryKey());
 		
 		if (stage != null) {
 			stage.restart(player.world);

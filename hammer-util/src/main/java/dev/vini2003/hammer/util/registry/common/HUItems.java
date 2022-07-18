@@ -28,6 +28,7 @@ import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import dev.vini2003.hammer.core.registry.common.HCConfig;
+import dev.vini2003.hammer.core.registry.common.HCItemGroups;
 import dev.vini2003.hammer.util.api.common.item.TriggerItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -54,7 +55,7 @@ public class HUItems {
 					.targetEntity(e -> e instanceof PlayerEntity)
 					.side(false, true)
 					.raycast(true, true)
-					.settings(new Item.Settings().group(HUItemGroups.HAMMER))
+					.settings(new Item.Settings().group(HCItemGroups.HAMMER))
 					.build()
 	);
 	
@@ -76,7 +77,7 @@ public class HUItems {
 					.targetEntity(e -> e instanceof PlayerEntity)
 					.side(false, true)
 					.raycast(true, true)
-					.settings(new Item.Settings().group(HUItemGroups.HAMMER))
+					.settings(new Item.Settings().group(HCItemGroups.HAMMER))
 					.build()
 	);
 	
@@ -97,7 +98,7 @@ public class HUItems {
 					.targetEntity(e -> e instanceof PlayerEntity)
 					.side(false, true)
 					.raycast(true, true)
-					.settings(new Item.Settings().group(HUItemGroups.HAMMER))
+					.settings(new Item.Settings().group(HCItemGroups.HAMMER))
 					.build()
 	);
 	
@@ -120,7 +121,7 @@ public class HUItems {
 					   .targetEntity(e -> e instanceof PlayerEntity)
 					   .side(false, true)
 					   .raycast(true, true)
-					   .settings(new Item.Settings().group(HUItemGroups.HAMMER))
+					   .settings(new Item.Settings().group(HCItemGroups.HAMMER))
 					   .build()
 	);
 	
@@ -133,7 +134,7 @@ public class HUItems {
 					   })
 					   .side(false, true)
 					   .raycast(false, false)
-					   .settings(new Item.Settings().group(HUItemGroups.HAMMER))
+					   .settings(new Item.Settings().group(HCItemGroups.HAMMER))
 					   .build()
 	);
 	
@@ -146,7 +147,7 @@ public class HUItems {
 					   })
 					   .side(false, true)
 					   .raycast(false, false)
-					   .settings(new Item.Settings().group(HUItemGroups.HAMMER))
+					   .settings(new Item.Settings().group(HCItemGroups.HAMMER))
 					   .build()
 	);
 	

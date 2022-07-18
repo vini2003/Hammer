@@ -7,8 +7,14 @@
   "command.hammer.stage.start.success": "Started stage",
   "command.hammer.stage.stop.failure": "Failed to stop stage",
   "command.hammer.stage.stop.success": "Stopped stage",
-  "command.hammer.stage.pause.failure": "Failed to pause stage",
+  "command.hammer.stage.pause.failure": "Failed to pause/unpause stage",
   "command.hammer.stage.pause.success": "Paused stage",
+  "command.hammer.stage.unpause.success": "Paused stage",
   "command.hammer.stage.restart.failure": "Failed to restart stage",
-  "command.hammer.stage.restart.success": "Restarted stage"
+  "command.hammer.stage.restart.success": "Restarted stage",
+  "item.hammer.prepare_stage": "Prepare Stage",
+  "item.hammer.start_stage": "Start Stage",
+  "item.hammer.stop_stage": "Stop Stage",
+  "item.hammer.pause_stage": "Pause Stage",
+  "item.hammer.restart_stage": "Restart Stage"
 }

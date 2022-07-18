@@ -24,12 +24,13 @@
 
 package dev.vini2003.hammer.stage;
 
+import dev.vini2003.hammer.stage.registry.common.HSItems;
 import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 public class HS implements ModInitializer {
 	@Override
 	public void onInitialize() {
-	
+		HSItems.init();
 	}
 }

@@ -44,6 +44,7 @@ public abstract class Stage {
 	private Zone zone;
 	
 	private State state;
+	private State prevState;
 	
 	private final Collection<Zone> zones = new ArrayList<>();
 	private final Collection<ZoneGroup> zoneGroups = new ArrayList<>();
@@ -197,6 +198,7 @@ public abstract class Stage {
 	 * @param world The world in which the stage was prepared.
 	 */
 	public void prepare(World world) {
+		this.prevState = state;
 		this.state = State.PREPARED;
 	}
 	
@@ -205,6 +207,7 @@ public abstract class Stage {
 	 * @param world The world in which the stage was started.
 	 */
 	public void start(World world) {
+		this.prevState = state;
 		this.state = State.STARTED;
 	}
 	
@@ -213,6 +216,7 @@ public abstract class Stage {
 	 * @param world The world in which the stage was stopped.
 	 */
 	public void stop(World world) {
+		this.prevState = state;
 		this.state = State.STOPPED;
 	}
 	
@@ -221,7 +225,16 @@ public abstract class Stage {
 	 * @param world The world in which the stage was paused.
 	 */
 	public void pause(World world) {
-		this.state = State.PAUSED;
+		if (this.state != State.PAUSED) {
+			this.prevState = state;
+			
+			this.state = State.PAUSED;
+		} else {
+			var prevState = this.state;
+			
+			this.state = this.prevState;
+			this.prevState = prevState;
+		}
 	}
 	
 	/**
@@ -229,7 +242,16 @@ public abstract class Stage {
 	 * @param world The world in which the stage was restarted.
 	 */
 	public void restart(World world) {
-		this.state = State.PREPARED;
+		prepare(world);
+		start(world);
+	}
+	
+	/**
+	 * Executed every tick.
+	 * @param world The world in which the stage is running.
+	 */
+	public void tick(World world) {
+	
 	}
 	
 	public static enum State {

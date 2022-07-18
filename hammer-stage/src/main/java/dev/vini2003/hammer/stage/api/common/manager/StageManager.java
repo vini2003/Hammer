@@ -26,15 +26,17 @@ package dev.vini2003.hammer.stage.api.common.manager;
 
 import dev.vini2003.hammer.stage.api.common.stage.Stage;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
 public class StageManager {
-	private static final Map<Identifier, Supplier<Stage>> STAGES = new HashMap<>();
+	private static final ThreadLocal<Map<Identifier, Supplier<Stage>>> STAGES = ThreadLocal.withInitial(() -> new HashMap<>());
 	
-	private static Stage ACTIVE;
+	private static final ThreadLocal<Map<RegistryKey<World>, Stage>> ACTIVES = ThreadLocal.withInitial(() -> new HashMap<>());
 	
 	/**
 	 * Registers a stage supplier.
@@ -42,7 +44,7 @@ public class StageManager {
 	 * @param supplier The supplier of the stage.
 	 */
 	public static void register(Identifier id, Supplier<Stage> supplier) {
-		STAGES.put(id, supplier);
+		STAGES.get().put(id, supplier);
 	}
 	
 	/**
@@ -51,22 +53,22 @@ public class StageManager {
 	 * @return The new stage.
 	 */
 	public static Stage create(Identifier id) {
-		return STAGES.get(id).get();
+		return STAGES.get().get(id).get();
 	}
 	
 	/**
 	 * Returns the currently active stage.
 	 * @return The currently active stage.
 	 */
-	public static Stage getActive() {
-		return ACTIVE;
+	public static Stage getActive(RegistryKey<World> world) {
+		return ACTIVES.get().get(world);
 	}
 	
 	/**
 	 * Sets the currently active stage.
 	 * @param active The new active stage.
 	 */
-	public static void setActive(Stage active) {
-		ACTIVE = active;
+	public static void setActive(RegistryKey<World> world, Stage active) {
+		ACTIVES.get().put(world, active);
 	}
 }

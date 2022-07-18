@@ -25,7 +25,6 @@
 package dev.vini2003.hammer.util;
 
 import dev.vini2003.hammer.util.registry.common.HUCommands;
-import dev.vini2003.hammer.util.registry.common.HUItemGroups;
 import dev.vini2003.hammer.util.registry.common.HUItems;
 import dev.vini2003.hammer.util.registry.common.HUNetworking;
 import net.fabricmc.api.ModInitializer;
@@ -38,6 +37,5 @@ public class HU implements ModInitializer {
 		HUCommands.init();
 		HUNetworking.init();
 		HUItems.init();
-		HUItemGroups.init();
 	}
 }

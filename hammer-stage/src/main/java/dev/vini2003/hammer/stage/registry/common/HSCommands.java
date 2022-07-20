@@ -28,12 +28,17 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.command.argument.PositionArgumentType;
 import dev.vini2003.hammer.core.api.common.command.argument.SizeArgumentType;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.stage.api.common.manager.StageManager;
 import dev.vini2003.hammer.stage.api.common.stage.Stage;
+import dev.vini2003.hammer.zone.api.common.manager.ZoneManager;
+import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.server.command.CommandManager;
@@ -41,10 +46,20 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
+import java.util.concurrent.CompletableFuture;
+
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class HSCommands {
+	private static CompletableFuture<Suggestions> stageSuggestIds(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
+		for (var entry : StageManager.getFactories().entrySet()) {
+			builder.suggest(entry.getKey().toString());
+		}
+		
+		return builder.buildFuture();
+	}
+	
 	// Loads a stage.
 	private static int stageLoad(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
 		var source = context.getSource();
@@ -52,25 +67,29 @@ public class HSCommands {
 		
 		var stageId = context.getArgument("id", Identifier.class);
 		
-		var stagePosition = context.getArgument("position", Position.class);
+		var stagePosition = PositionArgumentType.getPosition(context, "position");
 		
 		var stageSize = context.getArgument("size", Size.class);
 		
 		var active = StageManager.getActive(source.getWorld().getRegistryKey());
 		
 		if (active != null) {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.load.failure"), false);
+			source.sendFeedback(new TranslatableText("command.hammer.stage.load.failure", new TranslatableText("command.hammer.stage.none_active")), false);
 		}
 		
-		var stage = StageManager.create(stageId);
-		stage.setPosition(stagePosition);
-		stage.setSize(stageSize);
-		
-		StageManager.setActive(source.getWorld().getRegistryKey(), stage);
-		
-		stage.load(player.world);
-		
-		source.sendFeedback(new TranslatableText("command.hammer.stage.load.success", stageId), false);
+		try {
+			var stage = StageManager.create(stageId, source.getWorld());
+			stage.setPosition(stagePosition);
+			stage.setSize(stageSize);
+			
+			StageManager.setActive(source.getWorld().getRegistryKey(), stage);
+			
+			stage.load(player.world);
+			
+			source.sendFeedback(new TranslatableText("command.hammer.stage.load.success", stageId), false);
+		} catch (Exception exception) {
+			source.sendFeedback(new TranslatableText("command.hammer.stage.load.failure", stageId, new TranslatableText("command.hammer.stage.no_or_invalid_provider")), false);
+		}
 		
 		return Command.SINGLE_SUCCESS;
 	}
@@ -89,7 +108,7 @@ public class HSCommands {
 			
 			source.sendFeedback(new TranslatableText("command.hammer.stage.unload.success"), true);
 		} else {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.unload.none"), true);
+			source.sendFeedback(new TranslatableText("command.hammer.stage.unload.failure", new TranslatableText("command.hammer.stage.none_active")), true);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -107,7 +126,7 @@ public class HSCommands {
 			
 			source.sendFeedback(new TranslatableText("command.hammer.stage.prepare.success"), true);
 		} else {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.prepare.failure"), true);
+			source.sendFeedback(new TranslatableText("command.hammer.stage.prepare.failure", new TranslatableText("command.hammer.stage.none_active")), true);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -125,7 +144,7 @@ public class HSCommands {
 			
 			source.sendFeedback(new TranslatableText("command.hammer.stage.start.success"), true);
 		} else {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.start.failure"), true);
+			source.sendFeedback(new TranslatableText("command.hammer.stage.start.failure", new TranslatableText("command.hammer.stage.none_active")), true);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -143,7 +162,7 @@ public class HSCommands {
 			
 			source.sendFeedback(new TranslatableText("command.hammer.stage.stop.success"), true);
 		} else {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.stop.failure"), true);
+			source.sendFeedback(new TranslatableText("command.hammer.stage.stop.failure", new TranslatableText("command.hammer.stage.none_active")), true);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -165,7 +184,7 @@ public class HSCommands {
 				source.sendFeedback(new TranslatableText("command.hammer.stage.unpause.success"), true);
 			}
 		} else {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.pause.failure"), true);
+			source.sendFeedback(new TranslatableText("command.hammer.stage.pause.failure", new TranslatableText("command.hammer.stage.none_active")), true);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -183,7 +202,7 @@ public class HSCommands {
 			
 			source.sendFeedback(new TranslatableText("command.hammer.stage.restart.success"), true);
 		} else {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.restart.failure"), true);
+			source.sendFeedback(new TranslatableText("command.hammer.stage.restart.failure", new TranslatableText("command.hammer.stage.none_active")), true);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -196,7 +215,7 @@ public class HSCommands {
 						return source.hasPermissionLevel(4);
 					}).then(
 							literal("load").then(
-									argument("id", IdentifierArgumentType.identifier()).then(
+									argument("id", IdentifierArgumentType.identifier()).suggests(HSCommands::stageSuggestIds).then(
 											argument("position", PositionArgumentType.position()).then(
 													argument("size", SizeArgumentType.size()).executes(HSCommands::stageLoad)
 											)

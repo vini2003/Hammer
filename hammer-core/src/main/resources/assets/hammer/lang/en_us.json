@@ -3,5 +3,7 @@
   "text.hammer.empty": "Empty",
   "text.hammer.fluid": "Fluid",
   "text.hammer.color.invalid": "Invalid color: %s",
-  "itemGroup.hammer.hammer": "Hammer"
+  "itemGroup.hammer.hammer": "Hammer",
+  "text.hammer.position.incomplete": "Incomplete position",
+  "text.hammer.size.incomplete": "Incomplete size"
 }

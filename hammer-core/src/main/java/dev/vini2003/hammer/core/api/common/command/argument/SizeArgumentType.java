@@ -83,6 +83,8 @@ public class SizeArgumentType implements ArgumentType<Size> {
 			reader.skip();
 		}
 		
+		reader.skip();
+		
 		width = Float.parseFloat(reader.getString().substring(cursor, reader.getCursor()));
 		cursor = reader.getCursor();
 		
@@ -96,6 +98,8 @@ public class SizeArgumentType implements ArgumentType<Size> {
 		while (reader.canRead() && isCharValid(reader.peek(), b)) {
 			reader.skip();
 		}
+		
+		reader.skip();
 		
 		height = Float.parseFloat(reader.getString().substring(cursor, reader.getCursor()));
 		cursor = reader.getCursor();
@@ -112,6 +116,10 @@ public class SizeArgumentType implements ArgumentType<Size> {
 		
 		b[0] = false;
 		b[1] = false;
+		
+		while (reader.canRead() && isCharValid(reader.peek(), b)) {
+			reader.skip();
+		}
 		
 		length = Float.parseFloat(reader.getString().substring(cursor, reader.getCursor()));
 		cursor = reader.getCursor();

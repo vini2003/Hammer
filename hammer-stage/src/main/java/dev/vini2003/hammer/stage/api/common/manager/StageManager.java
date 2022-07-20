@@ -24,27 +24,29 @@
 
 package dev.vini2003.hammer.stage.api.common.manager;
 
+import com.mojang.datafixers.types.Func;
 import dev.vini2003.hammer.stage.api.common.stage.Stage;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public class StageManager {
-	private static final ThreadLocal<Map<Identifier, Supplier<Stage>>> STAGES = ThreadLocal.withInitial(() -> new HashMap<>());
+	private static final Map<Identifier, Function<World, Stage>> FACTORIES = new HashMap<>();
 	
-	private static final ThreadLocal<Map<RegistryKey<World>, Stage>> ACTIVES = ThreadLocal.withInitial(() -> new HashMap<>());
+	private static final Map<RegistryKey<World>, Stage> ACTIVES = new HashMap<>();
 	
 	/**
 	 * Registers a stage supplier.
 	 * @param id The ID of the stage.
 	 * @param supplier The supplier of the stage.
 	 */
-	public static void register(Identifier id, Supplier<Stage> supplier) {
-		STAGES.get().put(id, supplier);
+	public static void register(Identifier id, Function<World, Stage> supplier) {
+		FACTORIES.put(id, supplier);
 	}
 	
 	/**
@@ -52,8 +54,8 @@ public class StageManager {
 	 * @param id The ID of the stage.
 	 * @return The new stage.
 	 */
-	public static Stage create(Identifier id) {
-		return STAGES.get().get(id).get();
+	public static Stage create(Identifier id, World world) {
+		return FACTORIES.get(id).apply(world);
 	}
 	
 	/**
@@ -61,7 +63,7 @@ public class StageManager {
 	 * @return The currently active stage.
 	 */
 	public static Stage getActive(RegistryKey<World> world) {
-		return ACTIVES.get().get(world);
+		return ACTIVES.get(world);
 	}
 	
 	/**
@@ -69,6 +71,14 @@ public class StageManager {
 	 * @param active The new active stage.
 	 */
 	public static void setActive(RegistryKey<World> world, Stage active) {
-		ACTIVES.get().put(world, active);
+		ACTIVES.put(world, active);
+	}
+	
+	/**
+	 * Returns all registered stage factories.
+	 * @return All registered stage factories.
+	 */
+	public static Map<Identifier, Function<World, Stage>> getFactories() {
+		return FACTORIES;
 	}
 }

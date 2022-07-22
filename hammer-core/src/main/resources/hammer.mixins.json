@@ -10,7 +10,9 @@
     "common.PlayerEntityMixin",
     "common.ServerPlayNetworkHandlerMixin",
     "common.ServerPlayerEntityMixin",
-    "common.EntityMixin"
+    "common.EntityMixin",
+    "common.EntityTrackerMixin",
+    "common.WorldMixin"
   ],
   "client": [
     "client.WorldRendererMixin"

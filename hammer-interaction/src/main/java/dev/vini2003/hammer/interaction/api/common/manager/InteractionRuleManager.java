@@ -175,7 +175,8 @@ public class InteractionRuleManager {
 			for (var i = 0; i < rulesSize; ++i) {
 				var uuid = buf.readUuid();
 				
-				var rules = new ArrayList<InteractionRule<?>>();
+				var rules = RULES.getOrDefault(uuid, new ArrayList<>());
+				rules.clear();
 				
 				var size = buf.readInt();
 				
@@ -185,6 +186,8 @@ public class InteractionRuleManager {
 							buf.readEnumConstant(InteractionMode.class),
 							BufUtil.readTagKey(buf)
 					);
+					
+					rules.add(rule);
 				}
 			}
 		}

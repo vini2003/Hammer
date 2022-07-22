@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "hammer-preset",
-  "version": "0.8.71",
+  "version": "0.8.89",
   "name": "Hammer Preset",
   "description": "A library module.",
   "authors": [

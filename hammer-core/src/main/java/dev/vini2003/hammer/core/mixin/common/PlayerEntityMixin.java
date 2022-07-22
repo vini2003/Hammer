@@ -24,7 +24,10 @@
 
 package dev.vini2003.hammer.core.mixin.common;
 
+import dev.vini2003.hammer.core.api.common.component.TrackedDataComponent;
+import dev.vini2003.hammer.core.api.common.data.TrackedDataHandler;
 import dev.vini2003.hammer.core.impl.common.accessor.PlayerEntityAccessor;
+import dev.vini2003.hammer.core.registry.common.HCComponents;
 import dev.vini2003.hammer.core.registry.common.HCConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -56,116 +59,103 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEntityAccessor {
 	@Shadow
 	protected HungerManager hungerManager;
+	
 	@Shadow
 	@Final
 	private PlayerAbilities abilities;
 	
-	@Unique
-	private static final TrackedData<Boolean> HAMMER$FROZEN = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	private final TrackedDataHandler<Boolean> hammer$frozen = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "Frozen");
 	
-	private static final TrackedData<Float> HAMMER$ATTACK_DAMAGE_MULTIPLIER = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.FLOAT);
-	private static final TrackedData<Float> HAMMER$DAMAGE_MULTIPLIER = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.FLOAT);
-	private static final TrackedData<Float> HAMMER$FALL_DAMAGE_MULTIPLIER = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.FLOAT);
-	private static final TrackedData<Float> HAMMER$MOVEMENT_SPEED_MULTIPLIER = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.FLOAT);
-	private static final TrackedData<Float> HAMMER$JUMP_MULTIPLIER = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.FLOAT);
-	private static final TrackedData<Float> HAMMER$HEAL_MULTIPLIER = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.FLOAT);
-	private static final TrackedData<Float> HAMMER$EXHAUSTION_MULTIPLIER = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.FLOAT);
+	private final TrackedDataHandler<Float> hammer$attackDamageMultiplier = new TrackedDataHandler(() -> TrackedDataComponent.get(this), Float.class, 1.0F,"AttackDamageMultiplier");
+	private final TrackedDataHandler<Float> hammer$damageMultiplier = new TrackedDataHandler(() -> TrackedDataComponent.get(this), Float.class, 1.0F, "DamageMultiplier");
+	private final TrackedDataHandler<Float> hammer$fallDamageMultiplier = new TrackedDataHandler(() -> TrackedDataComponent.get(this), Float.class, 1.0F, "FallDamageMultiplier");
+	private final TrackedDataHandler<Float> hammer$movementSpeedMultiplier = new TrackedDataHandler(() -> TrackedDataComponent.get(this), Float.class, 1.0F, "MovementSpeedMultiplier");
+	private final TrackedDataHandler<Float> hammer$jumpMultiplier = new TrackedDataHandler(() -> TrackedDataComponent.get(this), Float.class, 1.0F, "JumpMultiplier");
+	private final TrackedDataHandler<Float> hammer$healMultiplier = new TrackedDataHandler(() -> TrackedDataComponent.get(this), Float.class, 1.0F, "HealMultiplier");
+	private final TrackedDataHandler<Float> hammer$exhaustionMultiplier = new TrackedDataHandler(() -> TrackedDataComponent.get(this), Float.class, 1.0F, "ExhaustionMultiplier");
 	
 	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
 	}
 	
-	@Inject(at = @At("RETURN"), method = "initDataTracker")
-	private void hammer$initDataTracker(CallbackInfo ci) {
-		dataTracker.startTracking(HAMMER$FROZEN, false);
-		
-		dataTracker.startTracking(HAMMER$ATTACK_DAMAGE_MULTIPLIER, 1.0F);
-		dataTracker.startTracking(HAMMER$DAMAGE_MULTIPLIER, 1.0F);
-		dataTracker.startTracking(HAMMER$FALL_DAMAGE_MULTIPLIER, 1.0F);
-		dataTracker.startTracking(HAMMER$MOVEMENT_SPEED_MULTIPLIER, 1.0F);
-		dataTracker.startTracking(HAMMER$JUMP_MULTIPLIER, 1.0F);
-		dataTracker.startTracking(HAMMER$HEAL_MULTIPLIER, 1.0F);
-		dataTracker.startTracking(HAMMER$EXHAUSTION_MULTIPLIER, 1.0F);
+	@Override
+	public boolean hammer$isFrozen() {
+		return hammer$frozen.get();
 	}
 	
 	@Override
 	public void hammer$setFrozen(boolean frozen) {
-		dataTracker.set(HAMMER$FROZEN, frozen);
-	}
-	
-	@Override
-	public boolean hammer$isFrozen() {
-		return dataTracker.get(HAMMER$FROZEN);
+		hammer$frozen.set(frozen);
 	}
 	
 	@Override
 	public float hammer$getAttackDamageMultiplier() {
-		return dataTracker.get(HAMMER$ATTACK_DAMAGE_MULTIPLIER);
+		return hammer$attackDamageMultiplier.get();
 	}
 	
 	@Override
 	public void hammer$setAttackDamageMultiplier(float attackDamageMultiplier) {
-		dataTracker.set(HAMMER$ATTACK_DAMAGE_MULTIPLIER, attackDamageMultiplier);
+		hammer$attackDamageMultiplier.set(attackDamageMultiplier);
 	}
 	
 	@Override
 	public float hammer$getDamageMultiplier() {
-		return dataTracker.get(HAMMER$DAMAGE_MULTIPLIER);
+		return hammer$damageMultiplier.get();
 	}
 	
 	@Override
 	public void hammer$setDamageMultiplier(float damageMultiplier) {
-		dataTracker.set(HAMMER$DAMAGE_MULTIPLIER, damageMultiplier);
+		hammer$damageMultiplier.set(damageMultiplier);
 	}
 	
 	@Override
 	public float hammer$getFallDamageMultiplier() {
-		return dataTracker.get(HAMMER$FALL_DAMAGE_MULTIPLIER);
+		return hammer$fallDamageMultiplier.get();
 	}
 	
 	@Override
 	public void hammer$setFallDamageMultiplier(float fallDamageMultiplier) {
-		dataTracker.set(HAMMER$FALL_DAMAGE_MULTIPLIER, fallDamageMultiplier);
+		hammer$fallDamageMultiplier.set(fallDamageMultiplier);
 	}
 	
 	@Override
 	public float hammer$getMovementSpeedMultiplier() {
-		return dataTracker.get(HAMMER$MOVEMENT_SPEED_MULTIPLIER);
+		return hammer$movementSpeedMultiplier.get();
 	}
 	
 	@Override
 	public void hammer$setMovementSpeedMultiplier(float movementSpeedMultiplier) {
-		dataTracker.set(HAMMER$MOVEMENT_SPEED_MULTIPLIER, movementSpeedMultiplier);
+		hammer$movementSpeedMultiplier.set(movementSpeedMultiplier);
 	}
 	
 	@Override
 	public float hammer$getJumpMultiplier() {
-		return dataTracker.get(HAMMER$JUMP_MULTIPLIER);
+		return hammer$jumpMultiplier.get();
 	}
 	
 	@Override
 	public void hammer$setJumpMultiplier(float jumpMultiplier) {
-		dataTracker.set(HAMMER$JUMP_MULTIPLIER, jumpMultiplier);
+		hammer$jumpMultiplier.set(jumpMultiplier);
 	}
 	
 	@Override
 	public float hammer$getHealMultiplier() {
-		return dataTracker.get(HAMMER$HEAL_MULTIPLIER);
+		return hammer$healMultiplier.get();
 	}
 	
 	@Override
 	public void hammer$setHealMultiplier(float healMultiplier) {
-		dataTracker.set(HAMMER$HEAL_MULTIPLIER, healMultiplier);
+		hammer$healMultiplier.set(healMultiplier);
 	}
 	
 	@Override
 	public float hammer$getExhaustionMultiplier() {
-		return dataTracker.get(HAMMER$EXHAUSTION_MULTIPLIER);
+		return hammer$exhaustionMultiplier.get();
 	}
 	
 	@Override
 	public void hammer$setExhaustionMultiplier(float exhaustionMultiplier) {
-		dataTracker.set(HAMMER$EXHAUSTION_MULTIPLIER, exhaustionMultiplier);
+		hammer$exhaustionMultiplier.set(exhaustionMultiplier);
 	}
 	
 	@Inject(at = @At("RETURN"), method = "isBlockBreakingRestricted", cancellable = true)
@@ -198,7 +188,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	}
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D", ordinal = 0), method = "attack")
-	private double hammer$attack_getAttributeValue(PlayerEntity instance, EntityAttribute entityAttribute) {
+	private double hammer$attack$getAttributeValue(PlayerEntity instance, EntityAttribute entityAttribute) {
 		return instance.getAttributeValue(entityAttribute) * hammer$getAttackDamageMultiplier();
 	}
 	

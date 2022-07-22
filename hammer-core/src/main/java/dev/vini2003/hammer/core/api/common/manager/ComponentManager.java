@@ -22,32 +22,39 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.core;
+package dev.vini2003.hammer.core.api.common.manager;
 
-import com.google.gson.Gson;
-import dev.vini2003.hammer.core.registry.common.HCEvents;
-import dev.vini2003.hammer.core.registry.common.HCItemGroups;
-import dev.vini2003.hammer.core.registry.common.HCNetworking;
-import dev.vini2003.hammer.core.registry.common.HCComponents;
-import net.fabricmc.api.ModInitializer;
+import dev.vini2003.hammer.core.impl.common.util.ComponentUtil;
+import dev.vini2003.hammer.core.api.common.component.base.Component;
+import dev.vini2003.hammer.core.api.common.component.base.key.ComponentKey;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.ApiStatus;
+import net.minecraft.world.World;
 
-@ApiStatus.Internal
-public class HC implements ModInitializer {
-	public static final String ID = "hammer";
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+public class ComponentManager {
+	private static final Map<Identifier, ComponentKey<?>> KEYS = new HashMap<>();
 	
-	public static final Gson GSON = new Gson();
-	
-	public static Identifier id(String path) {
-		return new Identifier(ID, path);
+	public static <C extends Component> ComponentKey<C> registerKey(Identifier id) {
+		var key = new ComponentKey<C>(id);
+		KEYS.put(id, key);
+		return key;
 	}
 	
-	@Override
-	public void onInitialize() {
-		HCEvents.init();
-		HCItemGroups.init();
-		HCNetworking.init();
-		HCComponents.init();
+	@Nullable
+	public static <C extends Component> ComponentKey<C> getKey(Identifier id) {
+		return (ComponentKey<C>) KEYS.get(id);
+	}
+	
+	public static <C extends Component> void registerForEntity(ComponentKey<C> key, Function<Entity, C> function) {
+		ComponentUtil.ENTITY_ATTACHERS.put(key, function);
+	}
+	
+	public static <C extends Component> void registerForWorld(ComponentKey<C> key, Function<World, C> function) {
+		ComponentUtil.WORLD_ATTACHERS.put(key, function);
 	}
 }

@@ -1,5 +1,5 @@
 dependencies {
-    // Hammer
+    // Hammer Core
     implementation project(path: ":hammer-core", configuration: "namedElements")
 
     // LuckPerms

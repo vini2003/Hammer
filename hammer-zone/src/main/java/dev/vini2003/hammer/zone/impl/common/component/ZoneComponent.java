@@ -24,7 +24,7 @@
 
 package dev.vini2003.hammer.zone.impl.common.component;
 
-import dev.vini2003.hammer.component.api.common.component.Component;
+import dev.vini2003.hammer.core.api.common.component.base.Component;
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;

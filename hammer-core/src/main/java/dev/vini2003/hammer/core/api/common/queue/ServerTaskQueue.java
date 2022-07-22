@@ -28,10 +28,13 @@ import net.minecraft.server.MinecraftServer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 
 public class ServerTaskQueue {
-	private static final ThreadLocal<Collection<Task>> TASKS = ThreadLocal.withInitial(() -> new ArrayList());
+	private static final ThreadLocal<Queue<Task>> TASKS = ThreadLocal.withInitial(() -> new ConcurrentLinkedQueue<>());
 	
 	public static void enqueue(Consumer<MinecraftServer> action, long delay) {
 		var actions = getTasks();

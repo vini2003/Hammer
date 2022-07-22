@@ -33,7 +33,6 @@ rootProject.name = "hammer"
 
 include "hammer-core"
 include "hammer-chat"
-include "hammer-component"
 include "hammer-border"
 include "hammer-emoji"
 include "hammer-permission"

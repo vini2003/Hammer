@@ -26,6 +26,9 @@ package dev.vini2003.hammer.chat.mixin.common;
 
 import dev.vini2003.hammer.chat.api.common.channel.Channel;
 import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
+import dev.vini2003.hammer.core.api.common.component.TrackedDataComponent;
+import dev.vini2003.hammer.core.api.common.data.TrackedDataHandler;
+import dev.vini2003.hammer.core.registry.common.HCComponents;
 import net.fabricmc.loader.impl.game.minecraft.launchwrapper.FabricServerTweaker;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -49,13 +52,16 @@ import java.util.List;
 public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEntityAccessor {
 	@Shadow
 	public double prevCapeX;
-	private static final TrackedData<Boolean> HAMMER$SHOW_CHAT = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-	private static final TrackedData<Boolean> HAMMER$SHOW_GLOBAL_CHAT = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-	private static final TrackedData<Boolean> HAMMER$SHOW_COMMAND_FEEDBACK = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-	private static final TrackedData<Boolean> HAMMER$SHOW_WARNINGS = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-	private static final TrackedData<Boolean> HAMMER$SHOW_DIRECT_MESSAGES = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-	private static final TrackedData<Boolean> HAMMER$FAST_CHATE_FADE = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-	private static final TrackedData<Boolean> HAMMER$MUTED = DataTracker.registerData(PlayerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	
+	private final TrackedDataHandler<Boolean> hammer$showChat = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true,"ShowChat");
+	private final TrackedDataHandler<Boolean> hammer$showGlobalChat = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "ShowGlobalChat");
+	private final TrackedDataHandler<Boolean> hammer$showCommandFeedback = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "ShowCommandFeedback");
+	private final TrackedDataHandler<Boolean> hammer$showWarnings = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "ShowWarnings");
+	private final TrackedDataHandler<Boolean> hammer$showDirectMessages = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "ShowDirectMessages");
+	
+	private final TrackedDataHandler<Boolean> hammer$fastChatFade = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "FastChatFade");
+	
+	private final TrackedDataHandler<Boolean> hammer$muted = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "Muted");
 	
 	private Channel hammer$selectedChannel = null;
 	
@@ -65,129 +71,74 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 		super(entityType, world);
 	}
 	
-	@Inject(at = @At("HEAD"), method = "initDataTracker")
-	private void hammer$initDataTracker(CallbackInfo ci) {
-		dataTracker.startTracking(HAMMER$SHOW_CHAT, true);
-		dataTracker.startTracking(HAMMER$SHOW_GLOBAL_CHAT, true);
-		dataTracker.startTracking(HAMMER$SHOW_COMMAND_FEEDBACK, false);
-		dataTracker.startTracking(HAMMER$SHOW_WARNINGS, false);
-		dataTracker.startTracking(HAMMER$SHOW_DIRECT_MESSAGES, false);
-		dataTracker.startTracking(HAMMER$FAST_CHATE_FADE, true);
-		
-		dataTracker.startTracking(HAMMER$MUTED, false);
-	}
-	
-	@Inject(at = @At("HEAD"), method = "writeCustomDataToNbt")
-	private void hammer$writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
-		nbt.putBoolean("Hammer$ShowChat", dataTracker.get(HAMMER$SHOW_CHAT));
-		nbt.putBoolean("Hammer$ShowGlobalChat", dataTracker.get(HAMMER$SHOW_GLOBAL_CHAT));
-		nbt.putBoolean("Hammer$ShowCommandFeedback", dataTracker.get(HAMMER$SHOW_COMMAND_FEEDBACK));
-		nbt.putBoolean("Hammer$ShowWarnings", dataTracker.get(HAMMER$SHOW_WARNINGS));
-		nbt.putBoolean("Hammer$ShowDirectMessages", dataTracker.get(HAMMER$SHOW_DIRECT_MESSAGES));
-		nbt.putBoolean("Hammer$FastChatFade", dataTracker.get(HAMMER$FAST_CHATE_FADE));
-		
-		nbt.putBoolean("Hammer$Muted", dataTracker.get(HAMMER$MUTED));
-	}
-	
-	@Inject(at = @At("HEAD"), method = "readCustomDataFromNbt")
-	private void hammer$readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
-		if (nbt.contains("Hammer$ShowChat")) {
-			dataTracker.set(HAMMER$SHOW_CHAT, nbt.getBoolean("Hammer$ShowChat"));
-		}
-		
-		if (nbt.contains("Hammer$ShowGlobalChat")) {
-			dataTracker.set(HAMMER$SHOW_GLOBAL_CHAT, nbt.getBoolean("Hammer$ShowGlobalChat"));
-		}
-		
-		if (nbt.contains("Hammer$ShowCommandFeedback")) {
-			dataTracker.set(HAMMER$SHOW_COMMAND_FEEDBACK, nbt.getBoolean("Hammer$ShowCommandFeedback"));
-		}
-		
-		if (nbt.contains("Hammer$ShowWarnings")) {
-			dataTracker.set(HAMMER$SHOW_WARNINGS, nbt.getBoolean("Hammer$ShowWarnings"));
-		}
-		
-		if (nbt.contains("Hammer$ShowDirectMessages")) {
-			dataTracker.set(HAMMER$SHOW_DIRECT_MESSAGES, nbt.getBoolean("Hammer$ShowDirectMessages"));
-		}
-		
-		if (nbt.contains("Hammer$FastChatFade")) {
-			dataTracker.set(HAMMER$FAST_CHATE_FADE, nbt.getBoolean("Hammer$FastChatFade"));
-		}
-		
-		if (nbt.contains("Hammer$Muted")) {
-			dataTracker.set(HAMMER$MUTED, nbt.getBoolean("Hammer$Muted"));
-		}
-	}
-	
 	@Override
 	public void hammer$setShowChat(boolean showChat) {
-		dataTracker.set(HAMMER$SHOW_CHAT, showChat);
+		hammer$showChat.set(showChat);
 	}
 	
 	@Override
 	public boolean hammer$shouldShowChat() {
-		return dataTracker.get(HAMMER$SHOW_CHAT);
+		return hammer$showChat.get();
 	}
 	
 	@Override
 	public void hammer$setShowGlobalChat(boolean showGlobalChat) {
-		dataTracker.set(HAMMER$SHOW_GLOBAL_CHAT, showGlobalChat);
+		hammer$showGlobalChat.set(showGlobalChat);
 	}
 	
 	@Override
 	public boolean hammer$shouldShowGlobalChat() {
-		return dataTracker.get(HAMMER$SHOW_GLOBAL_CHAT);
+		return hammer$showGlobalChat.get();
 	}
 	
 	@Override
 	public void hammer$setShowCommandFeedback(boolean showFeedback) {
-		dataTracker.set(HAMMER$SHOW_COMMAND_FEEDBACK, showFeedback);
+		hammer$showCommandFeedback.set(showFeedback);
 	}
 	
 	@Override
 	public boolean hammer$shouldShowCommandFeedback() {
-		return dataTracker.get(HAMMER$SHOW_COMMAND_FEEDBACK);
+		return hammer$showCommandFeedback.get();
 	}
 	
 	@Override
 	public void hammer$setShowWarnings(boolean showWarnings) {
-		dataTracker.set(HAMMER$SHOW_WARNINGS, showWarnings);
+		hammer$showWarnings.set(showWarnings);
 	}
 	
 	@Override
 	public boolean hammer$shouldShowWarnings() {
-		return dataTracker.get(HAMMER$SHOW_WARNINGS);
+		return hammer$showWarnings.get();
 	}
 	
 	@Override
 	public void hammer$setShowDirectMessages(boolean showDirectMessages) {
-		dataTracker.set(HAMMER$SHOW_DIRECT_MESSAGES, showDirectMessages);
+		hammer$showDirectMessages.set(showDirectMessages);
 	}
 	
 	@Override
 	public boolean hammer$shouldShowDirectMessages() {
-		return dataTracker.get(HAMMER$SHOW_DIRECT_MESSAGES);
+		return hammer$showDirectMessages.get();
 	}
 	
 	@Override
 	public void hammer$setMuted(boolean muted) {
-		dataTracker.set(HAMMER$MUTED, muted);
+		hammer$muted.set(muted);
 	}
 	
 	@Override
 	public boolean hammer$isMuted() {
-		return dataTracker.get(HAMMER$MUTED);
+		return hammer$muted.get();
 	}
 	
 	@Override
 	public void hammer$setFastChatFade(boolean fastChatFade) {
-		dataTracker.set(HAMMER$FAST_CHATE_FADE, fastChatFade);
+		hammer$fastChatFade.set(fastChatFade);
 	}
 	
 	@Override
 	public boolean hammer$hasFastChatFade() {
-		return dataTracker.get(HAMMER$FAST_CHATE_FADE);
+		return hammer$fastChatFade.get();
 	}
 	
 	@Override

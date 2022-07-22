@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.core;
 
 import dev.vini2003.hammer.core.registry.client.HCEvents;
+import dev.vini2003.hammer.core.registry.client.HCNetworking;
 import net.fabricmc.api.ClientModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -33,5 +34,6 @@ public class HCClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		HCEvents.init();
+		HCNetworking.init();
 	}
 }

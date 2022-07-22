@@ -22,32 +22,12 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.core;
+package dev.vini2003.hammer.core.api.common.component.base;
 
-import com.google.gson.Gson;
-import dev.vini2003.hammer.core.registry.common.HCEvents;
-import dev.vini2003.hammer.core.registry.common.HCItemGroups;
-import dev.vini2003.hammer.core.registry.common.HCNetworking;
-import dev.vini2003.hammer.core.registry.common.HCComponents;
-import net.fabricmc.api.ModInitializer;
-import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.ApiStatus;
+import net.minecraft.nbt.NbtCompound;
 
-@ApiStatus.Internal
-public class HC implements ModInitializer {
-	public static final String ID = "hammer";
+public interface Component {
+	void writeToNbt(NbtCompound nbt);
 	
-	public static final Gson GSON = new Gson();
-	
-	public static Identifier id(String path) {
-		return new Identifier(ID, path);
-	}
-	
-	@Override
-	public void onInitialize() {
-		HCEvents.init();
-		HCItemGroups.init();
-		HCNetworking.init();
-		HCComponents.init();
-	}
+	void readFromNbt(NbtCompound nbt);
 }

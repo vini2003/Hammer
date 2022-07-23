@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.core;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dev.vini2003.hammer.core.registry.common.HCEvents;
 import dev.vini2003.hammer.core.registry.common.HCItemGroups;
 import dev.vini2003.hammer.core.registry.common.HCNetworking;
@@ -37,7 +38,7 @@ import org.jetbrains.annotations.ApiStatus;
 public class HC implements ModInitializer {
 	public static final String ID = "hammer";
 	
-	public static final Gson GSON = new Gson();
+	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	
 	public static Identifier id(String path) {
 		return new Identifier(ID, path);

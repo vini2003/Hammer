@@ -40,8 +40,6 @@ public class HP implements ModInitializer {
 		return LuckPermsProvider.get();
 	}
 	
-	public static final Role NEIN = new Role("nein", "N", 1, 0xFF0000);
-	
 	@Override
 	public void onInitialize() {
 		HPEvents.init();

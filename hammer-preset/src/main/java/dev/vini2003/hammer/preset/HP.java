@@ -24,14 +24,24 @@
 
 package dev.vini2003.hammer.preset;
 
+import dev.vini2003.hammer.config.api.common.config.Config;
+import dev.vini2003.hammer.preset.registry.common.HPChannels;
+import dev.vini2003.hammer.preset.registry.common.HPConfig;
 import dev.vini2003.hammer.preset.registry.common.HPEvents;
+import dev.vini2003.hammer.preset.registry.common.HPRoles;
 import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
 public class HP implements ModInitializer {
+	public static final String ID = "hammer-preset";
+	
+	public static final HPConfig CONFIG = Config.load(ID, HPConfig.class);
+	
 	@Override
 	public void onInitialize() {
 		HPEvents.init();
+		HPRoles.init();
+		HPChannels.init();
 	}
 }

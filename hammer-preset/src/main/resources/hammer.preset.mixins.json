@@ -2,10 +2,12 @@
   "required": true,
   "minVersion": "0.8",
   "package": "dev.vini2003.hammer.preset.mixin",
+  "plugin": "dev.vini2003.hammer.preset.impl.mixin.HPMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
   ],
   "client": [
+    "client.ToastManagerMixin",
     "client.PlayerListHudMixin",
     "client.AddServerScreenMixin",
     "client.MinecraftClientMixin",

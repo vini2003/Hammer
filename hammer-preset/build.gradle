@@ -9,6 +9,10 @@ dependencies {
 	// Hammer Permission
 	implementation project(path: ":hammer-permission", configuration: "namedElements")
 	include project(path: ":hammer-permission", configuration: "namedElements")
+
+	// Hammer Config
+	implementation project(path: ":hammer-config", configuration: "namedElements")
+	include project(path: ":hammer-config", configuration: "namedElements")
 }
 
 loom {

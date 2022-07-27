@@ -109,7 +109,7 @@ public class PositionArgumentType implements ArgumentType<PositionArgumentType> 
 	
 	@Override
 	public PositionArgumentType parse(StringReader reader) throws CommandSyntaxException {
-		var cursor = reader.getCursor();
+		var prevCursor = reader.getCursor();
 		
 		var b = new boolean[2];
 		
@@ -122,10 +122,10 @@ public class PositionArgumentType implements ArgumentType<PositionArgumentType> 
 		
 		reader.skip();
 		
-		var xString = reader.getString().substring(cursor, reader.getCursor());
+		var xString = reader.getString().substring(prevCursor, reader.getCursor());
 		
 		if (xString.startsWith("~")) {
-			cursor += 1;
+			prevCursor += 1;
 			
 			xString = xString.substring(1);
 			
@@ -135,10 +135,10 @@ public class PositionArgumentType implements ArgumentType<PositionArgumentType> 
 			
 			relativeX = true;
 		} else {
-			x = Float.parseFloat(reader.getString().substring(cursor, reader.getCursor()));
+			x = Float.parseFloat(reader.getString().substring(prevCursor, reader.getCursor()));
 		}
 		
-		cursor = reader.getCursor();
+		prevCursor = reader.getCursor();
 		
 		if (!reader.canRead()) {
 			throw INCOMPLETE_EXCEPTION.createWithContext(reader);
@@ -153,11 +153,9 @@ public class PositionArgumentType implements ArgumentType<PositionArgumentType> 
 		
 		reader.skip();
 		
-		var yString = reader.getString().substring(cursor, reader.getCursor());
+		var yString = reader.getString().substring(prevCursor, reader.getCursor());
 		
 		if (yString.startsWith("~")) {
-			cursor += 1;
-			
 			yString = yString.substring(1);
 			
 			if (!yString.isEmpty() && yString.charAt(0) != ' ' && yString.charAt(0) != '.' && yString.charAt(0) != ',' && (yString.charAt(0) >= '0' && yString.charAt(0) <= '9')) {
@@ -166,10 +164,10 @@ public class PositionArgumentType implements ArgumentType<PositionArgumentType> 
 			
 			relativeY = true;
 		} else {
-			y = Float.parseFloat(reader.getString().substring(cursor, reader.getCursor()));
+			y = Float.parseFloat(reader.getString().substring(prevCursor, reader.getCursor()));
 		}
 		
-		cursor = reader.getCursor();
+		prevCursor = reader.getCursor();
 		
 		if (!reader.canRead()) {
 			throw INCOMPLETE_EXCEPTION.createWithContext(reader);
@@ -182,11 +180,9 @@ public class PositionArgumentType implements ArgumentType<PositionArgumentType> 
 			reader.skip();
 		}
 		
-		var zString = reader.getString().substring(cursor, reader.getCursor());
+		var zString = reader.getString().substring(prevCursor, reader.getCursor());
 		
 		if (zString.startsWith("~")) {
-			cursor += 1;
-			
 			zString = zString.substring(1);
 			
 			if (!zString.isEmpty() && zString.charAt(0) != ' ' && zString.charAt(0) != '.' && zString.charAt(0) != ',' && (zString.charAt(0) >= '0' && zString.charAt(0) <= '9')) {
@@ -195,15 +191,15 @@ public class PositionArgumentType implements ArgumentType<PositionArgumentType> 
 			
 			relativeZ = true;
 		} else {
-			z = Float.parseFloat(reader.getString().substring(cursor, reader.getCursor()));
+			z = Float.parseFloat(reader.getString().substring(prevCursor, reader.getCursor()));
 		}
 		
-		cursor = reader.getCursor();
+		prevCursor = reader.getCursor();
 		
 		try {
 			return new PositionArgumentType(x, y, z, relativeX, relativeY, relativeZ);
 		} catch (NumberFormatException exception) {
-			reader.setCursor(cursor);
+			reader.setCursor(prevCursor);
 			
 			throw INVALID_POSITION_EXCEPTION.createWithContext(reader);
 		}
@@ -211,14 +207,9 @@ public class PositionArgumentType implements ArgumentType<PositionArgumentType> 
 	
 	@Override
 	public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-		if (context.getSource() instanceof CommandSource) {
-			var remaining = builder.getRemaining();
-			var suggestions = !remaining.isEmpty() && remaining.charAt(0) == '^' ? Collections.singleton(CommandSource.RelativePosition.ZERO_LOCAL) : ((CommandSource) context.getSource()).getPositionSuggestions();
-			
-			return CommandSource.suggestPositions(remaining, suggestions, builder, CommandManager.getCommandValidator(this::parse));
-		}
+		builder.suggest("~ ~ ~");
 		
-		return Suggestions.empty();
+		return builder.buildFuture();
 	}
 	
 	@Override

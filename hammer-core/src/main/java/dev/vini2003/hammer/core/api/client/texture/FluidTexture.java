@@ -70,7 +70,7 @@ public class FluidTexture implements Texture {
 				matrices,
 				provider,
 				sprite.getId(),
-				x, y, 0.0F,
+				scaledX, scaledY, 0.0F,
 				width, height,
 				sprite.getMinU(), sprite.getMinV(),
 				sprite.getMaxU(), sprite.getMaxV(),

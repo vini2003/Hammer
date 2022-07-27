@@ -2,9 +2,21 @@ loom {
     accessWidenerPath = file("src/main/resources/hammer.gui.accesswidener")
 }
 
+repositories {
+	// LadySnake
+	maven {
+		name = "Ladysnake"
+		url = "https://ladysnake.jfrog.io/artifactory/mods"
+	}
+}
+
 dependencies {
     // Hammer
     implementation project(path: ":hammer-core", configuration: "namedElements")
+
+	// Satin
+	modApi("io.github.ladysnake:satin:${satinVersion}")
+	include("io.github.ladysnake:satin:${satinVersion}")
 }
 
 jar {

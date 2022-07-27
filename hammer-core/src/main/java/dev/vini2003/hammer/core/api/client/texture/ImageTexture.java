@@ -53,7 +53,7 @@ public class ImageTexture implements Texture {
 				matrices,
 				provider,
 				textureId,
-				x, y, 0.0F,
+				scaledX, scaledY, 0.0F,
 				width, height,
 				0.0F, 0.0F,
 				1.0F, 1.0F,

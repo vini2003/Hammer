@@ -138,7 +138,7 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	 *
 	 * @param type the type.
 	 *
-	 * @return the result.
+	 * @return the valid.
 	 */
 	public boolean shouldSync(EventType type) {
 		return false;
@@ -228,7 +228,7 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	 * @param x the point's X component.
 	 * @param y the point's Y component.
 	 *
-	 * @return the result.
+	 * @return the valid.
 	 */
 	public boolean isPointWithin(float x, float y) {
 		return x > getX() && x < getX() + getWidth() && y > getY() && y < getY() + getHeight();

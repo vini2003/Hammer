@@ -57,6 +57,8 @@ import java.util.function.IntFunction;
  * </ul>
  */
 public class Position implements PositionHolder {
+	public static final Position ZERO = new Position(0.0F, 0.0F, 0.0F);
+	
 	private final float x;
 	private final float y;
 	private final float z;

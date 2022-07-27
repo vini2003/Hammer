@@ -48,6 +48,8 @@ import java.util.Objects;
  * </ul>
  */
 public class Size implements SizeHolder {
+	public static final Size ZERO = new Size(0.0F, 0.0F, 0.0F);
+	
 	private final float width;
 	private final float height;
 	private final float length;

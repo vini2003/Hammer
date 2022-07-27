@@ -24,9 +24,12 @@
 
 package dev.vini2003.hammer.gui.api.common.widget.arrow;
 
+import com.google.gson.JsonObject;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget;
 
 public class ArrowWidget extends ImageBarWidget {
@@ -60,6 +63,12 @@ public class ArrowWidget extends ImageBarWidget {
 		
 		foregroundTexture = () -> STANDARD_VERTICAL_FOREGROUND_TEXTURE;
 		backgroundTexture = () -> STANDARD_VERTICAL_BACKGROUND_TEXTURE;
+	}
+	
+	public static ArrowWidget deserialize(Position position, Size size, JsonObject attributes) {
+		
+		
+		return new ArrowWidget();
 	}
 }
 

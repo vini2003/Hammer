@@ -33,12 +33,16 @@ import dev.vini2003.hammer.core.registry.common.HCComponents;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ApiStatus.Internal
 public class HC implements ModInitializer {
 	public static final String ID = "hammer";
 	
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+	
+	public static final Logger LOGGER = LoggerFactory.getLogger("Hammer");
 	
 	public static Identifier id(String path) {
 		return new Identifier(ID, path);

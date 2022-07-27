@@ -29,6 +29,8 @@ import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.client.util.LayerUtil;
+import dev.vini2003.hammer.core.api.common.math.padding.Padding;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -36,13 +38,9 @@ import net.minecraft.util.Identifier;
 public class PartitionedTexture implements Texture {
 	private final Identifier textureId;
 	
-	private final float textureWidth;
-	private final float textureHeight;
+	private final Size textureSize;
 	
-	private final float leftPadding;
-	private final float rightPadding;
-	private final float topPadding;
-	private final float bottomPadding;
+	private final Padding texturePadding;
 	
 	private final Part topLeft;
 	private final Part topRight;
@@ -54,16 +52,36 @@ public class PartitionedTexture implements Texture {
 	private final Part middleBottom;
 	private final Part center;
 	
+	@Deprecated
 	public PartitionedTexture(Identifier textureId, float textureWidth, float textureHeight, float leftPadding, float rightPadding, float topPadding, float bottomPadding) {
 		this.textureId = textureId;
 		
-		this.textureWidth = textureWidth;
-		this.textureHeight = textureHeight;
+		this.textureSize = new Size(textureWidth, textureHeight);
 		
-		this.leftPadding = leftPadding;
-		this.rightPadding = rightPadding;
-		this.topPadding = topPadding;
-		this.bottomPadding = bottomPadding;
+		this.texturePadding = new Padding(leftPadding, rightPadding, topPadding, bottomPadding);
+		
+		this.topLeft = new Part(0.0F, 0.0F, leftPadding, topPadding);
+		this.topRight = new Part(1.0F - rightPadding, 0.0F, 1.0F, topPadding);
+		this.bottomLeft = new Part(0.0F, 1.0F - bottomPadding, leftPadding, 1.0F);
+		this.bottomRight = new Part(1.0F - rightPadding, 1.0F - bottomPadding, 1.0F, 1.0F);
+		this.middleLeft = new Part(0.0F, topPadding, leftPadding, 1.0F - bottomPadding);
+		this.middleRight = new Part(1.0F - rightPadding, topPadding, 1.0F, 1.0F - bottomPadding);
+		this.middleTop = new Part(leftPadding, 0.0F, 1.0F - rightPadding, topPadding);
+		this.middleBottom = new Part(leftPadding, 1.0F - bottomPadding, 1.0F - rightPadding, 1.0F);
+		this.center = new Part(leftPadding, topPadding, 1.0F - rightPadding, 1.0F - bottomPadding);
+	}
+	
+	public PartitionedTexture(Identifier textureId, Size textureSize, Padding texturePadding) {
+		this.textureId = textureId;
+		
+		this.textureSize = textureSize;
+		
+		this.texturePadding = texturePadding;
+		
+		var leftPadding = texturePadding.getLeft();
+		var rightPadding = texturePadding.getRight();
+		var topPadding = texturePadding.getTop();
+		var bottomPadding = texturePadding.getBottom();
 		
 		this.topLeft = new Part(0.0F, 0.0F, leftPadding, topPadding);
 		this.topRight = new Part(1.0F - rightPadding, 0.0F, 1.0F, topPadding);
@@ -78,8 +96,8 @@ public class PartitionedTexture implements Texture {
 	
 	@Override
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float x, float y, float width, float height) {
-		var scaleWidth = width / textureWidth;
-		var scaleHeight = height / textureHeight;
+		var scaleWidth = width / textureSize.getWidth();
+		var scaleHeight = height / textureSize.getHeight();
 		
 		var topLeftWidth = (width * (topLeft.uE - topLeft.uS) / scaleWidth);
 		var topLeftHeight = (height * (topLeft.vE - topLeft.vS) / scaleHeight);

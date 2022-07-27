@@ -57,9 +57,9 @@ public class ZoneReloadListener implements SimpleSynchronousResourceReloadListen
 				
 				var resourceInputStream = resource.getInputStream();
 				
-				var resourceStrng = IOUtils.toString(resourceInputStream, "UTF-8");
+				var resourceString = IOUtils.toString(resourceInputStream, "UTF-8");
 				
-				var zone = HC.GSON.fromJson(resourceStrng, Zone.class);
+				var zone = HC.GSON.fromJson(resourceString, Zone.class);
 				
 				ServerTaskQueue.enqueue((server) -> {
 					var zoneWorld = server.getWorld(zone.getWorld());

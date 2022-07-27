@@ -12,6 +12,7 @@ import dev.vini2003.hammer.core.api.client.texture.type.TextureType;
 import dev.vini2003.hammer.core.api.common.math.padding.Padding;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.gui.api.client.screen.SerializableScreen;
 import dev.vini2003.hammer.gui.api.client.screen.base.BaseScreen;
 import dev.vini2003.hammer.gui.api.common.registry.ValueRegistry;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
@@ -621,7 +622,7 @@ public class ScreenSerializer {
 		return (ParseResult<T>) ParseResult.valid(widget);
 	}
 	
-	private <T extends BaseScreen> T deserialize(Identifier screenId) {
+	private SerializableScreen deserialize(Identifier screenId) {
 		Resource resource = null;
 		
 		try {
@@ -640,6 +641,8 @@ public class ScreenSerializer {
 				for (var widgetElement : widgetsArray) {
 					var widgetObject = widgetElement.getAsJsonObject();
 
+					var widgetId = getIdentifier(widgetObject.get(ID)).getOrThrow();
+					
 					var widgetTypeId = getIdentifier(widgetObject.get(TYPE)).getOrThrow();
 					var widgetType = WidgetType.getById(widgetTypeId);
 					
@@ -692,19 +695,13 @@ public class ScreenSerializer {
 					if (widgetParent instanceof WidgetCollection collection) {
 						collection.add(widget);
 					}
+					
+					context.set(widgetId, widget);
 				}
+				
+				return new SerializableScreen(new LiteralText(title), context);
 			}
-		} catch (FileNotFoundException e) {
-			HC.LOGGER.error("Resource for screen '" + screenId + "' not found!");
-		} catch (IOException e) {
-			HC.LOGGER.error("Resource for screen '" + screenId + "' not readable and/or corrupt!");
-		} catch (ParseException e) {
-		
-		} catch (IllegalStateException e) {
-		
-		} catch (NullPointerException e) {
-		
-		}
+		} catch (Exception ignored) {}
 		
 		return null;
 	}

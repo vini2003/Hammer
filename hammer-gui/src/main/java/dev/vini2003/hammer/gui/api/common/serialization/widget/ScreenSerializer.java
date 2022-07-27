@@ -648,21 +648,9 @@ public class ScreenSerializer {
 					var widgetParentId = getIdentifier(widgetObject.get(PARENT)).getOrThrow();
 					var widgetParent = context.get(widgetParentId);
 					
-					var widgetPositionElement = widgetObject.get(POSITION);
-					var widgetPositionObject = widgetPositionElement.getAsJsonObject();
+					var widgetPosition = getPosition(widgetObject.get(POSITION), widgetParent::getPosition).getOrThrow();
 					
-					var widgetPositionParentId = getIdentifier(widgetPositionObject.get(PARENT)).getOrThrow();
-					var widgetPositionParent = context.get(widgetPositionParentId);
-					
-					var widgetPosition = getPosition(widgetObject.get(POSITION), widgetPositionParent::getPosition).getOrThrow();
-
-					var widgetSizeElement = widgetObject.get(SIZE);
-					var widgetSizeObject = widgetSizeElement.getAsJsonObject();
-					
-					var widgetSizeParentId = getIdentifier(widgetSizeObject.get(PARENT)).getOrThrow();
-					var widgetSizeParent = context.get(widgetSizeParentId);
-					
-					var widgetSize = getSize(widgetObject.get(SIZE), widgetSizeParent::getSize).getOrThrow();
+					var widgetSize = getSize(widgetObject.get(SIZE), widgetParent::getSize).getOrThrow();
 					
 					var widgetAttributes = new JsonObject();
 					

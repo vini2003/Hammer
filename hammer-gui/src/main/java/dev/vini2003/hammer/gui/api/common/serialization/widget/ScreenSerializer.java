@@ -99,7 +99,6 @@ public class ScreenSerializer {
 	private static final String ACTIVE_MIDDLE_TEXTURE = "active_middle_texture";
 	private static final String ACTIVE_RIGHT_TEXTURE = "active_right_texture";
 	
-	private static final String BACKGROUND_SPRITE = "background_sprite";
 	private static final String BACKGROUND_TEXTURE = "background_texture";
 	
 	private static final String COLOR = "color";
@@ -115,8 +114,6 @@ public class ScreenSerializer {
 	private static final String FOCUSED_SCROLLER_TEXTURE = "focused_scroller_texture";
 	
 	private static final String FOCUSED_TEXTURE = "focused_texture";
-	
-	private static final String FOREGROUND_SPRITE = "foreground_sprite";
 	
 	private static final String FOREGROUND_TEXTURE = "foreground_texture";
 	

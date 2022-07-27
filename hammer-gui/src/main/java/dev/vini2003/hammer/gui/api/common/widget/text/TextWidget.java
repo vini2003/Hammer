@@ -24,20 +24,24 @@
 
 package dev.vini2003.hammer.gui.api.common.widget.text;
 
+import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
+import dev.vini2003.hammer.gui.api.common.widget.provider.ColorProvider;
+import dev.vini2003.hammer.gui.api.common.widget.provider.ShadowProvider;
+import dev.vini2003.hammer.gui.api.common.widget.provider.TextProvider;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 import java.util.function.Supplier;
 
-public class TextWidget extends Widget {
+public class TextWidget extends Widget implements TextProvider, ShadowProvider, ColorProvider {
 	protected Supplier<Text> text = () -> null;
 	
 	protected boolean shadow = false;
 	
-	protected int color = 0x404040;
+	protected Color color = new Color(0x404040FFL);
 	
 	@Override
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
@@ -45,26 +49,39 @@ public class TextWidget extends Widget {
 		
 		if (text.get() != null) {
 			if (shadow) {
-				textRenderer.drawWithShadow(matrices, text.get(), getX(), getY(), color);
+				textRenderer.drawWithShadow(matrices, text.get(), getX(), getY(), color.toRgb());
 			} else {
-				textRenderer.draw(matrices, text.get(), getX(), getY(), color);
+				textRenderer.draw(matrices, text.get(), getX(), getY(), color.toRgb());
 			}
 		}
 	}
 	
-	public void setText(Supplier<Text> text) {
-		this.text = text;
+	@Override
+	public boolean hasShadow() {
+		return false;
 	}
 	
-	public void setText(Text text) {
-		setText(() -> text);
-	}
-	
+	@Override
 	public void setShadow(boolean shadow) {
 		this.shadow = shadow;
 	}
 	
-	public void setColor(int color) {
+	public Color getColor() {
+		return color;
+	}
+	
+	@Override
+	public void setColor(Color color) {
 		this.color = color;
+	}
+	
+	@Override
+	public Supplier<Text> getText() {
+		return text;
+	}
+	
+	@Override
+	public void setText(Supplier<Text> text) {
+		this.text = text;
 	}
 }

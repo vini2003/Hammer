@@ -29,13 +29,14 @@ import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
+import dev.vini2003.hammer.gui.api.common.widget.provider.ItemStackProvider;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
 import java.util.function.Supplier;
 
-public class ItemStackWidget extends Widget {
+public class ItemStackWidget extends Widget implements ItemStackProvider {
 	protected Supplier<ItemStack> stack = () -> ItemStack.EMPTY;
 	
 	public ItemStackWidget() {
@@ -61,11 +62,13 @@ public class ItemStackWidget extends Widget {
 		itemRenderer.renderInGui(stack.get(), (int) getX(), (int) getY());
 	}
 	
-	public void setStack(Supplier<ItemStack> stackSupplier) {
-		this.stack = stackSupplier;
+	@Override
+	public Supplier<ItemStack> getItemStack() {
+		return stack;
 	}
 	
-	public void setStack(ItemStack stack) {
-		setStack(() -> stack);
+	@Override
+	public void setItemStack(Supplier<ItemStack> itemStack) {
+		this.stack = itemStack;
 	}
 }

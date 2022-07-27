@@ -30,6 +30,8 @@ import dev.vini2003.hammer.core.api.client.texture.TiledFluidTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.common.util.FluidTextUtil;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
+import dev.vini2003.hammer.gui.api.common.widget.provider.SmoothProvider;
+import dev.vini2003.hammer.gui.api.common.widget.provider.TiledProvider;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.minecraft.client.gui.screen.Screen;
@@ -39,13 +41,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
-public class FluidBarWidget extends BarWidget {
-	protected DoubleSupplier maximumSupplier = () -> 1.0D;
-	protected DoubleSupplier currentSupplier = () -> 0.5D;
-	
-	protected Supplier<Texture> foregroundTexture = () -> STANDARD_FOREGROUND_TEXTURE;
-	protected Supplier<Texture> backgroundTexture = () -> STANDARD_BACKGROUND_TEXTURE;
-	
+public class FluidBarWidget extends BarWidget implements SmoothProvider, TiledProvider {
 	protected Supplier<StorageView<FluidVariant>> storageView = () -> null;
 	
 	protected boolean smooth = false;
@@ -64,23 +60,23 @@ public class FluidBarWidget extends BarWidget {
 					return FluidTextUtil.getShortenedStorageTooltips(storageView);
 				}
 			} else {
-				return ImmutableList.of(TextUtil.getPercentage(getCurrent(), getMaximum()));
+				return ImmutableList.of(TextUtil.getPercentage(getCurrent().getAsDouble(), getMaximum().getAsDouble()));
 			}
 		});
 	}
 	
 	@Override
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
-		var foregroundWidth = (getWidth() / getMaximum() * getCurrent());
-		var foregroundHeight = (getHeight() / getMaximum() * getCurrent());
+		var foregroundWidth = (getWidth() / getMaximum().getAsDouble() * getCurrent().getAsDouble());
+		var foregroundHeight = (getHeight() / getMaximum().getAsDouble() * getCurrent().getAsDouble());
 		
 		if (!smooth) {
 			foregroundWidth = (int) foregroundWidth;
 			foregroundHeight = (int) foregroundHeight;
 		}
 		
-		var foregroundTexture = getForegroundTexture();
-		var backgroundTexture = getBackgroundTexture();
+		var foregroundTexture = getForegroundTexture().get();
+		var backgroundTexture = getBackgroundTexture().get();
 		
 		if (vertical) {
 			backgroundTexture.draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
@@ -103,32 +99,12 @@ public class FluidBarWidget extends BarWidget {
 		}
 	}
 	
-	@Override
-	public double getMaximum() {
-		return maximumSupplier.getAsDouble();
-	}
-	
-	@Override
-	public double getCurrent() {
-		return currentSupplier.getAsDouble();
-	}
-	
-	@Override
-	public Texture getForegroundTexture() {
-		return foregroundTexture.get();
-	}
-	
-	@Override
-	public Texture getBackgroundTexture() {
-		return backgroundTexture.get();
-	}
-	
 	public void setStorageView(Supplier<StorageView<FluidVariant>> storageViewSupplier) {
 		if (storageViewSupplier.get() != null) {
 			this.storageView = storageViewSupplier;
 			
-			this.maximumSupplier = () -> (float) storageViewSupplier.get().getCapacity();
-			this.currentSupplier = () -> (float) storageViewSupplier.get().getAmount();
+			this.maximum = () -> (float) storageViewSupplier.get().getCapacity();
+			this.current = () -> (float) storageViewSupplier.get().getAmount();
 			
 			this.foregroundTexture = () -> new TiledFluidTexture(storageViewSupplier.get().getResource());
 			this.backgroundTexture = () -> STANDARD_BACKGROUND_TEXTURE;
@@ -139,50 +115,22 @@ public class FluidBarWidget extends BarWidget {
 		setStorageView(() -> storageView);
 	}
 	
-	public void setMaximum(DoubleSupplier maximumSupplier) {
-		this.maximumSupplier = maximumSupplier;
-	}
-	
-	public void setMaximum(double maximum) {
-		setMaximum(() -> maximum);
-	}
-	
-	public void setCurrent(DoubleSupplier currentSupplier) {
-		this.currentSupplier = currentSupplier;
-	}
-	
-	public void setCurrent(double current) {
-		setCurrent(() -> current);
-	}
-	
-	public void setForegroundTexture(Supplier<Texture> foregroundTextureSupplier) {
-		this.foregroundTexture = foregroundTextureSupplier;
-	}
-	
-	public void setForegroundTexture(Texture foregroundTexture) {
-		setForegroundTexture(() -> foregroundTexture);
-	}
-	
-	public void setBackgroundTexture(Supplier<Texture> backgroundTextureSupplier) {
-		this.backgroundTexture = backgroundTextureSupplier;
-	}
-	
-	public void setBackgroundTexture(Texture backgroundTexture) {
-		setBackgroundTexture(() -> backgroundTexture);
-	}
-	
+	@Override
 	public boolean isSmooth() {
 		return smooth;
 	}
 	
+	@Override
 	public void setSmooth(boolean smooth) {
 		this.smooth = smooth;
 	}
 	
+	@Override
 	public boolean isTiled() {
 		return tiled;
 	}
 	
+	@Override
 	public void setTiled(boolean tiled) {
 		this.tiled = tiled;
 	}

@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import dev.vini2003.hammer.core.HC;
+import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.texture.*;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.texture.type.TextureType;
@@ -13,10 +14,26 @@ import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.client.screen.base.BaseScreen;
 import dev.vini2003.hammer.gui.api.common.registry.ValueRegistry;
+import dev.vini2003.hammer.gui.api.common.widget.Widget;
+import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
+import dev.vini2003.hammer.gui.api.common.widget.bar.FluidBarWidget;
+import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget;
+import dev.vini2003.hammer.gui.api.common.widget.button.ButtonWidget;
+import dev.vini2003.hammer.gui.api.common.widget.item.ItemStackWidget;
+import dev.vini2003.hammer.gui.api.common.widget.item.ItemWidget;
+import dev.vini2003.hammer.gui.api.common.widget.list.ListWidget;
+import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
+import dev.vini2003.hammer.gui.api.common.widget.provider.*;
 import dev.vini2003.hammer.gui.api.common.widget.side.WidgetSide;
+import dev.vini2003.hammer.gui.api.common.widget.tab.TabWidget;
+import dev.vini2003.hammer.gui.api.common.widget.text.TextAreaWidget;
+import dev.vini2003.hammer.gui.api.common.widget.text.TextFieldWidget;
+import dev.vini2003.hammer.gui.api.common.widget.text.TextWidget;
 import dev.vini2003.hammer.gui.api.common.widget.type.WidgetType;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.text.LiteralText;
@@ -32,7 +49,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.function.Supplier;
 
-class ScreenSerializer {
+public class ScreenSerializer {
 	private static final String PX = "px";
 	private static final String PCT = "%";
 	
@@ -65,7 +82,6 @@ class ScreenSerializer {
 	
 	private static final String VARIANT = "variant";
 	private static final String SPRITE = "sprite";
-	private static final String COLOR = "color";
 	
 	private static final String ID = "id";
 	
@@ -78,14 +94,68 @@ class ScreenSerializer {
 	private static final String TOP = "top";
 	private static final String BOTTOM = "bottom";
 	
-	private static final String HORIZONTAL = "horizontal";
-	private static final String VERTICAL = "vertical";
+	private static final String ACTIVE_LEFT_TEXTURE = "active_left_texture";
+	private static final String ACTIVE_MIDDLE_TEXTURE = "active_middle_texture";
+	private static final String ACTIVE_RIGHT_TEXTURE = "active_right_texture";
 	
-	private static final String SMOOTH = "smooth";
-	private static final String SCISSOR = "scissor";
+	private static final String BACKGROUND_SPRITE = "background_sprite";
+	private static final String BACKGROUND_TEXTURE = "background_texture";
+	
+	private static final String COLOR = "color";
+	
+	private static final String CURRENT = "current";
+	
+	private static final String DISABLED = "disabled";
+	
+	private static final String DISABLED_TEXTURE = "disabled_texture";
+	
+	private static final String ENABLED_TEXTURE = "enabled_texture";
+	
+	private static final String FOCUSED_SCROLLER_TEXTURE = "focused_scroller_texture";
+	
+	private static final String FOCUSED_TEXTURE = "focused_texture";
+	
+	private static final String FOREGROUND_SPRITE = "foreground_sprite";
 	
 	private static final String FOREGROUND_TEXTURE = "foreground_texture";
-	private static final String BACKGROUND_TEXTURE = "background_texture";
+	
+	private static final String HORIZONTAL = "horizontal";
+	
+	private static final String INACTIVE_LEFT_TEXTURE = "inactive_left_texture";
+	private static final String INACTIVE_MIDDLE_TEXTURE = "inactive_middle_texture";
+	private static final String INACTIVE_RIGHT_TEXTURE = "inactive_right_texture";
+	
+	private static final String INVERT = "invert";
+	
+	private static final String ITEM = "item";
+	
+	private static final String ITEM_STACK = "item_stack";
+	
+	private static final String LABEL = "label";
+	
+	private static final String MAXIMUM = "maximum";
+	
+	private static final String SCISSOR = "scissor";
+	
+	private static final String SCROLLBAR_TEXTURE = "scrollbar_texture";
+	private static final String SCROLLER_TEXTURE = "scroller_texture";
+	
+	private static final String SHADOW = "shadow";
+	
+	private static final String SMOOTH = "smooth";
+	
+	private static final String STEP_HEIGHT = "step_height";
+	private static final String STEP_WIDTH = "step_width";
+	
+	private static final String TEXT = "text";
+	
+	private static final String TEXTURE = "texture";
+	
+	private static final String TILED = "tiled";
+	
+	private static final String VERTICAL = "vertical";
+	
+	private static final String ATTRIBUTES = "attributes";
 	
 	private final SerializationContext context = new SerializationContext();
 	
@@ -95,9 +165,9 @@ class ScreenSerializer {
 		this.resourceManager = resourceManager;
 	}
 	
-	class ParseException extends Exception {}
+	public static class ParseException extends Exception {}
 	
-	record ParseResult<T>(
+	public record ParseResult<T>(
 			@Nullable
 			T value,
 			boolean valid
@@ -112,9 +182,17 @@ class ScreenSerializer {
 		
 		public T getOrThrow() throws ParseException {
 			if (value == null) {
-				throw new Exception();
+				throw new ParseException();
 			} else {
 				return value;
+			}
+		}
+		
+		public T getOrDefault(T value) {
+			if (this.value == null) {
+				return value;
+			} else {
+				return this.value;
 			}
 		}
 	}
@@ -180,73 +258,105 @@ class ScreenSerializer {
 	}
 	
 	public static ParseResult<Integer> getInteger(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
 		return ParseResult.valid(valuePrimitive.getAsNumber().intValue());
 	}
 	
 	public static ParseResult<Byte> getByte(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
 		return ParseResult.valid(valuePrimitive.getAsNumber().byteValue());
 	}
 	
 	public static ParseResult<Short> getShort(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
 		return ParseResult.valid(valuePrimitive.getAsNumber().shortValue());
 	}
 	
 	public static ParseResult<Long> getLong(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
 		return ParseResult.valid(valuePrimitive.getAsNumber().longValue());
 	}
 	
 	public static ParseResult<Float> getFloat(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
 		return ParseResult.valid(valuePrimitive.getAsNumber().floatValue());
 	}
 	
 	public static ParseResult<Double> getDouble(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
 		return ParseResult.valid(valuePrimitive.getAsNumber().doubleValue());
 	}
 	
 	public static ParseResult<Boolean> getBoolean(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isBoolean())) return ParseResult.invalid();
 		return ParseResult.valid(valuePrimitive.getAsBoolean());
 	}
 	
 	public static ParseResult<String> getString(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString())) return ParseResult.invalid();
 		return ParseResult.valid(valuePrimitive.getAsString());
 	}
 	
 	public static ParseResult<Character> getCharacter(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString())) return ParseResult.invalid();
 		return ParseResult.valid(valuePrimitive.getAsCharacter());
 	}
 	
 	public static ParseResult<BigDecimal> getBigDecimal(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
 		return ParseResult.valid(valuePrimitive.getAsBigDecimal());
 	}
 	
 	public static ParseResult<BigInteger> getBigInteger(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
 		return ParseResult.valid(valuePrimitive.getAsBigInteger());
 	}
 	
 	public static ParseResult<Number> getNumber(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
 		return ParseResult.valid(valuePrimitive.getAsNumber());
 	}
 	
 	public static ParseResult<Identifier> getIdentifier(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && Identifier.isValid(valueElement.getAsString()))) return ParseResult.invalid();
 		return ParseResult.valid(new Identifier(valuePrimitive.getAsString()));
 	}
 	
-	public static ParseResult<Texture> getTexture(JsonElement valueElement) {
+	public static ParseResult<Color> getColor(JsonElement valueElement) {
 		try {
-			if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && Identifier.isValid(valuePrimitive.getAsString())) return ValueRegistry.get(new Identifier(valuePrimitive.getAsString()));
+			return ParseResult.valid(new Color(getLong(valueElement).getOrThrow()));
+		} catch (ParseException e) {
+			return ParseResult.invalid();
+		}
+	}
+	
+	public static ParseResult<Item> getItem(JsonElement valueElement) {
+		// TODO!
+		return ParseResult.invalid();
+	}
+	
+	public static ParseResult<ItemStack> getItemStack(JsonElement valueElement) {
+		// TODO!
+		return ParseResult.invalid();
+	}
+	
+	public static ParseResult<Texture> getTexture(JsonElement valueElement) {
+		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
+		
+		try {
 			if (!(valueElement instanceof JsonObject)) return ParseResult.invalid();
 			
 			var valueObject = valueElement.getAsJsonObject();
@@ -322,7 +432,7 @@ class ScreenSerializer {
 		try {
 			if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString())) return ParseResult.invalid();
 			
-			var valueId = getIdentifier(valueElement).getOrThrow();
+			var valueId = getIdentifier(new JsonPrimitive(valuePrimitive.getAsString().substring(1))).getOrThrow();
 
 			return ParseResult.valid(ValueRegistry.get(valueId));
 		} catch (ParseException e) {
@@ -351,6 +461,166 @@ class ScreenSerializer {
 		return ParseResult.invalid();
 	}
 	
+	public static <T extends Widget> ParseResult<T> applyAttributes(Widget widget, JsonObject attributeObject) {
+		try {
+			if (widget instanceof ActiveLeftTextureProvider activeLeftTextureProvider) {
+				activeLeftTextureProvider.setActiveLeftTexture(getTexture(attributeObject.get(ACTIVE_LEFT_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof ActiveMiddleTextureProvider activeMiddleTextureProvider) {
+				activeMiddleTextureProvider.setActiveMiddleTexture(getTexture(attributeObject.get(ACTIVE_MIDDLE_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof ActiveRightTextureProvider activeRightTextureProvider) {
+				activeRightTextureProvider.setActiveRightTexture(getTexture(attributeObject.get(ACTIVE_RIGHT_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof BackgroundSpriteProvider backgroundSpriteProvider) {
+				// Sprites are not supported.
+			}
+			
+			if (widget instanceof BackgroundTextureProvider backgroundTextureProvider) {
+				backgroundTextureProvider.setBackgroundTexture(getTexture(attributeObject.get(BACKGROUND_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof ColorProvider colorProvider) {
+				colorProvider.setColor(getColor(attributeObject.get(COLOR)).getOrThrow());
+			}
+			
+			if (widget instanceof CurrentProvider currentProvider) {
+				currentProvider.setCurrent(() -> getDouble(attributeObject.get(CURRENT)).getOrDefault(0.5D));
+			}
+			
+			if (widget instanceof DisabledProvider disabledProvider) {
+				disabledProvider.setDisabled(() -> getBoolean(attributeObject.get(DISABLED)).getOrDefault(false));
+			}
+			
+			if (widget instanceof DisabledTextureProvider disabledTextureProvider) {
+				disabledTextureProvider.setDisabledTexture(getTexture(attributeObject.get(DISABLED_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof EnabledTextureProvider enabledTextureProvider) {
+				enabledTextureProvider.setEnabledTexture(getTexture(attributeObject.get(ENABLED_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof FocusedScrollerTextureProvider focusedScrollerTextureProvider) {
+				focusedScrollerTextureProvider.setFocusedScrollerTexture(getTexture(attributeObject.get(FOCUSED_SCROLLER_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof FocusedTextureProvider focusedTextureProvider) {
+				focusedTextureProvider.setFocusedTexture(getTexture(attributeObject.get(FOCUSED_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof ForegroundSpriteProvider foregroundSpriteProvider) {
+				// Sprites are not supported.
+			}
+			
+			if (widget instanceof ForegroundTextureProvider foregroundTextureProvider) {
+				foregroundTextureProvider.setForegroundTexture(getTexture(attributeObject.get(FOREGROUND_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof HorizontalProvider horizontalProvider) {
+				horizontalProvider.setHorizontal(getBoolean(attributeObject.get(HORIZONTAL)).getOrThrow());
+			}
+			
+			if (widget instanceof InactiveLeftTextureProvider inactiveLeftTextureProvider) {
+				inactiveLeftTextureProvider.setInactiveLeftTexture(getTexture(attributeObject.get(INACTIVE_LEFT_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof InactiveMiddleTextureProvider inactiveMiddleTextureProvider) {
+				inactiveMiddleTextureProvider.setInactiveMiddleTexture(getTexture(attributeObject.get(INACTIVE_MIDDLE_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof InactiveRightTextureProvider inactiveRightTextureProvider) {
+				inactiveRightTextureProvider.setInactiveRightTexture(getTexture(attributeObject.get(INACTIVE_RIGHT_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof InvertProvider invertProvider) {
+				invertProvider.setInvert((getBoolean(attributeObject.get(INVERT)).getOrThrow()));
+			}
+			
+			if (widget instanceof ItemProvider itemProvider) {
+				itemProvider.setItem(getItem(attributeObject.get(ITEM)).getOrThrow());
+			}
+			
+			if (widget instanceof ItemStackProvider itemStackProvider) {
+				itemStackProvider.setItemStack(getItemStack(attributeObject.get(ITEM_STACK)).getOrThrow());
+			}
+			
+			if (widget instanceof LabelProvider labelProvider) {
+				labelProvider.setLabel(new LiteralText(getString(attributeObject.get(LABEL)).getOrThrow()));
+			}
+			
+			if (widget instanceof MaximumProvider maximumProvider) {
+				maximumProvider.setMaximum(() -> getDouble(attributeObject.get(MAXIMUM)).getOrDefault(1.0D));
+			}
+			
+			if (widget instanceof ScissorProvider scissorProvider) {
+				scissorProvider.setScissor(getBoolean(attributeObject.get(SCISSOR)).getOrThrow());
+			}
+			
+			if (widget instanceof ScrollbarTextureProvider scrollbarTextureProvider) {
+				scrollbarTextureProvider.setScrollbarTexture(getTexture(attributeObject.get(SCROLLBAR_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof ScrollerTextureProvider scrollerTextureProvider) {
+				scrollerTextureProvider.setScrollerTexture(getTexture(attributeObject.get(SCROLLER_TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof ShadowProvider shadowProvider) {
+				shadowProvider.setShadow(getBoolean(attributeObject.get(SHADOW)).getOrThrow());
+			}
+			
+			if (widget instanceof SmoothProvider smoothProvider) {
+				smoothProvider.setSmooth(getBoolean(attributeObject.get(SMOOTH)).getOrThrow());
+			}
+			
+			if (widget instanceof StepHeightProvider stepHeightProvider) {
+				stepHeightProvider.setStepHeight(getFloat(attributeObject.get(STEP_HEIGHT)).getOrDefault(1.0F));
+			}
+			
+			if (widget instanceof StepWidthProvider stepWidthProvider) {
+				stepWidthProvider.setStepWidth(getFloat(attributeObject.get(STEP_WIDTH)).getOrDefault(1.0F));
+			}
+			
+			if (widget instanceof TextProvider textProvider) {
+				textProvider.setText(new LiteralText(getString(attributeObject.get(TEXT)).getOrThrow()));
+			}
+			
+			if (widget instanceof TextureProvider textureProvider) {
+				textureProvider.setTexture(getTexture(attributeObject.get(TEXTURE)).getOrThrow());
+			}
+			
+			if (widget instanceof TiledProvider tiledProvider) {
+				tiledProvider.setTiled(getBoolean(attributeObject.get(TILED)).getOrThrow());
+			}
+			
+			if (widget instanceof VerticalProvider verticalProvider) {
+				verticalProvider.setVertical(getBoolean(attributeObject.get(VERTICAL)).getOrThrow());
+			}
+			
+			return (ParseResult<T>) ParseResult.valid(widget);
+		} catch (ParseException e) {
+			return ParseResult.invalid();
+		}
+	}
+	
+	public static <T extends Widget> ParseResult<T> applyDefaults(Widget widget, Position position, Size size) {
+		widget.setPosition(position);
+		widget.setSize(size);
+		
+		return (ParseResult<T>) ParseResult.valid(widget);
+	}
+	
+	public static <T extends Widget> ParseResult<T> create(Supplier<Widget> supplier, Position position, Size size, JsonObject attributeObject) {
+		var widget = supplier.get();
+		
+		applyDefaults(widget, position, size);
+		applyAttributes(widget, attributeObject);
+		
+		return (ParseResult<T>) ParseResult.valid(widget);
+	}
+	
 	private <T extends BaseScreen> T deserialize(Identifier screenId) {
 		Resource resource = null;
 		
@@ -375,6 +645,9 @@ class ScreenSerializer {
 					
 					if (widgetType.getSide() == WidgetSide.SERVER) return null;
 					
+					var widgetParentId = getIdentifier(widgetObject.get(PARENT)).getOrThrow();
+					var widgetParent = context.get(widgetParentId);
+					
 					var widgetPositionElement = widgetObject.get(POSITION);
 					var widgetPositionObject = widgetPositionElement.getAsJsonObject();
 					
@@ -390,6 +663,35 @@ class ScreenSerializer {
 					var widgetSizeParent = context.get(widgetSizeParentId);
 					
 					var widgetSize = getSize(widgetObject.get(SIZE), widgetSizeParent::getSize).getOrThrow();
+					
+					var widgetAttributes = new JsonObject();
+					
+					if (widgetObject.has(ATTRIBUTES)) {
+						var widgetAttributesElement = widgetObject.get(ATTRIBUTES);
+						
+						if (widgetAttributesElement instanceof JsonObject) {
+							widgetAttributes = widgetAttributesElement.getAsJsonObject();
+						}
+					}
+					
+					var widget = switch (widgetType) {
+						case ARROW -> create(ArrowWidget::new, widgetPosition, widgetSize, widgetAttributes).getOrThrow();
+						case FLUID_BAR -> create(FluidBarWidget::new, widgetPosition, widgetSize, widgetAttributes).getOrThrow();
+						case IMAGE_BAR -> create(ImageBarWidget::new, widgetPosition, widgetSize, widgetAttributes).getOrThrow();
+						case BUTTON -> create(ButtonWidget::new, widgetPosition, widgetSize, widgetAttributes).getOrThrow();
+						case ITEM_STACK -> create(ItemStackWidget::new, widgetPosition, widgetSize, widgetAttributes).getOrThrow();
+						case ITEM -> create(ItemWidget::new, widgetPosition, widgetSize, widgetAttributes).getOrThrow();
+						case LIST -> create(ListWidget::new, widgetPosition, widgetSize, widgetAttributes).getOrThrow();
+						case PANEL -> create(PanelWidget::new, widgetPosition, widgetSize, widgetAttributes).getOrThrow();
+						case TAB -> create(TabWidget::new, widgetPosition, widgetSize, widgetAttributes).getOrThrow();
+						case TEXT_AREA -> create(TextAreaWidget::new, widgetPosition, widgetSize, widgetAttributes).getOrThrow();
+						case TEXT_FIELD -> create(TextFieldWidget::new, widgetPosition, widgetSize, widgetAttributes).getOrThrow();
+						case TEXT -> create(TextWidget::new, widgetPosition, widgetSize, widgetAttributes).getOrThrow();
+					};
+					
+					if (widgetParent instanceof WidgetCollection collection) {
+						collection.add(widget);
+					}
 				}
 			}
 		} catch (FileNotFoundException e) {

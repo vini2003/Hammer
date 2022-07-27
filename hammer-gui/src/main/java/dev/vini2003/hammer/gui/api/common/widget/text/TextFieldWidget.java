@@ -27,12 +27,13 @@ package dev.vini2003.hammer.gui.api.common.widget.text;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
+import dev.vini2003.hammer.gui.api.common.widget.provider.TextureProvider;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.function.Supplier;
 
-public class TextFieldWidget extends TextEditorWidget {
+public class TextFieldWidget extends TextEditorWidget implements TextureProvider {
 	public static final Texture STANDARD_TEXTURE = new PartitionedTexture(HC.id("textures/widget/text_field.png"), 18.0F, 18.0F, 0.055F, 0.055F, 0.055F, 0.055F);
 	
 	protected Supplier<Texture> texture = () -> STANDARD_TEXTURE;
@@ -61,11 +62,13 @@ public class TextFieldWidget extends TextEditorWidget {
 		this.length = length;
 	}
 	
-	public void setTexture(Supplier<Texture> texture) {
-		this.texture = texture;
+	@Override
+	public Supplier<Texture> getTexture() {
+		return texture;
 	}
 	
-	public void setTexture(Texture texture) {
-		setTexture(() -> texture);
+	@Override
+	public void setTexture(Supplier<Texture> texture) {
+		this.texture = texture;
 	}
 }

@@ -1,12 +1,6 @@
 package dev.vini2003.hammer.gui.api.common.widget.type;
 
-import com.google.gson.JsonObject;
 import dev.vini2003.hammer.core.HC;
-import dev.vini2003.hammer.core.api.common.function.TriFunction;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.gui.api.common.widget.Widget;
-import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
 import dev.vini2003.hammer.gui.api.common.widget.side.WidgetSide;
 import net.minecraft.util.Identifier;
 
@@ -14,19 +8,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum WidgetType {
-	ARROW(HC.id("arrow"), WidgetSide.CLIENT, ArrowWidget::deserialize);
+	ARROW(HC.id("arrow"), WidgetSide.CLIENT),
+	FLUID_BAR(HC.id("fluid_bar"), WidgetSide.CLIENT),
+	IMAGE_BAR(HC.id("image_bar"), WidgetSide.CLIENT),
+	BUTTON(HC.id("button"), WidgetSide.CLIENT),
+	ITEM_STACK(HC.id("item_stack"), WidgetSide.CLIENT),
+	ITEM(HC.id("item"), WidgetSide.CLIENT),
+	LIST(HC.id("list"), WidgetSide.CLIENT),
+	PANEL(HC.id("panel"), WidgetSide.CLIENT),
+	TAB(HC.id("tab"), WidgetSide.CLIENT),
+	TEXT_AREA(HC.id("text_area"), WidgetSide.CLIENT),
+	TEXT_FIELD(HC.id("text_field"), WidgetSide.CLIENT),
+	TEXT(HC.id("text"), WidgetSide.CLIENT);
 	
 	public static final Map<Identifier, WidgetType> TYPES = new HashMap<>();
 	
 	private final Identifier id;
 	private final WidgetSide side;
 	
-	public final TriFunction<Position, Size, JsonObject, Widget> deserializer;
-	
-	WidgetType(Identifier id, WidgetSide side, TriFunction<Position, Size, JsonObject, Widget> deserializer) {
+	WidgetType(Identifier id, WidgetSide side) {
 		this.id = id;
 		this.side = side;
-		this.deserializer = deserializer;
 	}
 	
 	public Identifier getId() {

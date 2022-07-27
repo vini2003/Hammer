@@ -26,35 +26,32 @@ package dev.vini2003.hammer.gui.api.common.widget.bar;
 
 import dev.vini2003.hammer.core.api.client.scissor.Scissors;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
+import dev.vini2003.hammer.gui.api.common.widget.provider.InvertProvider;
+import dev.vini2003.hammer.gui.api.common.widget.provider.ScissorProvider;
+import dev.vini2003.hammer.gui.api.common.widget.provider.SmoothProvider;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
-public class ImageBarWidget extends BarWidget {
-	protected DoubleSupplier maximum = () -> 1.0D;
-	protected DoubleSupplier current = () -> 0.5D;
-	
-	protected Supplier<Texture> foregroundTexture = () -> STANDARD_FOREGROUND_TEXTURE;
-	protected Supplier<Texture> backgroundTexture = () -> STANDARD_BACKGROUND_TEXTURE;
-	
+public class ImageBarWidget extends BarWidget implements SmoothProvider, ScissorProvider, InvertProvider {
 	protected boolean smooth = false;
 	protected boolean scissor = true;
 	protected boolean invert = false;
 	
 	@Override
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
-		var foregroundWidth = getWidth() / getMaximum() * getCurrent();
-		var foregroundHeight = getHeight() / getMaximum() * getCurrent();
+		var foregroundWidth = getWidth() / getMaximum().getAsDouble() * getCurrent().getAsDouble();
+		var foregroundHeight = getHeight() / getMaximum().getAsDouble() * getCurrent().getAsDouble();
 		
 		if (!smooth) {
 			foregroundWidth = (int) foregroundWidth;
 			foregroundHeight = (int) foregroundHeight;
 		}
 		
-		var foregroundTexture = getForegroundTexture();
-		var backgroundTexture = getBackgroundTexture();
+		var foregroundTexture = getForegroundTexture().get();
+		var backgroundTexture = getBackgroundTexture().get();
 		
 		if (vertical) {
 			backgroundTexture.draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
@@ -98,65 +95,31 @@ public class ImageBarWidget extends BarWidget {
 	}
 	
 	@Override
-	public double getMaximum() {
-		return maximum.getAsDouble();
+	public boolean isSmooth() {
+		return smooth;
 	}
 	
 	@Override
-	public double getCurrent() {
-		return current.getAsDouble();
-	}
-	
-	@Override
-	public Texture getForegroundTexture() {
-		return foregroundTexture.get();
-	}
-	
-	@Override
-	public Texture getBackgroundTexture() {
-		return backgroundTexture.get();
-	}
-	
-	public void setMaximum(DoubleSupplier maximumSupplier) {
-		this.maximum = maximumSupplier;
-	}
-	
-	public void setMaximum(double maximum) {
-		setMaximum(() -> maximum);
-	}
-	
-	public void setCurrent(DoubleSupplier currentSupplier) {
-		this.current = currentSupplier;
-	}
-	
-	public void setCurrent(double current) {
-		setCurrent(() -> current);
-	}
-	
-	public void setForegroundTexture(Supplier<Texture> foregroundTextureSupplier) {
-		this.foregroundTexture = foregroundTextureSupplier;
-	}
-	
-	public void setForegroundTexture(Texture foregroundTexture) {
-		setForegroundTexture(() -> foregroundTexture);
-	}
-	
-	public void setBackgroundTexture(Supplier<Texture> backgroundTextureSupplier) {
-		this.backgroundTexture = backgroundTextureSupplier;
-	}
-	
-	public void setBackgroundTexture(Texture backgroundTexture) {
-		setBackgroundTexture(() -> backgroundTexture);
-	}
-	
 	public void setSmooth(boolean smooth) {
 		this.smooth = smooth;
 	}
 	
+	@Override
+	public boolean shouldScissor() {
+		return scissor;
+	}
+	
+	@Override
 	public void setScissor(boolean scissor) {
 		this.scissor = scissor;
 	}
 	
+	@Override
+	public boolean shouldInvert() {
+		return invert;
+	}
+	
+	@Override
 	public void setInvert(boolean invert) {
 		this.invert = invert;
 	}

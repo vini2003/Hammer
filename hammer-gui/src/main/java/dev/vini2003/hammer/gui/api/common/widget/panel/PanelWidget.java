@@ -29,6 +29,7 @@ import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
+import dev.vini2003.hammer.gui.api.common.widget.provider.TextureProvider;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Supplier;
 
-public class PanelWidget extends Widget implements WidgetCollection {
+public class PanelWidget extends Widget implements WidgetCollection, TextureProvider {
 	public static final Texture STANDARD_TEXTURE = new PartitionedTexture(HC.id("textures/widget/panel.png"), 18.0F, 18.0F, 0.25F, 0.25F, 0.25F, 0.25F);
 	
 	protected Supplier<Texture> texture = () -> STANDARD_TEXTURE;
@@ -63,11 +64,13 @@ public class PanelWidget extends Widget implements WidgetCollection {
 		}
 	}
 	
-	public void setTexture(Supplier<Texture> texture) {
-		this.texture = texture;
+	@Override
+	public Supplier<Texture> getTexture() {
+		return texture;
 	}
 	
-	public void setTexture(Texture texture) {
-		setTexture(() -> texture);
+	@Override
+	public void setTexture(Supplier<Texture> texture) {
+		this.texture = texture;
 	}
 }

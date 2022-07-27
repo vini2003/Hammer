@@ -39,6 +39,7 @@ import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
+import dev.vini2003.hammer.gui.api.common.widget.provider.*;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -49,7 +50,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class TabWidget extends Widget implements WidgetCollection {
+public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTextureProvider, ActiveMiddleTextureProvider, ActiveRightTextureProvider, InactiveLeftTextureProvider, InactiveMiddleTextureProvider, InactiveRightTextureProvider, TextureProvider {
 	public static final Texture STANDARD_ACTIVE_LEFT_TEXTURE = new ImageTexture(HC.id("textures/widget/tab_left_active.png"));
 	public static final Texture STANDARD_ACTIVE_MIDDLE_TEXTURE = new ImageTexture(HC.id("textures/widget/tab_middle_active.png"));
 	public static final Texture STANDARD_ACTIVE_RIGHT_TEXTURE = new ImageTexture(HC.id("textures/widget/tab_right_active.png"));
@@ -65,7 +66,7 @@ public class TabWidget extends Widget implements WidgetCollection {
 	protected Supplier<Texture> inactiveMiddleTexture = () -> STANDARD_INACTIVE_MIDDLE_TEXTURE;
 	protected Supplier<Texture> inactiveRightTexture = () -> STANDARD_INACTIVE_RIGHT_TEXTURE;
 	
-	protected Supplier<Texture> panelTexture = () -> PanelWidget.STANDARD_TEXTURE;
+	protected Supplier<Texture> texture = () -> PanelWidget.STANDARD_TEXTURE;
 	
 	protected List<Shape> tabRectangles = new ArrayList<>();
 	protected List<TabCollection> tabCollections = new ArrayList<>();
@@ -200,7 +201,7 @@ public class TabWidget extends Widget implements WidgetCollection {
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
 		var itemRenderer = DrawingUtil.getItemRenderer();
 		
-		panelTexture.get().draw(matrices, provider, getX(), getY() + 25.0F, getWidth(), getHeight() - 25.0F);
+		texture.get().draw(matrices, provider, getX(), getY() + 25.0F, getWidth(), getHeight() - 25.0F);
 		
 		if (provider instanceof VertexConsumerProvider.Immediate immediate) {
 			immediate.draw();
@@ -271,51 +272,73 @@ public class TabWidget extends Widget implements WidgetCollection {
 		}
 	}
 	
+	@Override
+	public Supplier<Texture> getActiveLeftTexture() {
+		return activeLeftTexture;
+	}
+	
+	@Override
 	public void setActiveLeftTexture(Supplier<Texture> activeLeftTexture) {
 		this.activeLeftTexture = activeLeftTexture;
 	}
 	
-	public void setActiveLeftTexture(Texture activeLeftTexture) {
-		setActiveLeftTexture(() -> activeLeftTexture);
+	@Override
+	public Supplier<Texture> getActiveMiddleTexture() {
+		return activeMiddleTexture;
 	}
 	
+	@Override
 	public void setActiveMiddleTexture(Supplier<Texture> activeMiddleTexture) {
 		this.activeMiddleTexture = activeMiddleTexture;
 	}
 	
-	public void setActiveMiddleTexture(Texture activeMiddleTexture) {
-		setActiveMiddleTexture(() -> activeMiddleTexture);
+	@Override
+	public Supplier<Texture> getActiveRightTexture() {
+		return activeRightTexture;
 	}
 	
+	@Override
 	public void setActiveRightTexture(Supplier<Texture> activeRightTexture) {
 		this.activeRightTexture = activeRightTexture;
 	}
 	
-	public void setActiveRightTexture(Texture activeRightTexture) {
-		setActiveRightTexture(() -> activeRightTexture);
+	@Override
+	public Supplier<Texture> getInactiveLeftTexture() {
+		return inactiveLeftTexture;
 	}
 	
+	@Override
 	public void setInactiveLeftTexture(Supplier<Texture> inactiveLeftTexture) {
 		this.inactiveLeftTexture = inactiveLeftTexture;
 	}
 	
-	public void setInactiveLeftTexture(Texture inactiveLeftTexture) {
-		setInactiveLeftTexture(() -> inactiveLeftTexture);
+	@Override
+	public Supplier<Texture> getInactiveMiddleTexture() {
+		return inactiveMiddleTexture;
 	}
 	
+	@Override
 	public void setInactiveMiddleTexture(Supplier<Texture> inactiveMiddleTexture) {
 		this.inactiveMiddleTexture = inactiveMiddleTexture;
 	}
 	
-	public void setInactiveMiddleTexture(Texture inactiveMiddleTexture) {
-		setInactiveMiddleTexture(() -> inactiveMiddleTexture);
+	@Override
+	public Supplier<Texture> getInactiveRightTexture() {
+		return inactiveRightTexture;
 	}
 	
+	@Override
 	public void setInactiveRightTexture(Supplier<Texture> inactiveRightTexture) {
 		this.inactiveRightTexture = inactiveRightTexture;
 	}
 	
-	public void setInactiveRightTexture(Texture inactiveRightTexture) {
-		setInactiveRightTexture(() -> inactiveRightTexture);
+	@Override
+	public Supplier<Texture> getTexture() {
+		return texture;
+	}
+	
+	@Override
+	public void setTexture(Supplier<Texture> texture) {
+		this.texture = texture;
 	}
 }

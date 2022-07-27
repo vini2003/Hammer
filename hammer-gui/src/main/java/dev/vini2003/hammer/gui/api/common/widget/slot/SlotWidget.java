@@ -36,6 +36,7 @@ import dev.vini2003.hammer.gui.api.common.event.LayoutChangedEvent;
 import dev.vini2003.hammer.gui.api.common.event.RemovedEvent;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
+import dev.vini2003.hammer.gui.api.common.widget.provider.TextureProvider;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -44,7 +45,7 @@ import net.minecraft.screen.slot.Slot;
 
 import java.util.function.Supplier;
 
-public class SlotWidget extends Widget {
+public class SlotWidget extends Widget implements TextureProvider {
 	public static final Texture STANDARD_TEXTURE = new PartitionedTexture(HC.id("textures/widget/slot.png"), 18.0F, 18.0F, 0.055F, 0.055F, 0.055F, 0.055F);
 	
 	protected Supplier<Texture> texture = () -> STANDARD_TEXTURE;
@@ -180,11 +181,13 @@ public class SlotWidget extends Widget {
 		return slot;
 	}
 	
-	public void setTexture(Supplier<Texture> texture) {
-		this.texture = texture;
+	@Override
+	public Supplier<Texture> getTexture() {
+		return texture;
 	}
 	
-	public void setTexture(Texture texture) {
-		setTexture(() -> texture);
+	@Override
+	public void setTexture(Supplier<Texture> texture) {
+		this.texture = texture;
 	}
 }

@@ -33,6 +33,7 @@ import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
 import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
+import dev.vini2003.hammer.gui.api.common.widget.provider.*;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
@@ -42,16 +43,16 @@ import net.minecraft.text.Text;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-public class ButtonWidget extends Widget {
+public class ButtonWidget extends Widget implements EnabledTextureProvider, DisabledTextureProvider, FocusedTextureProvider, DisabledProvider, LabelProvider {
 	public static final Texture STANDARD_ENABLED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/button_enabled.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 	public static final Texture STANDARD_DISABLED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/button_disabled.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 	public static final Texture STANDARD_FOCUSED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/button_focused.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 	
-	protected Supplier<Texture> enabledTextureSupplier = () -> STANDARD_ENABLED_TEXTURE;
-	protected Supplier<Texture> disabledTextureSupplier = () -> STANDARD_DISABLED_TEXTURE;
-	protected Supplier<Texture> focusedTextureSupplier = () -> STANDARD_FOCUSED_TEXTURE;
+	protected Supplier<Texture> enabledTexture = () -> STANDARD_ENABLED_TEXTURE;
+	protected Supplier<Texture> disabledTexture = () -> STANDARD_DISABLED_TEXTURE;
+	protected Supplier<Texture> focusedTexture = () -> STANDARD_FOCUSED_TEXTURE;
 	
-	protected BooleanSupplier disabledSupplier = () -> false;
+	protected BooleanSupplier disabled = () -> false;
 	
 	protected Supplier<Text> label = () -> null;
 	
@@ -73,12 +74,12 @@ public class ButtonWidget extends Widget {
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
 		var texture = (Texture) null;
 		
-		if (isDisabled()) {
-			texture = disabledTextureSupplier.get();
+		if (isDisabled().getAsBoolean()) {
+			texture = disabledTexture.get();
 		} else if (isFocused()) {
-			texture = focusedTextureSupplier.get();
+			texture = focusedTexture.get();
 		} else {
-			texture = enabledTextureSupplier.get();
+			texture = enabledTexture.get();
 		}
 		
 		texture.draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
@@ -102,47 +103,53 @@ public class ButtonWidget extends Widget {
 		client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 	}
 	
-	public void setEnabledTexture(Supplier<Texture> enabledTextureSupplier) {
-		this.enabledTextureSupplier = enabledTextureSupplier;
+	@Override
+	public Supplier<Texture> getEnabledTexture() {
+		return enabledTexture;
 	}
 	
-	public void setEnabledTexture(Texture enabledTexture) {
-		setEnabledTexture(() -> enabledTexture);
+	@Override
+	public void setEnabledTexture(Supplier<Texture> enabledTexture) {
+		this.enabledTexture = enabledTexture;
 	}
 	
-	public void setDisabledTexture(Supplier<Texture> disabledTextureSupplier) {
-		this.disabledTextureSupplier = disabledTextureSupplier;
+	@Override
+	public Supplier<Texture> getDisabledTexture() {
+		return disabledTexture;
 	}
 	
-	public void setDisabledTexture(Texture disabledTexture) {
-		setDisabledTexture(() -> disabledTexture);
+	@Override
+	public void setDisabledTexture(Supplier<Texture> disabledTexture) {
+		this.disabledTexture = disabledTexture;
 	}
 	
-	public void setFocusedTexture(Supplier<Texture> focusedTextureSupplier) {
-		this.focusedTextureSupplier = focusedTextureSupplier;
+	@Override
+	public Supplier<Texture> getFocusedTexture() {
+		return focusedTexture;
 	}
 	
-	public void setFocusedTexture(Texture focusedTexture) {
-		setFocusedTexture(() -> focusedTexture);
+	@Override
+	public void setFocusedTexture(Supplier<Texture> focusedTexture) {
+		this.focusedTexture = focusedTexture;
 	}
 	
-	public boolean isDisabled() {
-		return disabledSupplier.getAsBoolean();
+	@Override
+	public BooleanSupplier isDisabled() {
+		return null;
 	}
 	
-	public void setDisabled(BooleanSupplier disabledSupplier) {
-		this.disabledSupplier = disabledSupplier;
+	@Override
+	public void setDisabled(BooleanSupplier disabled) {
+		this.disabled = disabled;
 	}
 	
-	public void setDisabled(boolean disabled) {
-		setDisabled(() -> disabled);
+	@Override
+	public Supplier<Text> getLabel() {
+		return label;
 	}
 	
-	public void setLabel(Supplier<Text> labelSupplier) {
-		this.label = labelSupplier;
-	}
-	
-	public void setLabel(Text label) {
-		setLabel(() -> label);
+	@Override
+	public void setLabel(Supplier<Text> label) {
+		this.label = label;
 	}
 }

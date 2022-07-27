@@ -64,11 +64,5 @@ public class ArrowWidget extends ImageBarWidget {
 		foregroundTexture = () -> STANDARD_VERTICAL_FOREGROUND_TEXTURE;
 		backgroundTexture = () -> STANDARD_VERTICAL_BACKGROUND_TEXTURE;
 	}
-	
-	public static ArrowWidget deserialize(Position position, Size size, JsonObject attributes) {
-		
-		
-		return new ArrowWidget();
-	}
 }
 

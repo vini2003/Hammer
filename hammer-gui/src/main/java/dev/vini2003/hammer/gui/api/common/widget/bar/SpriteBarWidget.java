@@ -27,6 +27,7 @@ package dev.vini2003.hammer.gui.api.common.widget.bar;
 import dev.vini2003.hammer.core.api.client.scissor.Scissors;
 import dev.vini2003.hammer.core.api.client.texture.TiledSpriteTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
+import dev.vini2003.hammer.gui.api.common.widget.provider.*;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
@@ -34,15 +35,9 @@ import net.minecraft.client.util.math.MatrixStack;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
-public class SpriteBarWidget extends BarWidget {
-	protected DoubleSupplier maximumSupplier = () -> 1.0D;
-	protected DoubleSupplier currentSupplier = () -> 0.5D;
-	
-	protected Supplier<Sprite> foregroundSpriteSupplier = () -> null;
-	protected Supplier<Sprite> backgroundSpriteSupplier = () -> null;
-	
-	protected Supplier<Texture> foregroundTextureSupplier = () -> STANDARD_FOREGROUND_TEXTURE;
-	protected Supplier<Texture> backgroundTextureSupplier = () -> STANDARD_BACKGROUND_TEXTURE;
+public class SpriteBarWidget extends BarWidget implements ForegroundSpriteProvider, BackgroundSpriteProvider, SmoothProvider, InvertProvider, StepWidthProvider, StepHeightProvider {
+	protected Supplier<Sprite> foregroundSprite = () -> null;
+	protected Supplier<Sprite> backgroundSprite = () -> null;
 	
 	protected float stepWidth = -1.0F;
 	protected float stepHeight = -1.0F;
@@ -51,29 +46,9 @@ public class SpriteBarWidget extends BarWidget {
 	protected boolean invert = false;
 	
 	@Override
-	public double getMaximum() {
-		return maximumSupplier.getAsDouble();
-	}
-	
-	@Override
-	public double getCurrent() {
-		return currentSupplier.getAsDouble();
-	}
-	
-	@Override
-	public Texture getForegroundTexture() {
-		return foregroundTextureSupplier.get();
-	}
-	
-	@Override
-	public Texture getBackgroundTexture() {
-		return backgroundTextureSupplier.get();
-	}
-	
-	@Override
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
-		var foregroundWidth = getWidth() / getMaximum() * getCurrent();
-		var foregroundHeight = getHeight() / getMaximum() * getCurrent();
+		var foregroundWidth = getWidth() / getMaximum().getAsDouble() * getCurrent().getAsDouble();
+		var foregroundHeight = getHeight() / getMaximum().getAsDouble() * getCurrent().getAsDouble();
 		
 		if (stepWidth != 1.0F) {
 			foregroundWidth -= foregroundWidth % stepWidth;
@@ -88,8 +63,8 @@ public class SpriteBarWidget extends BarWidget {
 			foregroundHeight = (int) foregroundHeight;
 		}
 		
-		var foregroundTexture = getForegroundTexture();
-		var backgroundTexture = getBackgroundTexture();
+		var foregroundTexture = getForegroundTexture().get();
+		var backgroundTexture = getBackgroundTexture().get();
 		
 		if (vertical) {
 			backgroundTexture.draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
@@ -140,78 +115,62 @@ public class SpriteBarWidget extends BarWidget {
 		}
 	}
 	
-	public Sprite getForegroundSprite() {
-		return foregroundSpriteSupplier.get();
+	@Override
+	public Supplier<Sprite> getForegroundSprite() {
+		return foregroundSprite;
 	}
 	
-	public Sprite getBackgroundSprite() {
-		return backgroundSpriteSupplier.get();
+	@Override
+	public void setForegroundSprite(Supplier<Sprite> foregroundSprite) {
+		this.foregroundSprite = foregroundSprite;
 	}
 	
-	public void setMaximum(DoubleSupplier maximumSupplier) {
-		this.maximumSupplier = maximumSupplier;
+	@Override
+	public Supplier<Sprite> getBackgroundSprite() {
+		return backgroundSprite;
 	}
 	
-	public void setMaximum(double maximum) {
-		setMaximum(() -> maximum);
+	@Override
+	public void setBackgroundSprite(Supplier<Sprite> backgroundSprite) {
+		this.backgroundSprite = backgroundSprite;
 	}
 	
-	public void setCurrent(DoubleSupplier currentSupplier) {
-		this.currentSupplier = currentSupplier;
-	}
-	
-	public void setCurrent(double current) {
-		setCurrent(() -> current);
-	}
-	
-	public void setForegroundSprite(Supplier<Sprite> foregroundSpriteSupplier) {
-		this.foregroundSpriteSupplier = foregroundSpriteSupplier;
-		
-		setForegroundTexture(() -> new TiledSpriteTexture(getForegroundSprite()));
-	}
-	
-	public void setForegroundSprite(Sprite foregroundSprite) {
-		setForegroundSprite(() -> foregroundSprite);
-	}
-	
-	public void setBackgroundSprite(Supplier<Sprite> backgroundSpriteSupplier) {
-		this.backgroundSpriteSupplier = backgroundSpriteSupplier;
-		
-		setBackgroundTexture(() -> new TiledSpriteTexture(getBackgroundSprite()));
-	}
-	
-	public void setBackgroundSprite(Sprite backgroundSprite) {
-		setBackgroundSprite(() -> backgroundSprite);
-	}
-	
-	public void setForegroundTexture(Supplier<Texture> foregroundTextureSupplier) {
-		this.foregroundTextureSupplier = foregroundTextureSupplier;
-	}
-	
-	public void setForegroundTexture(Texture foregroundTexture) {
-		setForegroundTexture(() -> foregroundTexture);
-	}
-	
-	public void setBackgroundTexture(Supplier<Texture> backgroundTextureSupplier) {
-		this.backgroundTextureSupplier = backgroundTextureSupplier;
-	}
-	
-	public void setBackgroundtexture(Texture backgroundtexture) {
-		setBackgroundTexture(() -> backgroundtexture);
-	}
-	
+	@Override
 	public void setStepWidth(float stepWidth) {
 		this.stepWidth = stepWidth;
 	}
 	
+	@Override
+	public float getStepWidth() {
+		return stepWidth;
+	}
+	
+	@Override
 	public void setStepHeight(float stepHeight) {
 		this.stepHeight = stepHeight;
 	}
 	
+	@Override
+	public float getStepHeight() {
+		return stepHeight;
+	}
+	
+	@Override
+	public boolean isSmooth() {
+		return smooth;
+	}
+	
+	@Override
 	public void setSmooth(boolean smooth) {
 		this.smooth = smooth;
 	}
 	
+	@Override
+	public boolean shouldInvert() {
+		return invert;
+	}
+	
+	@Override
 	public void setInvert(boolean invert) {
 		this.invert = invert;
 	}

@@ -36,6 +36,9 @@ import dev.vini2003.hammer.gui.api.common.event.*;
 import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
+import dev.vini2003.hammer.gui.api.common.widget.provider.FocusedScrollerTextureProvider;
+import dev.vini2003.hammer.gui.api.common.widget.provider.ScrollbarTextureProvider;
+import dev.vini2003.hammer.gui.api.common.widget.provider.ScrollerTextureProvider;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -46,7 +49,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Supplier;
 
-public class SlotListWidget extends Widget implements WidgetCollection {
+public class SlotListWidget extends Widget implements WidgetCollection, ScrollbarTextureProvider, ScrollerTextureProvider, FocusedScrollerTextureProvider {
 	public static final Texture STANDARD_SCROLLBAR_TEXTURE = new PartitionedTexture(HC.id("textures/widget/scrollbar.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 	public static final Texture STANDARD_SCROLLER_TEXTURE = new PartitionedTexture(HC.id("textures/widget/scroller.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.11F);
 	public static final Texture STANDARD_FOCUSED_SCROLLER_TEXTURE = new PartitionedTexture(HC.id("textures/widget/scroller_focus.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.11F);
@@ -241,5 +244,35 @@ public class SlotListWidget extends Widget implements WidgetCollection {
 	
 	protected int getTotalRows() {
 		return inventory.size() / widthInSlots;
+	}
+	
+	@Override
+	public Supplier<Texture> getFocusedScrollerTexture() {
+		return focusedScrollerTexture;
+	}
+	
+	@Override
+	public void setFocusedScrollerTexture(Supplier<Texture> focusedScrollerTexture) {
+		this.focusedScrollerTexture = focusedScrollerTexture;
+	}
+	
+	@Override
+	public Supplier<Texture> getScrollbarTexture() {
+		return scrollbarTexture;
+	}
+	
+	@Override
+	public void setScrollbarTexture(Supplier<Texture> scrollbarTexture) {
+		this.scrollbarTexture = scrollbarTexture;
+	}
+	
+	@Override
+	public Supplier<Texture> getScrollerTexture() {
+		return scrollerTexture;
+	}
+	
+	@Override
+	public void setScrollerTexture(Supplier<Texture> scrollerTexture) {
+		this.scrollerTexture = scrollerTexture;
 	}
 }

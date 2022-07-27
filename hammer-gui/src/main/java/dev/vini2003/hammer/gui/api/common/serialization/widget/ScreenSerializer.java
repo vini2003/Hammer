@@ -13,6 +13,8 @@ import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.client.screen.base.BaseScreen;
 import dev.vini2003.hammer.gui.api.common.registry.ValueRegistry;
+import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
+import dev.vini2003.hammer.gui.api.common.widget.side.WidgetSide;
 import dev.vini2003.hammer.gui.api.common.widget.type.WidgetType;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.minecraft.resource.Resource;
@@ -21,6 +23,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.io.IOUtils;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 
 import javax.annotation.Nullable;
 import java.io.FileNotFoundException;
@@ -30,34 +33,6 @@ import java.math.BigInteger;
 import java.util.function.Supplier;
 
 class ScreenSerializer {
-	private final SerializationContext context = new SerializationContext();
-	
-	private final ResourceManager resourceManager;
-	
-	private ScreenSerializer(ResourceManager resourceManager) {
-		this.resourceManager = resourceManager;
-	}
-	
-	private boolean has(Identifier screenId, JsonObject object, String fieldName) {
-		if (!object.has(fieldName)) {
-			HC.LOGGER.error("Resource for screen '" + screenId + "' did not contain '" + fieldName + "'!");
-			
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	private static boolean check(Identifier screenId, String fieldName, boolean value) {
-		if (!value) {
-			HC.LOGGER.error("Resource for screen '" + screenId + "' contained unexpected value for field '" + fieldName + "'!");
-			
-			return false;
-		}  else {
-			return true;
-		}
-	}
-	
 	private static final String PX = "px";
 	private static final String PCT = "%";
 	
@@ -103,6 +78,25 @@ class ScreenSerializer {
 	private static final String TOP = "top";
 	private static final String BOTTOM = "bottom";
 	
+	private static final String HORIZONTAL = "horizontal";
+	private static final String VERTICAL = "vertical";
+	
+	private static final String SMOOTH = "smooth";
+	private static final String SCISSOR = "scissor";
+	
+	private static final String FOREGROUND_TEXTURE = "foreground_texture";
+	private static final String BACKGROUND_TEXTURE = "background_texture";
+	
+	private final SerializationContext context = new SerializationContext();
+	
+	private final ResourceManager resourceManager;
+	
+	private ScreenSerializer(ResourceManager resourceManager) {
+		this.resourceManager = resourceManager;
+	}
+	
+	class ParseException extends Exception {}
+	
 	record ParseResult<T>(
 			@Nullable
 			T value,
@@ -115,73 +109,74 @@ class ScreenSerializer {
 		public static <T> ParseResult<T> valid(T value) {
 			return new ParseResult<>(value, true);
 		}
+		
+		public T getOrThrow() throws ParseException {
+			if (value == null) {
+				throw new Exception();
+			} else {
+				return value;
+			}
+		}
 	}
 	
 	public static ParseResult<Size> getSize(JsonElement sizeElement, Supplier<Size> relativeSize) {
-		if (!(sizeElement instanceof JsonObject)) return ParseResult.invalid();
-		var sizeObject = sizeElement.getAsJsonObject();
-		
-		if (!sizeObject.has(LENGTH)) {
-			var sizeWidthParseResult = getRelativeValue(sizeObject.get(WIDTH), relativeSize.get()::getWidth);
-			var sizeHeightParseResult = getRelativeValue(sizeObject.get(HEIGHT), relativeSize.get()::getHeight);
+		try {
+			if (!(sizeElement instanceof JsonObject)) return ParseResult.invalid();
+			var sizeObject = sizeElement.getAsJsonObject();
 			
-			if (!sizeWidthParseResult.valid()) return ParseResult.invalid();
-			if (!sizeHeightParseResult.valid()) return ParseResult.invalid();
-			
-			return ParseResult.valid(new Size(sizeWidthParseResult.value(), sizeHeightParseResult.value()));
-		} else {
-			var sizeWidthParseResult = getRelativeValue(sizeObject.get(WIDTH), relativeSize.get()::getWidth);
-			var sizeHeightParseResult = getRelativeValue(sizeObject.get(HEIGHT), relativeSize.get()::getHeight);
-			var sizeLengthParseResult = getRelativeValue(sizeObject.get(LEFT), relativeSize.get()::getLength);
-			
-			if (!sizeWidthParseResult.valid()) return ParseResult.invalid();
-			if (!sizeHeightParseResult.valid()) return ParseResult.invalid();
-			if (!sizeLengthParseResult.valid()) return ParseResult.invalid();
-			
-			return ParseResult.valid(new Size(sizeWidthParseResult.value(), sizeHeightParseResult.value(), sizeLengthParseResult.value()));
+			if (!sizeObject.has(LENGTH)) {
+				var sizeWidth = getRelativeValue(sizeObject.get(WIDTH), relativeSize.get()::getWidth).getOrThrow();
+				var sizeHeight = getRelativeValue(sizeObject.get(HEIGHT), relativeSize.get()::getHeight).getOrThrow();
+				
+				return ParseResult.valid(new Size(sizeWidth, sizeHeight));
+			} else {
+				var sizeWidth = getRelativeValue(sizeObject.get(WIDTH), relativeSize.get()::getWidth).getOrThrow();
+				var sizeHeight = getRelativeValue(sizeObject.get(HEIGHT), relativeSize.get()::getHeight).getOrThrow();
+				var sizeLength = getRelativeValue(sizeObject.get(LEFT), relativeSize.get()::getLength).getOrThrow();
+				
+				return ParseResult.valid(new Size(sizeWidth, sizeHeight, sizeLength));
+			}
+		} catch (ParseException e) {
+			return ParseResult.invalid();
 		}
 	}
 	
 	public static ParseResult<Position> getPosition(JsonElement positionElement, Supplier<Position> relativePosition) {
-		if (!(positionElement instanceof JsonObject)) return ParseResult.invalid();
-		var positionObject = positionElement.getAsJsonObject();
-		
-		if (!positionObject.has(Z)) {
-			var positionXParseResult = getRelativeValue(positionObject.get(X), relativePosition.get()::getX);
-			var positionYParseResult = getRelativeValue(positionObject.get(Y), relativePosition.get()::getY);
+		try {
+			if (!(positionElement instanceof JsonObject)) return ParseResult.invalid();
+			var positionObject = positionElement.getAsJsonObject();
 			
-			if (!positionXParseResult.valid()) return ParseResult.invalid();
-			if (!positionYParseResult.valid()) return ParseResult.invalid();
-			
-			return ParseResult.valid(new Position(positionXParseResult.value(), positionYParseResult.value()));
-		} else {
-			var positionXParseResult = getRelativeValue(positionObject.get(X), relativePosition.get()::getX);
-			var positionYParseResult = getRelativeValue(positionObject.get(Y), relativePosition.get()::getY);
-			var positionZParseResult = getRelativeValue(positionObject.get(Z), relativePosition.get()::getZ);
-			
-			if (!positionXParseResult.valid()) return ParseResult.invalid();
-			if (!positionYParseResult.valid()) return ParseResult.invalid();
-			if (!positionZParseResult.valid()) return ParseResult.invalid();
-			
-			return ParseResult.valid(new Position(positionXParseResult.value(), positionYParseResult.value(), positionZParseResult.value()));
+			if (!positionObject.has(Z)) {
+				var positionX = getRelativeValue(positionObject.get(X), relativePosition.get()::getX).getOrThrow();
+				var positionY = getRelativeValue(positionObject.get(Y), relativePosition.get()::getY).getOrThrow();
+				
+				return ParseResult.valid(new Position(positionX, positionY));
+			} else {
+				var positionX = getRelativeValue(positionObject.get(X), relativePosition.get()::getX).getOrThrow();
+				var positionY = getRelativeValue(positionObject.get(Y), relativePosition.get()::getY).getOrThrow();
+				var positionZ = getRelativeValue(positionObject.get(Z), relativePosition.get()::getZ).getOrThrow();
+				
+				return ParseResult.valid(new Position(positionX, positionY, positionZ));
+			}
+		} catch (ParseException e) {
+			return ParseResult.invalid();
 		}
 	}
 	
 	public static ParseResult<Padding> getPadding(JsonElement paddingElement) {
-		if (!(paddingElement instanceof JsonObject)) return ParseResult.invalid();
-		var paddingObject = paddingElement.getAsJsonObject();
-
-		var paddingLeftParseResult = getFloat(paddingObject.get(LEFT));
-		var paddingRightParseResult = getFloat(paddingObject.get(RIGHT));
-		var paddingTopParseResult = getFloat(paddingObject.get(TOP));
-		var paddingBottomParseResult = getFloat(paddingObject.get(BOTTOM));
-		
-		if (!paddingLeftParseResult.valid()) return ParseResult.invalid();
-		if (!paddingRightParseResult.valid()) return ParseResult.invalid();
-		if (!paddingTopParseResult.valid()) return ParseResult.invalid();
-		if (!paddingBottomParseResult.valid()) return ParseResult.invalid();
-		
-		return ParseResult.valid(new Padding(paddingLeftParseResult.value(), paddingRightParseResult.value(), paddingTopParseResult.value(), paddingBottomParseResult.value()));
+		try {
+			if (!(paddingElement instanceof JsonObject)) return ParseResult.invalid();
+			var paddingObject = paddingElement.getAsJsonObject();
+			
+			var paddingLeft = getFloat(paddingObject.get(LEFT)).getOrThrow();
+			var paddingRight = getFloat(paddingObject.get(RIGHT)).getOrThrow();
+			var paddingTop = getFloat(paddingObject.get(TOP)).getOrThrow();
+			var paddingBottom = getFloat(paddingObject.get(BOTTOM)).getOrThrow();
+			
+			return ParseResult.valid(new Padding(paddingLeft, paddingRight, paddingTop, paddingBottom));
+		} catch (ParseException e) {
+			return ParseResult.invalid();
+		}
 	}
 	
 	public static ParseResult<Integer> getInteger(JsonElement valueElement) {
@@ -250,87 +245,69 @@ class ScreenSerializer {
 	}
 	
 	public static ParseResult<Texture> getTexture(JsonElement valueElement) {
-		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && Identifier.isValid(valuePrimitive.getAsString())) return ValueRegistry.get(new Identifier(valuePrimitive.getAsString()));
-		if (!(valueElement instanceof JsonObject)) return ParseResult.invalid();
-		
-		var valueObject = valueElement.getAsJsonObject();
-		
-		var typeIdParseResult = getIdentifier(valueObject.get(TYPE));
-		if (!typeIdParseResult.valid()) return ParseResult.invalid();
-		var typeId = typeIdParseResult.value();
-		
-		var type = TextureType.getById(typeId);
-		if (type == null) return ParseResult.invalid();
-		
-		switch (type) {
-			case FLUID, TILED_FLUID -> {
-				var variantIdParseResult = getIdentifier(valueObject.get(VARIANT));
-				if (!variantIdParseResult.valid()) return ParseResult.invalid();
-				var variantId = variantIdParseResult.value();
+		try {
+			if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && Identifier.isValid(valuePrimitive.getAsString())) return ValueRegistry.get(new Identifier(valuePrimitive.getAsString()));
+			if (!(valueElement instanceof JsonObject)) return ParseResult.invalid();
+			
+			var valueObject = valueElement.getAsJsonObject();
+			
+			var typeIdParseResult = getIdentifier(valueObject.get(TYPE));
+			if (!typeIdParseResult.valid()) return ParseResult.invalid();
+			var typeId = typeIdParseResult.value();
+			
+			var type = TextureType.getById(typeId);
+			if (type == null) return ParseResult.invalid();
+			
+			switch (type) {
+				case FLUID, TILED_FLUID -> {
+					var variantId = getIdentifier(valueObject.get(VARIANT)).getOrThrow();
+					
+					var variant = FluidVariant.of(Registry.FLUID.get(variantId));
+					
+					if (type == TextureType.FLUID) {
+						return ParseResult.valid(new FluidTexture(variant));
+					} else {
+						return ParseResult.valid(new TiledFluidTexture(variant));
+					}
+				}
 				
-				var variant = FluidVariant.of(Registry.FLUID.get(variantId));
+				case IMAGE, TILED_IMAGE -> {
+					var id = getIdentifier(valueObject.get(ID)).getOrThrow();
+					
+					if (type == TextureType.IMAGE) {
+						return ParseResult.valid(new ImageTexture(id));
+					} else {
+						var tileSize = getSize(valueObject.get(TILE_SIZE), () -> Size.ZERO).getOrThrow();
+						
+						var maxTilesX = getFloat(valueObject.get(MAX_TILES_X)).getOrThrow();
+						var maxTilesY = getFloat(valueObject.get(MAX_TILES_Y)).getOrThrow();
+						
+						var stepTilesX = getFloat(valueObject.get(STEP_TILES_X)).getOrThrow();
+						var stepTilesY = getFloat(valueObject.get(STEP_TILES_Y)).getOrThrow();
+						
+						return ParseResult.valid(new TiledImageTexture(id, tileSize.getWidth(), tileSize.getHeight(), maxTilesX, maxTilesY, stepTilesX, stepTilesY));
+					}
+				}
 				
-				if (type == TextureType.FLUID) {
-					return ParseResult.valid(new FluidTexture(variant));
-				} else {
-					return ParseResult.valid(new TiledFluidTexture(variant));
+				case SPRITE, TILED_SPRITE -> {
+					throw new UnsupportedOperationException("Sprite textures are not supported!");
+				}
+				
+				case PARTITIONED -> {
+					var id = getIdentifier(valueObject.get(ID)).getOrThrow();
+					
+					var imageSize = getSize(valueObject.get(IMAGE_SIZE), () -> Size.ZERO).getOrThrow();
+					
+					var imagePadding = getPadding(valueObject.get(IMAGE_PADDING)).getOrThrow();
+					
+					return ParseResult.valid(new PartitionedTexture(id, imageSize, imagePadding));
 				}
 			}
 			
-			case IMAGE, TILED_IMAGE -> {
-				var idParseResult = getIdentifier(valueObject.get(ID));
-				if (!idParseResult.valid()) return ParseResult.invalid();
-				var id = idParseResult.value();
-				
-				if (type == TextureType.IMAGE) {
-					return ParseResult.valid(new ImageTexture(id));
-				} else {
-					var tileSizeParseResult = getSize(valueObject.get(TILE_SIZE), () -> Size.ZERO);
-					if (!tileSizeParseResult.valid()) return ParseResult.invalid();
-					var tileSize = tileSizeParseResult.value();
-					
-					var maxTilesXParseResult = getFloat(valueObject.get(MAX_TILES_X));
-					if (!maxTilesXParseResult.valid()) return ParseResult.invalid();
-					var maxTilesX = maxTilesXParseResult.value();
-					
-					var maxTilesYParseResult = getFloat(valueObject.get(MAX_TILES_Y));
-					if (!maxTilesYParseResult.valid()) return ParseResult.invalid();
-					var maxTilesY = maxTilesYParseResult.value();
-					
-					var stepTilesXParseResult = getFloat(valueObject.get(STEP_TILES_X));
-					if (!stepTilesXParseResult.valid()) return ParseResult.invalid();
-					var stepTilesX = stepTilesXParseResult.value();
-					
-					var stepTilesYParseResult = getFloat(valueObject.get(STEP_TILES_Y));
-					if (!stepTilesYParseResult.valid()) return ParseResult.invalid();
-					var stepTilesY = stepTilesYParseResult.value();
-					
-					return ParseResult.valid(new TiledImageTexture(id, tileSize.getWidth(), tileSize.getHeight(), maxTilesX, maxTilesY, stepTilesX, stepTilesY));
-				}
-			}
-			
-			case SPRITE, TILED_SPRITE -> {
-				throw new UnsupportedOperationException("Sprite textures are not supported!");
-			}
-			
-			case PARTITIONED -> {
-				var idParseResult = getIdentifier(valueObject.get(ID));
-				if (!idParseResult.valid()) return ParseResult.invalid();
-				var id = idParseResult.value();
-				
-				var imageSizeParseResult = getSize(valueObject.get(IMAGE_SIZE), () -> Size.ZERO);
-				if (!imageSizeParseResult.valid()) return ParseResult.invalid();
-				var imageSize = imageSizeParseResult.value();
-				
-				var imagePaddingParseResult = getPadding(valueObject.get(IMAGE_PADDING));
-				if (!imagePaddingParseResult.valid()) return ParseResult.invalid();
-				var imagePadding = imagePaddingParseResult.value();
-				
-				return ParseResult.valid(new PartitionedTexture(id, imageSize, imagePadding));
-			}
+			return ParseResult.invalid();
+		} catch (ParseException e) {
+			return ParseResult.invalid();
 		}
-		
-		return ParseResult.invalid();
 	}
 	
 	public static <T> ParseResult<T> getValue(JsonElement valueElement, Class<T> clazz) {
@@ -342,12 +319,15 @@ class ScreenSerializer {
 	}
 	
 	public static <T> ParseResult<T> getRegistryValue(JsonElement valueElement) {
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString())) return ParseResult.invalid();
-		var valueString = valueElement.getAsString();
-		if (!Identifier.isValid(valueString)) return ParseResult.invalid();
-		var valueId = new Identifier(valueString);
-		
-		return ParseResult.valid(ValueRegistry.get(valueId));
+		try {
+			if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString())) return ParseResult.invalid();
+			
+			var valueId = getIdentifier(valueElement).getOrThrow();
+
+			return ParseResult.valid(ValueRegistry.get(valueId));
+		} catch (ParseException e) {
+			return ParseResult.invalid();
+		}
 	}
 	
 	public static ParseResult<Float> getRelativeValue(JsonElement valueElement, Supplier<Float> relativeValue) {
@@ -382,59 +362,46 @@ class ScreenSerializer {
 				
 				var resourceObject = HC.GSON.fromJson(resourceString, JsonObject.class);
 				
-				var titleParseResult = getString(resourceObject.get(TITLE));
-				if (!titleParseResult.valid()) return null;
-				var title = new LiteralText(titleParseResult.value());
+				var title = getString(resourceObject.get(TITLE)).getOrThrow();
 				
-				if (!resourceObject.has(WIDGETS)) return null;
 				var widgetsElement = resourceObject.get(WIDGETS);
-				if (!(widgetsElement instanceof JsonArray)) return null;
 				var widgetsArray = widgetsElement.getAsJsonArray();
 				
 				for (var widgetElement : widgetsArray) {
-					if (!(widgetElement instanceof JsonObject)) return null;
-					
 					var widgetObject = widgetElement.getAsJsonObject();
 
-					var widgetTypeIdParseResult = getIdentifier(widgetObject.get(TYPE));
-					if (!widgetTypeIdParseResult.valid()) return null;
-					var widgetType = WidgetType.getById(widgetTypeIdParseResult.value());
-					if (widgetType == null) return null;
+					var widgetTypeId = getIdentifier(widgetObject.get(TYPE)).getOrThrow();
+					var widgetType = WidgetType.getById(widgetTypeId);
+					
+					if (widgetType.getSide() == WidgetSide.SERVER) return null;
 					
 					var widgetPositionElement = widgetObject.get(POSITION);
-					if (!(widgetPositionElement instanceof JsonObject)) return null;
 					var widgetPositionObject = widgetPositionElement.getAsJsonObject();
 					
-					var widgetPositionParentIdParseResult = getIdentifier(widgetPositionObject.get(PARENT));
-					if (!widgetPositionParentIdParseResult.valid()) return null;
-					var widgetPositionParent = context.get(widgetPositionParentIdParseResult.value());
-					if (widgetPositionParent == null) return null;
+					var widgetPositionParentId = getIdentifier(widgetPositionObject.get(PARENT)).getOrThrow();
+					var widgetPositionParent = context.get(widgetPositionParentId);
 					
-					var widgetPositionParseResult = getPosition(widgetObject.get(POSITION), widgetPositionParent::getPosition);
-					if (!widgetPositionParseResult.valid()) return null;
-					
-					var widgetPosition = widgetPositionParseResult.value();
-					
+					var widgetPosition = getPosition(widgetObject.get(POSITION), widgetPositionParent::getPosition).getOrThrow();
+
 					var widgetSizeElement = widgetObject.get(SIZE);
-					if (!(widgetSizeElement instanceof JsonObject)) return null;
 					var widgetSizeObject = widgetSizeElement.getAsJsonObject();
 					
-					var widgetSizeParentIdParseResult = getIdentifier(widgetSizeObject.get(PARENT));
-					if (!widgetSizeParentIdParseResult.valid()) return null;
-					var widgetSizeParent = context.get(widgetSizeParentIdParseResult.value());
-					if (widgetSizeParent == null) return null;
+					var widgetSizeParentId = getIdentifier(widgetSizeObject.get(PARENT)).getOrThrow();
+					var widgetSizeParent = context.get(widgetSizeParentId);
 					
-					var widgetSizeParseResult = getSize(widgetObject.get(SIZE), widgetSizeParent::getSize);
-					if (!widgetSizeParseResult.valid()) return null;
-					
-					var widgetSize = widgetSizeParseResult.value();
-					
+					var widgetSize = getSize(widgetObject.get(SIZE), widgetSizeParent::getSize).getOrThrow();
 				}
 			}
 		} catch (FileNotFoundException e) {
 			HC.LOGGER.error("Resource for screen '" + screenId + "' not found!");
 		} catch (IOException e) {
 			HC.LOGGER.error("Resource for screen '" + screenId + "' not readable and/or corrupt!");
+		} catch (ParseException e) {
+		
+		} catch (IllegalStateException e) {
+		
+		} catch (NullPointerException e) {
+		
 		}
 		
 		return null;

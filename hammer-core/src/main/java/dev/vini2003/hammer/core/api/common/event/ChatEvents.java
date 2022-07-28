@@ -63,6 +63,9 @@ public interface ChatEvents {
 		}
 	});
 	
+	/**
+	 * Callback for when a player sends a message.
+	 */
 	@FunctionalInterface
 	interface SendMessage {
 		TypedActionResult<Text> send(ServerPlayerEntity receiver, Text message, MessageType type, UUID sender);

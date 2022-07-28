@@ -24,7 +24,19 @@
 
 package dev.vini2003.hammer.core.api.common.component.base;
 
+import net.minecraft.entity.player.PlayerEntity;
+
+/**
+ * A {@link PlayerComponent} is a {@link Component} whose
+ * use case attachment to {@link PlayerEntity}s when
+ * post-death persistence is required.
+ */
 public interface PlayerComponent extends Component {
+	/**
+	 * Returns whether this component should be
+	 * copied post-death.
+	 * @return Whether this component should be copied post-death.
+	 */
 	default boolean shouldCopyOnDeath() {
 		return false;
 	}

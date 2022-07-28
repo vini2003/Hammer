@@ -25,19 +25,35 @@
 package dev.vini2003.hammer.core.api.common.math.shape.modifier;
 
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 
 import java.util.Random;
 
+/**
+ * A {@link NoiseModifier} is a {@link Shape} modifier that applies
+ * a random noise-based distortion to blocks inside the shape.
+ */
 public class NoiseModifier implements Modifier {
 	private final Random random;
 	
 	private final float magnitude;
 	
+	/**
+	 * Constructs a noise modifier.
+	 * @param random the random to use.
+	 * @param magnitude the magnitude of noise to use.
+	 * @return the modifier.
+	 */
 	public NoiseModifier(Random random, float magnitude) {
 		this.random = random;
 		this.magnitude = magnitude;
 	}
 	
+	/**
+	 * Modifiers the position to apply noise-based distortion.
+	 * @param pos the position to modify.
+	 * @return the modified position.
+	 */
 	@Override
 	public Position modifyEquation(Position pos) {
 		return new Position(

@@ -26,6 +26,9 @@ package dev.vini2003.hammer.core.api.common.math.size;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
@@ -195,8 +198,8 @@ public class Size implements SizeHolder {
 	 *
 	 * @return the size.
 	 */
-	public Size(SizeHolder holder) {
-		this(holder.getWidth(), holder.getHeight(), holder.getLength());
+	public Size(SizeHolder anchor) {
+		this(anchor.getWidth(), anchor.getHeight(), anchor.getLength());
 	}
 	
 	/**

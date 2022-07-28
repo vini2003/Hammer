@@ -24,10 +24,38 @@
 
 package dev.vini2003.hammer.core.api.common.component.base;
 
+import com.google.gson.JsonElement;
+import dev.vini2003.hammer.core.api.common.manager.ComponentManager;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.world.World;
 
+/**
+ * A {@link Component} is a serializable object that
+ * may be attached to {@link Entity}s and {@link World}s
+ * using {@link ComponentManager}.
+ *
+ * <p>The following serialization methods are provided:</p>
+ * <ul>
+ *     <li>{@link #writeToNbt(NbtCompound)} - from {@link Component} to {@link NbtCompound}.</li>
+ * </ul>
+ 
+ * <ul>
+ *     <li>{@link #readFromNbt(NbtCompound)} - from {@link NbtCompound} to {@link Component}.</li>
+ * </ul>
+ */
 public interface Component {
+	/**
+	 * Serializes this component to an {@link NbtCompound}.
+	 * @param nbt the NBT tag.
+	 */
 	void writeToNbt(NbtCompound nbt);
 	
+	/**
+	 * Deserializes this component from an {@link NbtCompound}.
+	 * @param nbt the NBT tag.
+	 */
 	void readFromNbt(NbtCompound nbt);
 }

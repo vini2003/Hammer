@@ -24,10 +24,12 @@
 
 package dev.vini2003.hammer.core.api.common.manager;
 
-import dev.vini2003.hammer.core.impl.common.util.ComponentUtil;
 import dev.vini2003.hammer.core.api.common.component.base.Component;
+import dev.vini2003.hammer.core.api.common.component.base.PlayerComponent;
 import dev.vini2003.hammer.core.api.common.component.base.key.ComponentKey;
+import dev.vini2003.hammer.core.impl.common.util.ComponentUtil;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -36,25 +38,64 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * A {@link ComponentManager} is a manager which manages {@link Component}s.
+ * <br>
+ * Components must extend {@link Component}, or, in the case of player components, {@link PlayerComponent}.
+ * <br>
+ * Components must have an associated key registered with {@link #registerKey(Identifier)}.
+ * <br>
+ * Components must be registered with {@link #registerForEntity(ComponentKey, Function)} or {@link #registerForWorld(ComponentKey, Function)}.
+ */
 public class ComponentManager {
 	private static final Map<Identifier, ComponentKey<?>> KEYS = new HashMap<>();
 	
+	/**
+	 * Registes a component key.
+	 *
+	 * @param id the key's ID.
+	 *
+	 * @return the key.
+	 */
 	public static <C extends Component> ComponentKey<C> registerKey(Identifier id) {
 		var key = new ComponentKey<C>(id);
 		KEYS.put(id, key);
 		return key;
 	}
 	
+	/**
+	 * Returns the key associated with the given ID.
+	 *
+	 * @param id the key's ID..
+	 *
+	 * @return the key.
+	 */
 	@Nullable
 	public static <C extends Component> ComponentKey<C> getKey(Identifier id) {
 		return (ComponentKey<C>) KEYS.get(id);
 	}
 	
-	public static <C extends Component> void registerForEntity(ComponentKey<C> key, Function<Entity, C> function) {
-		ComponentUtil.ENTITY_ATTACHERS.put(key, function);
+	/**
+	 * Registers a component for entities.
+	 * <br>
+	 * <b>Returning <code>null</code> in the factory will skip the component for that given entity.</b>
+	 *
+	 * @param key     the component's key.
+	 * @param factory the component factory.
+	 */
+	public static <C extends Component> void registerForEntity(ComponentKey<C> key, Function<Entity, C> factory) {
+		ComponentUtil.ENTITY_ATTACHERS.put(key, factory);
 	}
 	
-	public static <C extends Component> void registerForWorld(ComponentKey<C> key, Function<World, C> function) {
-		ComponentUtil.WORLD_ATTACHERS.put(key, function);
+	/**
+	 * Registers a component for worlds.
+	 * <br>
+	 * <b>Returning <code>null</code> in the factory will skip the component for that given world.</b>
+	 *
+	 * @param key     the component's key.
+	 * @param factory the component factory.
+	 */
+	public static <C extends Component> void registerForWorld(ComponentKey<C> key, Function<World, C> factory) {
+		ComponentUtil.WORLD_ATTACHERS.put(key, factory);
 	}
 }

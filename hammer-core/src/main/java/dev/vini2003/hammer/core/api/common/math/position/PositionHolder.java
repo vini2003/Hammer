@@ -24,10 +24,28 @@
 
 package dev.vini2003.hammer.core.api.common.math.position;
 
+import dev.vini2003.hammer.core.api.common.math.size.SizeHolder;
+
+/**
+ * A {@link SizeHolder} represents an object which has
+ * a three-dimensional position.
+ */
 public interface PositionHolder {
+	/**
+	 * Returns this object's X coordinate.
+	 * @return this object's X coordinate.
+	 */
 	float getX();
 	
+	/**
+	 * Returns this object's Y coordinate.
+	 * @return this object's Y coordinate.
+	 */
 	float getY();
 	
+	/**
+	 * Returns this object's Z coordinate.
+	 * @return this object's Z coordinate.
+	 */
 	float getZ();
 }

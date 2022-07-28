@@ -24,13 +24,33 @@
 
 package dev.vini2003.hammer.core.api.common.math.size;
 
+/**
+ * A {@link SizeHolder} represents an object which has
+ * a three-dimensional size.
+ */
 public interface SizeHolder {
+	/**
+	 * Returns this object's width.
+	 * @return this object's width.
+	 */
 	float getWidth();
 	
+	/**
+	 * Returns this object's height.
+	 * @return this object's height.
+	 */
 	float getHeight();
 	
+	/**
+	 * Returns this object's length.
+	 * @return this object's length.
+	 */
 	float getLength();
 	
+	/**
+	 * Returns this object's depth.
+	 * @return this object's depth.
+	 */
 	default float getDepth() {
 		return getLength();
 	}

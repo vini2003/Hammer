@@ -26,6 +26,9 @@ package dev.vini2003.hammer.core.api.common.math.position;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.vini2003.hammer.core.api.common.math.padding.Padding;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.client.util.math.Vector2f;

@@ -32,13 +32,26 @@ import net.minecraft.util.math.Vec3f;
 
 import java.util.Random;
 
+/**
+ * A {@link RotateModifier} is a {@link Shape} modifier that applies a rotation to blocks inside the shape.
+ */
 public class RotateModifier implements Modifier {
 	private final Quaternion rotation;
 	
+	/**
+	 * Constructs a rotation modifier.
+	 * @param rotation the rotation to use.
+	 * @return the modifier.
+	 */
 	public RotateModifier(Quaternion rotation) {
 		this.rotation = rotation;
 	}
 	
+	/**
+	 * Modifies the shape's starter position to account for rotation.
+	 * @param shape the shape to modify.
+	 * @return the modified shape.
+	 */
 	@Override
 	public Position modifyStartPos(Shape shape) {
 		var minPos = new Position(Float.MAX_VALUE, Float.MAX_VALUE);
@@ -56,6 +69,11 @@ public class RotateModifier implements Modifier {
 		}
 	}
 	
+	/**
+	 * Modifies the shape's end position to account for rotation.
+	 * @param shape the shape to modify.
+	 * @return the modified shape.
+	 */
 	@Override
 	public Position modifyEndPos(Shape shape) {
 		var maxPos = new Position(Float.MIN_VALUE, Float.MIN_VALUE);
@@ -73,6 +91,11 @@ public class RotateModifier implements Modifier {
 		}
 	}
 	
+	/**
+	 * Modifiers the position to apply rotation.
+	 * @param pos the position to modify.
+	 * @return the modified position.
+	 */
 	@Override
 	public Position modifyEquation(Position pos) {
 		return pos.rotate(rotation);

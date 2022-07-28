@@ -24,17 +24,64 @@
 
 package dev.vini2003.hammer.core.api.common.math.size;
 
+/**
+ * A {@link Sized} represents an object which has
+ * a three-dimensional size, delegated to a {@link Size}.
+ */
 public interface Sized extends SizeHolder {
+	/**
+	 * Returns this object's size.
+	 * @return this object's size.
+	 */
 	Size getSize();
 	
+	/**
+	 * Sets this object's size.
+	 * @param size the new size.
+	 */
 	void setSize(Size size);
 	
+	/**
+	 * Sets this object's size.
+	 * @param width the new size's width.
+	 * @param height the new size's height.
+	 * @param length the new size's length.
+	 */
 	default void setSize(float width, float height, float length) {
 		setSize(new Size(width, height, length));
 	}
 	
+	/**
+	 * Sets this object's size.
+	 * @param width the new size's width.
+	 * @param height the new size's height.
+	 */
 	default void setSize(float width, float height) {
 		setSize(new Size(width, height));
+	}
+	
+	/**
+	 * Sets this object's width.
+	 * @param width the new width.
+	 */
+	default void setWidth(float width) {
+		setSize(new Size(width, getHeight(), getLength()));
+	}
+	
+	/**
+	 * Sets this object's height.
+	 * @param height the new height.
+	 */
+	default void setHeight(float height) {
+		setSize(new Size(getWidth(), height, getLength()));
+	}
+	
+	/**
+	 * Sets this object's length.
+	 * @param length the new length.
+	 */
+	default void setLength(float length) {
+		setSize(new Size(getWidth(), getHeight(), length));
 	}
 	
 	@Override
@@ -52,15 +99,4 @@ public interface Sized extends SizeHolder {
 		return getSize().getLength();
 	}
 	
-	default void setWidth(float width) {
-		setSize(new Size(width, getHeight(), getLength()));
-	}
-	
-	default void setHeight(float height) {
-		setSize(new Size(getWidth(), height, getLength()));
-	}
-	
-	default void setLength(float length) {
-		setSize(new Size(getWidth(), getHeight(), length));
-	}
 }

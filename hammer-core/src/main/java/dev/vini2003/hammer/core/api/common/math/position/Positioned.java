@@ -24,17 +24,67 @@
 
 package dev.vini2003.hammer.core.api.common.math.position;
 
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.core.api.common.math.size.SizeHolder;
+
+/**
+ * A {@link Positioned} represents an object which has
+ * a three-dimensional position, delegated to a {@link Positioned}.
+ */
 public interface Positioned extends PositionHolder {
+	/**
+	 * Returns this object's position.
+	 * @return this object's position.
+	 */
 	Position getPosition();
 	
+	/**
+	 * Sets this object's position.
+	 * @param position the new position.
+	 */
 	void setPosition(Position position);
 	
+	/**
+	 * Sets this object's position.
+	 * @param x the new position's X.
+	 * @param y the new position's Y.
+	 * @param z the new position's Z.
+	 */
 	default void setPosition(float x, float y, float z) {
 		setPosition(new Position(x, y, z));
 	}
 	
+	/**
+	 * Sets this object's position.
+	 * @param x the new position's X.
+	 * @param y the new position's Y.
+	 */
 	default void setPosition(float x, float y) {
 		setPosition(new Position(x, y));
+	}
+	
+	/**
+	 * Sets this object's X.
+	 * @param x the new X.
+	 */
+	default void setX(float x) {
+		setPosition(new Position(x, getX(), getZ()));
+	}
+	
+	/**
+	 * Sets this object's Y.
+	 * @param y the new Y.
+	 */
+	default void setY(float y) {
+		setPosition(new Position(getX(), y, getZ()));
+	}
+	
+	/**
+	 * Sets this object's Z.
+	 * @param z the new Z.
+	 */
+	default void setZ(float z) {
+		setPosition(new Position(getX(), getY(), z));
 	}
 	
 	@Override
@@ -50,17 +100,5 @@ public interface Positioned extends PositionHolder {
 	@Override
 	default float getZ() {
 		return getPosition().getZ();
-	}
-	
-	default void setX(float x) {
-		setPosition(new Position(x, getX(), getZ()));
-	}
-	
-	default void setY(float y) {
-		setPosition(new Position(getX(), y, getZ()));
-	}
-	
-	default void setZ(float z) {
-		setPosition(new Position(getX(), getY(), z));
 	}
 }

@@ -27,15 +27,35 @@ package dev.vini2003.hammer.core.api.common.math.shape.modifier;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 
+/**
+ * A {@link Modifier} is applied to {@link Shape}s to modify their positions.
+ */
 @FunctionalInterface
 public interface Modifier {
-	Position modifyEquation(Position pos);
-	
+	/**
+	 * Modifies the given shape's start position.
+	 * <b>This is important if the positions inside the shape are distorted and may now be outside the original three-dimensional space.</b>
+	 * @param shape the shape to modify.
+	 * @return the modified shape.
+	 */
 	default Position modifyStartPos(Shape shape) {
 		return shape.getStartPos();
 	}
 	
+	/**
+	 * Modifies the given shape's end position.
+	 * <b>This is important if the positions inside the shape are distorted and may now be outside the original three-dimensional space.</b>
+	 * @param shape the shape to modify.
+	 * @return the modified shape.
+	 */
 	default Position modifyEndPos(Shape shape) {
 		return shape.getEndPos();
 	}
+	
+	/**
+	 * Modifies the given position.
+	 * @param pos the position to modify.
+	 * @return the modified position.
+	 */
+	Position modifyEquation(Position pos);
 }

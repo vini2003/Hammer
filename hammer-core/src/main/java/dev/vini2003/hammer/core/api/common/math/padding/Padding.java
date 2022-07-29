@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
@@ -24,6 +25,13 @@ import net.minecraft.network.PacketByteBuf;
  * </ul>
  */
 public class Padding {
+	public static final Codec<Padding> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.FLOAT.optionalFieldOf("left", 0.0F).forGetter(Padding::getLeft),
+			Codec.FLOAT.optionalFieldOf("right", 0.0F).forGetter(Padding::getRight),
+			Codec.FLOAT.optionalFieldOf("top", 0.0F).forGetter(Padding::getTop),
+			Codec.FLOAT.optionalFieldOf("bottom", 0.0F).forGetter(Padding::getBottom)
+	).apply(instance, Padding::new));
+	
 	private final float left;
 	private final float right;
 	private final float top;

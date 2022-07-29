@@ -60,6 +60,12 @@ import java.util.function.IntFunction;
  * </ul>
  */
 public class Position implements PositionHolder {
+	public static final Codec<Position> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.FLOAT.optionalFieldOf("x", 0.0F).forGetter(Position::getX),
+			Codec.FLOAT.optionalFieldOf("y", 0.0F).forGetter(Position::getY),
+			Codec.FLOAT.optionalFieldOf("z", 0.0F).forGetter(Position::getZ)
+	).apply(instance, Position::new));
+	
 	public static final Position ZERO = new Position(0.0F, 0.0F, 0.0F);
 	
 	private final float x;

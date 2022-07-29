@@ -43,7 +43,15 @@ public class InstanceUtil {
 	}
 	
 	public static MinecraftServer getServer() {
-		return (MinecraftServer) getGame();
+		if (isClient()) {
+			return getIntegratedServer();
+		} else {
+			return (MinecraftServer) getGame();
+		}
+	}
+	
+	private static MinecraftServer getIntegratedServer() {
+		return getClient().getServer();
 	}
 	
 	public static boolean isClient() {

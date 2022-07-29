@@ -33,6 +33,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * <p>A {@link Size} represents a three-dimensional size.
@@ -51,6 +52,12 @@ import java.util.Objects;
  * </ul>
  */
 public class Size implements SizeHolder {
+	public static final Codec<Size> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+			Codec.FLOAT.optionalFieldOf("width", 0.0F).forGetter(Size::getWidth),
+			Codec.FLOAT.optionalFieldOf("height", 0.0F).forGetter(Size::getHeight),
+			Codec.FLOAT.optionalFieldOf("length", 0.0F).forGetter(Size::getLength)
+	).apply(instance, Size::new));
+	
 	public static final Size ZERO = new Size(0.0F, 0.0F, 0.0F);
 	
 	private final float width;

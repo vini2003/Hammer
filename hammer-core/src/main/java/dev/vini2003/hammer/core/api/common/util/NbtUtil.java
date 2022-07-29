@@ -25,9 +25,6 @@
 package dev.vini2003.hammer.core.api.common.util;
 
 import com.mojang.brigadier.StringReader;
-import dev.vini2003.hammer.core.api.client.color.Color;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.client.util.math.Vector2f;
 import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.nbt.NbtCompound;

@@ -25,8 +25,10 @@
 package dev.vini2003.hammer.gui.api.client.screen.base;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.gui.api.common.event.*;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
+import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -167,10 +169,22 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			}
 		}
 		
+		var mousePos = PositionUtil.getMousePosition();
+		
+		Widget minChild = null;
+		float minDist = Float.MAX_VALUE;
+		
 		for (var child : handler.getAllChildren()) {
 			if (!child.isHidden() && child.isFocused()) {
-				renderTooltip(matrices, (List<Text>) child.getTooltips(), mouseX, mouseY);
+				if (minChild == null || minDist == Float.MAX_VALUE || minChild.getPosition().distanceTo(mousePos) > child.getPosition().distanceTo(mousePos)) {
+					minChild = child;
+					minDist = child.getPosition().distanceTo(mousePos);
+				}
 			}
+		}
+		
+		if (minChild != null) {
+			renderTooltip(matrices, (List<Text>) minChild.getTooltips(), mouseX, mouseY);
 		}
 		
 		provider.draw();

@@ -25,8 +25,8 @@
 package dev.vini2003.hammer.util.mixin.client;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.util.api.common.item.TriggerItem;
 import dev.vini2003.hammer.core.api.common.util.RaycastUtil;
+import dev.vini2003.hammer.util.api.common.item.TriggerItem;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
@@ -47,7 +47,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(WorldRenderer.class)

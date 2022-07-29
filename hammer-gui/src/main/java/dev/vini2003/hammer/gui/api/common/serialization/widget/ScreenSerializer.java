@@ -11,6 +11,8 @@ import dev.vini2003.hammer.core.api.client.texture.type.TextureType;
 import dev.vini2003.hammer.core.api.common.math.padding.Padding;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.core.api.common.serialization.ParseException;
+import dev.vini2003.hammer.core.api.common.serialization.ParseResult;
 import dev.vini2003.hammer.gui.api.client.screen.SerializableScreen;
 import dev.vini2003.hammer.gui.api.common.registry.ValueRegistry;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
@@ -40,7 +42,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.io.IOUtils;
 
-import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.function.Supplier;
@@ -150,7 +151,7 @@ public class ScreenSerializer {
 	
 	private static final String ATTRIBUTES = "attributes";
 	
-	private final SerializationContext context = new SerializationContext();
+	private final ScreenSerializerContext context = new ScreenSerializerContext();
 	
 	private final ResourceManager resourceManager;
 	
@@ -158,85 +159,53 @@ public class ScreenSerializer {
 		this.resourceManager = resourceManager;
 	}
 	
-	public static class ParseException extends Exception {}
-	
-	public record ParseResult<T>(
-			@Nullable
-			T value,
-			boolean valid
-	) {
-		public static <T> ParseResult<T> invalid() {
-			return new ParseResult<T>(null, false);
-		}
-		
-		public static <T> ParseResult<T> valid(T value) {
-			return new ParseResult<>(value, true);
-		}
-		
-		public T getOrThrow() throws ParseException {
-			if (value == null) {
-				throw new ParseException();
-			} else {
-				return value;
-			}
-		}
-		
-		public T getOrDefault(T value) {
-			if (this.value == null) {
-				return value;
-			} else {
-				return this.value;
-			}
-		}
-	}
-	
 	public static ParseResult<Size> getSize(JsonElement sizeElement, Supplier<Size> relativeSize) {
 		try {
-			if (!(sizeElement instanceof JsonObject)) return ParseResult.invalid();
+			if (!(sizeElement instanceof JsonObject)) return ParseResult.bad();
 			var sizeObject = sizeElement.getAsJsonObject();
 			
 			if (!sizeObject.has(LENGTH)) {
 				var sizeWidth = getRelativeValue(sizeObject.get(WIDTH), relativeSize.get()::getWidth).getOrThrow();
 				var sizeHeight = getRelativeValue(sizeObject.get(HEIGHT), relativeSize.get()::getHeight).getOrThrow();
 				
-				return ParseResult.valid(new Size(sizeWidth, sizeHeight));
+				return ParseResult.ok(new Size(sizeWidth, sizeHeight));
 			} else {
 				var sizeWidth = getRelativeValue(sizeObject.get(WIDTH), relativeSize.get()::getWidth).getOrThrow();
 				var sizeHeight = getRelativeValue(sizeObject.get(HEIGHT), relativeSize.get()::getHeight).getOrThrow();
 				var sizeLength = getRelativeValue(sizeObject.get(LEFT), relativeSize.get()::getLength).getOrThrow();
 				
-				return ParseResult.valid(new Size(sizeWidth, sizeHeight, sizeLength));
+				return ParseResult.ok(new Size(sizeWidth, sizeHeight, sizeLength));
 			}
 		} catch (ParseException e) {
-			return ParseResult.invalid();
+			return ParseResult.bad();
 		}
 	}
 	
 	public static ParseResult<Position> getPosition(JsonElement positionElement, Supplier<Position> relativePosition) {
 		try {
-			if (!(positionElement instanceof JsonObject)) return ParseResult.invalid();
+			if (!(positionElement instanceof JsonObject)) return ParseResult.bad();
 			var positionObject = positionElement.getAsJsonObject();
 			
 			if (!positionObject.has(Z)) {
 				var positionX = getRelativeValue(positionObject.get(X), relativePosition.get()::getX).getOrThrow();
 				var positionY = getRelativeValue(positionObject.get(Y), relativePosition.get()::getY).getOrThrow();
 				
-				return ParseResult.valid(new Position(positionX, positionY));
+				return ParseResult.ok(new Position(positionX, positionY));
 			} else {
 				var positionX = getRelativeValue(positionObject.get(X), relativePosition.get()::getX).getOrThrow();
 				var positionY = getRelativeValue(positionObject.get(Y), relativePosition.get()::getY).getOrThrow();
 				var positionZ = getRelativeValue(positionObject.get(Z), relativePosition.get()::getZ).getOrThrow();
 				
-				return ParseResult.valid(new Position(positionX, positionY, positionZ));
+				return ParseResult.ok(new Position(positionX, positionY, positionZ));
 			}
 		} catch (ParseException e) {
-			return ParseResult.invalid();
+			return ParseResult.bad();
 		}
 	}
 	
 	public static ParseResult<Padding> getPadding(JsonElement paddingElement) {
 		try {
-			if (!(paddingElement instanceof JsonObject)) return ParseResult.invalid();
+			if (!(paddingElement instanceof JsonObject)) return ParseResult.bad();
 			var paddingObject = paddingElement.getAsJsonObject();
 			
 			var paddingLeft = getFloat(paddingObject.get(LEFT)).getOrThrow();
@@ -244,122 +213,122 @@ public class ScreenSerializer {
 			var paddingTop = getFloat(paddingObject.get(TOP)).getOrThrow();
 			var paddingBottom = getFloat(paddingObject.get(BOTTOM)).getOrThrow();
 			
-			return ParseResult.valid(new Padding(paddingLeft, paddingRight, paddingTop, paddingBottom));
+			return ParseResult.ok(new Padding(paddingLeft, paddingRight, paddingTop, paddingBottom));
 		} catch (ParseException e) {
-			return ParseResult.invalid();
+			return ParseResult.bad();
 		}
 	}
 	
 	public static ParseResult<Integer> getInteger(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
-		return ParseResult.valid(valuePrimitive.getAsNumber().intValue());
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.bad();
+		return ParseResult.ok(valuePrimitive.getAsNumber().intValue());
 	}
 	
 	public static ParseResult<Byte> getByte(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
-		return ParseResult.valid(valuePrimitive.getAsNumber().byteValue());
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.bad();
+		return ParseResult.ok(valuePrimitive.getAsNumber().byteValue());
 	}
 	
 	public static ParseResult<Short> getShort(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
-		return ParseResult.valid(valuePrimitive.getAsNumber().shortValue());
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.bad();
+		return ParseResult.ok(valuePrimitive.getAsNumber().shortValue());
 	}
 	
 	public static ParseResult<Long> getLong(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
-		return ParseResult.valid(valuePrimitive.getAsNumber().longValue());
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.bad();
+		return ParseResult.ok(valuePrimitive.getAsNumber().longValue());
 	}
 	
 	public static ParseResult<Float> getFloat(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
-		return ParseResult.valid(valuePrimitive.getAsNumber().floatValue());
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.bad();
+		return ParseResult.ok(valuePrimitive.getAsNumber().floatValue());
 	}
 	
 	public static ParseResult<Double> getDouble(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
-		return ParseResult.valid(valuePrimitive.getAsNumber().doubleValue());
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.bad();
+		return ParseResult.ok(valuePrimitive.getAsNumber().doubleValue());
 	}
 	
 	public static ParseResult<Boolean> getBoolean(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isBoolean())) return ParseResult.invalid();
-		return ParseResult.valid(valuePrimitive.getAsBoolean());
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isBoolean())) return ParseResult.bad();
+		return ParseResult.ok(valuePrimitive.getAsBoolean());
 	}
 	
 	public static ParseResult<String> getString(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString())) return ParseResult.invalid();
-		return ParseResult.valid(valuePrimitive.getAsString());
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString())) return ParseResult.bad();
+		return ParseResult.ok(valuePrimitive.getAsString());
 	}
 	
 	public static ParseResult<Character> getCharacter(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString())) return ParseResult.invalid();
-		return ParseResult.valid(valuePrimitive.getAsCharacter());
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString())) return ParseResult.bad();
+		return ParseResult.ok(valuePrimitive.getAsCharacter());
 	}
 	
 	public static ParseResult<BigDecimal> getBigDecimal(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
-		return ParseResult.valid(valuePrimitive.getAsBigDecimal());
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.bad();
+		return ParseResult.ok(valuePrimitive.getAsBigDecimal());
 	}
 	
 	public static ParseResult<BigInteger> getBigInteger(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
-		return ParseResult.valid(valuePrimitive.getAsBigInteger());
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.bad();
+		return ParseResult.ok(valuePrimitive.getAsBigInteger());
 	}
 	
 	public static ParseResult<Number> getNumber(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.invalid();
-		return ParseResult.valid(valuePrimitive.getAsNumber());
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isNumber())) return ParseResult.bad();
+		return ParseResult.ok(valuePrimitive.getAsNumber());
 	}
 	
 	public static ParseResult<Identifier> getIdentifier(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && Identifier.isValid(valueElement.getAsString()))) return ParseResult.invalid();
-		return ParseResult.valid(new Identifier(valuePrimitive.getAsString()));
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && Identifier.isValid(valueElement.getAsString()))) return ParseResult.bad();
+		return ParseResult.ok(new Identifier(valuePrimitive.getAsString()));
 	}
 	
 	public static ParseResult<Color> getColor(JsonElement valueElement) {
 		try {
-			return ParseResult.valid(new Color(getLong(valueElement).getOrThrow()));
+			return ParseResult.ok(new Color(getLong(valueElement).getOrThrow()));
 		} catch (ParseException e) {
-			return ParseResult.invalid();
+			return ParseResult.bad();
 		}
 	}
 	
 	public static ParseResult<Item> getItem(JsonElement valueElement) {
 		// TODO!
-		return ParseResult.invalid();
+		return ParseResult.bad();
 	}
 	
 	public static ParseResult<ItemStack> getItemStack(JsonElement valueElement) {
 		// TODO!
-		return ParseResult.invalid();
+		return ParseResult.bad();
 	}
 	
 	public static ParseResult<Texture> getTexture(JsonElement valueElement) {
 		if (valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString() && valuePrimitive.getAsString().startsWith("&")) return getRegistryValue(valueElement);
 		
 		try {
-			if (!(valueElement instanceof JsonObject)) return ParseResult.invalid();
+			if (!(valueElement instanceof JsonObject)) return ParseResult.bad();
 			
 			var valueObject = valueElement.getAsJsonObject();
 			
 			var typeIdParseResult = getIdentifier(valueObject.get(TYPE));
-			if (!typeIdParseResult.valid()) return ParseResult.invalid();
+			if (!typeIdParseResult.ok()) return ParseResult.bad();
 			var typeId = typeIdParseResult.value();
 			
 			var type = TextureType.getById(typeId);
-			if (type == null) return ParseResult.invalid();
+			if (type == null) return ParseResult.bad();
 			
 			switch (type) {
 				case FLUID, TILED_FLUID -> {
@@ -368,9 +337,9 @@ public class ScreenSerializer {
 					var variant = FluidVariant.of(Registry.FLUID.get(variantId));
 					
 					if (type == TextureType.FLUID) {
-						return ParseResult.valid(new FluidTexture(variant));
+						return ParseResult.ok(new FluidTexture(variant));
 					} else {
-						return ParseResult.valid(new TiledFluidTexture(variant));
+						return ParseResult.ok(new TiledFluidTexture(variant));
 					}
 				}
 				
@@ -378,7 +347,7 @@ public class ScreenSerializer {
 					var id = getIdentifier(valueObject.get(ID)).getOrThrow();
 					
 					if (type == TextureType.IMAGE) {
-						return ParseResult.valid(new ImageTexture(id));
+						return ParseResult.ok(new ImageTexture(id));
 					} else {
 						var tileSize = getSize(valueObject.get(TILE_SIZE), () -> Size.ZERO).getOrThrow();
 						
@@ -388,7 +357,7 @@ public class ScreenSerializer {
 						var stepTilesX = getFloat(valueObject.get(STEP_TILES_X)).getOrThrow();
 						var stepTilesY = getFloat(valueObject.get(STEP_TILES_Y)).getOrThrow();
 						
-						return ParseResult.valid(new TiledImageTexture(id, tileSize.getWidth(), tileSize.getHeight(), maxTilesX, maxTilesY, stepTilesX, stepTilesY));
+						return ParseResult.ok(new TiledImageTexture(id, tileSize.getWidth(), tileSize.getHeight(), maxTilesX, maxTilesY, stepTilesX, stepTilesY));
 					}
 				}
 				
@@ -403,55 +372,55 @@ public class ScreenSerializer {
 					
 					var imagePadding = getPadding(valueObject.get(IMAGE_PADDING)).getOrThrow();
 					
-					return ParseResult.valid(new PartitionedTexture(id, imageSize, imagePadding));
+					return ParseResult.ok(new PartitionedTexture(id, imageSize, imagePadding));
 				}
 			}
 			
-			return ParseResult.invalid();
+			return ParseResult.bad();
 		} catch (ParseException e) {
-			return ParseResult.invalid();
+			return ParseResult.bad();
 		}
 	}
 	
 	public static <T> ParseResult<T> getValue(JsonElement valueElement, Class<T> clazz) {
 		try {
-			return ParseResult.valid(HC.GSON.fromJson(valueElement, clazz));
+			return ParseResult.ok(HC.GSON.fromJson(valueElement, clazz));
 		} catch (Exception e) {
-			return ParseResult.invalid();
+			return ParseResult.bad();
 		}
 	}
 	
 	public static <T> ParseResult<T> getRegistryValue(JsonElement valueElement) {
 		try {
-			if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString())) return ParseResult.invalid();
+			if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString())) return ParseResult.bad();
 			
 			var valueId = getIdentifier(new JsonPrimitive(valuePrimitive.getAsString().substring(1))).getOrThrow();
 
-			return ParseResult.valid(ValueRegistry.get(valueId));
+			return ParseResult.ok(ValueRegistry.get(valueId));
 		} catch (ParseException e) {
-			return ParseResult.invalid();
+			return ParseResult.bad();
 		}
 	}
 	
 	public static ParseResult<Float> getRelativeValue(JsonElement valueElement, Supplier<Float> relativeValue) {
-		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString())) return ParseResult.invalid();
+		if (!(valueElement instanceof JsonPrimitive valuePrimitive && valuePrimitive.isString())) return ParseResult.bad();
 		var valueString = valueElement.getAsString();
-		if (!(valueString.endsWith(PCT) || valueString.endsWith(PX))) return ParseResult.invalid();
-		if (valueString.indexOf(PCT) != valueString.lastIndexOf(PCT) || valueString.indexOf(PX) != valueString.lastIndexOf(PX)) return ParseResult.invalid();
+		if (!(valueString.endsWith(PCT) || valueString.endsWith(PX))) return ParseResult.bad();
+		if (valueString.indexOf(PCT) != valueString.lastIndexOf(PCT) || valueString.indexOf(PX) != valueString.lastIndexOf(PX)) return ParseResult.bad();
 		
 		try {
 			if (valueString.endsWith(PX)) {
-				return ParseResult.valid(relativeValue.get() + Float.parseFloat(valueString.replace(PX, "")));
+				return ParseResult.ok(relativeValue.get() + Float.parseFloat(valueString.replace(PX, "")));
 			}
 			
 			if (valueString.endsWith(PCT)) {
 				var percentage = Float.parseFloat(valueString.replace(PCT, "")) / 100.0F;
 				
-				return ParseResult.valid(relativeValue.get() * percentage);
+				return ParseResult.ok(relativeValue.get() * percentage);
 			}
 		} catch (Exception ignored) {}
 		
-		return ParseResult.invalid();
+		return ParseResult.bad();
 	}
 	
 	public static <T extends Widget> ParseResult<T> applyAttributes(Widget widget, JsonObject attributeObject) {
@@ -592,9 +561,9 @@ public class ScreenSerializer {
 				verticalProvider.setVertical(getBoolean(attributeObject.get(VERTICAL)).getOrThrow());
 			}
 			
-			return (ParseResult<T>) ParseResult.valid(widget);
+			return (ParseResult<T>) ParseResult.ok(widget);
 		} catch (ParseException e) {
-			return ParseResult.invalid();
+			return ParseResult.bad();
 		}
 	}
 	
@@ -602,7 +571,7 @@ public class ScreenSerializer {
 		widget.setPosition(position);
 		widget.setSize(size);
 		
-		return (ParseResult<T>) ParseResult.valid(widget);
+		return (ParseResult<T>) ParseResult.ok(widget);
 	}
 	
 	public static <T extends Widget> ParseResult<T> create(Supplier<Widget> supplier, Position position, Size size, JsonObject attributeObject) {
@@ -611,7 +580,7 @@ public class ScreenSerializer {
 		applyDefaults(widget, position, size);
 		applyAttributes(widget, attributeObject);
 		
-		return (ParseResult<T>) ParseResult.valid(widget);
+		return (ParseResult<T>) ParseResult.ok(widget);
 	}
 	
 	private SerializableScreen deserialize(Identifier screenId) {

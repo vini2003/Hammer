@@ -25,6 +25,8 @@
 package dev.vini2003.hammer.gui.api.common.widget;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.position.Positioned;
@@ -35,17 +37,36 @@ import dev.vini2003.hammer.gui.api.common.event.*;
 import dev.vini2003.hammer.gui.api.common.event.base.Event;
 import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.listener.EventListener;
+import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
 import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 
 import java.util.*;
 import java.util.function.Supplier;
 
 public abstract class Widget implements Positioned, Sized, EventListener, Tickable {
+	public static final Codec<Widget> CODEC = RecordCodecBuilder.create(
+			instance -> instance.group(
+					Codec.DOUBLE.fieldOf("foo").forGetter($ -> 0.0D)
+			).apply(instance, ($) -> new Widget() {
+				@Override
+				public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+				
+				}
+			})
+	);
+	
+	public static final Codec<ArrowWidget> ARROW_CODEC = CODEC.dispatch(arrow -> arrow, widget -> RecordCodecBuilder.create(
+			instance -> instance.group(
+					Codec.DOUBLE.fieldOf("bar").forGetter($ -> 0.0D)
+			).apply(instance, ($) -> new ArrowWidget())
+	));
+	
 	protected Position position = new Position(0.0F, 0.0F);
 	protected Size size = new Size(0.0F, 0.0F);
 	
@@ -54,7 +75,7 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	
 	protected Widget parent;
 	
-	protected Supplier<List<Text>> tooltipSupplier = () -> ImmutableList.of();
+	protected Supplier<List<OrderedText>> tooltip = () -> ImmutableList.of();
 	
 	protected boolean hidden = false;
 	protected boolean focused = false;
@@ -243,14 +264,19 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	 */
 	public abstract void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta);
 	
+	@Deprecated
+	public List<Text> getTooltips() {
+		return Collections.emptyList();
+	}
+	
 	/**
 	 * Returns this widget's tooltips.
 	 *
 	 * @return the tooltips.
 	 */
-	public Collection<Text> getTooltips() {
-		if (tooltipSupplier != null) {
-			return tooltipSupplier.get();
+	public List<OrderedText> getTooltip() {
+		if (tooltip != null) {
+			return tooltip.get();
 		}
 		
 		return new ArrayList<>();
@@ -312,12 +338,13 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 		this.parent = parent;
 	}
 	
-	public Supplier<List<Text>> getTooltipSupplier() {
-		return tooltipSupplier;
+	public void setTooltip(Supplier<List<OrderedText>> tooltip) {
+		this.tooltip = tooltip;
 	}
 	
+	@Deprecated
 	public void setTooltipSupplier(Supplier<List<Text>> tooltipSupplier) {
-		this.tooltipSupplier = tooltipSupplier;
+		this.tooltip = () -> tooltipSupplier.get().stream().map(Text::asOrderedText).toList();
 	}
 	
 	public void setHidden(boolean hidden) {

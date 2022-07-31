@@ -184,7 +184,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 		}
 		
 		if (minChild != null) {
-			renderTooltip(matrices, (List<Text>) minChild.getTooltips(), mouseX, mouseY);
+			renderOrderedTooltip(matrices, minChild.getTooltip(), mouseX, mouseY);
 		}
 		
 		provider.draw();

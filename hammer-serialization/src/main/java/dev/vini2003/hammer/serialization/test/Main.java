@@ -1,12 +1,15 @@
 package dev.vini2003.hammer.serialization.test;
 
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.vini2003.hammer.serialization.api.common.node.Node;
 import dev.vini2003.hammer.serialization.api.common.parser.BufParser;
 import dev.vini2003.hammer.serialization.api.common.parser.JsonParser;
 import dev.vini2003.hammer.serialization.api.common.parser.NbtParser;
 import io.netty.buffer.Unpooled;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.PacketByteBuf;
 
 import java.util.Date;
@@ -26,6 +29,8 @@ public class Main {
 			DAILY;
 			
 			public static final Node<Type> NODE = Node.STRING.xmap(Type::valueOf, Type::name);
+			
+			public static final Codec<Type> CODEC = Codec.STRING.xmap(Type::valueOf, Type::name);
 		}
 		
 		public enum Currency {
@@ -34,6 +39,8 @@ public class Main {
 			GBP;
 			
 			public static final Node<Currency> NODE = Node.STRING.xmap(Currency::valueOf, Currency::name);
+			
+			public static final Codec<Currency> CODEC = Codec.STRING.xmap(Currency::valueOf, Currency::name);
 		}
 		
 		public static final Node<Salary> NODE = Node.compound(
@@ -41,6 +48,14 @@ public class Main {
 				Currency.NODE.key("currency").getter(Salary::currency),
 				Node.DOUBLE.key("amount").getter(Salary::amount),
 				Salary::new
+		);
+		
+		public static final Codec<Salary> CODEC = RecordCodecBuilder.create(
+				instance -> instance.group(
+						Type.CODEC.fieldOf("type").forGetter(Salary::type),
+						Currency.CODEC.fieldOf("currency").forGetter(Salary::currency),
+						Codec.DOUBLE.fieldOf("amount").forGetter(Salary::amount)
+				).apply(instance, Salary::new)
 		);
 	}
 	
@@ -55,12 +70,21 @@ public class Main {
 			MASTERS;
 			
 			public static final Node<Degree> NODE = Node.STRING.xmap(Degree::valueOf, Degree::name);
+			
+			public static final Codec<Degree> CODEC = Codec.STRING.xmap(Degree::valueOf, Degree::name);
 		}
 		
 		public static final Node<Job> NODE = Node.compound(
 				Degree.NODE.key("degree").getter(Job::degree),
 				Salary.NODE.key("salary").getter(Job::salary),
 				Job::new
+		);
+		
+		public static final Codec<Job> CODEC = RecordCodecBuilder.create(
+				instance -> instance.group(
+						Degree.CODEC.fieldOf("degree").forGetter(Job::degree),
+						Salary.CODEC.fieldOf("salary").forGetter(Job::salary)
+				).apply(instance, Job::new)
 		);
 	}
 	
@@ -75,6 +99,14 @@ public class Main {
 				Job.NODE.key("job").getter(Person::job),
 				Person::new
 		);
+		
+		public static final Codec<Person> CODEC = RecordCodecBuilder.create(
+				instance -> instance.group(
+						Codec.STRING.fieldOf("name").forGetter(Person::name),
+						Codec.INT.fieldOf("age").forGetter(Person::age),
+						Job.CODEC.fieldOf("job").forGetter(Person::job)
+				).apply(instance, Person::new)
+		);
 	}
 	
 	public record Event(
@@ -88,6 +120,14 @@ public class Main {
 				Node.LONG.key("date").xmap(Date::new, Date::getTime).getter(Event::date),
 				Event::new
 		);
+		
+		public static final Codec<Event> CODEC = RecordCodecBuilder.create(
+				instance -> instance.group(
+						Codec.STRING.fieldOf("name").forGetter(Event::name),
+						Codec.STRING.fieldOf("description").forGetter(Event::description),
+						Codec.LONG.fieldOf("date").xmap(Date::new, Date::getTime).forGetter(Event::date)
+				).apply(instance, Event::new)
+		);
 	}
 	
 	public record Company(
@@ -100,6 +140,14 @@ public class Main {
 				Node.map(Node.STRING, Person.NODE).key("employees").getter(Company::employees),
 				Node.list(Event.NODE).key("events").getter(Company::events),
 				Company::new
+		);
+		
+		public static final Codec<Company> CODEC = RecordCodecBuilder.create(
+				instance -> instance.group(
+						Codec.STRING.fieldOf("name").forGetter(Company::name),
+						Codec.unboundedMap(Codec.STRING, Person.CODEC).fieldOf("employees").forGetter(Company::employees),
+						Codec.list(Event.CODEC).fieldOf("events").forGetter(Company::events)
+				).apply(instance, Company::new)
 		);
 	}
 	
@@ -210,6 +258,35 @@ public class Main {
 		assert carForNbt.equals(otherCarForNbt);
 		assert carForJson.equals(otherCarForJson);
 		assert carForBuf.equals(otherCarForBuf);
+		
+		var companyLoadNbtForNode = new NbtCompound();
+		Company.NODE.serialize(NbtParser.INSTANCE, company, companyLoadNbtForNode);
+		var companyLoadNbtForCodec = new NbtCompound();
+		Company.CODEC.encode(company, NbtOps.INSTANCE, companyLoadNbtForCodec);
+		
+		long nodeTime = 0L;
+		var codecTime = 0L;
+		
+		for (var i = 0; i < 2_500_000; ++i) {
+			var nodeNbt = new NbtCompound();
+			var codecNbt = new NbtCompound();
+			
+			var timeNodeStart = System.nanoTime();
+			Company.NODE.serialize(NbtParser.INSTANCE, company, nodeNbt);
+			var timeNodeEnd = System.nanoTime();
+			
+			var timeCodecStart = System.nanoTime();
+			Company.CODEC.encode(company, NbtOps.INSTANCE, codecNbt);
+			var timeCodecEnd = System.nanoTime();
+			
+			nodeTime += timeNodeEnd - timeNodeStart;
+			codecTime += timeCodecEnd - timeCodecStart;
+			
+			assert nodeNbt.equals(codecNbt);
+		}
+		
+		System.out.println("Node time: " + nodeTime / 2_500_000.0D / 1_000.0D + "us");
+		System.out.println("Codec time: " + codecTime / 2_500_000.0D / 1_000.0D + "us");
 		
 		System.out.println("Tests succeeded!");
 	}

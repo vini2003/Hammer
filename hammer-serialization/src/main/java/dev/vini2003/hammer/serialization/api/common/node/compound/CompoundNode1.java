@@ -33,7 +33,7 @@ public class CompoundNode1<R, T1, N1 extends Node<T1>> extends Node<R> {
 	public <F, O> void serialize(Serializer<F> serializer, @Nullable String key, O value, F object) {
 		var map = serializer.createMap(object);
 		
-		n1.serialize(serializer, "N1", get(value), map);
+		n1.serialize(serializer, key, get(value), map);
 		
 		serializer.write(key, map, object);
 	}

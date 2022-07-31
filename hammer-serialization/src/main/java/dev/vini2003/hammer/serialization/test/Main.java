@@ -1,19 +1,18 @@
 package dev.vini2003.hammer.serialization.test;
 
 import com.google.gson.JsonObject;
+import dev.vini2003.hammer.serialization.api.common.node.Node;
 import dev.vini2003.hammer.serialization.api.common.parser.BufParser;
 import dev.vini2003.hammer.serialization.api.common.parser.JsonParser;
 import dev.vini2003.hammer.serialization.api.common.parser.NbtParser;
-import dev.vini2003.hammer.serialization.api.common.node.Node;
 import io.netty.buffer.Unpooled;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
-import javax.naming.ldap.SortKey;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Objects;
 
 public class Main {
 	public record Salary(
@@ -50,6 +49,7 @@ public class Main {
 			Salary salary
 	) {
 		public enum Degree {
+			NONE,
 			BACHELORS,
 			DOCTORS,
 			MASTERS;
@@ -103,32 +103,114 @@ public class Main {
 		);
 	}
 	
+	public static final class Car {
+		public static final Node<Car> NODE = Node.compound(
+				Node.STRING.key("maker").getter(Car::getMaker).setter(Car::setMaker),
+				Node.STRING.key("model").getter(Car::getModel).setter(Car::setModel),
+				Car::new
+		);
+		
+		public String maker;
+		public String model;
+		
+		public Car(String maker, String model) {
+			this.maker = maker;
+			this.model = model;
+		}
+		
+		public String getMaker() {
+			return maker;
+		}
+		
+		public void setMaker(String maker) {
+			this.maker = maker;
+		}
+		
+		public String getModel() {
+			return model;
+		}
+		
+		public void setModel(String model) {
+			this.model = model;
+		}
+		
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) {
+				return true;
+			}
+			if (o == null || getClass() != o.getClass()) {
+				return false;
+			}
+			Car car = (Car) o;
+			return Objects.equals(maker, car.maker) && Objects.equals(model, car.model);
+		}
+		
+		@Override
+		public int hashCode() {
+			return Objects.hash(maker, model);
+		}
+	}
+	
 	public static void main(String[] args) {
 		var company = new Company(
-				"Innit",
+				"Microsoft",
 				Map.of(
-						"Vini", new Person("Vini", 23, new Job(Job.Degree.MASTERS, new Salary(Salary.Type.MONTHLY, Salary.Currency.USD, 1000))),
-						"Vini2", new Person("Vini2", 23, new Job(Job.Degree.MASTERS, new Salary(Salary.Type.MONTHLY, Salary.Currency.USD, 1000)))
+						"Joe Rogan", new Person("Joe Rogan", 54, new Job(Job.Degree.NONE, new Salary(Salary.Type.MONTHLY, Salary.Currency.USD, 8488553))),
+						"Elon Musk", new Person("Elon Musk", 37, new Job(Job.Degree.MASTERS, new Salary(Salary.Type.MONTHLY, Salary.Currency.USD, 76453457))),
+						"Jeff Bezos", new Person("Jeff Bezos", 14, new Job(Job.Degree.DOCTORS, new Salary(Salary.Type.MONTHLY, Salary.Currency.USD, 674564))),
+						"Will Smith", new Person("Will Smith", 75, new Job(Job.Degree.BACHELORS, new Salary(Salary.Type.MONTHLY, Salary.Currency.USD, 745736))),
+						"Mark Zuckerberg", new Person("Mark Zuckerberg", 34, new Job(Job.Degree.DOCTORS, new Salary(Salary.Type.MONTHLY, Salary.Currency.USD, 9552573)))
 				),
 				List.of(
-						new Event("Event 1", "Event 1 description", new Date()),
-						new Event("Event 2", "Event 2 description", new Date())
+						new Event("Public Speech", "A public speech by Joe Rogan.", new Date()),
+						new Event("Public Speech", "A public speech by Elon Musk.", new Date()),
+						new Event("Public Speech", "A public speech by Jeff Bezos.", new Date()),
+						new Event("Public Speech", "A public speech by Will Smith.", new Date()),
+						new Event("Public Speech", "A public speech by Mark Zuckerberg.", new Date())
 				)
 		);
 		
-		var eventNbt = new NbtCompound();
-		var eventJson = new JsonObject();
-		var eventBuf = new PacketByteBuf(Unpooled.buffer());
+		var companyNbt = new NbtCompound();
+		var companyJson = new JsonObject();
+		var companyBuf = new PacketByteBuf(Unpooled.buffer());
 		
-		Company.NODE.serialize(NbtParser.INSTANCE, company, eventNbt);
-		Company.NODE.serialize(JsonParser.INSTANCE, company, eventJson);
-		Company.NODE.serialize(BufParser.INSTANCE, company, eventBuf);
+		Company.NODE.serialize(NbtParser.INSTANCE, company, companyNbt);
+		Company.NODE.serialize(JsonParser.INSTANCE, company, companyJson);
+		Company.NODE.serialize(BufParser.INSTANCE, company, companyBuf);
 		
-		var newEventFromNbt = Company.NODE.deserialize(NbtParser.INSTANCE, eventNbt);
-		var newEventFromJson = Company.NODE.deserialize(JsonParser.INSTANCE, eventJson);
-		var newEventFromBuf = Company.NODE.deserialize(BufParser.INSTANCE, eventBuf);
+		var newCompanyFromNbt = Company.NODE.deserialize(NbtParser.INSTANCE, companyNbt);
+		var newCompanyFromJson = Company.NODE.deserialize(JsonParser.INSTANCE, companyJson);
+		var newCompanyFromBuf = Company.NODE.deserialize(BufParser.INSTANCE, companyBuf);
 		
+		assert company.equals(newCompanyFromNbt);
+		assert company.equals(newCompanyFromJson);
+		assert company.equals(newCompanyFromBuf);
 		
-		System.out.println("Test finished!");
+		var carForNbt = new Car("Ford", "Mustang");
+		var carForJson = new Car("Ford", "Mustang");
+		var carForBuf = new Car("Ford", "Mustang");
+		
+		var otherCarForNbt = new Car("Tesla", "Model X");
+		var otherCarForJson = new Car("Tesla", "Model X");
+		var otherCarForBuf = new Car("Tesla", "Model X");
+		
+		var carNbt = new NbtCompound();
+		var carJson = new JsonObject();
+		var carBuf = new PacketByteBuf(Unpooled.buffer());
+		
+		Car.NODE.serialize(NbtParser.INSTANCE, carForNbt, carNbt);
+		Car.NODE.serialize(JsonParser.INSTANCE, carForJson, carJson);
+		Car.NODE.serialize(BufParser.INSTANCE, carForBuf, carBuf);
+		
+		Car.NODE.deserialize(NbtParser.INSTANCE, carNbt, otherCarForNbt);
+		Car.NODE.deserialize(JsonParser.INSTANCE, carJson, otherCarForJson);
+		Car.NODE.deserialize(BufParser.INSTANCE, carBuf, otherCarForBuf);
+		
+		assert carForNbt.equals(otherCarForNbt);
+		assert carForJson.equals(otherCarForJson);
+		assert carForBuf.equals(otherCarForBuf);
+		
+		System.out.println("Tests succeeded!");
 	}
 }

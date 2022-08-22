@@ -65,11 +65,11 @@ public class FluidTextUtil {
 		
 		if (HCConfig.USE_DROPLETS) {
 			tooltips.addAll(getVariantTooltips(fluidView.getResource()));
-			tooltips.add(TextUtil.toLiteralText(NumberUtil.getPrettyShortenedString(fluidView.getAmount(), "d") + " / " + NumberUtil.getPrettyShortenedString(fluidView.getCapacity(), "d")).formatted(Formatting.GRAY));
+			tooltips.add(Text.literal(NumberUtil.getPrettyShortenedString(fluidView.getAmount(), "d") + " / " + NumberUtil.getPrettyShortenedString(fluidView.getCapacity(), "d")).formatted(Formatting.GRAY));
 			tooltips.add(TextUtil.getModId(fluidId));
 		} else {
 			tooltips.addAll(getVariantTooltips(fluidView.getResource()));
-			tooltips.add(TextUtil.toLiteralText(NumberUtil.getPrettyShortenedString(fluidView.getAmount() / ((double) FluidConstants.BUCKET), "b") + " / " + NumberUtil.getPrettyShortenedString(fluidView.getCapacity() / ((double) FluidConstants.BUCKET), "b")).formatted(Formatting.GRAY));
+			tooltips.add(Text.literal(NumberUtil.getPrettyShortenedString(fluidView.getAmount() / ((double) FluidConstants.BUCKET), "b") + " / " + NumberUtil.getPrettyShortenedString(fluidView.getCapacity() / ((double) FluidConstants.BUCKET), "b")).formatted(Formatting.GRAY));
 			tooltips.add(TextUtil.getModId(fluidId));
 		}
 		
@@ -83,11 +83,11 @@ public class FluidTextUtil {
 		
 		if (HCConfig.USE_DROPLETS) {
 			tooltips.addAll(getVariantTooltips(fluidView.getResource()));
-			tooltips.add(TextUtil.toLiteralText(NumberUtil.getPrettyString(fluidView.getAmount(), "d") + " / " + NumberUtil.getPrettyString(fluidView.getCapacity(), "d")).formatted(Formatting.GRAY));
+			tooltips.add(Text.literal(NumberUtil.getPrettyString(fluidView.getAmount(), "d") + " / " + NumberUtil.getPrettyString(fluidView.getCapacity(), "d")).formatted(Formatting.GRAY));
 			tooltips.add(TextUtil.getModId(fluidId));
 		} else {
 			tooltips.addAll(getVariantTooltips(fluidView.getResource()));
-			tooltips.add(TextUtil.toLiteralText(NumberUtil.getPrettyString(fluidView.getAmount() / ((double) FluidConstants.BUCKET), "b") + " / " + NumberUtil.getPrettyString(fluidView.getCapacity() / ((double) FluidConstants.BUCKET), "b")).formatted(Formatting.GRAY));
+			tooltips.add(Text.literal(NumberUtil.getPrettyString(fluidView.getAmount() / ((double) FluidConstants.BUCKET), "b") + " / " + NumberUtil.getPrettyString(fluidView.getCapacity() / ((double) FluidConstants.BUCKET), "b")).formatted(Formatting.GRAY));
 			tooltips.add(TextUtil.getModId(fluidId));
 		}
 		

@@ -38,12 +38,14 @@ import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.stage.api.common.manager.StageManager;
 import dev.vini2003.hammer.stage.api.common.stage.Stage;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneManager;
-import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
@@ -74,7 +76,7 @@ public class HSCommands {
 		var active = StageManager.getActive(source.getWorld().getRegistryKey());
 		
 		if (active != null) {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.load.failure", new TranslatableText("command.hammer.stage.none_active")), false);
+			source.sendFeedback(Text.translatable("command.hammer.stage.load.failure", Text.translatable("command.hammer.stage.none_active")), false);
 		}
 		
 		try {
@@ -86,9 +88,9 @@ public class HSCommands {
 			
 			stage.load(player.world);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.stage.load.success", stageId), false);
+			source.sendFeedback(Text.translatable("command.hammer.stage.load.success", stageId), false);
 		} catch (Exception exception) {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.load.failure", stageId, new TranslatableText("command.hammer.stage.no_or_invalid_provider")), false);
+			source.sendFeedback(Text.translatable("command.hammer.stage.load.failure", stageId, Text.translatable("command.hammer.stage.no_or_invalid_provider")), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -106,9 +108,9 @@ public class HSCommands {
 			
 			StageManager.setActive(source.getWorld().getRegistryKey(), null);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.stage.unload.success"), true);
+			source.sendFeedback(Text.translatable("command.hammer.stage.unload.success"), true);
 		} else {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.unload.failure", new TranslatableText("command.hammer.stage.none_active")), true);
+			source.sendFeedback(Text.translatable("command.hammer.stage.unload.failure", Text.translatable("command.hammer.stage.none_active")), true);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -124,9 +126,9 @@ public class HSCommands {
 		if (stage != null) {
 			stage.prepare(player.world);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.stage.prepare.success"), true);
+			source.sendFeedback(Text.translatable("command.hammer.stage.prepare.success"), true);
 		} else {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.prepare.failure", new TranslatableText("command.hammer.stage.none_active")), true);
+			source.sendFeedback(Text.translatable("command.hammer.stage.prepare.failure", Text.translatable("command.hammer.stage.none_active")), true);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -142,9 +144,9 @@ public class HSCommands {
 		if (stage != null) {
 			stage.start(player.world);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.stage.start.success"), true);
+			source.sendFeedback(Text.translatable("command.hammer.stage.start.success"), true);
 		} else {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.start.failure", new TranslatableText("command.hammer.stage.none_active")), true);
+			source.sendFeedback(Text.translatable("command.hammer.stage.start.failure", Text.translatable("command.hammer.stage.none_active")), true);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -160,9 +162,9 @@ public class HSCommands {
 		if (stage != null) {
 			stage.stop(player.world);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.stage.stop.success"), true);
+			source.sendFeedback(Text.translatable("command.hammer.stage.stop.success"), true);
 		} else {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.stop.failure", new TranslatableText("command.hammer.stage.none_active")), true);
+			source.sendFeedback(Text.translatable("command.hammer.stage.stop.failure", Text.translatable("command.hammer.stage.none_active")), true);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -179,12 +181,12 @@ public class HSCommands {
 			stage.pause(player.world);
 			
 			if (stage.getState() == Stage.State.PAUSED) {
-				source.sendFeedback(new TranslatableText("command.hammer.stage.pause.success"), true);
+				source.sendFeedback(Text.translatable("command.hammer.stage.pause.success"), true);
 			} else {
-				source.sendFeedback(new TranslatableText("command.hammer.stage.unpause.success"), true);
+				source.sendFeedback(Text.translatable("command.hammer.stage.unpause.success"), true);
 			}
 		} else {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.pause.failure", new TranslatableText("command.hammer.stage.none_active")), true);
+			source.sendFeedback(Text.translatable("command.hammer.stage.pause.failure", Text.translatable("command.hammer.stage.none_active")), true);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -200,16 +202,16 @@ public class HSCommands {
 		if (stage != null) {
 			stage.restart(player.world);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.stage.restart.success"), true);
+			source.sendFeedback(Text.translatable("command.hammer.stage.restart.success"), true);
 		} else {
-			source.sendFeedback(new TranslatableText("command.hammer.stage.restart.failure", new TranslatableText("command.hammer.stage.none_active")), true);
+			source.sendFeedback(Text.translatable("command.hammer.stage.restart.failure", Text.translatable("command.hammer.stage.none_active")), true);
 		}
 		
 		return Command.SINGLE_SUCCESS;
 	}
 	
 	public static void init() {
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
 			dispatcher.register(
 					literal("stage").requires(source -> {
 						return source.hasPermissionLevel(4);

@@ -47,7 +47,7 @@ public class WorldMixin implements ComponentHolder {
 	private ComponentContainer hammer$componentContainer = new ComponentContainer();
 	
 	@Inject(at = @At("RETURN"), method = "<init>")
-	private void hammer$init(MutableWorldProperties mutableWorldProperties, RegistryKey<World> registryKey, RegistryEntry<DimensionType> registryEntry, Supplier<Profiler> supplier, boolean bl, boolean bl2, long l, CallbackInfo ci) {
+	private void hammer$init(MutableWorldProperties properties, RegistryKey registryRef, RegistryEntry dimension, Supplier profiler, boolean isClient, boolean debugWorld, long seed, int maxChainedNeighborUpdates, CallbackInfo ci) {
 		if (!((Object) this instanceof ServerWorld)) {
 			ComponentUtil.attachToWorld((World) (Object) this);
 		}

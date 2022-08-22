@@ -1,4 +1,6 @@
 {
+  "text.hammer.yes": "Yes",
+  "text.hammer.no": "No",
   "command.hammer.show_chat.self": "Your chat has been %s",
   "command.hammer.show_chat.other": "Chat %s for %s",
   "command.hammer.show_global_chat.self": "Your global chat has been %s",

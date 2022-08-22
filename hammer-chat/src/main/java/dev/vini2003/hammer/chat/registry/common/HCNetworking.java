@@ -29,8 +29,10 @@ import dev.vini2003.hammer.chat.api.common.manager.ChannelManager;
 import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
 import dev.vini2003.hammer.core.HC;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
+
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
@@ -53,7 +55,7 @@ public class HCNetworking {
 				}
 				
 				if (channels.size() == 0) {
-					player.sendMessage(new TranslatableText("text.hammer.channel.none"), false);
+					player.sendMessage(Text.translatable("text.hammer.channel.none"), false);
 					
 					return;
 				} else {
@@ -78,7 +80,7 @@ public class HCNetworking {
 					
 					((PlayerEntityAccessor) player).hammer$setSelectedChannel(selectedChannel);
 					
-					player.sendMessage(new TranslatableText("text.hammer.channel.select.self", new LiteralText("#" + selectedChannel.getName()).formatted(Formatting.DARK_GRAY)), false);
+					player.sendMessage(Text.translatable("text.hammer.channel.select.self", Text.literal("#" + selectedChannel.getName()).formatted(Formatting.DARK_GRAY)), false);
 				}
 			});
 		});

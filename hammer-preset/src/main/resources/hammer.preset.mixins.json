@@ -7,11 +7,11 @@
   "mixins": [
   ],
   "client": [
-    "client.ToastManagerMixin",
-    "client.PlayerListHudMixin",
+    "client.GameOptionsMixin",
     "client.AddServerScreenMixin",
     "client.MinecraftClientMixin",
-    "client.VideoOptionsScreenMixin"
+    "client.PlayerListHudMixin",
+    "client.ToastManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

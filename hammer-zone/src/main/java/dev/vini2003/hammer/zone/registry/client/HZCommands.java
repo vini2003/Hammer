@@ -39,16 +39,19 @@ import dev.vini2003.hammer.zone.api.common.manager.ZoneManager;
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
 import dev.vini2003.hammer.zone.registry.common.HZComponents;
 import dev.vini2003.hammer.zone.registry.common.HZNetworking;
-import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.util.ScreenshotRecorder;
 import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.text.ClickEvent;
-import net.minecraft.text.LiteralText;
+
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
@@ -57,8 +60,8 @@ import java.nio.file.Files;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import static net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.argument;
-import static net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.literal;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
 public class HZCommands {
 	private static CompletableFuture<Suggestions> zoneSuggestIds(CommandContext<FabricClientCommandSource> context, SuggestionsBuilder builder) {
@@ -88,7 +91,7 @@ public class HZCommands {
 		
 		HZValues.ZONE_EDITOR = !HZValues.ZONE_EDITOR;
 		
-		source.sendFeedback(new TranslatableText("command.hammer.zone.editor", HZValues.ZONE_EDITOR ? new TranslatableText("text.hammer.enabled.lower_case") : new TranslatableText("text.hammer.disabled.lower_case")));
+		source.sendFeedback(Text.translatable("command.hammer.zone.editor", HZValues.ZONE_EDITOR ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")));
 		
 		return Command.SINGLE_SUCCESS;
 	}
@@ -103,9 +106,9 @@ public class HZCommands {
 		if (zone != null) {
 			HZValues.setCommandSelectedZone(zone);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.zone.select", zone.getId()));
+			source.sendFeedback(Text.translatable("command.hammer.zone.select", zone.getId()));
 		} else {
-			source.sendError(new TranslatableText("command.hammer.zone.not_found"));
+			source.sendError(Text.translatable("command.hammer.zone.not_found"));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -122,9 +125,9 @@ public class HZCommands {
 		if (zone != null) {
 			HZValues.setCommandSelectedZone(zone);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.zone.select", zone.getId()));
+			source.sendFeedback(Text.translatable("command.hammer.zone.select", zone.getId()));
 		} else {
-			source.sendError(new TranslatableText("command.hammer.zone.not_found"));
+			source.sendError(Text.translatable("command.hammer.zone.not_found"));
 		}
 		
 		
@@ -141,7 +144,7 @@ public class HZCommands {
 		if (zone != null) {
 			HZValues.setCommandSelectedZone(null);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.zone.deselect"));
+			source.sendFeedback(Text.translatable("command.hammer.zone.deselect"));
 		} else {
 		
 		}
@@ -162,9 +165,9 @@ public class HZCommands {
 			
 			ClientPlayNetworking.send(HZNetworking.ZONE_DELETE, buf);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.zone.delete", zone.getId()));
+			source.sendFeedback(Text.translatable("command.hammer.zone.delete", zone.getId()));
 		} else {
-			source.sendError(new TranslatableText("command.hammer.zone.not_found"));
+			source.sendError(Text.translatable("command.hammer.zone.not_found"));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -184,9 +187,9 @@ public class HZCommands {
 			
 			ClientPlayNetworking.send(HZNetworking.ZONE_DELETE, buf);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.zone.delete", zone.getId()));
+			source.sendFeedback(Text.translatable("command.hammer.zone.delete", zone.getId()));
 		} else {
-			source.sendError(new TranslatableText("command.hammer.zone.not_found"));
+			source.sendError(Text.translatable("command.hammer.zone.not_found"));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -204,7 +207,7 @@ public class HZCommands {
 		
 		ClientPlayNetworking.send(HZNetworking.ZONE_CREATE, buf);
 		
-		source.sendFeedback(new TranslatableText("command.hammer.zone.create", zoneId));
+		source.sendFeedback(Text.translatable("command.hammer.zone.create", zoneId));
 		
 		return Command.SINGLE_SUCCESS;
 	}
@@ -221,7 +224,7 @@ public class HZCommands {
 		
 		ClientPlayNetworking.send(HZNetworking.ZONE_CREATE, buf);
 		
-		source.sendFeedback(new TranslatableText("command.hammer.zone.create", zoneId));
+		source.sendFeedback(Text.translatable("command.hammer.zone.create", zoneId));
 		
 		return Command.SINGLE_SUCCESS;
 	}
@@ -236,12 +239,12 @@ public class HZCommands {
 		var zones = ZoneManager.getAll(player.world);
 		
 		if (zones.isEmpty()) {
-			source.sendFeedback(new TranslatableText("command.hammer.zone.list.none"));
+			source.sendFeedback(Text.translatable("command.hammer.zone.list.none"));
 			
 			return Command.SINGLE_SUCCESS;
 		}
 		
-		source.sendFeedback(new TranslatableText("command.hammer.zone.list.start"));
+		source.sendFeedback(Text.translatable("command.hammer.zone.list.start"));
 		
 		for (var zone : zones) {
 			if (index >= 10) {
@@ -250,11 +253,11 @@ public class HZCommands {
 			
 			index += 1;
 			
-			source.sendFeedback(new TranslatableText("command.hammer.zone.list.entry", zone.getId(), String.format("#%08X", zone.getColor().toRgba())));
+			source.sendFeedback(Text.translatable("command.hammer.zone.list.entry", zone.getId(), String.format("#%08X", zone.getColor().toRgba())));
 		}
 		
 		if (zones.size() / 10 > 0) {
-			source.sendFeedback(new TranslatableText("command.hammer.zone.list.end", 0, zones.size() / 10));
+			source.sendFeedback(Text.translatable("command.hammer.zone.list.end", 0, zones.size() / 10));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -272,23 +275,23 @@ public class HZCommands {
 		var zones = ZoneManager.getAll(player.world);
 		
 		if (zones.isEmpty()) {
-			source.sendFeedback(new TranslatableText("command.hammer.zone.list.none"));
+			source.sendFeedback(Text.translatable("command.hammer.zone.list.none"));
 			
 			return Command.SINGLE_SUCCESS;
 		}
 		
-		source.sendFeedback(new TranslatableText("command.hammer.zone.list"));
+		source.sendFeedback(Text.translatable("command.hammer.zone.list"));
 		
 		for (var zone : zones) {
 			if (index > (page * 10) && index < ((page + 1) * 10)) {
-				source.sendFeedback(new TranslatableText("command.hammer.zone.list.entry", zone.getId(), String.format("#%08X", zone.getColor().toRgba())));
+				source.sendFeedback(Text.translatable("command.hammer.zone.list.entry", zone.getId(), String.format("#%08X", zone.getColor().toRgba())));
 			}
 			
 			index += 1;
 		}
 		
 		if (zones.size() / 10 > 0) {
-			source.sendFeedback(new TranslatableText("command.hammer.zone.list.end", page, zones.size() / 10));
+			source.sendFeedback(Text.translatable("command.hammer.zone.list.end", page, zones.size() / 10));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -311,9 +314,9 @@ public class HZCommands {
 			
 			ClientPlayNetworking.send(HZNetworking.ZONE_COLOR_CHANGED, buf);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.zone.color", String.format("#%08X", zone.getColor().toRgba())));
+			source.sendFeedback(Text.translatable("command.hammer.zone.color", String.format("#%08X", zone.getColor().toRgba())));
 		} else {
-			source.sendError(new TranslatableText("command.hammer.zone.not_found"));
+			source.sendError(Text.translatable("command.hammer.zone.not_found"));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -349,14 +352,14 @@ public class HZCommands {
 				
 				writer.close();
 				
-				source.sendFeedback(new TranslatableText("command.hammer.zone.export", zone.getId(), new LiteralText(zonePath.getFileName().toString()).formatted(Formatting.UNDERLINE).styled(style -> {
+				source.sendFeedback(Text.translatable("command.hammer.zone.export", zone.getId(), Text.literal(zonePath.getFileName().toString()).formatted(Formatting.UNDERLINE).styled(style -> {
 					return style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, zonePath.toAbsolutePath().toString()));
 				})));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		} else {
-			source.sendError(new TranslatableText("command.hammer.zone.not_found"));
+			source.sendError(Text.translatable("command.hammer.zone.not_found"));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -393,14 +396,14 @@ public class HZCommands {
 				
 				writer.close();
 				
-				source.sendFeedback(new TranslatableText("command.hammer.zone.export", zone.getId(), new LiteralText(zonePath.getFileName().toString()).formatted(Formatting.UNDERLINE).styled(style -> {
+				source.sendFeedback(Text.translatable("command.hammer.zone.export", zone.getId(), Text.literal(zonePath.getFileName().toString()).formatted(Formatting.UNDERLINE).styled(style -> {
 					return style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, zonePath.toAbsolutePath().toString()));
 				})));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		} else {
-			source.sendError(new TranslatableText("command.hammer.zone.not_found"));
+			source.sendError(Text.translatable("command.hammer.zone.not_found"));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -422,9 +425,9 @@ public class HZCommands {
 			
 			ClientPlayNetworking.send(HZNetworking.ZONE_GROUP_CHANGED, buf);
 			
-			source.sendFeedback(new TranslatableText("command.hammer.zone.group", zoneGroupId));
+			source.sendFeedback(Text.translatable("command.hammer.zone.group", zoneGroupId));
 		} else {
-			source.sendError(new TranslatableText("command.hammer.zone.not_found"));
+			source.sendError(Text.translatable("command.hammer.zone.not_found"));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -440,12 +443,12 @@ public class HZCommands {
 		var groups = ZoneGroupManager.getGroups();
 		
 		if (groups.isEmpty()) {
-			source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.none"));
+			source.sendFeedback(Text.translatable("command.hammer.zone.group.list.none"));
 			
 			return Command.SINGLE_SUCCESS;
 		}
 		
-		source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.start"));
+		source.sendFeedback(Text.translatable("command.hammer.zone.group.list.start"));
 		
 		for (var group : groups) {
 			if (index >= 10) {
@@ -454,10 +457,10 @@ public class HZCommands {
 			
 			index += 1;
 			
-			source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.entry.outer", group.getId()));
+			source.sendFeedback(Text.translatable("command.hammer.zone.group.list.entry.outer", group.getId()));
 			
 			for (var zone : group) {
-				source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.entry.inner", zone.getId()));
+				source.sendFeedback(Text.translatable("command.hammer.zone.group.list.entry.inner", zone.getId()));
 			}
 		}
 		
@@ -466,7 +469,7 @@ public class HZCommands {
 		}
 		
 		if (groups.size() / 10 > 0) {
-			source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.end", 0, groups.size() / 10));
+			source.sendFeedback(Text.translatable("command.hammer.zone.group.list.end", 0, groups.size() / 10));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -484,19 +487,19 @@ public class HZCommands {
 		var groups = ZoneGroupManager.getGroups();
 		
 		if (groups.isEmpty()) {
-			source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.none"));
+			source.sendFeedback(Text.translatable("command.hammer.zone.group.list.none"));
 			
 			return Command.SINGLE_SUCCESS;
 		}
 		
-		source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.start"));
+		source.sendFeedback(Text.translatable("command.hammer.zone.group.list.start"));
 		
 		for (var group : groups) {
 			if (index > (page * 10) && index < ((page + 1) * 10)) {
-				source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.entry.outer", group.getId()));
+				source.sendFeedback(Text.translatable("command.hammer.zone.group.list.entry.outer", group.getId()));
 				
 				for (var zone : group) {
-					source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.entry.inner", zone.getId()));
+					source.sendFeedback(Text.translatable("command.hammer.zone.group.list.entry.inner", zone.getId()));
 				}
 			}
 			
@@ -504,7 +507,7 @@ public class HZCommands {
 		}
 		
 		if (groups.size() / 10 > 0) {
-			source.sendFeedback(new TranslatableText("command.hammer.zone.group.list.end", 0, groups.size() / 10));
+			source.sendFeedback(Text.translatable("command.hammer.zone.group.list.end", 0, groups.size() / 10));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -524,7 +527,7 @@ public class HZCommands {
 		
 		ZoneGroupManager.getOrCreate(groupId);
 		
-		source.sendFeedback(new TranslatableText("command.hammer.zone.group.create", groupId));
+		source.sendFeedback(Text.translatable("command.hammer.zone.group.create", groupId));
 		
 		return Command.SINGLE_SUCCESS;
 	}
@@ -543,7 +546,7 @@ public class HZCommands {
 		
 		ZoneGroupManager.remove(groupId);
 		
-		source.sendFeedback(new TranslatableText("command.hammer.zone.group.delete", groupId));
+		source.sendFeedback(Text.translatable("command.hammer.zone.group.delete", groupId));
 		
 		return Command.SINGLE_SUCCESS;
 	}
@@ -580,7 +583,7 @@ public class HZCommands {
 				
 				writer.close();
 				
-				source.sendFeedback(new TranslatableText("command.hammer.zone.group.export", zone.getId(), new LiteralText(zoneGroupPath.getFileName().toString()).formatted(Formatting.UNDERLINE).styled(style -> {
+				source.sendFeedback(Text.translatable("command.hammer.zone.group.export", zone.getId(), Text.literal(zoneGroupPath.getFileName().toString()).formatted(Formatting.UNDERLINE).styled(style -> {
 					return style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, zoneGroupPath.toAbsolutePath().toString()));
 				})));
 			} catch (IOException e) {
@@ -588,68 +591,70 @@ public class HZCommands {
 			}
 		}
 		
-		source.sendFeedback(new TranslatableText("command.hammer.zone.group.export", groupId));
+		source.sendFeedback(Text.translatable("command.hammer.zone.group.export", groupId));
 		
 		return Command.SINGLE_SUCCESS;
 	}
 	
 	public static void init() {
-		ClientCommandManager.DISPATCHER.register(
-			literal("zone").requires(source -> {
-				return source.hasPermissionLevel(4);
-			}).then(
-					literal("editor").executes(HZCommands::zoneEditor)
-			).then(
-					literal("select").executes(HZCommands::zoneSelect).then(
-							argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneSuggestIds).executes(HZCommands::zoneSelectId)
-					)
-			).then(
-					literal("deselect").executes(HZCommands::zoneDeselect)
-			).then(
-					literal("create").executes(HZCommands::zoneCreate).then(
-							argument("id", IdentifierArgumentType.identifier()).executes(HZCommands::zoneCreateId)
-					)
-			).then(
-					literal("delete").executes(HZCommands::zoneDelete).then(
-							argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneSuggestIds).executes(HZCommands::zoneDeleteId)
-					)
-			).then(
-					literal("list").executes(HZCommands::zoneList).then(
-							argument("page", IntegerArgumentType.integer()).executes(HZCommands::zoneListPage)
-					)
-			).then(
-					literal("color").then(
-							literal("set").then(
-									argument("color", ColorArgumentType.color()).executes(HZCommands::zoneColor)
-							)
-					)
-			).then(
-					literal("export").executes(HZCommands::zoneExport).then(
-							argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneSuggestIds).executes(HZCommands::zoneExportId)
-					)
-			).then(
-					literal("group").then(
-							literal("set").then(
-									argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneGroupSuggestIds).executes(HZCommands::zoneGroup)
+		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+			dispatcher.register(
+					literal("zone").requires(source -> {
+						return source.hasPermissionLevel(4);
+					}).then(
+							literal("editor").executes(HZCommands::zoneEditor)
+					).then(
+							literal("select").executes(HZCommands::zoneSelect).then(
+									argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneSuggestIds).executes(HZCommands::zoneSelectId)
 							)
 					).then(
-							literal("list").executes(HZCommands::zoneGroupList).then(
-									argument("page", IntegerArgumentType.integer()).executes(HZCommands::zoneGroupListPage)
+							literal("deselect").executes(HZCommands::zoneDeselect)
+					).then(
+							literal("create").executes(HZCommands::zoneCreate).then(
+									argument("id", IdentifierArgumentType.identifier()).executes(HZCommands::zoneCreateId)
 							)
 					).then(
-							literal("delete").then(
-									argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneGroupSuggestIds).executes(HZCommands::zoneGroupDelete)
+							literal("delete").executes(HZCommands::zoneDelete).then(
+									argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneSuggestIds).executes(HZCommands::zoneDeleteId)
 							)
 					).then(
-							literal("create").then(
-									argument("id", IdentifierArgumentType.identifier()).executes(HZCommands::zoneGroupCreate)
+							literal("list").executes(HZCommands::zoneList).then(
+									argument("page", IntegerArgumentType.integer()).executes(HZCommands::zoneListPage)
 							)
 					).then(
-							literal("export").then(
-									argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneGroupSuggestIds).executes(HZCommands::zoneGroupExport)
+							literal("color").then(
+									literal("set").then(
+											argument("color", ColorArgumentType.color()).executes(HZCommands::zoneColor)
+									)
+							)
+					).then(
+							literal("export").executes(HZCommands::zoneExport).then(
+									argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneSuggestIds).executes(HZCommands::zoneExportId)
+							)
+					).then(
+							literal("group").then(
+									literal("set").then(
+											argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneGroupSuggestIds).executes(HZCommands::zoneGroup)
+									)
+							).then(
+									literal("list").executes(HZCommands::zoneGroupList).then(
+											argument("page", IntegerArgumentType.integer()).executes(HZCommands::zoneGroupListPage)
+									)
+							).then(
+									literal("delete").then(
+											argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneGroupSuggestIds).executes(HZCommands::zoneGroupDelete)
+									)
+							).then(
+									literal("create").then(
+											argument("id", IdentifierArgumentType.identifier()).executes(HZCommands::zoneGroupCreate)
+									)
+							).then(
+									literal("export").then(
+											argument("id", IdentifierArgumentType.identifier()).suggests(HZCommands::zoneGroupSuggestIds).executes(HZCommands::zoneGroupExport)
+									)
 							)
 					)
-			)
-		);
+			);
+		});
 	}
 }

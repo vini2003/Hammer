@@ -71,7 +71,7 @@ public class NbtUtil {
 	}
 	
 	public static <T> void putRegistryKey(NbtCompound nbt, String key, RegistryKey<T> value) {
-		nbt.putString(key + "RegistryId", value.method_41185().toString());
+		nbt.putString(key + "RegistryId", value.getRegistry().toString());
 		nbt.putString(key + "Id", value.getValue().toString());
 	}
 	

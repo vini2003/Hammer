@@ -31,16 +31,19 @@ import dev.vini2003.hammer.chat.api.common.channel.Channel;
 import dev.vini2003.hammer.chat.api.common.manager.ChannelManager;
 import dev.vini2003.hammer.chat.api.common.util.ChannelUtil;
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.TranslatableText;
+
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 import net.minecraft.util.Formatting;
 
 public class HCCommands {
 	public static void init() {
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
 			var channelNode = CommandManager.literal("channel");
 			
 			var channelJoinNode = CommandManager.literal("join").requires(source -> {
@@ -188,7 +191,7 @@ public class HCCommands {
 							var players = EntityArgumentType.getPlayers(context, "players");
 							
 							for (var player : players) {
-								source.sendFeedback(new TranslatableText("text.hammer.channel.select.other", new LiteralText("#" + channel.getName()).formatted(Formatting.DARK_GRAY), player.getDisplayName()), false);
+								source.sendFeedback(Text.translatable("text.hammer.channel.select.other", Text.literal("#" + channel.getName()).formatted(Formatting.DARK_GRAY), player.getDisplayName()), false);
 								
 								ChannelUtil.setSelected(player, channel);
 							}
@@ -203,7 +206,7 @@ public class HCCommands {
 					var channel = ChannelManager.getChannelByName(channelName);
 					
 					if (channel != null) {
-						source.sendFeedback(new TranslatableText("text.hammer.channel.select.self", new LiteralText("#" + channel.getName()).formatted(Formatting.DARK_GRAY)), false);
+						source.sendFeedback(Text.translatable("text.hammer.channel.select.self", Text.literal("#" + channel.getName()).formatted(Formatting.DARK_GRAY)), false);
 						
 						ChannelUtil.setSelected(player, channel);
 					}
@@ -221,7 +224,7 @@ public class HCCommands {
 			dispatcher.register(channelNode);
 		});
 		
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
 			dispatcher.register(
 					CommandManager.literal("show_global_chat").then(
 							CommandManager.argument("state", BoolArgumentType.bool()).then(
@@ -236,7 +239,7 @@ public class HCCommands {
 										for (var player : players) {
 											ChatUtil.setShowGlobalChat(player, state);
 											
-											source.sendFeedback(new TranslatableText("command.hammer.show_global_chat.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
+											source.sendFeedback(Text.translatable("command.hammer.show_global_chat.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
 										}
 										
 										return Command.SINGLE_SUCCESS;
@@ -248,7 +251,7 @@ public class HCCommands {
 								
 								ChatUtil.setShowGlobalChat(context.getSource().getPlayer(), state);
 								
-								source.sendFeedback(new TranslatableText("command.hammer.show_global_chat.self", state ? "enabled" : "disabled"), true);
+								source.sendFeedback(Text.translatable("command.hammer.show_global_chat.self", state ? "enabled" : "disabled"), true);
 								
 								return Command.SINGLE_SUCCESS;
 							})
@@ -256,7 +259,7 @@ public class HCCommands {
 			);
 		});
 		
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
 			dispatcher.register(
 					CommandManager.literal("show_chat").then(
 							CommandManager.argument("state", BoolArgumentType.bool()).then(
@@ -271,7 +274,7 @@ public class HCCommands {
 										for (var player : players) {
 											ChatUtil.setShowChat(player, state);
 											
-											source.sendFeedback(new TranslatableText("command.hammer.show_chat.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
+											source.sendFeedback(Text.translatable("command.hammer.show_chat.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
 										}
 										
 										return Command.SINGLE_SUCCESS;
@@ -283,7 +286,7 @@ public class HCCommands {
 								
 								ChatUtil.setShowChat(context.getSource().getPlayer(), state);
 								
-								source.sendFeedback(new TranslatableText("command.hammer.show_chat.self", state ? "enabled" : "disabled"), true);
+								source.sendFeedback(Text.translatable("command.hammer.show_chat.self", state ? "enabled" : "disabled"), true);
 								
 								return Command.SINGLE_SUCCESS;
 							})
@@ -291,7 +294,7 @@ public class HCCommands {
 			);
 		});
 		
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
 			dispatcher.register(
 					CommandManager.literal("show_command_feedback").then(
 							CommandManager.argument("state", BoolArgumentType.bool()).then(
@@ -306,7 +309,7 @@ public class HCCommands {
 										for (var player : players) {
 											ChatUtil.setShowCommandFeedback(player, state);
 											
-											source.sendFeedback(new TranslatableText("command.hammer.show_command_feedback.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
+											source.sendFeedback(Text.translatable("command.hammer.show_command_feedback.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
 										}
 										
 										return Command.SINGLE_SUCCESS;
@@ -318,7 +321,7 @@ public class HCCommands {
 								
 								ChatUtil.setShowCommandFeedback(context.getSource().getPlayer(), state);
 								
-								source.sendFeedback(new TranslatableText("command.hammer.show_command_feedback.self", state ? "enabled" : "disabled"), true);
+								source.sendFeedback(Text.translatable("command.hammer.show_command_feedback.self", state ? "enabled" : "disabled"), true);
 								
 								return Command.SINGLE_SUCCESS;
 							})
@@ -326,7 +329,7 @@ public class HCCommands {
 			);
 		});
 		
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
 			dispatcher.register(
 					CommandManager.literal("show_warnings").then(
 							CommandManager.argument("state", BoolArgumentType.bool()).then(
@@ -341,7 +344,7 @@ public class HCCommands {
 										for (var player : players) {
 											ChatUtil.setShowWarnings(player, state);
 											
-											source.sendFeedback(new TranslatableText("command.hammer.show_warnings.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
+											source.sendFeedback(Text.translatable("command.hammer.show_warnings.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
 										}
 										
 										return Command.SINGLE_SUCCESS;
@@ -353,7 +356,7 @@ public class HCCommands {
 								
 								ChatUtil.setShowWarnings(context.getSource().getPlayer(), state);
 								
-								source.sendFeedback(new TranslatableText("command.hammer.show_warnings.self", state ? "enabled" : "disabled"), true);
+								source.sendFeedback(Text.translatable("command.hammer.show_warnings.self", state ? "enabled" : "disabled"), true);
 								
 								return Command.SINGLE_SUCCESS;
 							})
@@ -361,7 +364,7 @@ public class HCCommands {
 			);
 		});
 		
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
 			dispatcher.register(
 					CommandManager.literal("show_direct_messages").then(
 							CommandManager.argument("state", BoolArgumentType.bool()).then(
@@ -376,7 +379,7 @@ public class HCCommands {
 										for (var player : players) {
 											ChatUtil.setShowDirectMessages(player, state);
 											
-											source.sendFeedback(new TranslatableText("command.hammer.show_direct_messages.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
+											source.sendFeedback(Text.translatable("command.hammer.show_direct_messages.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
 										}
 										
 										return Command.SINGLE_SUCCESS;
@@ -388,7 +391,7 @@ public class HCCommands {
 								
 								ChatUtil.setShowDirectMessages(context.getSource().getPlayer(), state);
 								
-								source.sendFeedback(new TranslatableText("command.hammer.show_direct_messages.self", state ? "enabled" : "disabled"), true);
+								source.sendFeedback(Text.translatable("command.hammer.show_direct_messages.self", state ? "enabled" : "disabled"), true);
 								
 								return Command.SINGLE_SUCCESS;
 							})
@@ -396,7 +399,7 @@ public class HCCommands {
 			);
 		});
 		
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
 			dispatcher.register(
 					CommandManager.literal("fast_chat_fade").then(
 							CommandManager.argument("state", BoolArgumentType.bool()).then(
@@ -411,7 +414,7 @@ public class HCCommands {
 										for (var player : players) {
 											ChatUtil.setFastChatFade(player, state);
 											
-											source.sendFeedback(new TranslatableText("command.hammer.fast_chat_fade.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
+											source.sendFeedback(Text.translatable("command.hammer.fast_chat_fade.other", state ? "enabled" : "disabled", player.getDisplayName()), true);
 										}
 										
 										return Command.SINGLE_SUCCESS;
@@ -423,7 +426,7 @@ public class HCCommands {
 								
 								ChatUtil.setFastChatFade(context.getSource().getPlayer(), state);
 								
-								source.sendFeedback(new TranslatableText("command.hammer.fast_chat_fade.self", state ? "enabled" : "disabled"), true);
+								source.sendFeedback(Text.translatable("command.hammer.fast_chat_fade.self", state ? "enabled" : "disabled"), true);
 								
 								return Command.SINGLE_SUCCESS;
 							})

@@ -41,7 +41,7 @@ public class WorldBorderRenderer {
 		var border = world.getWorldBorder();
 		var cubicBorder = (CubicWorldBorder) border;
 		
-		var viewDistance = client.options.getViewDistance() * 16;
+		var viewDistance = client.options.getViewDistance().getValue() * 16;
 		
 		var cameraPos = camera.getPos();
 		
@@ -126,9 +126,9 @@ public class WorldBorderRenderer {
 			bufferBuilder.vertex(border.getBoundWest() - cameraX, cubicBorder.getBoundDown() - cameraY, border.getBoundNorth() - cameraZ).texture(fadeUv - size, fadeUv + size).next();
 			bufferBuilder.vertex(border.getBoundEast() - cameraX, cubicBorder.getBoundDown() - cameraY, border.getBoundNorth() - cameraZ).texture(fadeUv - 0.0F, fadeUv + size).next();
 			
-			bufferBuilder.end();
+			var builtBuffer = bufferBuilder.end();
 			
-			BufferRenderer.draw(bufferBuilder);
+			BufferRenderer.drawWithShader(builtBuffer);
 			RenderSystem.enableCull();
 			RenderSystem.polygonOffset(0.0F, 0.0F);
 			RenderSystem.disablePolygonOffset();

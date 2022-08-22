@@ -25,8 +25,12 @@
 package dev.vini2003.hammer.chat.mixin.client;
 
 import dev.vini2003.hammer.chat.registry.common.HCOptions;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.ChatOptionsScreen;
-import net.minecraft.client.option.Option;
+import net.minecraft.client.gui.screen.option.SimpleOptionsScreen;
+import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.option.SimpleOption;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,25 +39,25 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ChatOptionsScreen.class)
-public class ChatOptionsScreenMixin {
-	@Shadow
-	@Final
-	private static Option[] OPTIONS;
+public abstract class ChatOptionsScreenMixin extends SimpleOptionsScreen {
+	public ChatOptionsScreenMixin(Screen parent, GameOptions gameOptions, Text title, SimpleOption<?>[] options) {
+		super(parent, gameOptions, title, options);
+	}
 	
-	@Inject(at = @At("TAIL"), method = "<clinit>")
-	private static void hammer$init(CallbackInfo ci) {
-		var prevOptions = OPTIONS;
+	@Inject(at = @At("TAIL"), method = "<init>")
+	private void hammer$init(CallbackInfo ci) {
+		var prevOptions = options;
 		
-		OPTIONS = new Option[OPTIONS.length + 5];
+		options = new SimpleOption[options.length + 5];
 		
-		for (var i = 0; i < OPTIONS.length - 5; ++i) {
-			OPTIONS[i] = prevOptions[i];
+		for (var i = 0; i < options.length - 5; ++i) {
+			options[i] = prevOptions[i];
 		}
 		
-		OPTIONS[prevOptions.length] = HCOptions.SHOW_CHAT;
-		OPTIONS[prevOptions.length + 1] = HCOptions.SHOW_COMMAND_FEEDBACK;
-		OPTIONS[prevOptions.length + 2] = HCOptions.SHOW_WARNINGS;
-		OPTIONS[prevOptions.length + 3] = HCOptions.SHOW_DIRECT_MESSAGES;
-		OPTIONS[prevOptions.length + 4] = HCOptions.FAST_CHAT_FADE;
+		options[prevOptions.length] = HCOptions.SHOW_CHAT;
+		options[prevOptions.length + 1] = HCOptions.SHOW_COMMAND_FEEDBACK;
+		options[prevOptions.length + 2] = HCOptions.SHOW_WARNINGS;
+		options[prevOptions.length + 3] = HCOptions.SHOW_DIRECT_MESSAGES;
+		options[prevOptions.length + 4] = HCOptions.FAST_CHAT_FADE;
 	}
 }

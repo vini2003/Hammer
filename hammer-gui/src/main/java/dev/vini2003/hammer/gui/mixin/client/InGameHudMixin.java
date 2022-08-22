@@ -34,6 +34,7 @@ import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.bar.HudBarWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
@@ -55,7 +56,7 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 	private MinecraftClient client;
 	
 	@Inject(at = @At("RETURN"), method = "<init>")
-	private void hammer$init(MinecraftClient client, CallbackInfo ci) {
+	private void hammer$init(MinecraftClient client, ItemRenderer itemRenderer, CallbackInfo ci) {
 		hammer$children.clear();
 		
 		InGameHudEvents.INIT.invoker().onInit((InGameHud) (Object) this, this);

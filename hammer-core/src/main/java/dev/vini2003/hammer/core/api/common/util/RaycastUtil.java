@@ -45,7 +45,7 @@ public class RaycastUtil {
 		var sourceBox = source.getBoundingBox().stretch(rot.multiply(maxDist)).expand(2.5D, 2.5D, 2.5D);
 		
 		var entityHitResult = raycastEntity(source, pos, end, sourceBox, (e) -> {
-			return !e.isSpectator() && e.collides();
+			return !e.isSpectator() && e.isCollidable();
 		}, maxDist * maxDist);
 		
 		return entityHitResult;

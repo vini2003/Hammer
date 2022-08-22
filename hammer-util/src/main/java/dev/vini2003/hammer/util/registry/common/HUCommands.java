@@ -29,23 +29,25 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import dev.vini2003.hammer.core.registry.common.HCConfig;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 
 public class HUCommands {
 	public static void init() {
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
 			dispatcher.register(
 					CommandManager.literal("toggle_end").requires(source -> source.hasPermissionLevel(4)).executes(context -> {
 						var source = context.getSource();
 						
 						HCConfig.ENABLE_END = !HCConfig.ENABLE_END;
 						
-						source.sendFeedback(new TranslatableText("command.hammer." + (HCConfig.ENABLE_END ? "enable" : "disable") + "_end"), true);
+						source.sendFeedback(Text.translatable("command.hammer." + (HCConfig.ENABLE_END ? "enable" : "disable") + "_end"), true);
 						
 						return Command.SINGLE_SUCCESS;
 					})
@@ -57,7 +59,7 @@ public class HUCommands {
 						
 						HCConfig.ENABLE_NETHER = !HCConfig.ENABLE_NETHER;
 						
-						source.sendFeedback(new TranslatableText("command.hammer." + (HCConfig.ENABLE_NETHER ? "enable" : "disable") + "_nether"), true);
+						source.sendFeedback(Text.translatable("command.hammer." + (HCConfig.ENABLE_NETHER ? "enable" : "disable") + "_nether"), true);
 						
 						return Command.SINGLE_SUCCESS;
 					})
@@ -73,7 +75,7 @@ public class HUCommands {
 								for (var player : players) {
 									ChatUtil.setMuted(player, true);
 									
-									source.sendFeedback(new TranslatableText("command.hammer.mute.other", player.getDisplayName()), true);
+									source.sendFeedback(Text.translatable("command.hammer.mute.other", player.getDisplayName()), true);
 								}
 								
 								return Command.SINGLE_SUCCESS;
@@ -84,7 +86,7 @@ public class HUCommands {
 						
 						ChatUtil.setMuted(player, true);
 						
-						source.sendFeedback(new TranslatableText("command.hammer.mute.self"), true);
+						source.sendFeedback(Text.translatable("command.hammer.mute.self"), true);
 						
 						return Command.SINGLE_SUCCESS;
 					})
@@ -100,7 +102,7 @@ public class HUCommands {
 								for (var player : players) {
 									ChatUtil.setMuted(player, false);
 									
-									source.sendFeedback(new TranslatableText("command.hammer.unmute.other", player.getDisplayName()), true);
+									source.sendFeedback(Text.translatable("command.hammer.unmute.other", player.getDisplayName()), true);
 								}
 								
 								return Command.SINGLE_SUCCESS;
@@ -111,7 +113,7 @@ public class HUCommands {
 						
 						ChatUtil.setMuted(player, false);
 						
-						source.sendFeedback(new TranslatableText("command.hammer.unmute.self"), true);
+						source.sendFeedback(Text.translatable("command.hammer.unmute.self"), true);
 						
 						return Command.SINGLE_SUCCESS;
 					})
@@ -127,7 +129,7 @@ public class HUCommands {
 								for (var player : players) {
 									PlayerUtil.setFrozen(player, true);
 									
-									source.sendFeedback(new TranslatableText("command.hammer.freeze.other", player.getDisplayName()), true);
+									source.sendFeedback(Text.translatable("command.hammer.freeze.other", player.getDisplayName()), true);
 								}
 								
 								return Command.SINGLE_SUCCESS;
@@ -138,7 +140,7 @@ public class HUCommands {
 						
 						PlayerUtil.setFrozen(player, true);
 						
-						source.sendFeedback(new TranslatableText("command.hammer.freeze.self"), true);
+						source.sendFeedback(Text.translatable("command.hammer.freeze.self"), true);
 						
 						return Command.SINGLE_SUCCESS;
 					})
@@ -154,7 +156,7 @@ public class HUCommands {
 								for (var player : players) {
 									PlayerUtil.setFrozen(player, false);
 									
-									source.sendFeedback(new TranslatableText("command.hammer.unfreeze.other", player.getDisplayName()), true);
+									source.sendFeedback(Text.translatable("command.hammer.unfreeze.other", player.getDisplayName()), true);
 								}
 								
 								return Command.SINGLE_SUCCESS;
@@ -165,7 +167,7 @@ public class HUCommands {
 						
 						PlayerUtil.setFrozen(player, false);
 						
-						source.sendFeedback(new TranslatableText("command.hammer.unfreeze.self"), true);
+						source.sendFeedback(Text.translatable("command.hammer.unfreeze.self"), true);
 						
 						return Command.SINGLE_SUCCESS;
 					})
@@ -181,7 +183,7 @@ public class HUCommands {
 								for (var player : players) {
 									player.setHealth(player.getMaxHealth());
 
-									source.sendFeedback(new TranslatableText("command.hammer.heal.other", player.getDisplayName()), true);
+									source.sendFeedback(Text.translatable("command.hammer.heal.other", player.getDisplayName()), true);
 								}
 								
 								return Command.SINGLE_SUCCESS;
@@ -192,7 +194,7 @@ public class HUCommands {
 						
 						player.setHealth(player.getMaxHealth());
 						
-						source.sendFeedback(new TranslatableText("command.hammer.heal.self"), true);
+						source.sendFeedback(Text.translatable("command.hammer.heal.self"), true);
 						
 						return Command.SINGLE_SUCCESS;
 					})
@@ -209,7 +211,7 @@ public class HUCommands {
 									player.getHungerManager().setFoodLevel(20);
 									player.getHungerManager().setSaturationLevel(20.0F);
 									
-									source.sendFeedback(new TranslatableText("command.hammer.satiate.other", player.getDisplayName()), true);
+									source.sendFeedback(Text.translatable("command.hammer.satiate.other", player.getDisplayName()), true);
 								}
 								
 								return Command.SINGLE_SUCCESS;
@@ -221,7 +223,7 @@ public class HUCommands {
 						player.getHungerManager().setFoodLevel(20);
 						player.getHungerManager().setSaturationLevel(20.0F);
 						
-						source.sendFeedback(new TranslatableText("command.hammer.satiate.self"), true);
+						source.sendFeedback(Text.translatable("command.hammer.satiate.self"), true);
 						
 						return Command.SINGLE_SUCCESS;
 					})
@@ -244,7 +246,7 @@ public class HUCommands {
 											
 											ServerPlayNetworking.send(player, HUNetworking.FLY_SPEED_UPDATE, PacketByteBufs.duplicate(buf));
 											
-											source.sendFeedback(new TranslatableText("command.hammer.fly_speed.other", player.getDisplayName(), speed), true);
+											source.sendFeedback(Text.translatable("command.hammer.fly_speed.other", player.getDisplayName(), speed), true);
 										}
 										
 										return Command.SINGLE_SUCCESS;
@@ -263,7 +265,7 @@ public class HUCommands {
 								
 								ServerPlayNetworking.send(player, HUNetworking.FLY_SPEED_UPDATE, PacketByteBufs.duplicate(buf));
 								
-								source.sendFeedback(new TranslatableText("command.hammer.fly_speed.self", speed), true);
+								source.sendFeedback(Text.translatable("command.hammer.fly_speed.self", speed), true);
 								
 								return Command.SINGLE_SUCCESS;
 							})
@@ -287,7 +289,7 @@ public class HUCommands {
 											
 											ServerPlayNetworking.send(player, HUNetworking.WALK_SPEED_UPDATE, PacketByteBufs.duplicate(buf));
 											
-											source.sendFeedback(new TranslatableText("command.hammer.walk_speed.other", player.getDisplayName(), speed), true);
+											source.sendFeedback(Text.translatable("command.hammer.walk_speed.other", player.getDisplayName(), speed), true);
 										}
 										
 										return Command.SINGLE_SUCCESS;
@@ -306,7 +308,7 @@ public class HUCommands {
 								
 								ServerPlayNetworking.send(player, HUNetworking.WALK_SPEED_UPDATE, PacketByteBufs.duplicate(buf));
 								
-								source.sendFeedback(new TranslatableText("command.hammer.walk_speed.self", speed), true);
+								source.sendFeedback(Text.translatable("command.hammer.walk_speed.self", speed), true);
 								
 								return Command.SINGLE_SUCCESS;
 							})

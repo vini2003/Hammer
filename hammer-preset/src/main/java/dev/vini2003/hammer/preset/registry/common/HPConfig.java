@@ -1,7 +1,7 @@
 package dev.vini2003.hammer.preset.registry.common;
 
 import dev.vini2003.hammer.config.api.common.config.Config;
-import net.minecraft.text.LiteralText;
+
 import net.minecraft.text.Text;
 
 public class HPConfig extends Config {

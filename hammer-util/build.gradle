@@ -2,6 +2,10 @@ dependencies {
     // Hammer
     implementation project(path: ":hammer-core", configuration: "namedElements")
 
+	// Hammer Blueprint
+	implementation project(path: ":hammer-chat", configuration: "namedElements")
+	include project(path: ":hammer-chat", configuration: "namedElements")
+
 	// Hammer Chat
 	implementation project(path: ":hammer-chat", configuration: "namedElements")
 	include project(path: ":hammer-chat", configuration: "namedElements")

@@ -31,7 +31,9 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,8 +41,8 @@ import java.util.Collection;
 public class SizeArgumentType implements ArgumentType<Size> {
 	private static final Collection<String> EXAMPLES = Arrays.asList("0.0 0.0", "0.0 0.0 0.0");
 	
-	private static final SimpleCommandExceptionType INCOMPLETE_EXCEPTION = new SimpleCommandExceptionType(new TranslatableText("text.hammer.size.incomplete"));
-	private static final SimpleCommandExceptionType INVALID_SIZE_EXCEPTION = new SimpleCommandExceptionType(new TranslatableText("text.hammer.size.invalid"));
+	private static final SimpleCommandExceptionType INCOMPLETE_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("text.hammer.size.incomplete"));
+	private static final SimpleCommandExceptionType INVALID_SIZE_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("text.hammer.size.invalid"));
 	
 	private static boolean isCharValid(char c, boolean[] b) {
 		if (!b[1]) {

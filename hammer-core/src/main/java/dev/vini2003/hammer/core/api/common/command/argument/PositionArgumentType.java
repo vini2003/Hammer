@@ -33,11 +33,13 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
-import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -47,8 +49,8 @@ import java.util.concurrent.CompletableFuture;
 public class PositionArgumentType implements ArgumentType<PositionArgumentType> {
 	private static final Collection<String> EXAMPLES = Arrays.asList("0.0 0.0 0.0");
 	
-	private static final SimpleCommandExceptionType INCOMPLETE_EXCEPTION = new SimpleCommandExceptionType(new TranslatableText("text.hammer.position.incomplete"));
-	private static final SimpleCommandExceptionType INVALID_POSITION_EXCEPTION = new SimpleCommandExceptionType(new TranslatableText("text.hammer.position.invalid"));
+	private static final SimpleCommandExceptionType INCOMPLETE_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("text.hammer.position.incomplete"));
+	private static final SimpleCommandExceptionType INVALID_POSITION_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("text.hammer.position.invalid"));
 	
 	private float x = 0.0F;
 	private float y = 0.0F;

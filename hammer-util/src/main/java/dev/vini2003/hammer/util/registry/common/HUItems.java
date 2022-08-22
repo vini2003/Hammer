@@ -32,7 +32,9 @@ import dev.vini2003.hammer.core.registry.common.HCItemGroups;
 import dev.vini2003.hammer.util.api.common.item.TriggerItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.registry.Registry;
 
@@ -48,7 +50,7 @@ public class HUItems {
 								  
 							  PlayerUtil.setFrozen(player, frozen);
 								  
-							  user.getCommandSource().sendFeedback(new TranslatableText("command.hammer." + (frozen ? "freeze" : "unfreeze"), player.getDisplayName()), true);
+							  user.getCommandSource().sendFeedback(Text.translatable("command.hammer." + (frozen ? "freeze" : "unfreeze"), player.getDisplayName()), true);
 							}
 						}
 					 })
@@ -70,7 +72,7 @@ public class HUItems {
 						
 								ChatUtil.setMuted(player, muted);
 						
-								user.getCommandSource().sendFeedback(new TranslatableText("command.hammer." + (muted ? "mute" : "unmute"), player.getDisplayName()), true);
+								user.getCommandSource().sendFeedback(Text.translatable("command.hammer." + (muted ? "mute" : "unmute"), player.getDisplayName()), true);
 							}
 						}
 					})
@@ -86,13 +88,13 @@ public class HUItems {
 					.trigger((world, user, hand) -> {
 						user.setHealth(user.getMaxHealth());
 				
-						user.getCommandSource().sendFeedback(new TranslatableText("command.hammer.heal.self"), true);
+						user.getCommandSource().sendFeedback(Text.translatable("command.hammer.heal.self"), true);
 					})
 					.trigger(((world, user, hand, hit) -> {
 						if (hit instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof PlayerEntity player) {
 							player.setHealth(player.getMaxHealth());
 							
-							user.getCommandSource().sendFeedback(new TranslatableText("command.hammer.heal.other", player.getDisplayName()), true);
+							user.getCommandSource().sendFeedback(Text.translatable("command.hammer.heal.other", player.getDisplayName()), true);
 						}
 					}))
 					.targetEntity(e -> e instanceof PlayerEntity)
@@ -108,14 +110,14 @@ public class HUItems {
 						   user.getHungerManager().setFoodLevel(20);
 						   user.getHungerManager().setSaturationLevel(20.0F);
 				
-						   user.getCommandSource().sendFeedback(new TranslatableText("command.hammer.satiate.self"), true);
+						   user.getCommandSource().sendFeedback(Text.translatable("command.hammer.satiate.self"), true);
 					   })
 					   .trigger(((world, user, hand, hit) -> {
 						   if (hit instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof PlayerEntity player) {
 							   player.getHungerManager().setFoodLevel(20);
 							   player.getHungerManager().setSaturationLevel(20.0F);
 					
-							   user.getCommandSource().sendFeedback(new TranslatableText("command.hammer.satiate.other", player.getDisplayName()), true);
+							   user.getCommandSource().sendFeedback(Text.translatable("command.hammer.satiate.other", player.getDisplayName()), true);
 						   }
 					   }))
 					   .targetEntity(e -> e instanceof PlayerEntity)
@@ -130,7 +132,7 @@ public class HUItems {
 					   .trigger((world, user, hand) -> {
 						   HCConfig.ENABLE_END = !HCConfig.ENABLE_END;
 						
-						   user.getCommandSource().sendFeedback(new TranslatableText("command.hammer." + (HCConfig.ENABLE_END ? "enable" : "disable") + "_end"), true);
+						   user.getCommandSource().sendFeedback(Text.translatable("command.hammer." + (HCConfig.ENABLE_END ? "enable" : "disable") + "_end"), true);
 					   })
 					   .side(false, true)
 					   .raycast(false, false)
@@ -143,7 +145,7 @@ public class HUItems {
 					   .trigger((world, user, hand) -> {
 						   HCConfig.ENABLE_NETHER = !HCConfig.ENABLE_NETHER;
 				
-						   user.getCommandSource().sendFeedback(new TranslatableText("command.hammer." + (HCConfig.ENABLE_NETHER ? "enable" : "disable") + "_nether"), true);
+						   user.getCommandSource().sendFeedback(Text.translatable("command.hammer." + (HCConfig.ENABLE_NETHER ? "enable" : "disable") + "_nether"), true);
 					   })
 					   .side(false, true)
 					   .raycast(false, false)

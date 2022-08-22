@@ -29,7 +29,9 @@ import net.minecraft.server.command.MessageCommand;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -47,7 +49,7 @@ public class MessageCommandMixin {
 		
 		for (var target : targets) {
 			if (!ChatUtil.shouldShowDirectMessages(target)) {
-				source.sendFeedback(new TranslatableText("text.hammer.message_command.direct_messages_disabled", target.getDisplayName()), false);
+				source.sendFeedback(Text.translatable("text.hammer.message_command.direct_messages_disabled", target.getDisplayName()), false);
 				
 				targetsToRemove.add(target);
 			}

@@ -24,26 +24,9 @@
 
 package dev.vini2003.hammer.chat.registry.common;
 
-import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.BoolArgumentType;
-import dev.vini2003.hammer.chat.api.common.manager.ChannelManager;
 import dev.vini2003.hammer.chat.api.common.util.ChannelUtil;
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
-import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
-import dev.vini2003.hammer.core.api.common.event.ChatEvents;
-import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
-import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.TypedActionResult;
 
 public class HCEvents {
 	public static void init() {
@@ -60,46 +43,6 @@ public class HCEvents {
 			ChatUtil.setMuted(newPlayer, ChatUtil.isMuted(oldPlayer));
 			
 			ChannelUtil.setSelected(newPlayer, ChannelUtil.getSelected(oldPlayer));
-		});
-		
-		ChatEvents.SEND_MESSAGE.register((receiver, message, type, sender) -> {
-			var us = receiver;
-			var them = receiver.getServer().getPlayerManager().getPlayer(sender);
-			
-			if (them == null) {
-				return TypedActionResult.pass(message);
-			}
-			
-			var ourChannel = ((PlayerEntityAccessor) us).hammer$getSelectedChannel();
-			var theirChannel = ((PlayerEntityAccessor) them).hammer$getSelectedChannel();
-			
-			if (ourChannel != theirChannel) {
-				return TypedActionResult.fail(message);
-			}
-			
-			return TypedActionResult.success(message);
-		});
-		
-		ChatEvents.SEND_MESSAGE.register((receiver, message, type, sender) -> {
-			var us = receiver;
-			
-			if (sender.equals(us.getUuid()) && ChatUtil.isMuted(us)) {
-				us.sendMessage(new TranslatableText("text.hammer.muted").formatted(Formatting.RED), false);
-				
-				return TypedActionResult.fail(message);
-			}
-			
-			var them = receiver.getServer().getPlayerManager().getPlayer(sender);
-			
-			if (them == null) {
-				return TypedActionResult.pass(message);
-			}
-			
-			if (!sender.equals(us.getUuid()) && ChatUtil.isMuted(them)) {
-				return TypedActionResult.fail(message);
-			}
-			
-			return TypedActionResult.success(message);
 		});
 	}
 }

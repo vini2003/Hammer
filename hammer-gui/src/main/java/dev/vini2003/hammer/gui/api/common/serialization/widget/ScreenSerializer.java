@@ -37,7 +37,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.text.LiteralText;
+
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.io.IOUtils;
@@ -510,7 +511,7 @@ public class ScreenSerializer {
 			}
 			
 			if (widget instanceof LabelProvider labelProvider) {
-				labelProvider.setLabel(new LiteralText(getString(attributeObject.get(LABEL)).getOrThrow()));
+				labelProvider.setLabel(Text.literal(getString(attributeObject.get(LABEL)).getOrThrow()));
 			}
 			
 			if (widget instanceof MaximumProvider maximumProvider) {
@@ -546,7 +547,7 @@ public class ScreenSerializer {
 			}
 			
 			if (widget instanceof TextProvider textProvider) {
-				textProvider.setText(new LiteralText(getString(attributeObject.get(TEXT)).getOrThrow()));
+				textProvider.setText(Text.literal(getString(attributeObject.get(TEXT)).getOrThrow()));
 			}
 			
 			if (widget instanceof TextureProvider textureProvider) {
@@ -587,7 +588,7 @@ public class ScreenSerializer {
 		Resource resource = null;
 		
 		try {
-			resource = resourceManager.getResource(screenId);
+			resource = resourceManager.getResource(screenId).orElseThrow();
 			
 			try (var resourceStream = resource.getInputStream()) {
 				var resourceString = IOUtils.toString(resourceStream, "UTF-8");
@@ -648,7 +649,7 @@ public class ScreenSerializer {
 					context.set(widgetId, widget);
 				}
 				
-				return new SerializableScreen(new LiteralText(title), context);
+				return new SerializableScreen(Text.literal(title), context);
 			}
 		} catch (Exception ignored) {}
 		

@@ -26,7 +26,9 @@ package dev.vini2003.hammer.chat.api.common.util;
 
 import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 
 public class ChatUtil {
 	public static void setShowChat(PlayerEntity player, boolean showChat) {

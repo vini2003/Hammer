@@ -30,11 +30,9 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import dev.vini2003.hammer.core.api.client.color.Color;
-import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.InvalidIdentifierException;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,7 +40,7 @@ import java.util.Collection;
 public class ColorArgumentType implements ArgumentType<Color> {
 	private static final Collection<String> EXAMPLES = Arrays.asList("#7E337EAE");
 	
-	private static final DynamicCommandExceptionType INVALID_COLOR_EXCEPTION = new DynamicCommandExceptionType(id -> new TranslatableText("text.hammer.color.invalid", id));
+	private static final DynamicCommandExceptionType INVALID_COLOR_EXCEPTION = new DynamicCommandExceptionType(id -> Text.translatable("text.hammer.color.invalid", id));
 	
 	private static boolean isCharValid(char c, boolean[] b) {
 		if (!b[1]) {
@@ -68,8 +66,6 @@ public class ColorArgumentType implements ArgumentType<Color> {
 	@Override
 	public Color parse(StringReader reader) throws CommandSyntaxException {
 		var cursor = reader.getCursor();
-		
-		var foundHashTag = false;
 		
 		var b = new boolean[] { false, false };
 		

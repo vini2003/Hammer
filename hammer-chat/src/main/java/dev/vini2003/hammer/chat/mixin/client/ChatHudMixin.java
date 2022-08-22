@@ -25,44 +25,28 @@
 package dev.vini2003.hammer.chat.mixin.client;
 
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
-import dev.vini2003.hammer.chat.registry.client.HCKeyBinds;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
+import net.minecraft.client.gui.hud.MessageIndicator;
+import net.minecraft.network.message.MessageSignatureData;
+import net.minecraft.text.Text;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ChatHud.class)
 public class ChatHudMixin {
-	@Inject(method = "isChatFocused", at = @At("RETURN"), cancellable = true)
-	private void isChatFocused(CallbackInfoReturnable<Boolean> cir) {
-		if (!cir.getReturnValueZ() && HCKeyBinds.SHOW_CHAT.isPressed()) {
-			cir.setReturnValue(true);
-		}
-	}
+	@Shadow
+	@Final
+	private MinecraftClient client;
 	
-	@ModifyConstant(method = "render", constant = @Constant(intValue = 200))
-	private int modifyTime(int original) {
-		var client = InstanceUtil.getClient();
-		
-		if (client.player != null && ChatUtil.hasFastChatFade(client.player)) {
-			return 200 / 4;
-		} else {
-			return original;
-		}
-	}
-	
-	@ModifyConstant(method = "getMessageOpacityMultiplier", constant = @Constant(doubleValue = 200.0D))
-	private static double modifyTime(double original) {
-		var client = InstanceUtil.getClient();
-		
-		if (client.player != null && ChatUtil.hasFastChatFade(client.player)) {
-			return 200.0D / 4.0D;
-		} else {
-			return original;
+	@Inject(method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;ILnet/minecraft/client/gui/hud/MessageIndicator;Z)V", at = @At("HEAD"), cancellable = true)
+	private void hammer$chat$addChatMessage(Text message, MessageSignatureData signature, int ticks, MessageIndicator indicator, boolean refresh, CallbackInfo ci) {
+		if (!ChatUtil.shouldShowChat(client.player) || !ChatUtil.shouldShowGlobalChat(client.player)) {
+			ci.cancel();
 		}
 	}
 }

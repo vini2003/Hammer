@@ -8,7 +8,9 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,7 +38,7 @@ public abstract class AddServerScreenMixin extends Screen {
 	
 	@Inject(at = @At("HEAD"), method = "init()V")
 	private void hammer$init(CallbackInfo ci) {
-		this.hammer$obfuscatedAddressField = new ObfuscatedTextFieldWidget(this.textRenderer, this.width / 2 - 100, 106, 200, 20, new TranslatableText("addServer.enterIp"));
+		this.hammer$obfuscatedAddressField = new ObfuscatedTextFieldWidget(this.textRenderer, this.width / 2 - 100, 106, 200, 20, Text.translatable("addServer.enterIp"));
 		this.hammer$obfuscatedAddressField.setMaxLength(128);
 		this.hammer$obfuscatedAddressField.setText(this.server.address);
 		this.hammer$obfuscatedAddressField.setChangedListener(address -> this.updateAddButton());

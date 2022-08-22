@@ -32,7 +32,9 @@ import dev.vini2003.hammer.border.impl.common.border.CubicWorldBorder;
 import net.minecraft.command.argument.Vec3ArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.command.WorldBorderCommand;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
@@ -42,8 +44,8 @@ import java.util.Locale;
 
 @Mixin(WorldBorderCommand.class)
 public class WorldBorderCommandMixin {
-	private static final SimpleCommandExceptionType CENTER_FAILED_EXCEPTION = new SimpleCommandExceptionType(new TranslatableText("commands.worldborder.center.failed"));
-	private static final SimpleCommandExceptionType SET_FAILED_FAR_EXCEPTION = new SimpleCommandExceptionType(new TranslatableText("commands.worldborder.set.failed.far", 2.9999984E7));
+	private static final SimpleCommandExceptionType CENTER_FAILED_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("commands.worldborder.center.failed"));
+	private static final SimpleCommandExceptionType SET_FAILED_FAR_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("commands.worldborder.set.failed.far", 2.9999984E7));
 	
 	@ModifyArgs(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/command/CommandManager;argument(Ljava/lang/String;Lcom/mojang/brigadier/arguments/ArgumentType;)Lcom/mojang/brigadier/builder/RequiredArgumentBuilder;", ordinal = 4), method = "register")
 	private static void hammer$register$argument$4(Args args) {
@@ -73,7 +75,7 @@ public class WorldBorderCommandMixin {
 				cubicWorldBorder.setCenter(pos.x, pos.y, pos.z);
 				
 				source.sendFeedback(
-						new TranslatableText("commands.hammer.border.center.success",
+						Text.translatable("commands.hammer.border.center.success",
 								String.format(Locale.ROOT, "%.2f", (float) pos.x),
 								String.format(Locale.ROOT, "%.2f", (float) pos.y),
 								String.format(Locale.ROOT, "%.2f", (float) pos.z)

@@ -36,9 +36,11 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.LiteralText;
+
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -102,26 +104,26 @@ public class HCEvents {
 							var tooltips = new ArrayList<Text>();
 							
 							if (ChatUtil.shouldShowCommandFeedback(client.player)) {
-								tooltips.add(new TranslatableText("text.hammer.feedback.warning"));
-								tooltips.add(new TranslatableText("text.hammer.feedback.toggle"));
+								tooltips.add(Text.translatable("text.hammer.feedback.warning"));
+								tooltips.add(Text.translatable("text.hammer.feedback.toggle"));
 							}
 							
 							if (!ChatUtil.shouldShowChat(client.player)) {
 								if (!tooltips.isEmpty()) {
-									tooltips.add(LiteralText.EMPTY);
+									tooltips.add(Text.empty());
 								}
 								
-								tooltips.add(new TranslatableText("text.hammer.chat.warning"));
-								tooltips.add(new TranslatableText("text.hammer.chat.toggle"));
+								tooltips.add(Text.translatable("text.hammer.chat.warning"));
+								tooltips.add(Text.translatable("text.hammer.chat.toggle"));
 							}
 							
 							if (!ChatUtil.shouldShowGlobalChat(client.player)) {
 								if (!tooltips.isEmpty()) {
-									tooltips.add(LiteralText.EMPTY);
+									tooltips.add(Text.empty());
 								}
 								
-								tooltips.add(new TranslatableText("text.hammer.global_chat.warning"));
-								tooltips.add(new TranslatableText("text.hammer.global_chat.toggle"));
+								tooltips.add(Text.translatable("text.hammer.global_chat.warning"));
+								tooltips.add(Text.translatable("text.hammer.global_chat.toggle"));
 							}
 							
 							
@@ -167,7 +169,7 @@ public class HCEvents {
 						if (mouseX >= x1 && mouseY >= y1 && mouseX < x1 + size && mouseY < y1 + size) {
 							var tooltips = new ArrayList<Text>();
 							
-							tooltips.add(new TranslatableText("text.hammer.muted"));
+							tooltips.add(Text.translatable("text.hammer.muted"));
 							
 							screen.renderTooltip(matrices, tooltips, (int) mouseX, (int) mouseY);
 						}
@@ -209,7 +211,7 @@ public class HCEvents {
 						if (mouseX >= x1 && mouseY >= y1 && mouseX < x1 + size && mouseY < y1 + size) {
 							var tooltips = new ArrayList<Text>();
 							
-							tooltips.add(new TranslatableText("text.hammer.frozen"));
+							tooltips.add(Text.translatable("text.hammer.frozen"));
 							
 							screen.renderTooltip(matrices, tooltips, (int) mouseX, (int) mouseY);
 						}

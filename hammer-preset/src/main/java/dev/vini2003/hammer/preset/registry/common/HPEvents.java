@@ -29,7 +29,9 @@ import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import dev.vini2003.hammer.preset.api.common.util.PlayerListUtil;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+
 
 public class HPEvents {
 	public static void init() {
@@ -48,7 +50,7 @@ public class HPEvents {
 			}, 2500L);
 			
 			for (var i = 0; i < 2; ++i) {
-				player.sendMessage(new TranslatableText("text.hammer.welcome_" + i), false);
+				player.sendMessage(Text.translatable("text.hammer.welcome_" + i), false);
 			}
 			
 			PlayerListUtil.setHiddenOnPlayerList(player.getGameProfile(), false);

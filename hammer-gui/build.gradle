@@ -10,13 +10,23 @@ repositories {
 	}
 }
 
+configurations.all {
+	exclude module: "fabric-command-api-v1"
+	exclude module: "fabric-commands-v0"
+}
+
 dependencies {
     // Hammer
     implementation project(path: ":hammer-core", configuration: "namedElements")
 
 	// Satin
-	modApi("io.github.ladysnake:satin:${satinVersion}")
-	include("io.github.ladysnake:satin:${satinVersion}")
+	modApi("io.github.ladysnake:satin:${satinVersion}") {
+		exclude group: "net.fabricmc"
+	}
+
+	include("io.github.ladysnake:satin:${satinVersion}") {
+		exclude group: "net.fabricmc"
+	}
 }
 
 jar {

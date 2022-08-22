@@ -27,13 +27,13 @@ package dev.vini2003.hammer.permission.registry.common;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import dev.vini2003.hammer.permission.api.common.manager.RoleManager;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
 
 public class HPCommands {
 	public static void init() {
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
 			var roleNode = CommandManager.literal("role");
 			
 			var roleJoinNode = CommandManager.literal("join").requires(source -> {

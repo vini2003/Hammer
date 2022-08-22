@@ -39,14 +39,14 @@ public class EnergyTextUtil {
 	public static Color COLOR = new Color(0.67F, 0.89F, 0.47F, 1.0F);
 	
 	public static MutableText getEnergy() {
-		return TextUtil.toTranslatableText("text.hammer.energy").styled((style) -> style.withColor(COLOR.toRgb()));
+		return Text.translatable("text.hammer.energy").styled((style) -> style.withColor(COLOR.toRgb()));
 	}
 	
 	public static List<Text> getDetailedTooltips(EnergyStorage storage) {
 		var tooltips = new ArrayList<Text>();
 		
 		tooltips.add(getEnergy());
-		tooltips.add(TextUtil.toLiteralText(NumberUtil.getPrettyString(storage.getAmount(), "E") + " / " + NumberUtil.getPrettyString(storage.getCapacity(), "E")).formatted(Formatting.GRAY));
+		tooltips.add(Text.literal(NumberUtil.getPrettyString(storage.getAmount(), "E") + " / " + NumberUtil.getPrettyString(storage.getCapacity(), "E")).formatted(Formatting.GRAY));
 		
 		return tooltips;
 	}
@@ -55,7 +55,7 @@ public class EnergyTextUtil {
 		var tooltips = new ArrayList<Text>();
 		
 		tooltips.add(getEnergy());
-		tooltips.add(TextUtil.toLiteralText(NumberUtil.getPrettyShortenedString(storage.getAmount(), "E") + " / " + NumberUtil.getPrettyShortenedString(storage.getCapacity(), "E")).formatted(Formatting.GRAY));
+		tooltips.add(Text.literal(NumberUtil.getPrettyShortenedString(storage.getAmount(), "E") + " / " + NumberUtil.getPrettyShortenedString(storage.getCapacity(), "E")).formatted(Formatting.GRAY));
 		
 		return tooltips;
 	}

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.gui.api.common.widget.button;
+package dev.vini2003.hammer.gui.api.common.widget.toggle;
 
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture;
@@ -43,16 +43,14 @@ import net.minecraft.text.Text;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-public class ButtonWidget extends Widget implements EnabledTextureProvider, DisabledTextureProvider, FocusedTextureProvider, DisabledProvider, LabelProvider {
-	public static final Texture STANDARD_ENABLED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/button_enabled.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
-	public static final Texture STANDARD_DISABLED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/button_disabled.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
-	public static final Texture STANDARD_FOCUSED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/button_focused.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
-	
+public class ToggleWidget extends Widget implements EnabledTextureProvider, DisabledTextureProvider, DisabledProvider, LabelProvider {
+	public static final Texture STANDARD_ENABLED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/toggle_enabled.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
+	public static final Texture STANDARD_DISABLED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/toggle_disabled.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
+
 	protected Supplier<Texture> enabledTexture = () -> STANDARD_ENABLED_TEXTURE;
 	protected Supplier<Texture> disabledTexture = () -> STANDARD_DISABLED_TEXTURE;
-	protected Supplier<Texture> focusedTexture = () -> STANDARD_FOCUSED_TEXTURE;
 	
-	protected BooleanSupplier disabled = () -> false;
+	protected BooleanSupplier disabled = () -> true;
 	
 	protected Supplier<Text> label = () -> null;
 	
@@ -62,10 +60,6 @@ public class ButtonWidget extends Widget implements EnabledTextureProvider, Disa
 			if (rootCollection.isClient()) {
 				playSound();
 			}
-		}
-		
-		if (isFocused()) {
-			setDisabled(() -> !isDisabled());
 		}
 	}
 	
@@ -80,8 +74,6 @@ public class ButtonWidget extends Widget implements EnabledTextureProvider, Disa
 		
 		if (isDisabled()) {
 			texture = disabledTexture.get();
-		} else if (isFocused()) {
-			texture = focusedTexture.get();
 		} else {
 			texture = enabledTexture.get();
 		}
@@ -125,16 +117,6 @@ public class ButtonWidget extends Widget implements EnabledTextureProvider, Disa
 	@Override
 	public void setDisabledTexture(Supplier<Texture> disabledTexture) {
 		this.disabledTexture = disabledTexture;
-	}
-	
-	@Override
-	public Supplier<Texture> getFocusedTexture() {
-		return focusedTexture;
-	}
-	
-	@Override
-	public void setFocusedTexture(Supplier<Texture> focusedTexture) {
-		this.focusedTexture = focusedTexture;
 	}
 	
 	@Override

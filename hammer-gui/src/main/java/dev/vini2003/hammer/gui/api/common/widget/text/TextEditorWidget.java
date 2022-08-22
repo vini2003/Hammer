@@ -61,7 +61,7 @@ public abstract class TextEditorWidget extends Widget {
 	
 	protected int cursorTick = 20;
 	
-	protected InputFilter filter;
+	protected InputFilter<?> filter;
 	
 	protected Selection selection = new Selection();
 	
@@ -1052,6 +1052,14 @@ public abstract class TextEditorWidget extends Widget {
 	
 	public Cursor getSelectionStart() {
 		return selection.getStart();
+	}
+	
+	public <T> void setFilter(InputFilter<T> filter) {
+		this.filter = filter;
+	}
+	
+	public <T> InputFilter<T> getFilter() {
+		return (InputFilter<T>) filter;
 	}
 	
 	public String getText() {

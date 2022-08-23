@@ -14,7 +14,11 @@
     "common.WorldMixin"
   ],
   "client": [
-    "client.WorldRendererMixin"
+    "client.WorldRendererMixin",
+    "client.InstanceUtilMixin"
+  ],
+  "server": [
+    "server.InstanceUtilMixin"
   ],
   "injectors": {
     "defaultRequire": 1

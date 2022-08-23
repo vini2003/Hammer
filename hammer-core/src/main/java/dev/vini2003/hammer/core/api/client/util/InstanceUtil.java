@@ -43,15 +43,8 @@ public class InstanceUtil {
 	}
 	
 	public static MinecraftServer getServer() {
-		if (isClient()) {
-			return getIntegratedServer();
-		} else {
-			return (MinecraftServer) getGame();
-		}
-	}
-	
-	private static MinecraftServer getIntegratedServer() {
-		return getClient().getServer();
+		// Defined in Mixins.
+		throw new UnsupportedOperationException();
 	}
 	
 	public static boolean isClient() {

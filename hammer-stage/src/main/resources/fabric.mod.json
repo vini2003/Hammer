@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "hammer-stage",
-  "version": "0.9.0",
+  "version": "0.9.8",
   "name": "Hammer Stage",
   "description": "A library module.",
   "authors": [

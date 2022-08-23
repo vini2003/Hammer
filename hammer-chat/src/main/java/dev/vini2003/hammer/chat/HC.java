@@ -26,6 +26,7 @@ package dev.vini2003.hammer.chat;
 
 import dev.vini2003.hammer.chat.api.common.channel.Channel;
 import dev.vini2003.hammer.chat.api.common.manager.ChannelManager;
+import dev.vini2003.hammer.chat.impl.common.config.HCConfig;
 import dev.vini2003.hammer.chat.registry.common.HCCommands;
 import dev.vini2003.hammer.chat.registry.common.HCEvents;
 import dev.vini2003.hammer.chat.registry.common.HCNetworking;
@@ -38,10 +39,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 @ApiStatus.Internal
 public class HC implements ModInitializer {
+	public static final HCConfig CONFIG = new HCConfig();
+	
 	@Override
 	public void onInitialize() {
 		HCCommands.init();
 		HCEvents.init();
 		HCNetworking.init();
+		
+		CONFIG.load();
 	}
 }

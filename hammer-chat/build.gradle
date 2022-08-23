@@ -1,6 +1,9 @@
 dependencies {
     // Hammer Core
-    implementation project(path: ":hammer-core", configuration: "namedElements")
+	implementation project(path: ":hammer-core", configuration: "namedElements")
+
+	// Hammer Config
+	implementation project(path: ":hammer-config", configuration: "namedElements")
 }
 
 loom {

@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.chat.mixin.common;
 
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
+import net.minecraft.command.argument.MessageArgumentType;
 import net.minecraft.server.command.MessageCommand;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -44,7 +45,7 @@ import java.util.Collection;
 @Mixin(MessageCommand.class)
 public class MessageCommandMixin {
 	@Inject(at = @At("HEAD"), method = "execute", cancellable = true)
-	private static void hammer$execute(ServerCommandSource source, Collection<ServerPlayerEntity> targets, Text message, CallbackInfoReturnable<Integer> cir) {
+	private static void hammer$execute(ServerCommandSource source, Collection<ServerPlayerEntity> targets, MessageArgumentType.SignedMessage signedMessage, CallbackInfoReturnable<Integer> cir) {
 		var targetsToRemove = new ArrayList<ServerPlayerEntity>();
 		
 		for (var target : targets) {

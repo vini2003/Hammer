@@ -37,9 +37,9 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(TextVisitFactory.class)
 public class TextVisitFactoryMixin {
-	private static ThreadLocal<Boolean> hammer$isHexCode = ThreadLocal.withInitial(() -> false);
+	private static final ThreadLocal<Boolean> HAMMER$IS_HEX_CODE = ThreadLocal.withInitial(() -> false);
 	
-	private static ThreadLocal<Integer> hammer$hexCode = ThreadLocal.withInitial(() -> Integer.MIN_VALUE);
+	private static final ThreadLocal<Integer> HAMMER$HEX_CODE = ThreadLocal.withInitial(() -> Integer.MIN_VALUE);
 	
 	@Inject(at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/String;charAt(I)C", ordinal = 0, shift = At.Shift.AFTER), method = "visitFormatted(Ljava/lang/String;ILnet/minecraft/text/Style;Lnet/minecraft/text/Style;Lnet/minecraft/text/CharacterVisitor;)Z", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 	private static void hammer$visitFormatted$charAt$1(String text, int startIndex, Style startingStyle, Style resetStyle, CharacterVisitor visitor, CallbackInfoReturnable<Boolean> cir, int i, Style style, int j, char c) {
@@ -47,9 +47,9 @@ public class TextVisitFactoryMixin {
 			try {
 				var hex = Integer.parseInt(text.substring(j + 2, j + 8), 16);
 				
-				hammer$isHexCode.set(true);
+				HAMMER$IS_HEX_CODE.set(true);
 				
-				hammer$hexCode.set(hex);
+				HAMMER$HEX_CODE.set(hex);
 			} catch (Exception ignored) {
 			}
 		}
@@ -57,7 +57,7 @@ public class TextVisitFactoryMixin {
 	
 	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/String;charAt(I)C", ordinal = 1, shift = At.Shift.AFTER), method = "visitFormatted(Ljava/lang/String;ILnet/minecraft/text/Style;Lnet/minecraft/text/Style;Lnet/minecraft/text/CharacterVisitor;)Z", ordinal = 2)
 	private static int hamemr$visitFormatted$charAt$2(int original) {
-		if (hammer$isHexCode.get()) {
+		if (HAMMER$IS_HEX_CODE.get()) {
 			return original + 6;
 		}
 		
@@ -66,7 +66,7 @@ public class TextVisitFactoryMixin {
 	
 	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/Formatting;byCode(C)Lnet/minecraft/util/Formatting;", shift = At.Shift.AFTER), method = "visitFormatted(Ljava/lang/String;ILnet/minecraft/text/Style;Lnet/minecraft/text/Style;Lnet/minecraft/text/CharacterVisitor;)Z", ordinal = 0)
 	private static Formatting hamemr$visitFormatted$charAt$3(Formatting original) {
-		if (hammer$isHexCode.get()) {
+		if (HAMMER$IS_HEX_CODE.get()) {
 			return null;
 		}
 		
@@ -75,10 +75,10 @@ public class TextVisitFactoryMixin {
 	
 	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/util/Formatting;byCode(C)Lnet/minecraft/util/Formatting;", shift = At.Shift.AFTER), method = "visitFormatted(Ljava/lang/String;ILnet/minecraft/text/Style;Lnet/minecraft/text/Style;Lnet/minecraft/text/CharacterVisitor;)Z", ordinal = 2)
 	private static Style hamemr$visitFormatted$charAt$4(Style original) {
-		if (hammer$isHexCode.get()) {
-			var style = original.withColor(hammer$hexCode.get());
+		if (HAMMER$IS_HEX_CODE.get()) {
+			var style = original.withColor(HAMMER$HEX_CODE.get());
 			
-			hammer$isHexCode.set(false);
+			HAMMER$IS_HEX_CODE.set(false);
 			
 			return style;
 		}

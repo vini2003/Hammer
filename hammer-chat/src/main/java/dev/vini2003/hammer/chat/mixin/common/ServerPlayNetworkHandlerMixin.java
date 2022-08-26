@@ -29,7 +29,11 @@ public abstract class ServerPlayNetworkHandlerMixin {
 			if (packet instanceof MessageHeaderS2CPacket) {
 				info.cancel();
 			} else if (packet instanceof ChatMessageS2CPacket chat) {
-				packet = new GameMessageS2CPacket(chat.message().getContent(), false);
+				if (HC.CONFIG.disableChatPrefix) {
+					packet = new GameMessageS2CPacket(chat.message().getContent(), false);
+				} else {
+					packet = new GameMessageS2CPacket(chat.serializedParameters().toParameters(player.getWorld().getRegistryManager()).get().applyChatDecoration(chat.message().getContent()), false);
+				}
 				
 				info.cancel();
 				

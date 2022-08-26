@@ -50,9 +50,6 @@ import java.util.List;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEntityAccessor {
-	@Shadow
-	public double prevCapeX;
-	
 	private final TrackedDataHandler<Boolean> hammer$showChat = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true,"ShowChat");
 	private final TrackedDataHandler<Boolean> hammer$showGlobalChat = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "ShowGlobalChat");
 	private final TrackedDataHandler<Boolean> hammer$showCommandFeedback = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "ShowCommandFeedback");
@@ -65,7 +62,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	
 	private Channel hammer$selectedChannel = null;
 	
-	private List<Channel> hammer$previousSelectedChannels = new ArrayList<>();
+	private final List<Channel> hammer$previousSelectedChannels = new ArrayList<>();
 	
 	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);

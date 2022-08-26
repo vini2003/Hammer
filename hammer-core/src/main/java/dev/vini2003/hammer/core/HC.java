@@ -26,10 +26,7 @@ package dev.vini2003.hammer.core;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.vini2003.hammer.core.registry.common.HCComponents;
-import dev.vini2003.hammer.core.registry.common.HCEvents;
-import dev.vini2003.hammer.core.registry.common.HCItemGroups;
-import dev.vini2003.hammer.core.registry.common.HCNetworking;
+import dev.vini2003.hammer.core.registry.common.*;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
@@ -50,6 +47,7 @@ public class HC implements ModInitializer {
 	
 	@Override
 	public void onInitialize() {
+		HCArgumentTypes.init();
 		HCEvents.init();
 		HCItemGroups.init();
 		HCNetworking.init();

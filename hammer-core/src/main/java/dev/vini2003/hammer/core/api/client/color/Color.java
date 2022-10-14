@@ -38,13 +38,13 @@ import net.minecraft.network.PacketByteBuf;
  * <p>The following serialization methods are provided:</p>
  * <ul>
  *     <li>{@link #toJson(Color)} - from {@link Color} to {@link JsonElement}.</li>
- *     <li>{@link #toNbt(Color)} - from {@link Color} to {@link NbtCompound}.</li>
+ *     <li>{@link #toNbt(Color)} - from {@link Color} to {@link NbtElement}.</li>
  *     <li>{@link #toBuf(Color, PacketByteBuf)} - from {@link Color} to {@link PacketByteBuf}.</li>
  * </ul>
 
  * <ul>
  *     <li>{@link #fromJson(JsonElement)} from {@link JsonElement} to {@link Color}.</li>
- *     <li>{@link #fromNbt(NbtCompound)} from {@link NbtCompound} to {@link Color}.</li>
+ *     <li>{@link #fromNbt(NbtElement)} from {@link NbtElement} to {@link Color}.</li>
  *     <li>{@link #fromBuf(PacketByteBuf)} from {@link PacketByteBuf} to {@link Color}.</li>
  * </ul>
  */
@@ -97,12 +97,8 @@ public class Color {
 	 * @param color The color.
 	 * @return The serialized color.
 	 */
-	public static NbtCompound toNbt(Color color) {
-		var nbt = new NbtCompound();
-		
-		nbt.putLong("rgba", color.toRgba());
-		
-		return nbt;
+	public static NbtElement toNbt(Color color) {
+		return NbtLong.of(color.toRgba());
 	}
 	
 	/**
@@ -110,8 +106,8 @@ public class Color {
 	 * @param nbt The serialized color.
 	 * @return The color.
 	 */
-	public static Color fromNbt(NbtCompound nbt) {
-		var rgba = nbt.getLong("rgba");
+	public static Color fromNbt(NbtElement nbt) {
+		var rgba = ((NbtLong) nbt).longValue();
 		
 		return new Color(rgba);
 	}

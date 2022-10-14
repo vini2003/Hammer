@@ -1,9 +1,21 @@
 {
+  "text.hammer.yes.title_case": "Yes",
+  "text.hammer.no.title_case": "No",
+  "text.hammer.yes.lower_case": "yes",
+  "text.hammer.no.lower_case": "no",
+  "text.hammer.yes.upper_case": "YES",
+  "text.hammer.no.upper_case": "NO",
+  "text.hammer.enabled.title_case": "Enabled",
+  "text.hammer.disabled.title_case": "Disabled",
+  "text.hammer.enabled.lower_case": "enabled",
+  "text.hammer.disabled.lower_case": "disabled",
+  "text.hammer.enabled.upper_case": "ENABLED",
+  "text.hammer.disabled.upper_case": "DISABLED",
   "text.hammer.discord": "Discord",
   "text.hammer.empty": "Empty",
   "text.hammer.fluid": "Fluid",
   "text.hammer.color.invalid": "Invalid color: %s",
-  "itemGroup.hammer.hammer": "Hammer",
   "text.hammer.position.incomplete": "Incomplete position",
-  "text.hammer.size.incomplete": "Incomplete size"
+  "text.hammer.size.incomplete": "Incomplete size",
+  "itemGroup.hammer.hammer": "Hammer"
 }

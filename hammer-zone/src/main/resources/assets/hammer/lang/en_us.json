@@ -1,5 +1,6 @@
 {
   "command.hammer.zone.not_found": "Zone not found",
+  "command.hammer.zone.group.not_found": "Zone group not found",
   "command.hammer.zone.editor": "Zone editor mode %s",
   "command.hammer.zone.select": "Selected zone %s",
   "command.hammer.zone.deselect": "Deselected zone",
@@ -17,9 +18,8 @@
   "command.hammer.zone.group.create": "Created zone group %s",
   "command.hammer.zone.group.delete": "Deleted zone group %s",
   "command.hammer.zone.color": "Set zone color to %s",
+  "command.hammer.zone.group.color": "Set zone group color to %s",
   "command.hammer.zone.group": "Set zone group to %s",
   "command.hammer.zone.export": "Exported zone %s (%s)",
-  "command.hammer.zone.group.export": "Exported zone group %s (%s)",
-  "text.hammer.enabled.lower_case": "enabled",
-  "text.hammer.disabled.lower_case": "disabled"
+  "command.hammer.zone.group.export": "Exported zone group %s (%s)"
 }

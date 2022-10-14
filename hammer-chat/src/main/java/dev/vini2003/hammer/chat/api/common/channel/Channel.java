@@ -24,19 +24,31 @@
 
 package dev.vini2003.hammer.chat.api.common.channel;
 
+import dev.vini2003.hammer.chat.api.common.event.ChannelEvents;
+import dev.vini2003.hammer.permission.api.common.role.Role;
 import net.minecraft.entity.player.PlayerEntity;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
 public class Channel {
-	private String name;
+	private final String name;
 	
-	private Collection<UUID> holders = new ArrayList<>();
+	@Nullable
+	private final Role role;
+	
+	private final Collection<UUID> holders = new ArrayList<>();
 	
 	public Channel(String name) {
 		this.name = name;
+		this.role = null;
+	}
+	
+	public Channel(String name, @Nullable Role role) {
+		this.name = name;
+		this.role = role;
 	}
 	
 	public boolean isIn(PlayerEntity player) {
@@ -45,14 +57,23 @@ public class Channel {
 	
 	public void addTo(PlayerEntity player) {
 		holders.add(player.getUuid());
+		
+		ChannelEvents.ADD.invoker().onAdd(player, this);
 	}
 	
 	public void removeFrom(PlayerEntity player) {
 		holders.remove(player.getUuid());
+		
+		ChannelEvents.REMOVE.invoker().onRemove(player, this);
 	}
 	
 	public String getName() {
 		return name;
+	}
+	
+	@Nullable
+	public Role getRole() {
+		return role;
 	}
 	
 	public Collection<UUID> getHolders() {

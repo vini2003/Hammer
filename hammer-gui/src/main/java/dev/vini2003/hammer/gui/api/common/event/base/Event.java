@@ -36,10 +36,8 @@ public interface Event {
 	static Event fromBuf(PacketByteBuf buf) {
 		var type = buf.readEnumConstant(EventType.class);
 		
-		var event = switch (type) {
-			case NONE -> null;
-			case ADDED -> null;
-			case REMOVED -> null;
+		return switch (type) {
+			case NONE, ADDED, REMOVED -> null;
 			case CHARACTER_TYPED -> CharacterTypedEvent.readFromBuf(buf);
 			case FOCUS_GAINED -> FocusGainedEvent.readFromBuf(buf);
 			case FOCUS_RELEASED -> FocusReleasedEvent.readFromBuf(buf);
@@ -52,7 +50,5 @@ public interface Event {
 			case MOUSE_RELEASED -> MouseReleasedEvent.readFromBuf(buf);
 			case MOUSE_SCROLLED -> MouseScrolledEvent.readFromBuf(buf);
 		};
-		
-		return event;
 	}
 }

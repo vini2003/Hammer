@@ -18,7 +18,7 @@ public class Config {
 			return config;
 		} catch (Exception ignored) {}
 		
-		return null;
+		throw new UnsupportedOperationException("Could not instantiate config class! Did you add a no-args constructor?");
 	}
 	
 	public void load() {

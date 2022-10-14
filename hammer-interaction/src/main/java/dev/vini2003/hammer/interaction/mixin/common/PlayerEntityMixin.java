@@ -40,13 +40,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEntityAccessor {
+	private PlayerEntity hammer$self() {
+		return (PlayerEntity) (Object) this;
+	}
+	
 	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
 	}
 	
 	@Inject(at = @At("RETURN"), method = "isBlockBreakingRestricted", cancellable = true)
 	private void hammer$isBlockBreakingRestricted(World world, BlockPos pos, GameMode gameMode, CallbackInfoReturnable<Boolean> cir) {
-		if (!InteractionRuleManager.allows((PlayerEntity) (Object) this, InteractionType.BLOCK_BREAK, world.getBlockState(pos).getBlock())) {
+		if (!InteractionRuleManager.allows(hammer$self(), InteractionType.BLOCK_BREAK, world.getBlockState(pos).getBlock())) {
 			cir.setReturnValue(true);
 			cir.cancel();
 		}

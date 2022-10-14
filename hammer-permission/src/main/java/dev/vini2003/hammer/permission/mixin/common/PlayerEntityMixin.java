@@ -49,6 +49,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEntityAccessor {
 	private final TrackedDataHandler<Boolean> hammer$roleOutline = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "RoleOutline");
 	
+	private PlayerEntity hammer$self() {
+		return (PlayerEntity) (Object) this;
+	}
+	
 	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
 	}
@@ -65,7 +69,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	
 	@Inject(at = @At("RETURN"), method = "getDisplayName", cancellable = true)
 	private void hammer$getDisplayName(CallbackInfoReturnable<Text> cir) {
-		var color = RoleManager.getRolePrefixColor((PlayerEntity) (Object) this);
+		var color = RoleManager.getRolePrefixColor(hammer$self());
 		
 		if (color != null) {
 			var formatted = ((MutableText) cir.getReturnValue()).styled((style) -> style.withColor(color));

@@ -55,11 +55,15 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 	@Final
 	private MinecraftClient client;
 	
+	private InGameHud hammer$self() {
+		return (InGameHud) (Object) this;
+	}
+	
 	@Inject(at = @At("RETURN"), method = "<init>")
 	private void hammer$init(MinecraftClient client, ItemRenderer itemRenderer, CallbackInfo ci) {
 		hammer$children.clear();
 		
-		InGameHudEvents.INIT.invoker().onInit((InGameHud) (Object) this, this);
+		InGameHudEvents.INIT.invoker().onInit(hammer$self(), this);
 		
 		onLayoutChanged();
 		
@@ -91,8 +95,7 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 						
 						return true;
 					}
-				})
-				.collect(Collectors.toList());
+				}).toList();
 		
 		var leftPos = InGameHudUtil.getLeftBarPos(client.player);
 		var rightPos = InGameHudUtil.getRightBarPos(client.player);
@@ -129,7 +132,7 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 		
 		provider.draw();
 		
-		InGameHudEvents.RENDER.invoker().onRender(matrices, provider, (InGameHud) (Object) this, this);
+		InGameHudEvents.RENDER.invoker().onRender(matrices, provider, hammer$self(), this);
 	}
 	
 	@NotNull

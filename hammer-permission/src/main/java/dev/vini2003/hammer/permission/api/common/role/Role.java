@@ -49,7 +49,7 @@ public class Role {
 	
 	private boolean init = false;
 	
-	private Cached<Group> group = new Cached<>(() -> {
+	private final Cached<Group> group = new Cached<>(() -> {
 		if (!init) {
 			init();
 		}
@@ -57,7 +57,7 @@ public class Role {
 		return PermUtil.getOrCreateGroup(name);
 	});
 	
-	private Cached<InheritanceNode> inheritanceNode = new Cached<>(() -> {
+	private final Cached<InheritanceNode> inheritanceNode = new Cached<>(() -> {
 		if (!init) {
 			init();
 		}
@@ -65,7 +65,7 @@ public class Role {
 		return InheritanceNode.builder(group.get()).build();
 	});
 	
-	private Cached<PermissionNode> permissionNode = new Cached<>(() -> {
+	private final Cached<PermissionNode> permissionNode = new Cached<>(() -> {
 		if (!init) {
 			init();
 		}
@@ -73,7 +73,7 @@ public class Role {
 		return PermissionNode.builder("hammer." + name).value(true).build();
 	});
 	
-	private Cached<PrefixNode> prefixNode = new Cached<>(() -> {
+	private final Cached<PrefixNode> prefixNode = new Cached<>(() -> {
 		if (!init) {
 			init();
 		}
@@ -81,7 +81,7 @@ public class Role {
 		return PrefixNode.builder(prefix, prefixWeight).build();
 	});
 	
-	private Collection<UUID> holders = new ArrayList<>();
+	private final Collection<UUID> holders = new ArrayList<>();
 	
 	public Role(String name) {
 		this.name = name;
@@ -111,7 +111,11 @@ public class Role {
 	}
 	
 	public boolean isIn(PlayerEntity player) {
-		return PermUtil.hasPermission(player, inheritanceNode.get().getKey());
+		if (player.world.isClient) {
+			return holders.contains(player.getUuid());
+		} else {
+			return PermUtil.hasPermission(player, inheritanceNode.get().getKey());
+		}
 	}
 	
 	public void addToClient(UUID uuid) {

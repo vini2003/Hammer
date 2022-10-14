@@ -104,8 +104,8 @@ public class HCEvents {
 							var tooltips = new ArrayList<Text>();
 							
 							if (ChatUtil.shouldShowCommandFeedback(client.player)) {
-								tooltips.add(Text.translatable("text.hammer.feedback.warning"));
-								tooltips.add(Text.translatable("text.hammer.feedback.toggle"));
+								tooltips.add(Text.translatable("text.hammer.command_feedback.warning"));
+								tooltips.add(Text.translatable("text.hammer.command_feedback.toggle"));
 							}
 							
 							if (!ChatUtil.shouldShowChat(client.player)) {

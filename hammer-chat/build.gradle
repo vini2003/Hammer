@@ -2,6 +2,12 @@ dependencies {
     // Hammer Core
 	implementation project(path: ":hammer-core", configuration: "namedElements")
 
+	// Hammer Emoji
+	implementation project(path: ":hammer-emoji", configuration: "namedElements")
+
+	// Hammer Permission
+	implementation project(path: ":hammer-permission", configuration: "namedElements")
+
 	// Hammer Config
 	implementation project(path: ":hammer-config", configuration: "namedElements")
 }

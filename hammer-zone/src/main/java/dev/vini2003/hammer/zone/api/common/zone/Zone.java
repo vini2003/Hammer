@@ -61,8 +61,8 @@ import java.util.Objects;
  * </ul>
  */
 public class Zone {
-	private RegistryKey<World> world;
-	private Identifier id;
+	private final RegistryKey<World> world;
+	private final Identifier id;
 	
 	private Position minPos;
 	private Position maxPos;
@@ -140,16 +140,21 @@ public class Zone {
 	public static NbtCompound toNbt(Zone zone) {
 		var nbt = new NbtCompound();
 		
-		NbtUtil.putRegistryKey(nbt, "world", zone.getWorld());
-		NbtUtil.putIdentifier(nbt, "id", zone.getId());
-		
-		nbt.put("minPos", Position.toNbt(zone.getMinPos()));
-		nbt.put("maxPos", Position.toNbt(zone.getMaxPos()));
-		
-		nbt.put("color", Color.toNbt(zone.getColor()));
+		NbtUtil.putRegistryKey(nbt, "WorldId", zone.getWorld());
 		
 		if (zone.getGroup() != null) {
-			NbtUtil.putIdentifier(nbt, "group", zone.getGroup().getId());
+			NbtUtil.putIdentifier(nbt, "GroupId", zone.getGroup().getId());
+		}
+		
+		NbtUtil.putIdentifier(nbt, "Id", zone.getId());
+		
+		nbt.put("MinPos", Position.toNbt(zone.getMinPos()));
+		nbt.put("MaxPos", Position.toNbt(zone.getMaxPos()));
+		
+		nbt.put("Color", Color.toNbt(zone.getColor()));
+		
+		if (zone.getGroup() != null) {
+			NbtUtil.putIdentifier(nbt, "Group", zone.getGroup().getId());
 		}
 		
 		return nbt;
@@ -161,17 +166,29 @@ public class Zone {
 	 * @return The zone.
 	 */
 	public static Zone fromNbt(NbtCompound nbt) {
-		var zone = new Zone(
-				NbtUtil.getRegistryKey(nbt, "world"),
-				NbtUtil.getIdentifier(nbt, "id"),
-				Position.fromNbt(nbt.getCompound("minPos")),
-				Position.fromNbt(nbt.getCompound("maxPos"))
-		);
+		Zone zone;
 		
-		zone.setColor(Color.fromNbt(nbt.getCompound("color")));
+		if (nbt.contains("group_id")) {
+			zone = new Zone(
+					NbtUtil.getRegistryKey(nbt, "WorldId"),
+					NbtUtil.getIdentifier(nbt, "Id"),
+					ZoneGroupManager.getOrCreate(NbtUtil.getIdentifier(nbt, "GroupId")),
+					Position.fromNbt(nbt.getCompound("MinPos")),
+					Position.fromNbt(nbt.getCompound("MaxPos"))
+			);
+		} else {
+			zone = new Zone(
+					NbtUtil.getRegistryKey(nbt, "WorldId"),
+					NbtUtil.getIdentifier(nbt, "Id"),
+					Position.fromNbt(nbt.getCompound("MinPos")),
+					Position.fromNbt(nbt.getCompound("MaxPos"))
+			);
+		}
 		
-		if (nbt.contains("group")) {
-			zone.setGroup(ZoneGroupManager.getOrCreate(NbtUtil.getIdentifier(nbt, "group")));
+		zone.setColor(Color.fromNbt(nbt.getCompound("Color")));
+		
+		if (nbt.contains("Group")) {
+			zone.setGroup(ZoneGroupManager.getOrCreate(NbtUtil.getIdentifier(nbt, "Group")));
 		}
 		
 		return zone;
@@ -185,11 +202,16 @@ public class Zone {
 	public static JsonElement toJson(Zone zone) {
 		var json = new JsonObject();
 		
-		json.addProperty("id", zone.getWorld().getValue().toString());
+		json.addProperty("world_id", zone.getWorld().getValue().toString());
+		
+		if (zone.getGroup() != null) {
+			json.addProperty("group_id", zone.getGroup().getId().toString());
+		}
+		
 		json.addProperty("id", zone.getId().toString());
 		
-		json.add("minPos", Position.toJson(zone.getMinPos()));
-		json.add("maxPos", Position.toJson(zone.getMaxPos()));
+		json.add("min_pos", Position.toJson(zone.getMinPos()));
+		json.add("max_pos", Position.toJson(zone.getMaxPos()));
 		json.add("color", Color.toJson(zone.getColor()));
 		
 		return json;
@@ -203,12 +225,24 @@ public class Zone {
 	public static Zone fromJson(JsonElement json) {
 		var object = json.getAsJsonObject();
 		
-		var zone = new Zone(
-				RegistryKey.of(Registry.WORLD_KEY, new Identifier(object.get("world").getAsString())),
-				new Identifier(object.get("id").getAsString()),
-				Position.fromJson(object.get("minPos")),
-				Position.fromJson(object.get("maxPos"))
-		);
+		Zone zone;
+		
+		if (object.has("group_id")) {
+			zone = new Zone(
+					RegistryKey.of(Registry.WORLD_KEY, new Identifier(object.get("world_id").getAsString())),
+					new Identifier(object.get("id").getAsString()),
+					ZoneGroupManager.getOrCreate(new Identifier(object.get("zone_id").getAsString())),
+					Position.fromJson(object.get("min_pos")),
+					Position.fromJson(object.get("max_pos"))
+			);
+		} else {
+			zone = new Zone(
+					RegistryKey.of(Registry.WORLD_KEY, new Identifier(object.get("world_id").getAsString())),
+					new Identifier(object.get("id").getAsString()),
+					Position.fromJson(object.get("min_pos")),
+					Position.fromJson(object.get("max_pos"))
+			);
+		}
 		
 		zone.setColor(Color.fromJson(object.get("color")));
 		
@@ -226,6 +260,20 @@ public class Zone {
 		this.lerpedMinPos = getCenterPos();
 		this.lerpedMaxPos = getCenterPos();
 	}
+	
+	public Zone(RegistryKey<World> world, Identifier id, ZoneGroup group, Position startPos, Position endPos) {
+		this.world = world;
+		
+		this.id = id;
+		this.group = group;
+		
+		this.minPos = Position.min(startPos, endPos);
+		this.maxPos = Position.max(startPos, endPos);
+		
+		this.lerpedMinPos = getCenterPos();
+		this.lerpedMaxPos = getCenterPos();
+	}
+	
 	
 	/**
 	 * Returns thiz zone's world key.

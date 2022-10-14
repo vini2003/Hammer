@@ -36,33 +36,37 @@ public class HGUINetworking {
 	
 	public static void init() {
 		ServerPlayNetworking.registerGlobalReceiver(SYNC_SCREEN_HANDLER, (server, player, handler, buf, responseSender) -> {
-			var width = buf.readInt();
-			var height = buf.readInt();
-			
-			server.execute(() -> {
-				var screenHandler = (BaseScreenHandler) player.currentScreenHandler;
+			try {
+				var width = buf.readInt();
+				var height = buf.readInt();
 				
-				screenHandler.getChildren().clear();
-				screenHandler.getSlots().clear();
-				
-				screenHandler.init(width, height);
-			});
+				server.execute(() -> {
+					var screenHandler = (BaseScreenHandler) player.currentScreenHandler;
+					
+					screenHandler.getChildren().clear();
+					screenHandler.getSlots().clear();
+					
+					screenHandler.init(width, height);
+				});
+			} catch (Exception ignored) {}
 		});
 		
 		ServerPlayNetworking.registerGlobalReceiver(SYNC_WIDGET_EVENT, (server, player, handler, buf, responseSender) -> {
-			var hashCode = buf.readInt();
-			
-			var event = Event.fromBuf(buf);
-			
-			server.execute(() -> {
-				var screenHandler = (BaseScreenHandler) player.currentScreenHandler;
+			try {
+				var hashCode = buf.readInt();
 				
-				for (var child : screenHandler.getAllChildren()) {
-					if (child.hashCode() == hashCode) {
-						child.dispatchEvent(event);
+				var event = Event.fromBuf(buf);
+				
+				server.execute(() -> {
+					var screenHandler = (BaseScreenHandler) player.currentScreenHandler;
+					
+					for (var child : screenHandler.getAllChildren()) {
+						if (child.hashCode() == hashCode) {
+							child.dispatchEvent(event);
+						}
 					}
-				}
-			});
+				});
+			} catch (Exception ignored) {}
 		});
 	}
 }

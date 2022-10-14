@@ -7,8 +7,21 @@ import net.minecraft.text.Text;
 public class HPConfig extends Config {
 	public boolean disableToasts = true;
 	public boolean disableFabulousGraphics = true;
+	public boolean disableSinglePlayer = true;
 	
 	public boolean hideServerAddress = true;
+	
+	public boolean enableChannels = false;
+	public boolean enableRoles = false;
+	public boolean enableWelcome = false;
+	
+	public boolean defaultShowDirectMessages = true;
+	public boolean defaultShowWarnings = false;
+	public boolean defaultShowCommandFeedback = false;
+	public boolean defaultShowChat = true;
+	public boolean defaultShowGlobalChat = true;
+	
+	public boolean defaultFastChatFade = false;
 	
 	public String iconLowResPath = "/assets/hammer/icons/icon_16x16.png";
 	public String iconHighResPath = "/assets/hammer/icons/icon_32x32.png";

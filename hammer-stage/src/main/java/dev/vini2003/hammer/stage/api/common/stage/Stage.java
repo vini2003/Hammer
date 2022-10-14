@@ -254,7 +254,7 @@ public abstract class Stage {
 	
 	}
 	
-	public static enum State {
+	public enum State {
 		LOADED,
 		UNLOADED,
 		PREPARED,

@@ -27,33 +27,50 @@ package dev.vini2003.hammer.preset.registry.common;
 import dev.vini2003.hammer.chat.api.common.util.ChannelUtil;
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
+import dev.vini2003.hammer.preset.HP;
 import dev.vini2003.hammer.preset.api.common.util.PlayerListUtil;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 
 public class HPEvents {
+	private static final List<UUID> FIRST_JOINS = new CopyOnWriteArrayList<>();
+	
 	public static void init() {
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			var player = handler.getPlayer();
 			
-			ChannelUtil.setSelected(player, HPChannels.GENERAL);
+			if (FIRST_JOINS.contains(player.getUuid())) return;
+			else FIRST_JOINS.add(player.getUuid());
 			
-			ChatUtil.setShowWarnings(player, false);
-			ChatUtil.setShowCommandFeedback(player, false);
-			
-			ChatUtil.setFastChatFade(player, false);
-			
-			ServerTaskQueue.enqueue(($) -> {
-				ChatUtil.setFastChatFade(handler.player, true);
-			}, 2500L);
-			
-			for (var i = 0; i < 2; ++i) {
-				player.sendMessage(Text.translatable("text.hammer.welcome_" + i), false);
+			if (HP.CONFIG.enableChannels) {
+				ChannelUtil.setSelected(player, HPChannels.GENERAL);
 			}
 			
-			PlayerListUtil.setHiddenOnPlayerList(player.getGameProfile(), false);
+			ChatUtil.setShowDirectMessages(player, HP.CONFIG.defaultShowDirectMessages);
+			ChatUtil.setShowWarnings(player, HP.CONFIG.defaultShowWarnings);
+			ChatUtil.setShowCommandFeedback(player, HP.CONFIG.defaultShowCommandFeedback);
+			ChatUtil.setShowChat(player, HP.CONFIG.defaultShowChat);
+			ChatUtil.setShowGlobalChat(player, HP.CONFIG.defaultShowGlobalChat);
+			
+			ChatUtil.setFastChatFade(player, HP.CONFIG.defaultFastChatFade);
+			
+			ServerTaskQueue.enqueue(($) -> {
+				ChatUtil.setFastChatFade(handler.player, HP.CONFIG.defaultFastChatFade);
+			}, 5000L);
+			
+			if (HP.CONFIG.enableWelcome) {
+				for (var i = 0; i < 2; ++i) {
+					player.sendMessage(Text.translatable("text.hammer.welcome_" + i), false);
+				}
+			}
 		});
 	}
 }

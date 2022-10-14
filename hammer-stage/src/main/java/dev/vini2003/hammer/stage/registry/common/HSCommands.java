@@ -25,36 +25,34 @@
 package dev.vini2003.hammer.stage.registry.common;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.command.argument.PositionArgumentType;
-import dev.vini2003.hammer.core.api.common.command.argument.SizeArgumentType;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.stage.api.common.manager.StageManager;
 import dev.vini2003.hammer.stage.api.common.stage.Stage;
-import dev.vini2003.hammer.zone.api.common.manager.ZoneManager;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.command.argument.IdentifierArgumentType;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
 
+import static dev.vini2003.hammer.core.api.common.command.argument.PositionArgumentType.position;
+import static dev.vini2003.hammer.core.api.common.command.argument.SizeArgumentType.size;
+import static net.minecraft.command.argument.IdentifierArgumentType.identifier;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class HSCommands {
-	private static CompletableFuture<Suggestions> stageSuggestIds(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
+	private static boolean requiresOp(ServerCommandSource source) {
+		return source.hasPermissionLevel(4);
+	}
+	
+	private static CompletableFuture<Suggestions> suggestStageIds(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
 		for (var entry : StageManager.getFactories().entrySet()) {
 			builder.suggest(entry.getKey().toString());
 		}
@@ -63,7 +61,7 @@ public class HSCommands {
 	}
 	
 	// Loads a stage.
-	private static int stageLoad(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+	private static int executeStageLoad(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
@@ -97,7 +95,7 @@ public class HSCommands {
 	}
 	
 	// Unloads the currently active stage.
-	private static int stageUnload(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+	private static int executeStageUnload(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
@@ -117,7 +115,7 @@ public class HSCommands {
 	}
 	
 	// Prepares the currently active stage.
-	private static int stagePrepare(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+	private static int executeStagePrepare(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
@@ -135,7 +133,7 @@ public class HSCommands {
 	}
 	
 	// Starts the currently active stage.
-	private static int stageStart(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+	private static int executeStageStart(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
@@ -153,7 +151,7 @@ public class HSCommands {
 	}
 	
 	// Stops the currently active stage.
-	private static int stageStop(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+	private static int executeStageStop(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
@@ -171,7 +169,7 @@ public class HSCommands {
 	}
 	
 	// Pauses the currently active stage.
-	private static int stagePause(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+	private static int executeStagePause(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
@@ -193,7 +191,7 @@ public class HSCommands {
 	}
 	
 	// Restarts the currently active stage.
-	private static int stageRestart(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+	private static int executeStageRestart(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
@@ -212,31 +210,55 @@ public class HSCommands {
 	
 	public static void init() {
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
-			dispatcher.register(
-					literal("stage").requires(source -> {
-						return source.hasPermissionLevel(4);
-					}).then(
-							literal("load").then(
-									argument("id", IdentifierArgumentType.identifier()).suggests(HSCommands::stageSuggestIds).then(
-											argument("position", PositionArgumentType.position()).then(
-													argument("size", SizeArgumentType.size()).executes(HSCommands::stageLoad)
-											)
-									)
-							)
-					).then(
-							literal("unload").executes(HSCommands::stageUnload)
-					).then(
-							literal("prepare").executes(HSCommands::stagePrepare)
-					).then(
-							literal("start").executes(HSCommands::stageStart)
-					).then(
-							literal("stop").executes(HSCommands::stageStop)
-					).then(
-							literal("pause").executes(HSCommands::stagePause)
-					).then(
-							literal("restart").executes(HSCommands::stageRestart)
-					)
-			);
+			var stageNode =
+					literal("stage")
+							.requires(HSCommands::requiresOp);
+			
+			var stageLoadNode =
+					literal("load")
+							.then(
+									argument("id", identifier()).suggests(HSCommands::suggestStageIds)
+										   .then(
+												   argument("position", position())
+														   .then(
+																   argument("size", size()).executes(HSCommands::executeStageLoad)
+														   )
+										   )
+							);
+			
+			var stageUnloadNode =
+					literal("unload")
+							.executes(HSCommands::executeStageUnload);
+			
+			var stagePrepareNode =
+					literal("prepare")
+							.executes(HSCommands::executeStagePrepare);
+			
+			var stageStartNode =
+					literal("start")
+							.executes(HSCommands::executeStageStart);
+			
+			var stageStopNode =
+					literal("stop")
+							.executes(HSCommands::executeStageStop);
+			
+			var stagePauseNode =
+					literal("pause")
+							.executes(HSCommands::executeStagePause);
+			
+			var stageRestartNode =
+					literal("restart")
+							.executes(HSCommands::executeStageRestart);
+			
+			stageNode.then(stageLoadNode);
+			stageNode.then(stageUnloadNode);
+			stageNode.then(stagePrepareNode);
+			stageNode.then(stageStartNode);
+			stageNode.then(stageStopNode);
+			stageNode.then(stagePauseNode);
+			stageNode.then(stageRestartNode);
+			
+			dispatcher.register(stageNode);
 		});
 	}
 }

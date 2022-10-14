@@ -1,5 +1,6 @@
 package dev.vini2003.hammer.preset.mixin.client;
 
+import dev.vini2003.hammer.preset.HP;
 import dev.vini2003.hammer.preset.impl.client.widget.ObfuscatedTextFieldWidget;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
@@ -38,18 +39,26 @@ public abstract class AddServerScreenMixin extends Screen {
 	
 	@Inject(at = @At("HEAD"), method = "init()V")
 	private void hammer$init(CallbackInfo ci) {
-		this.hammer$obfuscatedAddressField = new ObfuscatedTextFieldWidget(this.textRenderer, this.width / 2 - 100, 106, 200, 20, Text.translatable("addServer.enterIp"));
-		this.hammer$obfuscatedAddressField.setMaxLength(128);
-		this.hammer$obfuscatedAddressField.setText(this.server.address);
-		this.hammer$obfuscatedAddressField.setChangedListener(address -> this.updateAddButton());
+		if (HP.CONFIG.hideServerAddress) {
+			this.hammer$obfuscatedAddressField = new ObfuscatedTextFieldWidget(this.textRenderer, this.width / 2 - 100, 106, 200, 20, Text.translatable("addServer.enterIp"));
+			this.hammer$obfuscatedAddressField.setMaxLength(128);
+			this.hammer$obfuscatedAddressField.setText(this.server.address);
+			this.hammer$obfuscatedAddressField.setChangedListener(address -> this.updateAddButton());
+		}
 	}
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/AddServerScreen;addSelectableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;", ordinal = 1), method = "init")
 	private <T extends Element & Selectable> Element hammer$init$addSelectableChild(AddServerScreen instance, T element) {
-		addressField = hammer$obfuscatedAddressField;
-		
-		addSelectableChild(hammer$obfuscatedAddressField);
-		
-		return hammer$obfuscatedAddressField;
+		if (HP.CONFIG.hideServerAddress) {
+			addressField = hammer$obfuscatedAddressField;
+			
+			addSelectableChild(hammer$obfuscatedAddressField);
+			
+			return hammer$obfuscatedAddressField;
+		} else {
+			addSelectableChild(element);
+			
+			return element;
+		}
 	}
 }

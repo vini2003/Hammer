@@ -46,9 +46,13 @@ public class EntityMixin implements ComponentHolder {
 	@Shadow
 	private Vec3d velocity;
 	
+	private Entity hammer$self() {
+		return (Entity) (Object) this;
+	}
+	
 	@Inject(at = @At("HEAD"), method = "setVelocity(Lnet/minecraft/util/math/Vec3d;)V", cancellable = true)
 	private void hammer$setVelocity(Vec3d velocity, CallbackInfo ci) {
-		if ((Object) this instanceof PlayerEntity player && PlayerUtil.isFrozen(player)) {
+		if (hammer$self() instanceof PlayerEntity player && PlayerUtil.isFrozen(player)) {
 			this.velocity = Vec3d.ZERO;
 			
 			ci.cancel();
@@ -57,7 +61,7 @@ public class EntityMixin implements ComponentHolder {
 	
 	@Inject(at = @At("HEAD"), method = "addVelocity", cancellable = true)
 	private void hammer$addVelocity(double deltaX, double deltaY, double deltaZ, CallbackInfo ci) {
-		if ((Object) this instanceof PlayerEntity player && PlayerUtil.isFrozen(player)) {
+		if (hammer$self() instanceof PlayerEntity player && PlayerUtil.isFrozen(player)) {
 			this.velocity = Vec3d.ZERO;
 			
 			ci.cancel();
@@ -68,7 +72,7 @@ public class EntityMixin implements ComponentHolder {
 	
 	@Inject(at = @At("RETURN"), method = "<init>")
 	private void hammer$init(EntityType<?> entityType, World world, CallbackInfo ci) {
-		ComponentUtil.attachToEntity((Entity) (Object) this);
+		ComponentUtil.attachToEntity(hammer$self());
 	}
 	
 	@Inject(at = @At("HEAD"), method = "copyFrom")

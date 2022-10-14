@@ -48,9 +48,13 @@ public class ClientPlayNetworkHandlerMixin {
 	@Final
 	private MinecraftClient client;
 	
+	private ClientPlayNetworkHandler hammer$self() {
+		return (ClientPlayNetworkHandler) (Object) this;
+	}
+	
 	@Inject(at = @At("HEAD"), method = "onWorldBorderCenterChanged", cancellable = true)
 	private void hammer$onWorldBorderCenterChanged(WorldBorderCenterChangedS2CPacket packet, CallbackInfo ci) {
-		NetworkThreadUtils.forceMainThread(packet, ((ClientPlayNetworkHandler) (Object) this), client);
+		NetworkThreadUtils.forceMainThread(packet, hammer$self(), client);
 		
 		var worldBorder = world.getWorldBorder();
 		var cubicWorldBorder = (CubicWorldBorder) worldBorder;
@@ -64,7 +68,7 @@ public class ClientPlayNetworkHandlerMixin {
 	
 	@Inject(at = @At("HEAD"), method = "onWorldBorderInitialize")
 	private void hammer$onWorldBorderInitialize(WorldBorderInitializeS2CPacket packet, CallbackInfo ci) {
-		NetworkThreadUtils.forceMainThread(packet, ((ClientPlayNetworkHandler) (Object) this), this.client);
+		NetworkThreadUtils.forceMainThread(packet, hammer$self(), this.client);
 		
 		var worldBorder = this.world.getWorldBorder();
 		var cubicWorldBorder = (CubicWorldBorder) worldBorder;

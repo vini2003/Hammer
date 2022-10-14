@@ -72,7 +72,11 @@ public abstract class WorldBorderMixin implements CubicWorldBorder {
 	@Shadow
 	public abstract double getDistanceInsideBorder(Entity entity);
 	
-	private CubicWorldBorderArea hammer$area = new CubicWorldBorderStaticArea((WorldBorder) (Object) this, 5.9999968E7);
+	private CubicWorldBorderArea hammer$area = new CubicWorldBorderStaticArea(hammer$self(), 5.9999968E7);
+	
+	private WorldBorder hammer$self() {
+		return (WorldBorder) (Object) this;
+	}
 	
 	@Inject(at = @At("HEAD"), method = "getBoundWest", cancellable = true)
 	private void hammer$getBoundWest(CallbackInfoReturnable<Double> cir) {
@@ -194,7 +198,7 @@ public abstract class WorldBorderMixin implements CubicWorldBorder {
 		hammer$area.onCenterChanged();
 		
 		for (var listener : getListeners()) {
-			listener.onCenterChanged((WorldBorder) (Object) this, x, z);
+			listener.onCenterChanged(hammer$self(), x, z);
 		}
 		
 		ci.cancel();
@@ -209,7 +213,7 @@ public abstract class WorldBorderMixin implements CubicWorldBorder {
 		hammer$area.onCenterChanged();
 		
 		for (var listener : getListeners()) {
-			listener.onCenterChanged((WorldBorder) (Object) this, x, z);
+			listener.onCenterChanged(hammer$self(), x, z);
 		}
 	}
 	
@@ -230,10 +234,10 @@ public abstract class WorldBorderMixin implements CubicWorldBorder {
 	
 	@Inject(at = @At("HEAD"), method = "setSize", cancellable = true)
 	private void hammer$setSize(double size, CallbackInfo ci) {
-		hammer$area = new CubicWorldBorderStaticArea((WorldBorder) (Object) this, size);
+		hammer$area = new CubicWorldBorderStaticArea(hammer$self(), size);
 		
 		for (var listener : this.getListeners()) {
-			listener.onSizeChange((WorldBorder) (Object) this, size);
+			listener.onSizeChange(hammer$self(), size);
 		}
 		
 		ci.cancel();
@@ -241,10 +245,10 @@ public abstract class WorldBorderMixin implements CubicWorldBorder {
 	
 	@Inject(at = @At("HEAD"), method = "interpolateSize", cancellable = true)
 	private void hammer$interpolateSize(double fromSize, double toSize, long time, CallbackInfo ci) {
-		this.hammer$area = (fromSize == toSize ? new CubicWorldBorderStaticArea((WorldBorder) (Object) this, toSize) : new CubicWorldBorderMovingArea((WorldBorder) (Object) this, fromSize, toSize, time));
+		this.hammer$area = (fromSize == toSize ? new CubicWorldBorderStaticArea(hammer$self(), toSize) : new CubicWorldBorderMovingArea(hammer$self(), fromSize, toSize, time));
 		
 		for (var listener : getListeners()) {
-			listener.onInterpolateSize((WorldBorder) (Object) this, fromSize, toSize, time);
+			listener.onInterpolateSize(hammer$self(), fromSize, toSize, time);
 		}
 		
 		ci.cancel();

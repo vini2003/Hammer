@@ -1,5 +1,6 @@
 package dev.vini2003.hammer.preset.mixin.client;
 
+import dev.vini2003.hammer.preset.HP;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,6 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ToastManagerMixin {
 	@Inject(at = @At("HEAD"), method = "add", cancellable = true)
 	public void hammer$add(Toast toast, CallbackInfo ci) {
-		ci.cancel();
+		if (HP.CONFIG.disableToasts) {
+			ci.cancel();
+		}
 	}
 }

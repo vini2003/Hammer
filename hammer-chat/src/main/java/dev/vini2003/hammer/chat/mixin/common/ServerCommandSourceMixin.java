@@ -28,12 +28,14 @@ import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.CommandOutput;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerCommandSource.class)
@@ -48,6 +50,22 @@ public abstract class ServerCommandSourceMixin {
 			if (!ChatUtil.shouldShowCommandFeedback(player)) {
 				ci.cancel();
 			}
+		}
+	}
+	
+	@Inject(at = @At("HEAD"), method = "sendError", cancellable = true)
+	private void hammer$sendError(Text message, CallbackInfo ci) {
+		if (output instanceof PlayerEntity player) {
+			if (!ChatUtil.shouldShowCommandFeedback(player)) {
+				ci.cancel();
+			}
+		}
+	}
+	
+	@Redirect(at = @At(value = "INVOKE",  target = "Lnet/minecraft/server/network/ServerPlayerEntity;sendMessage(Lnet/minecraft/text/Text;)V"), method = "sendToOps")
+	private void hammer$sendToOps$sendMessage(ServerPlayerEntity instance, Text message) {
+		if (ChatUtil.shouldShowCommandFeedback(instance)) {
+			instance.sendMessage(message);
 		}
 	}
 }

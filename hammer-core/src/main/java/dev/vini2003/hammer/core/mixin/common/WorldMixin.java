@@ -44,19 +44,23 @@ import java.util.function.Supplier;
 
 @Mixin(World.class)
 public class WorldMixin implements ComponentHolder {
-	private ComponentContainer hammer$componentContainer = new ComponentContainer();
+	private final ComponentContainer hammer$componentContainer = new ComponentContainer();
+	
+	private World hammer$self() {
+		return (World) (Object) this;
+	}
 	
 	@Inject(at = @At("RETURN"), method = "<init>")
 	private void hammer$init(MutableWorldProperties properties, RegistryKey registryRef, RegistryEntry dimension, Supplier profiler, boolean isClient, boolean debugWorld, long seed, int maxChainedNeighborUpdates, CallbackInfo ci) {
-		if (!((Object) this instanceof ServerWorld)) {
-			ComponentUtil.attachToWorld((World) (Object) this);
+		if (!(hammer$self() instanceof ServerWorld)) {
+			ComponentUtil.attachToWorld(hammer$self());
 		}
 	}
 	
 	@Override
 	public ComponentContainer getComponentContainer() {
-		if ((Object) this instanceof ServerWorld world) {
-			var state = world.getPersistentStateManager().get((nbt) -> new ComponentPersistentState(world, nbt), "Hammer$Components");
+		if (hammer$self() instanceof ServerWorld serverWorld) {
+			var state = serverWorld.getPersistentStateManager().get((nbt) -> new ComponentPersistentState(serverWorld, nbt), "Hammer$Components");
 			return state.getComponentContainer();
 		} else {
 			return hammer$componentContainer;

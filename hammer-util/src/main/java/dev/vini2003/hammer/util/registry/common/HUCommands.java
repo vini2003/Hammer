@@ -26,25 +26,20 @@ package dev.vini2003.hammer.util.registry.common;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import dev.vini2003.hammer.core.registry.common.HCConfig;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 import java.util.Collection;
 
+import static com.mojang.brigadier.arguments.BoolArgumentType.getBool;
 import static com.mojang.brigadier.arguments.IntegerArgumentType.getInteger;
 import static net.minecraft.command.argument.EntityArgumentType.getPlayers;
 import static net.minecraft.command.argument.EntityArgumentType.players;
@@ -87,7 +82,7 @@ public class HUCommands {
 			PlayerUtil.setFrozen(otherPlayer, true);
 			
 			source.sendFeedback(Text.translatable("command.hammer.freeze.other", otherPlayer.getDisplayName()), true);
-			otherPlayer.sendMessage(Text.translatable("command.hammer.freeze.self"), false);
+			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.freeze.self"), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -114,10 +109,23 @@ public class HUCommands {
 			PlayerUtil.setFrozen(otherPlayer, false);
 			
 			source.sendFeedback(Text.translatable("command.hammer.unfreeze.other", otherPlayer.getDisplayName()), true);
-			otherPlayer.sendMessage(Text.translatable("command.hammer.unfreeze.self"), false);
+			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.unfreeze.self"), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
+	}
+	
+	// Unfreezes a player.
+	private static int executeUnfreezePlayer(CommandContext<ServerCommandSource> context) {
+		var source = context.getSource();
+		var player = source.getPlayer();
+		
+		return executeUnfreeze(context, ImmutableList.of(player));
+	}
+	
+	// Unfreezes the specified players.
+	private static int executeUnfreezePlayers(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+		return executeUnfreeze(context, getPlayers(context, "players"));
 	}
 	
 	// Heals players.
@@ -129,7 +137,7 @@ public class HUCommands {
 			otherPlayer.setHealth(otherPlayer.getMaxHealth());
 			
 			source.sendFeedback(Text.translatable("command.hammer.heal.other", otherPlayer.getDisplayName()), true);
-			otherPlayer.sendMessage(Text.translatable("command.hammer.heal.self", otherPlayer.getDisplayName()), false);
+			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.heal.self", otherPlayer.getDisplayName()), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -157,7 +165,7 @@ public class HUCommands {
 			otherPlayer.getHungerManager().setSaturationLevel(20.0F);
 			
 			source.sendFeedback(Text.translatable("command.hammer.satiate.other", otherPlayer.getDisplayName()), true);
-			otherPlayer.sendMessage(Text.translatable("command.hammer.satiate.self", otherPlayer.getDisplayName()), false);
+			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.satiate.self", otherPlayer.getDisplayName()), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -176,18 +184,64 @@ public class HUCommands {
 		return executeSatiate(context, getPlayers(context, "players"));
 	}
 	
-	// Unfreezes a player.
-	private static int executeUnfreezePlayer(CommandContext<ServerCommandSource> context) {
+	// Toggles whether the specified players are allowed to move or not.
+	private static int executeAllowMovement(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> players) {
+		var source = context.getSource();
+		
+		var allowMovement = getBool(context, "allowMovement");
+		
+		for (var otherPlayer : players) {
+			PlayerUtil.setAllowMovement(otherPlayer, allowMovement);
+			
+			source.sendFeedback(Text.translatable("command.hammer.allow_movement.other", otherPlayer.getDisplayName(), allowMovement ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), true);
+			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.allow_movement.self", allowMovement ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), false);
+		}
+		
+		return Command.SINGLE_SUCCESS;
+	}
+	
+	// Toggles whether the specified player is allowed to move or not.
+	private static int executeAllowMovementPlayer(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
-		return executeUnfreeze(context, ImmutableList.of(player));
+		return executeAllowMovement(context, ImmutableList.of(player));
 	}
 	
-	// Unfreezes the specified players..
-	private static int executeUnfreezePlayers(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-		return executeUnfreeze(context, getPlayers(context, "players"));
+	// Toggles whether the specified players are allowed to move or not.
+	private static int executeAllowMovementPlayers(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+		return executeAllowMovement(context, getPlayers(context, "players"));
 	}
+	
+	// Toggles whether the specified players are allowed to interact or not.
+	private static int executeAllowInteraction(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> players) {
+		var source = context.getSource();
+		
+		var allowInteraction = getBool(context, "allowInteraction");
+		
+		for (var otherPlayer : players) {
+			PlayerUtil.setAllowInteraction(otherPlayer, allowInteraction);
+			
+			source.sendFeedback(Text.translatable("command.hammer.allow_interaction.other", otherPlayer.getDisplayName(), allowInteraction ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), true);
+			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.allow_interaction.self", allowInteraction ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), false);
+		}
+		
+		return Command.SINGLE_SUCCESS;
+	}
+	
+	// Toggles whether the specified player is allowed to interact or not.
+	private static int executeAllowInteractionPlayer(CommandContext<ServerCommandSource> context) {
+		var source = context.getSource();
+		var player = source.getPlayer();
+		
+		return executeAllowInteraction(context, ImmutableList.of(player));
+	}
+	
+	// Toggles whether the specified players are allowed to interact or not.
+	private static int executeAllowInteractionPlayers(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+		return executeAllowInteraction(context, getPlayers(context, "players"));
+	}
+	
 	
 	// Sets players' fly speed.
 	private static int executeFlySpeed(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> players) {
@@ -204,7 +258,7 @@ public class HUCommands {
 			ServerPlayNetworking.send(otherPlayer, HUNetworking.FLY_SPEED_UPDATE, PacketByteBufs.duplicate(buf));
 			
 			source.sendFeedback(Text.translatable("command.hammer.fly_speed.other", otherPlayer.getDisplayName(), speed), true);
-			otherPlayer.sendMessage(Text.translatable("command.hammer.fly_speed.self", otherPlayer.getDisplayName(), speed), false);
+			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.fly_speed.self", otherPlayer.getDisplayName(), speed), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -238,7 +292,7 @@ public class HUCommands {
 			ServerPlayNetworking.send(otherPlayer, HUNetworking.WALK_SPEED_UPDATE, PacketByteBufs.duplicate(buf));
 			
 			source.sendFeedback(Text.translatable("command.hammer.walk_speed.other", otherPlayer.getDisplayName(), speed), true);
-			otherPlayer.sendMessage(Text.translatable("command.hammer.walk_speed.self", otherPlayer.getDisplayName(), speed), false);
+			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.walk_speed.self", otherPlayer.getDisplayName(), speed), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -285,6 +339,20 @@ public class HUCommands {
 													.executes(HUCommands::executeUnfreezePlayers)
 									).executes(HUCommands::executeUnfreezePlayer);
 			
+			var allowMovementNode = literal("allow_movement")
+					.requires(HUCommands::requiresOp)
+							.then(
+									argument("players", players())
+											.executes(HUCommands::executeAllowMovementPlayers)
+							).executes(HUCommands::executeAllowMovementPlayer);
+			
+			var allowInteractionNode = literal("allow_interaction")
+					.requires(HUCommands::requiresOp)
+							.then(
+									argument("players", players())
+											.executes(HUCommands::executeAllowInteractionPlayers)
+							).executes(HUCommands::executeAllowInteractionPlayer);
+			
 			var healNode =
 					literal("heal")
 							.requires(HUCommands::requiresOp)
@@ -322,6 +390,9 @@ public class HUCommands {
 			
 			dispatcher.register(freezeNode);
 			dispatcher.register(unfreezeNode);
+
+			dispatcher.register(allowMovementNode);
+			dispatcher.register(allowInteractionNode);
 			
 			dispatcher.register(healNode);
 			dispatcher.register(satiateNode);

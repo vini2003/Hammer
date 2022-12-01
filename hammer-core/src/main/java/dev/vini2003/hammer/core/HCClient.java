@@ -24,9 +24,12 @@
 
 package dev.vini2003.hammer.core;
 
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.registry.client.HCEvents;
 import dev.vini2003.hammer.core.registry.client.HCNetworking;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.client.MinecraftClient;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
@@ -35,5 +38,9 @@ public class HCClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		HCEvents.init();
 		HCNetworking.init();
+		
+		ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
+			InstanceUtil.setServerSupplier(() -> MinecraftClient.getInstance().getServer());
+		});
 	}
 }

@@ -32,58 +32,72 @@ import net.minecraft.text.Text;
 
 public class ChatUtil {
 	public static void setShowChat(PlayerEntity player, boolean showChat) {
+		if (player == null) return;
 		((PlayerEntityAccessor) player).hammer$setShowChat(showChat);
 	}
 	
 	public static boolean shouldShowChat(PlayerEntity player) {
+		if (player == null) return true;
 		return ((PlayerEntityAccessor) player).hammer$shouldShowChat();
 	}
 	
 	public static void setShowGlobalChat(PlayerEntity player, boolean showGlobalChat) {
+		if (player == null) return;
 		((PlayerEntityAccessor) player).hammer$setShowGlobalChat(showGlobalChat);
 	}
 	
 	public static boolean shouldShowGlobalChat(PlayerEntity player) {
+		if (player == null) return true;
 		return ((PlayerEntityAccessor) player).hammer$shouldShowGlobalChat();
 	}
 	
 	public static void setShowCommandFeedback(PlayerEntity player, boolean showFeedback) {
+		if (player == null) return;
 		((PlayerEntityAccessor) player).hammer$setShowCommandFeedback(showFeedback);
 	}
 	
 	public static boolean shouldShowCommandFeedback(PlayerEntity player) {
+		if (player == null) return true;
 		return ((PlayerEntityAccessor) player).hammer$shouldShowCommandFeedback();
 	}
 	
 	public static void setShowWarnings(PlayerEntity player, boolean showWarnings) {
+		if (player == null) return;
 		((PlayerEntityAccessor) player).hammer$setShowWarnings(showWarnings);
 	}
 	
 	public static boolean shouldShowWarnings(PlayerEntity player) {
+		if (player == null) return true;
 		return ((PlayerEntityAccessor) player).hammer$shouldShowWarnings();
 	}
 	
 	public static void setShowDirectMessages(PlayerEntity player, boolean showDirectMessages) {
+		if (player == null) return;
 		((PlayerEntityAccessor) player).hammer$setShowDirectMessages(showDirectMessages);
 	}
 	
 	public static boolean shouldShowDirectMessages(PlayerEntity player) {
+		if (player == null) return true;
 		return ((PlayerEntityAccessor) player).hammer$shouldShowDirectMessages();
 	}
 
 	public static void setFastChatFade(PlayerEntity player, boolean fastChatFade) {
+		if (player == null) return;
 		((PlayerEntityAccessor) player).hammer$setFastChatFade(fastChatFade);
 	}
 	
 	public static boolean hasFastChatFade(PlayerEntity player) {
+		if (player == null) return true;
 		return ((PlayerEntityAccessor) player).hammer$hasFastChatFade();
 	}
 	
 	public static void setMuted(PlayerEntity player, boolean muted) {
+		if (player == null) return;
 		((PlayerEntityAccessor) player).hammer$setMuted(muted);
 	}
 	
 	public static boolean isMuted(PlayerEntity player) {
+		if (player == null) return false;
 		return ((PlayerEntityAccessor) player).hammer$isMuted();
 	}
 }

@@ -69,6 +69,12 @@ allprojects {
             name = "FabricMC"
             url = "https://maven.fabricmc.net/"
         }
+
+		// EngineHub
+		maven {
+			name = "EngineHub"
+			url = "https://maven.enginehub.org/repo/"
+		}
     }
 
     configurations.all {

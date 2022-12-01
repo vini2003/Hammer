@@ -5,20 +5,25 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "common.EndPortalBlockMixin",
+    "common.EntityMixin",
+    "common.EntityTrackerMixin",
     "common.LivingEntityMixin",
     "common.NetherPortalBlockMixin",
     "common.PlayerEntityMixin",
+    "common.PlayerScreenHandlerMixin",
     "common.ServerPlayNetworkHandlerMixin",
-    "common.EntityMixin",
-    "common.EntityTrackerMixin",
     "common.WorldMixin"
   ],
   "client": [
-    "client.WorldRendererMixin",
-    "client.InstanceUtilMixin"
+    "client.ClientPlayerInteractionManagerMixin",
+    "client.HeldItemRendererMixin",
+    "client.KeyboardInputMixin",
+    "client.LivingEntityRendererMixin",
+    "client.MinecraftClientMixin",
+    "client.PlayerEntityRendererMixin",
+    "client.WorldRendererMixin"
   ],
   "server": [
-    "server.InstanceUtilMixin"
   ],
   "injectors": {
     "defaultRequire": 1

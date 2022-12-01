@@ -7,7 +7,7 @@
   "mixins": [
   ],
   "client": [
-    "client.TitleScreenMixin"
+    "client.TitleScreenMixin",
     "client.AddServerScreenMixin",
     "client.GameOptionsMixin",
     "client.MinecraftClientMixin",

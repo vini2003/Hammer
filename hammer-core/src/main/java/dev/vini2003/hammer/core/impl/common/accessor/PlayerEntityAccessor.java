@@ -56,4 +56,44 @@ public interface PlayerEntityAccessor {
 	boolean hammer$isFrozen();
 	
 	void hammer$setFrozen(boolean frozen);
+	
+	boolean hammer$hasHead();
+	
+	void hammer$setHead(boolean head);
+	
+	boolean hammer$hasTorso();
+	
+	void hammer$setTorso(boolean torso);
+	
+	boolean hammer$hasLeftArm();
+	
+	void hammer$setLeftArm(boolean leftArm);
+	
+	boolean hammer$hasRightArm();
+	
+	void hammer$setRightArm(boolean rightArm);
+	
+	boolean hammer$hasLeftLeg();
+	
+	void hammer$setLeftLeg(boolean leftLeg);
+	
+	boolean hammer$hasRightLeg();
+	
+	void hammer$setRightLeg(boolean rightLeg);
+	
+	default boolean hammer$hasAnyArm() {
+		return hammer$hasLeftArm() || hammer$hasRightArm();
+	}
+	
+	default boolean hammer$hasAnyLeg() {
+		return hammer$hasLeftLeg() || hammer$hasRightLeg();
+	}
+	
+	void hammer$setAllowMovement(boolean allowsMovement);
+	
+	boolean hammer$allowMovement();
+	
+	void hammer$setAllowInteraction(boolean allowsInteraction);
+	
+	boolean hammer$allowInteraction();
 }

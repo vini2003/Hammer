@@ -33,10 +33,13 @@ import javax.annotation.Nullable;
 public class ChannelUtil {
 	@Nullable
 	public static Channel getSelected(PlayerEntity player) {
+		if (player == null) return null;
 		return ((PlayerEntityAccessor) player).hammer$getSelectedChannel();
 	}
 	
 	public static void setSelected(PlayerEntity player, @Nullable Channel channel) {
+		if (player == null) return;
+		
 		var prev = getSelected(player);
 		
 		if (prev != null) {
@@ -48,6 +51,8 @@ public class ChannelUtil {
 	
 	@Nullable
 	public static Channel getPreviousSelected(PlayerEntity player) {
+		if (player == null) return null;
+		
 		var channels = ((PlayerEntityAccessor) player).hammer$getPreviousSelectedChannels();
 		
 		if (!channels.isEmpty()) {

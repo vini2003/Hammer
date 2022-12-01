@@ -28,8 +28,13 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.server.MinecraftServer;
+import org.jetbrains.annotations.ApiStatus;
+
+import java.util.function.Supplier;
 
 public class InstanceUtil {
+	private static Supplier<Object> SERVER_SUPPLIER = () -> null;
+	
 	public static FabricLoader getFabric() {
 		return FabricLoader.getInstance();
 	}
@@ -43,8 +48,7 @@ public class InstanceUtil {
 	}
 	
 	public static MinecraftServer getServer() {
-		// Defined in Mixins.
-		throw new UnsupportedOperationException();
+		return (MinecraftServer) SERVER_SUPPLIER.get();
 	}
 	
 	public static boolean isClient() {
@@ -53,5 +57,10 @@ public class InstanceUtil {
 	
 	public static boolean isServer() {
 		return getFabric().getEnvironmentType() == EnvType.SERVER;
+	}
+	
+	@ApiStatus.Internal
+	public static void setServerSupplier(Supplier<MinecraftServer> supplier) {
+		SERVER_SUPPLIER = supplier::get;
 	}
 }

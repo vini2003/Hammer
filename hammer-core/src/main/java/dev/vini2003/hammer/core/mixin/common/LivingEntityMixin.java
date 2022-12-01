@@ -29,30 +29,82 @@ import dev.vini2003.hammer.core.registry.common.HCConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
+	@Shadow
+	public abstract boolean isClimbing();
+	
 	public LivingEntityMixin(EntityType<?> entityType, World world) {
 		super(entityType, world);
+	}
+	
+	private LivingEntity hammer$self() {
+		return (LivingEntity) (Object) this;
+	}
+	
+	@Inject(at = @At("RETURN"), method = "getJumpVelocity", cancellable = true)
+	private void hammer$getJumpVelocity(CallbackInfoReturnable<Float> cir) {
+		if (hammer$self() instanceof PlayerEntityAccessor player) {
+			if (!player.hammer$hasHead() && !player.hammer$hasTorso() && !player.hammer$hasLeftArm() && !player.hammer$hasRightArm()) {
+				var multiplier = 1.0F;
+				
+				if (player.hammer$hasLeftLeg()) multiplier += 0.125F;
+				if (player.hammer$hasRightLeg()) multiplier += 0.125F;
+				
+				cir.setReturnValue(cir.getReturnValueF() * multiplier);
+				cir.cancel();
+			} else if (!player.hammer$hasHead() && !player.hammer$hasTorso() && !player.hammer$hasLeftLeg() && !player.hammer$hasRightLeg()) {
+				var multiplier = 1.0F;
+				
+				if (player.hammer$hasLeftArm()) multiplier -= 0.125F;
+				if (player.hammer$hasRightArm()) multiplier -= 0.125F;
+				
+				cir.setReturnValue(cir.getReturnValueF() * multiplier);
+				cir.cancel();
+			}
+			
+			cir.setReturnValue(cir.getReturnValueF() * player.hammer$getJumpMultiplier());
+		}
+	}
+	
+	@Inject(at = @At("HEAD"), method = "isClimbing", cancellable = true)
+	private void hammer$isClimbing(CallbackInfoReturnable<Boolean> cir) {
+		if (hammer$self() instanceof PlayerEntityAccessor player) {
+			if (!player.hammer$hasAnyLeg() && !player.hammer$hasAnyArm()) {
+				cir.setReturnValue(false);
+				cir.cancel();
+			}
+		}
+	}
+	
+	@Inject(at = @At("RETURN"), method = "travel")
+	private void hammer$travel(Vec3d movementInput, CallbackInfo ci) {
+		if (hammer$self() instanceof PlayerEntityAccessor player && isClimbing()) {
+			if (!player.hammer$hasAnyArm()) {
+				setVelocity(getVelocity().getX(), getVelocity().getY() * 0.75F, getVelocity().getZ());
+			}
+			
+			if (!player.hammer$hasAnyLeg()) {
+				setVelocity(getVelocity().getX(), getVelocity().getY() * 0.75F, getVelocity().getZ());
+			}
+		}
 	}
 	
 	@Inject(at = @At("RETURN"), method = "computeFallDamage", cancellable = true)
 	private void hammer$computeFallDamage(float fallDistance, float damageMultiplier, CallbackInfoReturnable<Integer> cir) {
 		if (this instanceof PlayerEntityAccessor player) {
 			cir.setReturnValue((int) (cir.getReturnValueI() * player.hammer$getFallDamageMultiplier()));
-		}
-	}
-	
-	@Inject(at = @At("RETURN"), method = "getJumpVelocity", cancellable = true)
-	private void hammer$getJumpVelocity(CallbackInfoReturnable<Float> cir) {
-		if (this instanceof PlayerEntityAccessor player) {
-			cir.setReturnValue(cir.getReturnValueF() * player.hammer$getJumpMultiplier());
 		}
 	}
 	

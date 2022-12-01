@@ -10,6 +10,10 @@ dependencies {
 	// Hammer Zone
 	implementation project(path: ":hammer-zone", configuration: "namedElements")
 	include project(path: ":hammer-zone", configuration: "namedElements")
+
+	// WorldEdit
+	modImplementation("com.sk89q.worldedit:worldedit-core:${worldEditVersion}")
+	modImplementation("com.sk89q.worldedit:worldedit-fabric-mc1.19.2:${worldEditVersion}")
 }
 
 loom {

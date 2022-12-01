@@ -19,6 +19,9 @@
     ],
     "client": [
       "dev.vini2003.hammer.core.HCClient"
+    ],
+    "server": [
+      "dev.vini2003.hammer.core.HCServer"
     ]
   },
   "accessWidener": "hammer.core.accesswidener",

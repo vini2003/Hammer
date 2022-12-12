@@ -1,4 +1,5 @@
 {
+  "command.hammer.stage.load.progress": "Loading stage - this may take a while!",
   "command.hammer.stage.load.failure": "Failed to load stage %s (%s)",
   "command.hammer.stage.load.success": "Loaded stage %s",
   "command.hammer.stage.unload.failure": "Failed to unload stage (%s)",
@@ -16,6 +17,7 @@
   "command.hammer.stage.restart.success": "Restarted stage",
   "command.hammer.stage.none_active": "No active stage",
   "command.hammer.stage.no_or_invalid_provider": "No, or invalid, stage provider specified",
+  "command.hammer.stage.world_not_found": "World not found",
   "item.hammer.prepare_stage": "Prepare Stage",
   "item.hammer.start_stage": "Start Stage",
   "item.hammer.stop_stage": "Stop Stage",

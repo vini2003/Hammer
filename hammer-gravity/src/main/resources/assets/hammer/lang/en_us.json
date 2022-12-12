@@ -1,4 +1,4 @@
 {
-  "command.hammer.gravity": "Set %s gravity to %s",
+  "command.hammer.gravity": "Set gravity in %s to %s",
   "command.hammer.unknown_registry_key": "Unknown registry key %s"
 }

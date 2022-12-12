@@ -17,5 +17,6 @@
   "text.hammer.color.invalid": "Invalid color: %s",
   "text.hammer.position.incomplete": "Incomplete position",
   "text.hammer.size.incomplete": "Incomplete size",
+  "command.hammer.player_only": "This command can only be used by a player",
   "itemGroup.hammer.hammer": "Hammer"
 }

@@ -1,4 +1,5 @@
 {
+  "command.hammer.zone.not_selected": "Zone not selected",
   "command.hammer.zone.not_found": "Zone not found",
   "command.hammer.zone.group.not_found": "Zone group not found",
   "command.hammer.zone.editor": "Zone editor mode %s",

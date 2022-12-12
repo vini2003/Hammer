@@ -56,6 +56,7 @@ import static net.minecraft.command.argument.EntityArgumentType.*;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
+// TODO: Add feedback for joining/leaving channels.
 public class HCCommands {
 	private static CompletableFuture<Suggestions> suggestChannels(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
 		for (var channel : ChannelManager.channels()) {
@@ -68,6 +69,10 @@ public class HCCommands {
 	private static CompletableFuture<Suggestions> suggestChannelsIn(CommandContext<ServerCommandSource> context, SuggestionsBuilder builder) {
 		var source = context.getSource();
 		var player = source.getPlayer();
+		
+		if (player == null) {
+			return Suggestions.empty();
+		}
 		
 		for (var channel : ChannelManager.channels()) {
 			if (channel.isIn(player)) {
@@ -116,6 +121,11 @@ public class HCCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		try {
 			var target = getPlayer(context, "player");
 			return executeChannelList(context, target);
@@ -126,7 +136,7 @@ public class HCCommands {
 	
 	// Leaves a channel.
 	private static int executeChannelLeave(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> players) {
-		var channelName = getString(context, "channel_name");
+		var channelName = getString(context, "channel");
 		var channel = ChannelManager.getChannelByName(channelName);
 		
 		for (var player : players) {
@@ -145,6 +155,11 @@ public class HCCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		return executeChannelLeave(context, ImmutableList.of(player));
 	}
 	
@@ -155,7 +170,7 @@ public class HCCommands {
 	
 	// Joins a channel.
 	private static int executeChannelJoin(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> players) {
-		var channelName = getString(context, "channel_name");
+		var channelName = getString(context, "channel");
 		var channel = ChannelManager.getChannelByName(channelName);
 		
 		for (var player : players) {
@@ -174,6 +189,11 @@ public class HCCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		return executeChannelJoin(context, ImmutableList.of(player));
 	}
 	
@@ -183,8 +203,8 @@ public class HCCommands {
 	}
 	
 	// Creates a channel.
-	private static int executeChannelCreate(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-		var channelName = getString(context, "channel_name");
+	private static int executeChannelCreate(CommandContext<ServerCommandSource> context) {
+		var channelName = getString(context, "channel");
 		var channel = new Channel(channelName);
 		
 		ChannelManager.add(channel);
@@ -193,8 +213,8 @@ public class HCCommands {
 	}
 	
 	// Deletes a channel.
-	private static int executeChannelDelete(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-		var channelName = getString(context, "channel_name");
+	private static int executeChannelDelete(CommandContext<ServerCommandSource> context) {
+		var channelName = getString(context, "channel");
 		var channel = ChannelManager.getChannelByName(channelName);
 		
 		ChannelManager.remove(channel);
@@ -206,7 +226,7 @@ public class HCCommands {
 	private static int executeChannelSelect(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> players) {
 		var source = context.getSource();
 
-		var channelName = getString(context, "channel_name");
+		var channelName = getString(context, "channel");
 		var channel = ChannelManager.getChannelByName(channelName);
 		
 		for (var otherPlayer : players) {
@@ -229,6 +249,11 @@ public class HCCommands {
 	private static int executeChannelSelectPlayer(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
+		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
 		
 		return executeChannelSelect(context, ImmutableList.of(player));
 	}
@@ -290,6 +315,11 @@ public class HCCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		return executeShowChat(context, ImmutableList.of(player));
 	}
 	
@@ -324,6 +354,11 @@ public class HCCommands {
 	private static int executeShowWarningsPlayer(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
+		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
 		
 		return executeShowWarnings(context, ImmutableList.of(player));
 	}
@@ -360,6 +395,11 @@ public class HCCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		return executeShowDirectMessages(context, ImmutableList.of(player));
 	}
 	
@@ -395,6 +435,11 @@ public class HCCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		return executeShowCommandFeedback(context, ImmutableList.of(player));
 	}
 	
@@ -429,6 +474,11 @@ public class HCCommands {
 	private static int executeFastChatFadePlayer(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
+		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
 		
 		return executeFastChatFade(context, ImmutableList.of(player));
 	}
@@ -481,7 +531,7 @@ public class HCCommands {
 			var channelNode =
 					literal("channel")
 							.then(
-									argument("channel_name", word())
+									argument("channel", word())
 											.suggests(HCCommands::suggestChannels)
 											.executes(HCCommands::executeChannelJoinPlayer)
 							);
@@ -489,7 +539,7 @@ public class HCCommands {
 			var chNode =
 					literal("ch")
 							.then(
-									argument("channel_name", word())
+									argument("channel", word())
 											.suggests(HCCommands::suggestChannels)
 											.executes(HCCommands::executeChannelJoinPlayer)
 							);
@@ -506,31 +556,33 @@ public class HCCommands {
 					literal("join")
 							.requires(HCCommands::requiresOp)
 							.then(
-									argument("channel_name", word())
+									argument("channel", word())
 											.suggests(HCCommands::suggestChannels)
 											.then(
 													argument("players", players())
 															.executes(HCCommands::executeChannelJoinPlayers)
-											).executes(HCCommands::executeChannelJoinPlayer)
+											)
+											.executes(HCCommands::executeChannelJoinPlayer)
 							);
 			
 			var channelLeaveNode =
 					literal("leave")
 							.requires(HCCommands::requiresOp)
 							.then(
-									argument("channel_name", word())
+									argument("channel", word())
 											.suggests(HCCommands::suggestChannelsIn)
 											.then(
 													argument("players", players())
 															.executes(HCCommands::executeChannelLeavePlayers)
-											).executes(HCCommands::executeChannelLeavePlayer)
+											)
+											.executes(HCCommands::executeChannelLeavePlayer)
 							);
 			
 			var channelCreateNode =
 					literal("create")
 							.requires(HCCommands::requiresOp)
 							.then(
-									argument("channel_name", word())
+									argument("channel", word())
 											.executes(HCCommands::executeChannelCreate)
 							);
 			
@@ -538,19 +590,20 @@ public class HCCommands {
 					literal("delete")
 							.requires(HCCommands::requiresOp)
 							.then(
-									argument("channel_name", word())
+									argument("channel", word())
 											.executes(HCCommands::executeChannelDelete)
 							);
 			
 			var channelSelectNode =
-					literal("select").then(
-							argument("channel_name", word())
-									.suggests(HCCommands::suggestChannelsIn)
-									.then(
-											argument("players", players())
-												.requires(HCCommands::requiresOp)
-												.executes(HCCommands::executeChannelSelectPlayers)
-									).executes(HCCommands::executeChannelSelectPlayer)
+					literal("select")
+							.then(
+									argument("channel", word())
+											.suggests(HCCommands::suggestChannelsIn)
+											.then(
+													argument("players", players())
+														.requires(HCCommands::requiresOp)
+														.executes(HCCommands::executeChannelSelectPlayers)
+											).executes(HCCommands::executeChannelSelectPlayer)
 			);
 			
 			var showGlobalChatNode =

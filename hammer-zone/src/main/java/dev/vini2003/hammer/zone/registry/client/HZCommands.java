@@ -112,6 +112,11 @@ public class HZCommands {
 	private static int zoneSelectId(CommandContext<FabricClientCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
+		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
 
 		var zoneId = context.getArgument("id", Identifier.class);
 		var zone = ZoneManager.get(player.world, zoneId);
@@ -139,7 +144,7 @@ public class HZCommands {
 			
 			source.sendFeedback(Text.translatable("command.hammer.zone.deselect"));
 		} else {
-		
+			source.sendError(Text.translatable("command.hammer.zone.not_selected"));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -169,6 +174,11 @@ public class HZCommands {
 	private static int executeZoneDeleteId(CommandContext<FabricClientCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
+		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
 		
 		var zoneId = context.getArgument("id", Identifier.class);
 		var zone = ZoneManager.get(player.world, zoneId);
@@ -224,6 +234,11 @@ public class HZCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		var index = 0;
 		
 		var zones = ZoneManager.getAll(player.world);
@@ -257,6 +272,11 @@ public class HZCommands {
 	private static int executeZoneListPage(CommandContext<FabricClientCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
+		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
 		
 		var page = context.getArgument("page", int.class);
 		
@@ -357,6 +377,11 @@ public class HZCommands {
 	private static int executeZoneExportId(CommandContext<FabricClientCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
+		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
 		
 		var zoneId = context.getArgument("id", Identifier.class);
 		var zone = ZoneManager.get(player.world, zoneId);

@@ -93,6 +93,11 @@ public class HUCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		return executeFreeze(context, ImmutableList.of(player));
 	}
 	
@@ -119,6 +124,11 @@ public class HUCommands {
 	private static int executeUnfreezePlayer(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
+		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
 		
 		return executeUnfreeze(context, ImmutableList.of(player));
 	}
@@ -148,6 +158,11 @@ public class HUCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		return executeHeal(context, ImmutableList.of(player));
 	}
 	
@@ -175,6 +190,11 @@ public class HUCommands {
 	private static int executeSatiatePlayer(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
+		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
 		
 		return executeSatiate(context, ImmutableList.of(player));
 	}
@@ -205,6 +225,11 @@ public class HUCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		return executeAllowMovement(context, ImmutableList.of(player));
 	}
 	
@@ -233,6 +258,11 @@ public class HUCommands {
 	private static int executeAllowInteractionPlayer(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		var player = source.getPlayer();
+		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
 		
 		return executeAllowInteraction(context, ImmutableList.of(player));
 	}
@@ -269,6 +299,11 @@ public class HUCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		return executeFlySpeed(context, ImmutableList.of(player));
 	}
 	
@@ -303,6 +338,11 @@ public class HUCommands {
 		var source = context.getSource();
 		var player = source.getPlayer();
 		
+		if (player == null) {
+			source.sendError(Text.translatable("command.hammer.player_only"));
+			return Command.SINGLE_SUCCESS;
+		}
+		
 		return executeWalkSpeed(context, ImmutableList.of(player));
 	}
 	
@@ -329,7 +369,8 @@ public class HUCommands {
 									.then(
 											argument("players", players())
 													.executes(HUCommands::executeFreezePlayers)
-									).executes(HUCommands::executeFreezePlayer);
+									)
+							.executes(HUCommands::executeFreezePlayer);
 			
 			var unfreezeNode =
 					literal("unfreeze")
@@ -337,21 +378,24 @@ public class HUCommands {
 									.then(
 											argument("players", players())
 													.executes(HUCommands::executeUnfreezePlayers)
-									).executes(HUCommands::executeUnfreezePlayer);
+									)
+							.executes(HUCommands::executeUnfreezePlayer);
 			
 			var allowMovementNode = literal("allow_movement")
 					.requires(HUCommands::requiresOp)
 							.then(
 									argument("players", players())
 											.executes(HUCommands::executeAllowMovementPlayers)
-							).executes(HUCommands::executeAllowMovementPlayer);
+							)
+					.executes(HUCommands::executeAllowMovementPlayer);
 			
 			var allowInteractionNode = literal("allow_interaction")
 					.requires(HUCommands::requiresOp)
 							.then(
 									argument("players", players())
 											.executes(HUCommands::executeAllowInteractionPlayers)
-							).executes(HUCommands::executeAllowInteractionPlayer);
+							)
+					.executes(HUCommands::executeAllowInteractionPlayer);
 			
 			var healNode =
 					literal("heal")
@@ -359,7 +403,8 @@ public class HUCommands {
 									.then(
 											argument("players", players())
 													.executes(HUCommands::executeHealPlayers)
-									).executes(HUCommands::executeHealPlayer);
+									)
+							.executes(HUCommands::executeHealPlayer);
 			
 			var satiateNode =
 					literal("satiate")
@@ -367,7 +412,8 @@ public class HUCommands {
 									.then(
 											argument("players", players())
 													.executes(HUCommands::executeSatiatePlayers)
-									).executes(HUCommands::executeSatiatePlayer);
+									)
+							.executes(HUCommands::executeSatiatePlayer);
 			
 			var flySpeedNode =
 					literal("fly_speed")
@@ -375,7 +421,8 @@ public class HUCommands {
 									.then(
 											argument("players", players())
 													.executes(HUCommands::executeFlySpeedPlayers)
-									).executes(HUCommands::executeFlySpeedPlayer);
+									)
+							.executes(HUCommands::executeFlySpeedPlayer);
 			
 			var walkSpeedNode =
 					literal("walk_speed")
@@ -383,7 +430,8 @@ public class HUCommands {
 									.then(
 											argument("players", players())
 													.executes(HUCommands::executeWalkSpeedPlayers)
-									).executes(HUCommands::executeWalkSpeedPlayer);
+									)
+							.executes(HUCommands::executeWalkSpeedPlayer);
 			
 			dispatcher.register(toggleEndNode);
 			dispatcher.register(toggleNetherNode);

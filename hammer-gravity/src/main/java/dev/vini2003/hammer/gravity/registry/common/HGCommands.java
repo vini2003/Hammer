@@ -25,36 +25,57 @@
 package dev.vini2003.hammer.gravity.registry.common;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.FloatArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.command.argument.RegistryKeyArgumentType;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.text.MutableText;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
+
+import static com.mojang.brigadier.arguments.FloatArgumentType.floatArg;
+import static com.mojang.brigadier.arguments.FloatArgumentType.getFloat;
+import static net.minecraft.command.argument.RegistryKeyArgumentType.getKey;
+import static net.minecraft.command.argument.RegistryKeyArgumentType.registryKey;
+import static net.minecraft.server.command.CommandManager.argument;
+import static net.minecraft.server.command.CommandManager.literal;
 
 
 public class HGCommands {
+	private static boolean requiresOp(ServerCommandSource source) {
+		return source.hasPermissionLevel(4);
+	}
+	
+	// Changes gravity for the specified world.
+	private static int executeGravity(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+		var source = context.getSource();
+
+		var world = getKey(context, "world", Registry.WORLD_KEY, new DynamicCommandExceptionType(id -> Text.translatable("command.hammer.unknown_registry_key", id)));
+		var gravity = getFloat(context, "gravity");
+		
+		GravityManager.set(world, gravity);
+		
+		source.sendFeedback(Text.translatable("command.hammer.gravity", world.getValue().toString(), gravity), true);
+		
+		return Command.SINGLE_SUCCESS;
+	}
+	
 	public static void init() {
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, dedicated) -> {
-			dispatcher.register(
-					CommandManager.literal("gravity").then(
-							CommandManager.argument("world", RegistryKeyArgumentType.registryKey(Registry.WORLD_KEY)).then(
-									CommandManager.argument("gravity", FloatArgumentType.floatArg()).executes(context -> {
-										var world = RegistryKeyArgumentType.<World>getKey(context, "world", Registry.WORLD_KEY, new DynamicCommandExceptionType(id -> Text.translatable("command.hammer.unknown_registry_key", id)));
-										var gravity = FloatArgumentType.getFloat(context, "gravity");
-										
-										GravityManager.set(world, gravity);
-										
-										return Command.SINGLE_SUCCESS;
-									})
-							)
-					)
-			);
+			var gravityNode =
+					literal("gravity")
+							.requires(HGCommands::requiresOp)
+							.then(
+									argument("world", registryKey(Registry.WORLD_KEY))
+											.then(
+													argument("gravity", floatArg())
+															.executes(HGCommands::executeGravity)
+									)
+					);
+			
+			dispatcher.register(gravityNode);
 		});
 	}
 }

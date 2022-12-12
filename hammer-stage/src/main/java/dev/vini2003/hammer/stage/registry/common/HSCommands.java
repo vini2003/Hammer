@@ -60,10 +60,58 @@ public class HSCommands {
 		return builder.buildFuture();
 	}
 	
+	// Loads a schematic stage.
+	private static int executeSchematicStageLoad(CommandContext<ServerCommandSource> context) {
+		var source = context.getSource();
+		var server = source.getServer();
+		
+		var world = server.getWorld(HSDimensions.VOID_WORLD_KEY);
+		if (world == null) {
+			source.sendError(Text.translatable("command.hammer.stage.load.failure", Text.translatable("command.hammer.stage.world_not_found")));
+			return Command.SINGLE_SUCCESS;
+		}
+		
+		var stageId = context.getArgument("id", Identifier.class);
+		
+		var active = StageManager.getActive(world.getRegistryKey());
+		
+		if (active != null) {
+			source.sendError(Text.translatable("command.hammer.stage.load.failure", Text.translatable("command.hammer.stage.none_active")));
+			return Command.SINGLE_SUCCESS;
+		}
+		
+		try {
+			var stage = StageManager.create(stageId, world);
+			
+			StageManager.setActive(world.getRegistryKey(), stage);
+			
+			try {
+				source.sendFeedback(Text.translatable("command.hammer.stage.load.progress"), false);
+				
+				stage.load(world);
+			} catch (Exception e) {
+				source.sendError(Text.translatable("command.hammer.stage.load.failure", stageId, e.getMessage()));
+				return Command.SINGLE_SUCCESS;
+			}
+			
+			source.sendFeedback(Text.translatable("command.hammer.stage.load.success", stageId), false);
+		} catch (Exception e) {
+			source.sendError(Text.translatable("command.hammer.stage.load.failure", stageId, e.getMessage()));
+		}
+		
+		return Command.SINGLE_SUCCESS;
+	}
+	
 	// Loads a stage.
 	private static int executeStageLoad(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
-		var player = source.getPlayer();
+		var server = source.getServer();
+		
+		var world = server.getWorld(HSDimensions.VOID_WORLD_KEY);
+		if (world == null) {
+			source.sendError(Text.translatable("command.hammer.stage.load.failure", Text.translatable("command.hammer.stage.world_not_found")));
+			return Command.SINGLE_SUCCESS;
+		}
 		
 		var stageId = context.getArgument("id", Identifier.class);
 		
@@ -71,24 +119,32 @@ public class HSCommands {
 		
 		var stageSize = context.getArgument("size", Size.class);
 		
-		var active = StageManager.getActive(source.getWorld().getRegistryKey());
+		var active = StageManager.getActive(world.getRegistryKey());
 		
 		if (active != null) {
-			source.sendFeedback(Text.translatable("command.hammer.stage.load.failure", Text.translatable("command.hammer.stage.none_active")), false);
+			source.sendError(Text.translatable("command.hammer.stage.load.failure", Text.translatable("command.hammer.stage.none_active")));
+			return Command.SINGLE_SUCCESS;
 		}
 		
 		try {
-			var stage = StageManager.create(stageId, source.getWorld());
+			var stage = StageManager.create(stageId, world);
 			stage.setPosition(stagePosition);
 			stage.setSize(stageSize);
 			
-			StageManager.setActive(source.getWorld().getRegistryKey(), stage);
+			StageManager.setActive(world.getRegistryKey(), stage);
 			
-			stage.load(player.world);
+			try {
+				source.sendFeedback(Text.translatable("command.hammer.stage.load.progress"), false);
+				
+				stage.load(world);
+			} catch (Exception e) {
+				source.sendError(Text.translatable("command.hammer.stage.load.failure", stageId, e.getMessage()));
+				return Command.SINGLE_SUCCESS;
+			}
 			
 			source.sendFeedback(Text.translatable("command.hammer.stage.load.success", stageId), false);
-		} catch (Exception exception) {
-			source.sendFeedback(Text.translatable("command.hammer.stage.load.failure", stageId, Text.translatable("command.hammer.stage.no_or_invalid_provider")), false);
+		} catch (Exception e) {
+			source.sendError(Text.translatable("command.hammer.stage.load.failure", stageId, e.getMessage()));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -97,18 +153,29 @@ public class HSCommands {
 	// Unloads the currently active stage.
 	private static int executeStageUnload(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
-		var player = source.getPlayer();
+		var server = source.getServer();
 		
-		var stage = StageManager.getActive(source.getWorld().getRegistryKey());
+		var world = server.getWorld(HSDimensions.VOID_WORLD_KEY);
+		if (world == null) {
+			source.sendError(Text.translatable("command.hammer.stage.load.failure", Text.translatable("command.hammer.stage.world_not_found")));
+			return Command.SINGLE_SUCCESS;
+		}
+		
+		var stage = StageManager.getActive(world.getRegistryKey());
 		
 		if (stage != null) {
-			stage.unload(player.world);
+			try {
+				stage.unload(world);
+			} catch (Exception e) {
+				source.sendError(Text.translatable("command.hammer.stage.unload.failure", stage.getId(), e.getMessage()));
+				return Command.SINGLE_SUCCESS;
+			}
 			
-			StageManager.setActive(source.getWorld().getRegistryKey(), null);
+			StageManager.setActive(world.getRegistryKey(), null);
 			
 			source.sendFeedback(Text.translatable("command.hammer.stage.unload.success"), true);
 		} else {
-			source.sendFeedback(Text.translatable("command.hammer.stage.unload.failure", Text.translatable("command.hammer.stage.none_active")), true);
+			source.sendError(Text.translatable("command.hammer.stage.unload.failure", Text.translatable("command.hammer.stage.none_active")));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -117,16 +184,27 @@ public class HSCommands {
 	// Prepares the currently active stage.
 	private static int executeStagePrepare(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
-		var player = source.getPlayer();
+		var server = source.getServer();
 		
-		var stage = StageManager.getActive(source.getWorld().getRegistryKey());
+		var world = server.getWorld(HSDimensions.VOID_WORLD_KEY);
+		if (world == null) {
+			source.sendError(Text.translatable("command.hammer.stage.load.failure", Text.translatable("command.hammer.stage.world_not_found")));
+			return Command.SINGLE_SUCCESS;
+		}
+		
+		var stage = StageManager.getActive(world.getRegistryKey());
 		
 		if (stage != null) {
-			stage.prepare(player.world);
+			try {
+				stage.prepare(world);
+			} catch (Exception e) {
+				source.sendError(Text.translatable("command.hammer.stage.prepare.failure", stage.getId(), e.getMessage()));
+				return Command.SINGLE_SUCCESS;
+			}
 			
 			source.sendFeedback(Text.translatable("command.hammer.stage.prepare.success"), true);
 		} else {
-			source.sendFeedback(Text.translatable("command.hammer.stage.prepare.failure", Text.translatable("command.hammer.stage.none_active")), true);
+			source.sendError(Text.translatable("command.hammer.stage.prepare.failure", Text.translatable("command.hammer.stage.none_active")));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -135,16 +213,27 @@ public class HSCommands {
 	// Starts the currently active stage.
 	private static int executeStageStart(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
-		var player = source.getPlayer();
+		var server = source.getServer();
 		
-		var stage = StageManager.getActive(source.getWorld().getRegistryKey());
+		var world = server.getWorld(HSDimensions.VOID_WORLD_KEY);
+		if (world == null) {
+			source.sendError(Text.translatable("command.hammer.stage.load.failure", Text.translatable("command.hammer.stage.world_not_found")));
+			return Command.SINGLE_SUCCESS;
+		}
+		
+		var stage = StageManager.getActive(world.getRegistryKey());
 		
 		if (stage != null) {
-			stage.start(player.world);
+			try {
+				stage.start(world);
+			} catch (Exception e) {
+				source.sendError(Text.translatable("command.hammer.stage.start.failure", stage.getId(), e.getMessage()));
+				return Command.SINGLE_SUCCESS;
+			}
 			
 			source.sendFeedback(Text.translatable("command.hammer.stage.start.success"), true);
 		} else {
-			source.sendFeedback(Text.translatable("command.hammer.stage.start.failure", Text.translatable("command.hammer.stage.none_active")), true);
+			source.sendError(Text.translatable("command.hammer.stage.start.failure", Text.translatable("command.hammer.stage.none_active")));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -153,16 +242,27 @@ public class HSCommands {
 	// Stops the currently active stage.
 	private static int executeStageStop(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
-		var player = source.getPlayer();
+		var server = source.getServer();
 		
-		var stage = StageManager.getActive(source.getWorld().getRegistryKey());
+		var world = server.getWorld(HSDimensions.VOID_WORLD_KEY);
+		if (world == null) {
+			source.sendError(Text.translatable("command.hammer.stage.load.failure", Text.translatable("command.hammer.stage.world_not_found")));
+			return Command.SINGLE_SUCCESS;
+		}
+		
+		var stage = StageManager.getActive(world.getRegistryKey());
 		
 		if (stage != null) {
-			stage.stop(player.world);
+			try {
+				stage.stop(world);
+			} catch (Exception e) {
+				source.sendError(Text.translatable("command.hammer.stage.stop.failure", stage.getId(), e.getMessage()));
+				return Command.SINGLE_SUCCESS;
+			}
 			
 			source.sendFeedback(Text.translatable("command.hammer.stage.stop.success"), true);
 		} else {
-			source.sendFeedback(Text.translatable("command.hammer.stage.stop.failure", Text.translatable("command.hammer.stage.none_active")), true);
+			source.sendError(Text.translatable("command.hammer.stage.stop.failure", Text.translatable("command.hammer.stage.none_active")));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -171,12 +271,23 @@ public class HSCommands {
 	// Pauses the currently active stage.
 	private static int executeStagePause(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
-		var player = source.getPlayer();
+		var server = source.getServer();
 		
-		var stage = StageManager.getActive(source.getWorld().getRegistryKey());
+		var world = server.getWorld(HSDimensions.VOID_WORLD_KEY);
+		if (world == null) {
+			source.sendError(Text.translatable("command.hammer.stage.load.failure", Text.translatable("command.hammer.stage.world_not_found")));
+			return Command.SINGLE_SUCCESS;
+		}
+		
+		var stage = StageManager.getActive(world.getRegistryKey());
 		
 		if (stage != null) {
-			stage.pause(player.world);
+			try {
+				stage.pause(world);
+			} catch (Exception e) {
+				source.sendError(Text.translatable("command.hammer.stage.pause.failure", stage.getId(), e.getMessage()));
+				return Command.SINGLE_SUCCESS;
+			}
 			
 			if (stage.getState() == Stage.State.PAUSED) {
 				source.sendFeedback(Text.translatable("command.hammer.stage.pause.success"), true);
@@ -184,7 +295,7 @@ public class HSCommands {
 				source.sendFeedback(Text.translatable("command.hammer.stage.unpause.success"), true);
 			}
 		} else {
-			source.sendFeedback(Text.translatable("command.hammer.stage.pause.failure", Text.translatable("command.hammer.stage.none_active")), true);
+			source.sendError(Text.translatable("command.hammer.stage.pause.failure", Text.translatable("command.hammer.stage.none_active")));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -193,16 +304,27 @@ public class HSCommands {
 	// Restarts the currently active stage.
 	private static int executeStageRestart(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
-		var player = source.getPlayer();
+		var server = source.getServer();
 		
-		var stage = StageManager.getActive(source.getWorld().getRegistryKey());
+		var world = server.getWorld(HSDimensions.VOID_WORLD_KEY);
+		if (world == null) {
+			source.sendError(Text.translatable("command.hammer.stage.load.failure", Text.translatable("command.hammer.stage.world_not_found")));
+			return Command.SINGLE_SUCCESS;
+		}
+		
+		var stage = StageManager.getActive(world.getRegistryKey());
 		
 		if (stage != null) {
-			stage.restart(player.world);
+			try {
+				stage.restart(world);
+			} catch (Exception e) {
+				source.sendError(Text.translatable("command.hammer.stage.restart.failure", stage.getId(), e.getMessage()));
+				return Command.SINGLE_SUCCESS;
+			}
 			
 			source.sendFeedback(Text.translatable("command.hammer.stage.restart.success"), true);
 		} else {
-			source.sendFeedback(Text.translatable("command.hammer.stage.restart.failure", Text.translatable("command.hammer.stage.none_active")), true);
+			source.sendError(Text.translatable("command.hammer.stage.restart.failure", Text.translatable("command.hammer.stage.none_active")));
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -217,13 +339,16 @@ public class HSCommands {
 			var stageLoadNode =
 					literal("load")
 							.then(
-									argument("id", identifier()).suggests(HSCommands::suggestStageIds)
-										   .then(
-												   argument("position", position())
-														   .then(
-																   argument("size", size()).executes(HSCommands::executeStageLoad)
-														   )
-										   )
+									argument("id", identifier())
+											.suggests(HSCommands::suggestStageIds)
+										  	.then(
+													   argument("position", position())
+															   .then(
+																	   argument("size", size())
+																			   .executes(HSCommands::executeStageLoad)
+															   )
+										  	)
+											.executes(HSCommands::executeSchematicStageLoad)
 							);
 			
 			var stageUnloadNode =

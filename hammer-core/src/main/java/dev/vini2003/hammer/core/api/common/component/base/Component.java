@@ -24,12 +24,9 @@
 
 package dev.vini2003.hammer.core.api.common.component.base;
 
-import com.google.gson.JsonElement;
 import dev.vini2003.hammer.core.api.common.manager.ComponentManager;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.world.World;
 
 /**
@@ -58,4 +55,20 @@ public interface Component {
 	 * @param nbt the NBT tag.
 	 */
 	void readFromNbt(NbtCompound nbt);
+	
+	/**
+	 * Serializes this component to an {@link NbtCompound} for synchronization.
+	 * @param nbt the NBT tag.
+	 */
+	default void writeToNbtForSync(NbtCompound nbt) {
+		writeToNbt(nbt);
+	}
+	
+	/**
+	 * Deserializes this component from an {@link NbtCompound} for synchronization.
+	 * @param nbt the NBT tag.
+	 */
+	default void readFromNbtForSync(NbtCompound nbt) {
+		readFromNbt(nbt);
+	}
 }

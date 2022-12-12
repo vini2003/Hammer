@@ -25,6 +25,24 @@ dependencies {
 	}
 }
 
+loom {
+	runs {
+		client {
+			client()
+			setConfigName("Minecraft Client ($projectName)")
+			ideConfigGenerated(true)
+			runDir("runClient")
+		}
+
+		server {
+			server()
+			setConfigName("Minecraft Server ($projectName)")
+			ideConfigGenerated(true)
+			runDir("runServer")
+		}
+	}
+}
+
 allprojects {
     apply plugin: "fabric-loom"
     apply plugin: "maven-publish"
@@ -37,24 +55,6 @@ allprojects {
         targetCompatibility = JavaVersion.VERSION_17
 
         withSourcesJar()
-    }
-
-    loom {
-        runs {
-            client {
-                client()
-                setConfigName("Minecraft Client ($projectName)")
-                ideConfigGenerated(true)
-                runDir("runClient")
-            }
-
-            server {
-                server()
-                setConfigName("Minecraft Server ($projectName)")
-                ideConfigGenerated(true)
-                runDir("runServer")
-            }
-        }
     }
 
     repositories {

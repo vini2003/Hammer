@@ -37,9 +37,5 @@ public class HS implements ModInitializer {
 		HSChunkGenerators.init();
 		HSDimensions.init();
 		HSComponents.init();
-
-		if (!FabricLoader.getInstance().isModLoaded("worldedit")) {
-			// throw new RuntimeException("WorldEdit is required for Hammer Stage to function.");
-		}
 	}
 }

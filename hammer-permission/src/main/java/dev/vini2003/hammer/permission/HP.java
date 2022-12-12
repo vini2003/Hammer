@@ -46,9 +46,5 @@ public class HP implements ModInitializer {
 		HPEvents.init();
 		HPNetworking.init();
 		HPCommands.init();
-		
-		if (!FabricLoader.getInstance().isModLoaded("luckperms")) {
-			// throw new RuntimeException("LuckPerms is required for Hammer Permission to function.");
-		}
 	}
 }

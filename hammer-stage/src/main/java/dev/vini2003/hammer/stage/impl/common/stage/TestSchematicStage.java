@@ -6,6 +6,6 @@ import net.minecraft.util.Identifier;
 
 public class TestSchematicStage extends SchematicStage {
 	public TestSchematicStage() {
-		super(HC.id("test"), "test_stage");
+		super(HC.id("test"), HC.id("test_stage"));
 	}
 }

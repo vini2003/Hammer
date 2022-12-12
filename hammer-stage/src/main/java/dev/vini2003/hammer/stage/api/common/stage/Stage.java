@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class Stage {
-	private final Identifier id;
+	protected final Identifier id;
 	
 	private Position position;
 	private Size size;
@@ -58,6 +58,14 @@ public abstract class Stage {
 		
 		this.position = position;
 		this.size = size;
+	}
+	
+	/**
+	 * Returns the ID of the stage.
+	 * @return The ID of the stage.
+	 */
+	public Identifier getId() {
+		return id;
 	}
 	
 	/**

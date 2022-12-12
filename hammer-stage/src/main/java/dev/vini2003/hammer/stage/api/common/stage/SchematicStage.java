@@ -6,6 +6,7 @@ import com.sk89q.worldedit.fabric.FabricAdapter;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.stage.registry.common.HSComponents;
@@ -16,9 +17,9 @@ import net.minecraft.world.World;
 import java.io.BufferedInputStream;
 
 public abstract class SchematicStage extends Stage {
-	private final String schematicId;
+	private final Identifier schematicId;
 	
-	public SchematicStage(Identifier id, String schematicId) {
+	public SchematicStage(Identifier id, Identifier schematicId) {
 		super(id);
 		
 		this.schematicId = schematicId;
@@ -26,11 +27,17 @@ public abstract class SchematicStage extends Stage {
 		var server = InstanceUtil.getServer();
 		var world = server.getWorld(HSDimensions.VOID_WORLD_KEY);
 		
-		var gridComponent = HSComponents.GRID.get(world);
-		var gridPosition = gridComponent.allocatePosition();
-		
-		setPosition(gridPosition);
-		setSize(new Size(1024.0F, 1024.0F));
+		try {
+			var gridComponent = HSComponents.GRID.get(world);
+			if (gridComponent == null) throw new RuntimeException("Grid component is null!");
+			
+			var gridPosition = gridComponent.allocatePosition();
+			
+			setPosition(gridPosition);
+			setSize(new Size(1024.0F, 1024.0F));
+		} catch (Exception exception) {
+			throw new RuntimeException("Failed to create stage", exception);
+		}
 	}
 	
 	@Override
@@ -39,15 +46,15 @@ public abstract class SchematicStage extends Stage {
 		
 		try {
 			var server = world.getServer();
-			if (server == null) return;
+			if (server == null) throw new RuntimeException("Server is null");
 			
 			var resourceManager = server.getResourceManager();
-			if (resourceManager == null) return;
+			if (resourceManager == null) throw new RuntimeException("Resource manager is null");
 			
 			var resources = resourceManager.findResources("stages", (resource) -> resource.getPath().endsWith(".schem"));
 			
-			var resource = resources.get(new Identifier("hammer:stages/test_stage.schem"));
-			if (resource == null) return;
+			var resource = resources.get(new Identifier(schematicId.getNamespace(), "stages/" + schematicId.getPath() + ".schem"));
+			if (resource == null) throw new RuntimeException("Stage schematic not found");
 			
 			var schematicFormat = BuiltInClipboardFormat.SPONGE_SCHEMATIC;
 			
@@ -57,7 +64,9 @@ public abstract class SchematicStage extends Stage {
 			
 			var schematicClipboard = schematicReader.read();
 			
-			System.out.println(pos.getX() + " " + pos.getY() + " " + pos.getZ());
+			HC.LOGGER.info("Loading schematic " + schematicId + " for stage " + id + " at " + pos.getX() + ", " + pos.getY() + ", " + pos.getZ() + "...");
+			
+			var then = System.currentTimeMillis();
 			
 			try (var editSession = WorldEdit.getInstance().newEditSession(FabricAdapter.adapt(world))) {
 				var operation = new ClipboardHolder(schematicClipboard)
@@ -70,8 +79,12 @@ public abstract class SchematicStage extends Stage {
 				
 				Operations.complete(operation);
 			}
+			
+			var now = System.currentTimeMillis();
+			
+			HC.LOGGER.info("Loaded schematic " + schematicId + " for stage " + id + " in " + (now - then) + "ms.");
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException("Failed to load stage", e);
 		}
 		
 		super.load(world);

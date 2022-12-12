@@ -24,13 +24,9 @@
 
 package dev.vini2003.hammer.stage;
 
-import dev.vini2003.hammer.core.HC;
-import dev.vini2003.hammer.stage.api.common.manager.StageManager;
-import dev.vini2003.hammer.stage.impl.common.stage.TestSchematicStage;
 import dev.vini2003.hammer.stage.registry.common.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import org.jetbrains.annotations.ApiStatus;
 
 public class HS implements ModInitializer {
 	@Override
@@ -41,9 +37,7 @@ public class HS implements ModInitializer {
 		HSChunkGenerators.init();
 		HSDimensions.init();
 		HSComponents.init();
-		
-		StageManager.register(HC.id("test"), (world) -> new TestSchematicStage());
-		
+
 		if (!FabricLoader.getInstance().isModLoaded("worldedit")) {
 			// throw new RuntimeException("WorldEdit is required for Hammer Stage to function.");
 		}

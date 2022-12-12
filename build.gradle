@@ -45,14 +45,14 @@ allprojects {
                 client()
                 setConfigName("Minecraft Client ($projectName)")
                 ideConfigGenerated(true)
-                runDir("run")
+                runDir("runClient")
             }
 
             server {
                 server()
                 setConfigName("Minecraft Server ($projectName)")
                 ideConfigGenerated(true)
-                runDir("run")
+                runDir("runServer")
             }
         }
     }

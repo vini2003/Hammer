@@ -49,9 +49,9 @@ public class ZoneReloadListener implements SimpleSynchronousResourceReloadListen
 	
 	@Override
 	public void reload(ResourceManager manager) {
-		var resourcesIds = manager.findResources("zones", (resource) -> resource.getPath().endsWith(".json"));
+		var resources = manager.findResources("zones", (resource) -> resource.getPath().endsWith(".json"));
 		
-		for (var resourceId : resourcesIds.keySet()) {
+		for (var resourceId : resources.keySet()) {
 			try {
 				var resource = manager.getResource(resourceId).orElseThrow();
 				

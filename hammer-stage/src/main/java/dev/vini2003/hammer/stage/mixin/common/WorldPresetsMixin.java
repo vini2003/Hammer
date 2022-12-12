@@ -1,5 +1,6 @@
-package dev.vini2003.hammer.stage.mixin.common.common;
+package dev.vini2003.hammer.stage.mixin.common;
 
+import dev.vini2003.hammer.stage.registry.common.HSDimensions;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.gen.WorldPreset;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,6 +16,6 @@ public class WorldPresetsMixin {
 	private void astromine$addAstromineDimensions(DimensionOptions dimensionOptions, CallbackInfoReturnable<WorldPreset> cir) {
 		var preset = cir.getReturnValue();
 		preset.dimensions = new HashMap<>(preset.dimensions);
-		AMWorlds.DIMENSIONS.forEach((key, value) -> preset.dimensions.put(key, value.get()));
+		HSDimensions.DIMENSIONS.forEach((key, value) -> preset.dimensions.put(key, value.get()));
 	}
 }

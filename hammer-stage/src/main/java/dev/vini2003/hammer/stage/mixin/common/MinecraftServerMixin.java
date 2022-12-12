@@ -1,4 +1,4 @@
-package dev.vini2003.hammer.stage.mixin.common.common;
+package dev.vini2003.hammer.stage.mixin.common;
 
 import com.mojang.serialization.Lifecycle;
 import dev.vini2003.hammer.stage.registry.common.HSDimensions;
@@ -21,16 +21,18 @@ public class MinecraftServerMixin {
 	
 	@Inject(at = @At("HEAD"), method = "createWorlds")
 	private void hammer$createWorlds(CallbackInfo ci) {
-		var generatorOptions = saveProperties.getGeneratorOptions();
-		var registry = generatorOptions.getDimensions();
-		
-		for (var entry : HSDimensions.DIMENSIONS.entrySet()) {
-			var key = entry.getKey();
-			var value = entry.getValue();
+		try {
+			var generatorOptions = saveProperties.getGeneratorOptions();
+			var registry = generatorOptions.getDimensions();
 			
-			if (!registry.contains(key)) {
-				((SimpleRegistry<DimensionOptions>) registry).add(key, value.get(), Lifecycle.stable());
+			for (var entry : HSDimensions.DIMENSIONS.entrySet()) {
+				var key = entry.getKey();
+				var value = entry.getValue();
+				
+				if (!registry.contains(key)) {
+					((SimpleRegistry<DimensionOptions>) registry).add(key, value.get(), Lifecycle.stable());
+				}
 			}
-		}
+		} catch (Exception ignored) {}
 	}
 }

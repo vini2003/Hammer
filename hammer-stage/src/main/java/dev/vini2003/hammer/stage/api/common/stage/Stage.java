@@ -49,6 +49,10 @@ public abstract class Stage {
 	private final Collection<Zone> zones = new ArrayList<>();
 	private final Collection<ZoneGroup> zoneGroups = new ArrayList<>();
 	
+	public Stage(Identifier id) {
+		this.id = id;
+	}
+	
 	public Stage(Identifier id, Position position, Size size) {
 		this.id = id;
 		

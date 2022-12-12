@@ -28,8 +28,6 @@ public class HSDimensions {
 	public static final DimensionType VOID_DIMENSION_TYPE = new DimensionType(OptionalLong.empty(), true, false, false, false, 1, true, true, -64, 384, 384, BlockTags.INFINIBURN_OVERWORLD, HC.id("void"), 15, VOID_DIMENSION_TYPE_MONSTER_SETTINGS);
 	
 	public static void init() {
-		BuiltinRegistries.add(BuiltinRegistries.DIMENSION_TYPE, VOID_DIMENSION_TYPE_KEY, VOID_DIMENSION_TYPE);
-		
 		DIMENSIONS.put(VOID_DIMENSION_OPTIONS_KEY, () -> new DimensionOptions(BuiltinRegistries.DIMENSION_TYPE.getOrCreateEntry(VOID_DIMENSION_TYPE_KEY), new VoidChunkGenerator(BuiltinRegistries.STRUCTURE_SET, new VoidBiomeSource(BuiltinRegistries.BIOME))));
 	}
 }

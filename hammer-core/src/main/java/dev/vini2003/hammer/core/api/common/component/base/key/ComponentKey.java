@@ -77,7 +77,7 @@ public class ComponentKey<C extends Component> {
 			var component = holder.getComponentContainer().get(this);
 			
 			var componentNbt = new NbtCompound();
-			component.writeToNbtForSync(componentNbt);
+			component.writeToNbt(componentNbt);
 			
 			var buf = PacketByteBufs.create();
 			buf.writeIdentifier(id);

@@ -19,8 +19,6 @@ public class TrackedDataComponent implements Component {
 	
 	private final PlayerEntity player;
 	
-	private String dirtyKey = null;
-	
 	public static TrackedDataComponent get(Object obj) {
 		return HCComponents.TRACKED_DATA.get(obj);
 	}
@@ -36,9 +34,7 @@ public class TrackedDataComponent implements Component {
 	public void set(String key, NbtElement element) {
 		entries.put(key, element);
 		
-		dirtyKey = key;
 		TrackedDataComponent.sync(player);
-		dirtyKey = null;
 	}
 	
 	public <T> T get(String key) {
@@ -62,10 +58,5 @@ public class TrackedDataComponent implements Component {
 			
 			entries.put(key, value);
 		}
-	}
-	
-	@Override
-	public void writeToNbtForSync(NbtCompound nbt) {
-		nbt.put(dirtyKey, get(dirtyKey));
 	}
 }

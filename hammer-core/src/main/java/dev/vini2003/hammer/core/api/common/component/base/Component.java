@@ -55,20 +55,4 @@ public interface Component {
 	 * @param nbt the NBT tag.
 	 */
 	void readFromNbt(NbtCompound nbt);
-	
-	/**
-	 * Serializes this component to an {@link NbtCompound} for synchronization.
-	 * @param nbt the NBT tag.
-	 */
-	default void writeToNbtForSync(NbtCompound nbt) {
-		writeToNbt(nbt);
-	}
-	
-	/**
-	 * Deserializes this component from an {@link NbtCompound} for synchronization.
-	 * @param nbt the NBT tag.
-	 */
-	default void readFromNbtForSync(NbtCompound nbt) {
-		readFromNbt(nbt);
-	}
 }

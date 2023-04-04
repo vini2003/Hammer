@@ -13,5 +13,8 @@ out/
 
 # fabric
 
+logs/
+run/
+runClient/
 runServer/
 minecraft/

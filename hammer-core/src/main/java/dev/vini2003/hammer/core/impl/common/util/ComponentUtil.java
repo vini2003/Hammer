@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+// TODO: Sync components on player approach.
 public class ComponentUtil {
 	public static final Map<ComponentKey<? extends Component>, Function<Entity, ? extends Component>> ENTITY_ATTACHERS = new HashMap<>();
 	public static final Map<ComponentKey<? extends Component>, Function<World, ? extends Component>> WORLD_ATTACHERS = new HashMap<>();

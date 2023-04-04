@@ -47,6 +47,9 @@ public class GameOptionsMixin {
 	
 	@Inject(at = @At("TAIL"), method = "<init>")
 	private void hammer$clinit(CallbackInfo ci) {
+		if (true) return;
+		// Screw it!
+		
 		graphicsMode = new SimpleOption<GraphicsMode>("options.graphics", (client) -> {
 			var fastGraphicsTooltip = client.textRenderer.wrapLines(FAST_GRAPHICS_TOOLTIP, 200);
 			var fancyGraphicsTooltip = client.textRenderer.wrapLines(FANCY_GRAPHICS_TOOLTIP, 200);

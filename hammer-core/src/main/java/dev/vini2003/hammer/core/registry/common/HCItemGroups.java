@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 public class HCItemGroups {
-	public static final ItemGroup HAMMER = FabricItemGroupBuilder.build(HC.id("hammer"), Suppliers.memoize(() -> new ItemStack(Items.GOLDEN_PICKAXE)));
+	// public static final ItemGroup HAMMER = FabricItemGroupBuilder.build(HC.id("hammer"), Suppliers.memoize(() -> new ItemStack(Items.GOLDEN_PICKAXE)));
 	
 	public static void init() {
 	

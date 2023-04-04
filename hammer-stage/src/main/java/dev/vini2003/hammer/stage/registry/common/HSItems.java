@@ -15,7 +15,7 @@ public class HSItems {
 	public static final Item PREPARE_STAGE = Registry.register(Registry.ITEM,
 			HC.id("prepare_stage"),
 			TriggerItem.builder()
-					   .settings(new Item.Settings().group(HCItemGroups.HAMMER))
+					   .settings(new Item.Settings())
 					   .trigger((world, user, hand) -> {
 							var active = StageManager.getActive(world.getRegistryKey());
 						
@@ -33,7 +33,7 @@ public class HSItems {
 	public static final Item START_STAGE = Registry.register(Registry.ITEM,
 			HC.id("start_stage"),
 			TriggerItem.builder()
-					   .settings(new Item.Settings().group(HCItemGroups.HAMMER))
+					   .settings(new Item.Settings())
 					   .trigger((world, user, hand) -> {
 							var active = StageManager.getActive(world.getRegistryKey());
 							
@@ -51,7 +51,7 @@ public class HSItems {
 	public static final Item STOP_STAGE = Registry.register(Registry.ITEM,
 			HC.id("stop_stage"),
 			TriggerItem.builder()
-						.settings(new Item.Settings().group(HCItemGroups.HAMMER))
+						.settings(new Item.Settings())
 						.trigger((world, user, hand) -> {
 							var active = StageManager.getActive(world.getRegistryKey());
 							
@@ -69,7 +69,7 @@ public class HSItems {
 	public static final Item PAUSE_STAGE = Registry.register(Registry.ITEM,
 			HC.id("pause_stage"),
 			TriggerItem.builder()
-					   .settings(new Item.Settings().group(HCItemGroups.HAMMER))
+					   .settings(new Item.Settings())
 					   .trigger((world, user, hand) -> {
 							var active = StageManager.getActive(world.getRegistryKey());
 							
@@ -91,7 +91,7 @@ public class HSItems {
 	public static final Item RESTART_STAGE = Registry.register(Registry.ITEM,
 			HC.id("restart_stage"),
 			TriggerItem.builder()
-					   .settings(new Item.Settings().group(HCItemGroups.HAMMER))
+					   .settings(new Item.Settings())
 					   .trigger((world, user, hand) -> {
 							var active = StageManager.getActive(world.getRegistryKey());
 						

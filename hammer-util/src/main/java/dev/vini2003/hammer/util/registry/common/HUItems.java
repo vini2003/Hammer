@@ -57,7 +57,7 @@ public class HUItems {
 					.targetEntity(e -> e instanceof PlayerEntity)
 					.side(false, true)
 					.raycast(true, true)
-					.settings(new Item.Settings().group(HCItemGroups.HAMMER))
+					.settings(new Item.Settings())
 					.build()
 	);
 	
@@ -79,7 +79,7 @@ public class HUItems {
 					.targetEntity(e -> e instanceof PlayerEntity)
 					.side(false, true)
 					.raycast(true, true)
-					.settings(new Item.Settings().group(HCItemGroups.HAMMER))
+					.settings(new Item.Settings())
 					.build()
 	);
 	
@@ -100,7 +100,7 @@ public class HUItems {
 					.targetEntity(e -> e instanceof PlayerEntity)
 					.side(false, true)
 					.raycast(true, true)
-					.settings(new Item.Settings().group(HCItemGroups.HAMMER))
+					.settings(new Item.Settings())
 					.build()
 	);
 	
@@ -123,7 +123,7 @@ public class HUItems {
 					   .targetEntity(e -> e instanceof PlayerEntity)
 					   .side(false, true)
 					   .raycast(true, true)
-					   .settings(new Item.Settings().group(HCItemGroups.HAMMER))
+					   .settings(new Item.Settings())
 					   .build()
 	);
 	
@@ -136,7 +136,7 @@ public class HUItems {
 					   })
 					   .side(false, true)
 					   .raycast(false, false)
-					   .settings(new Item.Settings().group(HCItemGroups.HAMMER))
+					   .settings(new Item.Settings())
 					   .build()
 	);
 	
@@ -149,7 +149,7 @@ public class HUItems {
 					   })
 					   .side(false, true)
 					   .raycast(false, false)
-					   .settings(new Item.Settings().group(HCItemGroups.HAMMER))
+					   .settings(new Item.Settings())
 					   .build()
 	);
 	

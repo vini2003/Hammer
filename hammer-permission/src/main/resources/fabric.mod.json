@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "hammer-permission",
-  "version": "0.9.25",
+  "version": "0.9.29",
   "name": "Hammer Permission",
   "description": "A library module.",
   "authors": [

@@ -65,34 +65,5 @@ public class HC implements ModInitializer {
 		// HCItemGroups.init();
 		HCNetworking.init();
 		HCComponents.init();
-		
-		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-			CommandManager.registerCommands(dispatcher, registryAccess, HC.class);
-		});
-	}
-	
-	@Command(path = "foo bar")
-	public static int executeReset(
-			ServerCommandSource source,
-			@IntegerRange(min = 0, max = 100)
-			int amount,
-			@IntegerRange(min = 10, max = 25)
-			int quantity,
-			@EntityKind(EntityType.PLAYERS)
-			List<PlayerEntity> players,
-			@Type(PositionArgumentType.class)
-			Position position,
-			@Type(BlockPosArgumentType.class)
-			BlockPos blockPos
-			) {
-		source.sendFeedback(Text.literal("Amount: " + amount).formatted(Formatting.GOLD), false);
-		source.sendFeedback(Text.literal("Quantity: " + quantity).formatted(Formatting.GOLD), false);
-		source.sendFeedback(Text.literal("Players:").formatted(Formatting.GOLD), false);
-		
-		players.forEach(player -> {
-			source.sendFeedback(Text.of(player.getName().getString()), false);
-		});
-		
-		return 1;
 	}
 }

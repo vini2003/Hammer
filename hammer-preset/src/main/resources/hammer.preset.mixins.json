@@ -5,13 +5,15 @@
   "plugin": "dev.vini2003.hammer.preset.impl.mixin.HPMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "common.PlayerManagerMixin",
+    "common.ServerPlayNetworkHandlerMixin"
   ],
   "client": [
-    "client.TitleScreenMixin",
     "client.AddServerScreenMixin",
     "client.GameOptionsMixin",
     "client.MinecraftClientMixin",
     "client.PlayerListHudMixin",
+    "client.TitleScreenMixin",
     "client.ToastManagerMixin",
     "client.VideoOptionsScreenMixin"
   ],

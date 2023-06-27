@@ -1,14 +1,14 @@
 plugins {
 	id "maven-publish"
 
-    id "fabric-loom" apply false
-    id "org.cadixdev.licenser" apply false
+	id "fabric-loom" apply false
+	id "org.cadixdev.licenser" apply false
 	id "io.github.juuxel.loom-quiltflower" apply false
 }
 
 subprojects {
-    apply plugin: "fabric-loom"
-    apply plugin: "maven-publish"
+	apply plugin: "fabric-loom"
+	apply plugin: "maven-publish"
 	apply plugin: "io.github.juuxel.loom-quiltflower"
 	apply plugin: 'org.cadixdev.licenser'
 
@@ -18,8 +18,8 @@ subprojects {
 		ignoreFailures = true
 	}
 
-    group = projectGroup
-    version = projectVersion
+	group = projectGroup
+	version = projectVersion
 
 	loom {
 		runs {
@@ -39,81 +39,81 @@ subprojects {
 		}
 	}
 
-    java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+	java {
+		sourceCompatibility = JavaVersion.VERSION_17
+		targetCompatibility = JavaVersion.VERSION_17
 
-        withSourcesJar()
-    }
+		withSourcesJar()
+	}
 
-    repositories {
-        // vini2003
-        maven {
-            name = "vini2003"
-            url = "https://maven.vini2003.dev/releases"
-        }
+	repositories {
+		// vini2003
+		maven {
+			name = "vini2003"
+			url = "https://maven.vini2003.dev/releases"
+		}
 
-        // Fabric
-        maven {
-            name = "FabricMC"
-            url = "https://maven.fabricmc.net/"
-        }
+		// Fabric
+		maven {
+			name = "FabricMC"
+			url = "https://maven.fabricmc.net/"
+		}
 
 		// EngineHub
 		maven {
 			name = "EngineHub"
 			url = "https://maven.enginehub.org/repo/"
 		}
-    }
+	}
 
 	dependencies {
-        // Minecraft
-        minecraft("com.mojang:minecraft:${minecraftVersion}")
+		// Minecraft
+		minecraft("com.mojang:minecraft:${minecraftVersion}")
 
-        // Yarn
-        mappings("net.fabricmc:yarn:${yarnVersion}:v2")
+		// Yarn
+		mappings("net.fabricmc:yarn:${yarnVersion}:v2")
 
-        // Fabric Loader
-        modImplementation("net.fabricmc:fabric-loader:${fabricLoaderVersion}")
+		// Fabric Loader
+		modImplementation("net.fabricmc:fabric-loader:${fabricLoaderVersion}")
 
-        // Fabric API
-        modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
+		// Fabric API
+		modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
 
 		// FindBugs
 		modImplementation("com.google.code.findbugs:jsr305:${findBugsVersion}")
-    }
+	}
 
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                artifactId = archivesBaseName
-                groupId = projectGroup
-                version = projectVersion
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				artifactId = archivesBaseName
+				groupId = projectGroup
+				version = projectVersion
 
-                artifact(remapJar) {
-                    builtBy remapJar
-                }
+				artifact(remapJar) {
+					builtBy remapJar
+				}
 
-                artifact(sourcesJar) {
-                    builtBy remapSourcesJar
-                }
-            }
-        }
+				artifact(sourcesJar) {
+					builtBy remapSourcesJar
+				}
+			}
+		}
 
-        repositories {
-            maven {
-                name = "vini2003"
-                url = "https://maven.vini2003.dev/releases"
+		repositories {
+			maven {
+				name = "vini2003"
+				url = "https://maven.vini2003.dev/releases"
 
-                credentials {
-                    username = System.getenv("MVN_USERNAME")
-                    password = System.getenv("MVN_TOKEN")
-                }
+				credentials {
+					username = System.getenv("MVN_USERNAME")
+					password = System.getenv("MVN_TOKEN")
+				}
 
-                authentication {
-                    basic(BasicAuthentication)
-                }
-            }
-        }
-    }
+				authentication {
+					basic(BasicAuthentication)
+				}
+			}
+		}
+	}
 }

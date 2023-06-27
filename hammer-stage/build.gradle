@@ -13,10 +13,10 @@ dependencies {
 
 	// WorldEdit
 	modApi("com.sk89q.worldedit:worldedit-core:${worldEditVersion}")
-	modApi("com.sk89q.worldedit:worldedit-fabric-mc1.19.2:${worldEditVersion}")
+	modApi("com.sk89q.worldedit:worldedit-fabric-mc1.20:${worldEditVersion}")
 
 	include("com.sk89q.worldedit:worldedit-core:${worldEditVersion}")
-	include("com.sk89q.worldedit:worldedit-fabric-mc1.19.2:${worldEditVersion}")
+	include("com.sk89q.worldedit:worldedit-fabric-mc1.20:${worldEditVersion}")
 }
 
 loom {
@@ -24,5 +24,5 @@ loom {
 }
 
 jar {
-    baseName("hammer-stage")
+    archiveBaseName = "hammer-stage"
 }

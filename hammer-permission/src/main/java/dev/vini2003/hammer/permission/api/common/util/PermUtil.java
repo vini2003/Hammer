@@ -35,7 +35,7 @@ import net.luckperms.api.node.Node;
 import net.luckperms.api.query.QueryOptions;
 import net.minecraft.entity.player.PlayerEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class PermUtil {

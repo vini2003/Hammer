@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.util.registry.common;
+package dev.vini2003.hammer.registry.common;
 
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.core.HC;
@@ -36,7 +36,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 public class HUItems {
 	public static final Item FREEZE = Registry.register(Registry.ITEM, HC.id("freeze"),

@@ -35,6 +35,7 @@ import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.event.*;
 import dev.vini2003.hammer.gui.api.common.filter.InputFilter;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -760,7 +761,8 @@ public abstract class TextEditorWidget extends Widget {
 		var textRenderer = DrawingUtil.getTextRenderer();
 		
 		if (isEmpty() && !held) {
-			textRenderer.draw(matrices, text, innerX, innerY, 0xFFFFFF);
+			// TODO: Check if this is equivalent to the 1.19.2 code.
+			textRenderer.draw(text, innerX, innerY, 0xFFFFFF, false, matrices.peek().getPositionMatrix(), provider, TextRenderer.TextLayerType.NORMAL, 0, 15728880);
 			
 			return;
 		}
@@ -795,7 +797,8 @@ public abstract class TextEditorWidget extends Widget {
 			
 			var line = lines.get(i);
 			
-			textRenderer.draw(matrices, text, innerX, innerY + (charHeight + 2) * adjustedI, 0xFFFFFF);
+			// TODO: Check if this is equivalent to the 1.19.2 code.
+			textRenderer.draw(text, innerX, innerY + (charHeight + 2) * adjustedI, 0xFFFFFF, false, matrices.peek().getPositionMatrix(), provider, TextRenderer.TextLayerType.NORMAL, 0, 15728880);
 			
 			var selection = getSelection(i);
 			

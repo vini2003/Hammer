@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.util.registry.client;
+package dev.vini2003.hammer.registry.client;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
-import static dev.vini2003.hammer.util.registry.common.HUNetworking.FLY_SPEED_UPDATE;
-import static dev.vini2003.hammer.util.registry.common.HUNetworking.WALK_SPEED_UPDATE;
+import static dev.vini2003.hammer.registry.common.HUNetworking.FLY_SPEED_UPDATE;
+import static dev.vini2003.hammer.registry.common.HUNetworking.WALK_SPEED_UPDATE;
 
 public class HUNetworking {
 	public static void init() {

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.util.registry.common;
+package dev.vini2003.hammer.registry.common;
 
 import dev.vini2003.hammer.core.HC;
 import net.minecraft.util.Identifier;

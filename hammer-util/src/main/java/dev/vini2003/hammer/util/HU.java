@@ -24,9 +24,9 @@
 
 package dev.vini2003.hammer.util;
 
-import dev.vini2003.hammer.util.registry.common.HUCommands;
-import dev.vini2003.hammer.util.registry.common.HUItems;
-import dev.vini2003.hammer.util.registry.common.HUNetworking;
+import dev.vini2003.hammer.registry.common.HUCommands;
+import dev.vini2003.hammer.registry.common.HUItems;
+import dev.vini2003.hammer.registry.common.HUNetworking;
 import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 

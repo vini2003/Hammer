@@ -28,20 +28,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.vini2003.hammer.core.api.common.math.padding.Padding;
-import dev.vini2003.hammer.core.api.common.math.shape.Shape;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.client.util.math.Vector2f;
-import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.*;
+import org.joml.Quaternionf;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 
 /**
  * <p>A {@link Position} represents a three-dimensional position.
@@ -300,12 +298,12 @@ public class Position implements PositionHolder {
 	}
 	
 	/**
-	 * Converts a {@link Vec3f} to a position.
+	 * Converts a {@link Vector3f} to a position.
 	 * @param vec3f The vector.
 	 * @return The position.
 	 */
-	public Position(Vec3f vec3f) {
-		this(vec3f.getX(), vec3f.getY(), vec3f.getZ());
+	public Position(Vector3f vec3f) {
+		this(vec3f.x(), vec3f.y(), vec3f.z());
 	}
 	
 	/**
@@ -332,7 +330,7 @@ public class Position implements PositionHolder {
 	 * @return The position.
 	 */
 	 public Position(Vector3d vector3d) {
-		this((float) vector3d.x, (float) vector3d.y, (float) vector3d.z);
+		this((float) vector3d.x(), (float) vector3d.y(), (float) vector3d.z());
 	 }
 	
 	/**
@@ -341,7 +339,7 @@ public class Position implements PositionHolder {
 	 * @return the block pos.
 	 */
 	public BlockPos toBlockPos() {
-		return new BlockPos(x, y, z);
+		return new BlockPos((int) x, (int) y, (int) z);
 	}
 	
 	/**
@@ -370,11 +368,11 @@ public class Position implements PositionHolder {
 	}
 	
 	/**
-	 * Converts this position to a {@link Vec3f}.
+	 * Converts this position to a {@link Vector3f}.
 	 * @return The vector.
 	 */
-	public Vec3f toVec3f() {
-		return new Vec3f(x, y, z);
+	public Vector3f toVector3f() {
+		return new Vector3f(x, y, z);
 	}
 	
 	/**
@@ -497,14 +495,16 @@ public class Position implements PositionHolder {
 	 *
 	 * @return the resulting position.
 	 */
-	public Position rotate(Quaternion quaternion) {
-		var q1 = new Quaternion(quaternion);
-		q1.hamiltonProduct(new Quaternion(this.getX(), this.getY(), this.getZ(), 0.0F));
-		var q2 = new Quaternion(quaternion);
-		q2.conjugate();
-		q1.hamiltonProduct(q2);
+	public Position rotate(Quaternionf quaternion) {
+		// TODO: Check if this is equivalent to the 1.19.2 code.
 		
-		return new Position(q1.getX(), q1.getY(), q1.getZ());
+		var q1 = new Quaternionf(quaternion);
+		q1.mul(new Quaternionf(this.getX(), this.getY(), this.getZ(), 0.0F));
+		var q2 = new Quaternionf(quaternion);
+		q2.conjugate();
+		q1.mul(q2);
+		
+		return new Position(q1.x(), q1.y(), q1.z());
 	}
 	
 	/**

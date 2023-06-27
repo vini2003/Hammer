@@ -47,7 +47,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import org.lwjgl.glfw.GLFW;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.UUID;
 

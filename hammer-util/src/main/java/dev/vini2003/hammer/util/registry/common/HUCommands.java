@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.util.registry.common;
+package dev.vini2003.hammer.registry.common;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.Command;

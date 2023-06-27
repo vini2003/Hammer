@@ -28,7 +28,7 @@ import dev.vini2003.hammer.chat.api.common.channel.Channel;
 import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
 import net.minecraft.entity.player.PlayerEntity;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ChannelUtil {
 	@Nullable

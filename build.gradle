@@ -93,6 +93,9 @@ allprojects {
 
         // Fabric API
         modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
+
+		// FindBugs
+		modImplementation("com.google.code.findbugs:jsr305:3.0.2")
     }
 
     publishing {

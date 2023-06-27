@@ -3,7 +3,6 @@ accessWidener v1 named
 accessible field net/minecraft/world/gen/WorldPreset dimensions Ljava/util/Map;
 mutable field net/minecraft/world/gen/WorldPreset dimensions Ljava/util/Map;
 
-accessible method net/minecraft/command/argument/ArgumentTypes register (Lnet/minecraft/util/registry/Registry;)Lnet/minecraft/command/argument/serialize/ArgumentSerializer;
 accessible method net/minecraft/command/argument/ArgumentTypes register (Lnet/minecraft/util/registry/Registry;Ljava/lang/String;Ljava/lang/Class;Lnet/minecraft/command/argument/serialize/ArgumentSerializer;)Lnet/minecraft/command/argument/serialize/ArgumentSerializer;
 
 accessible field net/minecraft/nbt/NbtList value Ljava/util/List;

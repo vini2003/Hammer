@@ -25,7 +25,7 @@
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 @ApiStatus.Internal
-package dev.vini2003.hammer.util.registry;
+package dev.vini2003.hammer.registry;
 
 import net.minecraft.util.annotation.MethodsReturnNonnullByDefault;
 import org.jetbrains.annotations.ApiStatus;

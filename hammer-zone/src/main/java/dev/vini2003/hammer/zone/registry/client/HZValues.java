@@ -26,7 +26,7 @@ package dev.vini2003.hammer.zone.registry.client;
 
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class HZValues {
 	public static boolean ZONE_EDITOR = false;

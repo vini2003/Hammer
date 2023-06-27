@@ -119,7 +119,7 @@ public class HZCommands {
 		}
 
 		var zoneId = context.getArgument("id", Identifier.class);
-		var zone = ZoneManager.get(player.world, zoneId);
+		var zone = ZoneManager.get(player.getWorld(), zoneId);
 		
 		if (zone != null) {
 			HZValues.setCommandSelectedZone(zone);
@@ -181,7 +181,7 @@ public class HZCommands {
 		}
 		
 		var zoneId = context.getArgument("id", Identifier.class);
-		var zone = ZoneManager.get(player.world, zoneId);
+		var zone = ZoneManager.get(player.getWorld(), zoneId);
 		
 		if (zone != null) {
 			var buf = PacketByteBufs.create();
@@ -241,7 +241,7 @@ public class HZCommands {
 		
 		var index = 0;
 		
-		var zones = ZoneManager.getAll(player.world);
+		var zones = ZoneManager.getAll(player.getWorld());
 		
 		if (zones.isEmpty()) {
 			source.sendFeedback(Text.translatable("command.hammer.zone.list.none"));
@@ -282,7 +282,7 @@ public class HZCommands {
 		
 		var index = 0;
 		
-		var zones = ZoneManager.getAll(player.world);
+		var zones = ZoneManager.getAll(player.getWorld());
 		
 		if (zones.isEmpty()) {
 			source.sendFeedback(Text.translatable("command.hammer.zone.list.none"));
@@ -384,7 +384,7 @@ public class HZCommands {
 		}
 		
 		var zoneId = context.getArgument("id", Identifier.class);
-		var zone = ZoneManager.get(player.world, zoneId);
+		var zone = ZoneManager.get(player.getWorld(), zoneId);
 		
 		if (zone != null) {
 			var json = Zone.toJson(zone);

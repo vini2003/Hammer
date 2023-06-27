@@ -27,7 +27,7 @@ package dev.vini2003.hammer.stage.api.common.manager;
 import com.mojang.datafixers.types.Func;
 import dev.vini2003.hammer.stage.api.common.stage.Stage;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import java.util.Collection;

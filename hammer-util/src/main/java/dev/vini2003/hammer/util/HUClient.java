@@ -24,7 +24,7 @@
 
 package dev.vini2003.hammer.util;
 
-import dev.vini2003.hammer.util.registry.client.HUNetworking;
+import dev.vini2003.hammer.registry.client.HUNetworking;
 import net.fabricmc.api.ClientModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 

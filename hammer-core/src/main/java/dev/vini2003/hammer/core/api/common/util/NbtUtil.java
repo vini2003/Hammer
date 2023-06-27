@@ -32,7 +32,7 @@ import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.registry.RegistryKey;
 
 public class NbtUtil {
 	public static NbtCompound parseNbt(String nbtString) {
@@ -113,14 +113,14 @@ public class NbtUtil {
 		return new Vec3d(nbt.getDouble(key + "X"), nbt.getDouble(key + "Y"), nbt.getDouble(key + "Z"));
 	}
 	
-	public static void putVec3f(NbtCompound nbt, String key, Vec3f value) {
+	public static void putVector3f(NbtCompound nbt, String key, Vector3f value) {
 		nbt.putFloat(key + "X", value.getX());
 		nbt.putFloat(key + "Y", value.getX());
 		nbt.putFloat(key + "Z", value.getZ());
 	}
 	
-	public static Vec3f getVec3f(NbtCompound nbt, String key) {
-		return new Vec3f(nbt.getFloat(key + "X"), nbt.getFloat(key + "Y"), nbt.getFloat(key + "Z"));
+	public static Vector3f getVector3f(NbtCompound nbt, String key) {
+		return new Vector3f(nbt.getFloat(key + "X"), nbt.getFloat(key + "Y"), nbt.getFloat(key + "Z"));
 	}
 	
 	public static void putVec3i(NbtCompound nbt, String key, Vec3i value) {

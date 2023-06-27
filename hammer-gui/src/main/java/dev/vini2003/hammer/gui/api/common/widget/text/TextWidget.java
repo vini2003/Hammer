@@ -30,6 +30,7 @@ import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.ColorProvider;
 import dev.vini2003.hammer.gui.api.common.widget.provider.ShadowProvider;
 import dev.vini2003.hammer.gui.api.common.widget.provider.TextProvider;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -44,15 +45,12 @@ public class TextWidget extends Widget implements TextProvider, ShadowProvider, 
 	protected Color color = new Color(0x404040FFL);
 	
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+	public void draw(DrawContext context, float tickDelta) {
 		var textRenderer = DrawingUtil.getTextRenderer();
 		
 		if (text.get() != null) {
-			if (shadow) {
-				textRenderer.drawWithShadow(matrices, text.get(), getX(), getY(), color.toRgb());
-			} else {
-				textRenderer.draw(matrices, text.get(), getX(), getY(), color.toRgb());
-			}
+			// TODO: Check if this is equivalent to the 1.19.2 code.
+			context.drawText(textRenderer, text.get().asOrderedText(), (int) getX(), (int) getY(), color.toRgb(), shadow);
 		}
 	}
 	

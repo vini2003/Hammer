@@ -12,5 +12,5 @@ loom {
 }
 
 jar {
-    baseName("hammer-permission")
+    archiveBaseName = "hammer-permission"
 }

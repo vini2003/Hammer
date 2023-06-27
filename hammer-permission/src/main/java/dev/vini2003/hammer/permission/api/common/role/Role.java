@@ -111,7 +111,7 @@ public class Role {
 	}
 	
 	public boolean isIn(PlayerEntity player) {
-		if (player.world.isClient) {
+		if (player.getWorld().isClient()) {
 			return holders.contains(player.getUuid());
 		} else {
 			return PermUtil.hasPermission(player, inheritanceNode.get().getKey());
@@ -123,7 +123,7 @@ public class Role {
 	}
 	
 	public void addTo(PlayerEntity player) {
-		if (!player.world.isClient) {
+		if (!player.getWorld().isClient()) {
 			PermUtil.addNode(player.getUuid(), inheritanceNode.get());
 			
 			var buf = PacketByteBufs.create();
@@ -147,7 +147,7 @@ public class Role {
 	}
 	
 	public void removeFrom(PlayerEntity player) {
-		if (!player.world.isClient) {
+		if (!player.getWorld().isClient()) {
 			PermUtil.removeNode(player.getUuid(), inheritanceNode.get());
 			
 			var buf = PacketByteBufs.create();

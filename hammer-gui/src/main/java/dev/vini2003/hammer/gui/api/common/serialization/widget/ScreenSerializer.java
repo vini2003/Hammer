@@ -40,7 +40,7 @@ import net.minecraft.resource.ResourceManager;
 
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 import org.apache.commons.io.IOUtils;
 
 import java.math.BigDecimal;

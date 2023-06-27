@@ -41,6 +41,7 @@ import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
 import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
@@ -262,7 +263,20 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	 * @param provider  the buffer provider.
 	 * @param tickDelta the time elapsed since the last tick.
 	 */
-	public abstract void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta);
+	@Deprecated
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		// Deprecated.
+	}
+	
+	/**
+	 * Draws this widget.
+	 *
+	 * @param context	the draw context.
+	 * @param tickDelta	the tick delta.
+	 */
+	public void draw(DrawContext context, float tickDelta) {
+		draw(context.getMatrices(), context.getVertexConsumers(), tickDelta);
+	}
 	
 	@Deprecated
 	public List<Text> getTooltips() {

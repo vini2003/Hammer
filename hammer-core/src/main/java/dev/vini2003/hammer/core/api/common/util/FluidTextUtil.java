@@ -31,11 +31,12 @@ import net.fabricmc.fabric.api.transfer.v1.client.fluid.FluidVariantRendering;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +60,7 @@ public class FluidTextUtil {
 	}
 	
 	public static List<Text> getShortenedStorageTooltips(StorageView<FluidVariant> fluidView) {
-		var fluidId = Registry.FLUID.getId(fluidView.getResource().getFluid());
+		var fluidId = Registries.FLUID.getId(fluidView.getResource().getFluid());
 		
 		var tooltips = new ArrayList<Text>();
 		
@@ -77,7 +78,7 @@ public class FluidTextUtil {
 	}
 	
 	public static List<Text> getDetailedStorageTooltips(StorageView<FluidVariant> fluidView) {
-		var fluidId = Registry.FLUID.getId(fluidView.getResource().getFluid());
+		var fluidId = Registries.FLUID.getId(fluidView.getResource().getFluid());
 		
 		var tooltips = new ArrayList<Text>();
 		

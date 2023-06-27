@@ -17,5 +17,5 @@ loom {
 }
 
 jar {
-    baseName("hammer-chat")
+    archiveBaseName = "hammer-chat"
 }

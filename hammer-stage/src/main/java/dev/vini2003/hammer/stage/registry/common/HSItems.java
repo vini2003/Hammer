@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 public class HSItems {
 	public static final Item PREPARE_STAGE = Registry.register(Registry.ITEM,

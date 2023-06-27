@@ -45,7 +45,7 @@ public abstract class EntityMixin {
 	
 	@Inject(at = @At("RETURN"), method = "isGlowing", cancellable = true)
 	private void hammer$isGlowing(CallbackInfoReturnable<Boolean> cir) {
-		if (world.isClient) {
+		if (world.isClient()) {
 			var client = InstanceUtil.getClient();
 			
 			var player = client.player;

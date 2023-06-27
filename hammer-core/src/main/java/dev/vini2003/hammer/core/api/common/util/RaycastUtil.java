@@ -29,8 +29,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
 
 public class RaycastUtil {
@@ -53,7 +54,7 @@ public class RaycastUtil {
 	
 	@Nullable
 	public static EntityHitResult raycastEntity(Entity source, Vec3d pos, Vec3d end, Box box, Predicate<Entity> predicate, double sqrMaxDist) {
-		var world = source.world;
+		var world = source.getWorld();
 		
 		var distToGo = sqrMaxDist;
 		

@@ -24,15 +24,15 @@
 
 package dev.vini2003.hammer.core.api.common.util;
 
-import dev.vini2003.hammer.core.api.client.color.Color;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.client.util.math.Vector2f;
-import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.*;
-import net.minecraft.util.registry.RegistryKey;
+import org.joml.Quaternionf;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public class BufUtil {
 	public static <T> void writeRegistryKey(PacketByteBuf buf, RegistryKey<T> value) {
@@ -78,14 +78,14 @@ public class BufUtil {
 		return new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble());
 	}
 	
-	public static void writeVec3f(PacketByteBuf buf, Vec3f value) {
-		buf.writeFloat(value.getX());
-		buf.writeFloat(value.getY());
-		buf.writeFloat(value.getZ());
+	public static void writeVector3f(PacketByteBuf buf, Vector3f value) {
+		buf.writeFloat(value.x());
+		buf.writeFloat(value.y());
+		buf.writeFloat(value.z());
 	}
 	
-	public static Vec3f readVec3f(PacketByteBuf buf) {
-		return new Vec3f(buf.readFloat(), buf.readFloat(), buf.readFloat());
+	public static Vector3f readVector3f(PacketByteBuf buf) {
+		return new Vector3f(buf.readFloat(), buf.readFloat(), buf.readFloat());
 	}
 	
 	public static void writeVec3i(PacketByteBuf buf, Vec3i value) {
@@ -118,24 +118,24 @@ public class BufUtil {
 	}
 	
 	public static void writeVector4f(PacketByteBuf buf, Vector4f value) {
-		buf.writeFloat(value.getX());
-		buf.writeFloat(value.getY());
-		buf.writeFloat(value.getZ());
-		buf.writeFloat(value.getW());
+		buf.writeFloat(value.x());
+		buf.writeFloat(value.y());
+		buf.writeFloat(value.z());
+		buf.writeFloat(value.w());
 	}
 	
 	public static Vector4f readVector4f(PacketByteBuf buf) {
 		return new Vector4f(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat());
 	}
 	
-	public static void writeQuaternion(PacketByteBuf buf, Quaternion value) {
-		buf.writeFloat(value.getX());
-		buf.writeFloat(value.getY());
-		buf.writeFloat(value.getZ());
-		buf.writeFloat(value.getW());
+	public static void writeQuaternion(PacketByteBuf buf, Quaternionf value) {
+		buf.writeFloat(value.x());
+		buf.writeFloat(value.y());
+		buf.writeFloat(value.z());
+		buf.writeFloat(value.w());
 	}
 	
-	public static Quaternion readQuaternion(PacketByteBuf buf) {
-		return new Quaternion(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat());
+	public static Quaternionf readQuaternion(PacketByteBuf buf) {
+		return new Quaternionf(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat());
 	}
 }

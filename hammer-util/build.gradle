@@ -16,5 +16,5 @@ loom {
 }
 
 jar {
-    baseName("hammer-util")
+    archiveBaseName = "hammer-util"
 }

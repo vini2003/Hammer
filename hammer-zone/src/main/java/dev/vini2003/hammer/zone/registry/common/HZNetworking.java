@@ -68,7 +68,7 @@ public class HZNetworking {
 					return;
 				}
 				
-				var zone = ZoneManager.get(player.world, zoneId);
+				var zone = ZoneManager.get(player.getWorld(), zoneId);
 				
 				if (zone.isLocked()) {
 					return;
@@ -82,7 +82,7 @@ public class HZNetworking {
 				
 				zone.setColor(color);
 				
-				ZoneManager.sync(player.world);
+				ZoneManager.sync(player.getWorld());
 			});
 		});
 		
@@ -114,7 +114,7 @@ public class HZNetworking {
 							new Position((float) (pos.getX() + 0.5F), (float) (pos.getY() + 0.5F), (float) (pos.getZ() + 0.5F))
 					);
 					
-					for (var existingZone : ZoneManager.getAll(player.world)) {
+					for (var existingZone : ZoneManager.getAll(player.getWorld())) {
 						if (existingZone.getCenterPos().equals(zone.getCenterPos())) {
 							if (existingZone.getWidth() == zone.getWidth() && existingZone.getHeight() == zone.getHeight() && existingZone.getDepth() == zone.getDepth()) {
 								return;
@@ -122,10 +122,10 @@ public class HZNetworking {
 						}
 					}
 					
-					ZoneManager.add(player.world, zone);
+					ZoneManager.add(player.getWorld(), zone);
 				}
 				
-				ZoneManager.sync(player.world);
+				ZoneManager.sync(player.getWorld());
 			});
 		});
 		
@@ -153,7 +153,7 @@ public class HZNetworking {
 					return;
 				}
 				
-				var zone = ZoneManager.get(player.world, id);
+				var zone = ZoneManager.get(player.getWorld(), id);
 				
 				if (zone.isLocked()) {
 					return;
@@ -163,11 +163,11 @@ public class HZNetworking {
 					
 				zone.markRemoved();
 				
-				ZoneManager.sync(player.world);
+				ZoneManager.sync(player.getWorld());
 				
-				ZoneManager.remove(player.world, zone);
+				ZoneManager.remove(player.getWorld(), zone);
 				
-				ZoneManager.sync(player.world);
+				ZoneManager.sync(player.getWorld());
 			});
 		});
 		
@@ -180,7 +180,7 @@ public class HZNetworking {
 					return;
 				}
 				
-				var zone = ZoneManager.get(player.world, id);
+				var zone = ZoneManager.get(player.getWorld(), id);
 				
 				if (zone.isLocked()) {
 					return;
@@ -188,7 +188,7 @@ public class HZNetworking {
 				
 				zone.setColor(new Color(rgba));
 				
-				ZoneManager.sync(player.world);
+				ZoneManager.sync(player.getWorld());
 			});
 		});
 		
@@ -201,7 +201,7 @@ public class HZNetworking {
 					return;
 				}
 				
-				var zone = ZoneManager.get(player.world, id);
+				var zone = ZoneManager.get(player.getWorld(), id);
 				
 				if (zone.isLocked()) {
 					return;
@@ -211,7 +211,7 @@ public class HZNetworking {
 				
 				zone.setGroup(zoneGroup);
 				
-				ZoneManager.sync(player.world);
+				ZoneManager.sync(player.getWorld());
 			});
 		});
 		
@@ -227,7 +227,7 @@ public class HZNetworking {
 					return;
 				}
 				
-				var zone = ZoneManager.get(player.world, id);
+				var zone = ZoneManager.get(player.getWorld(), id);
 				
 				if (zone.isLocked()) {
 					return;
@@ -257,7 +257,7 @@ public class HZNetworking {
 					}
 				}
 				
-				ZoneManager.sync(player.world);
+				ZoneManager.sync(player.getWorld());
 			});
 		});
 	}

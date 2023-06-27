@@ -4,5 +4,5 @@ dependencies {
 }
 
 jar {
-    baseName("hammer-emoji")
+    archiveBaseName = "hammer-emoji"
 }

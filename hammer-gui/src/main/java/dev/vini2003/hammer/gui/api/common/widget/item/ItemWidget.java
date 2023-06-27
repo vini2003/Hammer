@@ -30,6 +30,8 @@ import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.ItemProvider;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
@@ -52,16 +54,14 @@ public class ItemWidget extends Widget implements ItemProvider {
 			} else {
 				var client = InstanceUtil.getClient();
 				
-				return new ItemStack(item).getTooltip(client.player, () -> client.options.advancedItemTooltips);
+				return item.getDefaultStack().getTooltip(client.player, client.options.advancedItemTooltips ? TooltipContext.ADVANCED : TooltipContext.BASIC);
 			}
 		});
 	}
 	
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
-		var itemRenderer = DrawingUtil.getItemRenderer();
-		
-		itemRenderer.renderInGui(new ItemStack(item.get()), (int) getX(), (int) getY());
+	public void draw(DrawContext context, float tickDelta) {
+		context.drawItem(item.get().getDefaultStack(), (int) getX(), (int) getY());
 	}
 	
 	@Override

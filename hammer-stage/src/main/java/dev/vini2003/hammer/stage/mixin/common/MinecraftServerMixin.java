@@ -3,7 +3,7 @@ package dev.vini2003.hammer.stage.mixin.common;
 import com.mojang.serialization.Lifecycle;
 import dev.vini2003.hammer.stage.registry.common.HSDimensions;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.world.SaveProperties;
 import net.minecraft.world.dimension.DimensionOptions;
 import org.spongepowered.asm.mixin.Final;

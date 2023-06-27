@@ -20,5 +20,5 @@ loom {
 }
 
 jar {
-    baseName("hammer-preset")
+    archiveBaseName = "hammer-preset"
 }

@@ -205,7 +205,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 	
 	@Override
 	public boolean isClient() {
-		return player.world.isClient;
+		return player.getWorld().isClient();
 	}
 	
 	@Override

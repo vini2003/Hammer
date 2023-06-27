@@ -32,10 +32,13 @@ import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.tooltip.TooltipPositioner;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+import org.joml.Vector2i;
 
 import java.util.List;
 
@@ -70,7 +73,9 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 	}
 	
 	@Override
-	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {}
+	protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
+	
+	}
 	
 	@Override
 	protected boolean isClickOutsideBounds(double mouseX, double mouseY, int left, int top, int button) {
@@ -156,8 +161,8 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 	}
 	
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		super.renderBackground(matrices);
+	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+		super.renderBackground(context);
 		
 		var client = InstanceUtil.getClient();
 		
@@ -165,7 +170,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 		
 		for (var child : handler.getChildren()) {
 			if (!child.isHidden()) {
-				child.draw(matrices, provider, delta);
+				child.draw(context.getMatrices(), provider, delta);
 			}
 		}
 		
@@ -184,13 +189,14 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 		}
 		
 		if (minChild != null) {
-			renderOrderedTooltip(matrices, minChild.getTooltip(), mouseX, mouseY);
+			// TODO: Fix this, it's very bad.
+			context.drawTooltip(textRenderer, minChild.getTooltip(), ($, $$, $$$, $$$$, $$$$$, $$$$$$) -> new Vector2i(mouseX, mouseY), mouseX, mouseY);
 		}
 		
 		provider.draw();
 		
-		super.render(matrices, mouseX, mouseY, delta);
+		super.render(context, mouseX, mouseY, delta);
 		
-		super.drawMouseoverTooltip(matrices, mouseX, mouseY);
+		super.drawMouseoverTooltip(context, mouseX, mouseY);
 	}
 }

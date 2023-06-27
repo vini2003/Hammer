@@ -46,13 +46,13 @@ public class HZEvents {
 			// The player isn't loaded yet at this stage.
 			// However, they will be loaded in the next tick.
 			ServerTaskQueue.enqueue(($) -> {
-				ZoneManager.sync(handler.player.world);
+				ZoneManager.sync(handler.player.getWorld());
 			}, 1L);
 		});
 		
 		// Update zones upon changing dimensions.
 		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
-			ZoneManager.sync(newPlayer.world);
+			ZoneManager.sync(newPlayer.getWorld());
 		});
 	}
 }

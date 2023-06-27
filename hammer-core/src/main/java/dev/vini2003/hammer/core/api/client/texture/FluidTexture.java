@@ -69,7 +69,7 @@ public class FluidTexture implements Texture {
 		DrawingUtil.drawTexturedQuad(
 				matrices,
 				provider,
-				sprite.getId(),
+				sprite.getAtlasId(),
 				scaledX, scaledY, 0.0F,
 				width, height,
 				sprite.getMinU(), sprite.getMinV(),

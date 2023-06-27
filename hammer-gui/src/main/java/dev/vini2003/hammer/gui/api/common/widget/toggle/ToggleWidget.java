@@ -34,6 +34,7 @@ import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
 import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.*;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
@@ -69,7 +70,10 @@ public class ToggleWidget extends Widget implements EnabledTextureProvider, Disa
 	}
 	
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+	public void draw(DrawContext context, float tickDelta) {
+		var matrices = context.getMatrices();
+		var provider = context.getVertexConsumers();
+		
 		var texture = (Texture) null;
 		
 		if (isDisabled()) {
@@ -80,16 +84,18 @@ public class ToggleWidget extends Widget implements EnabledTextureProvider, Disa
 		
 		texture.draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
 		
-		if (provider instanceof VertexConsumerProvider.Immediate immediate) {
-			immediate.draw();
-		}
+		// In 1.20.1, it is an Immediate by default.
+		// if (provider instanceof VertexConsumerProvider.Immediate immediate) {
+			provider.draw();
+		// }
 		
 		var label = this.label.get();
 		
 		if (label != null) {
 			var textRenderer = DrawingUtil.getTextRenderer();
 			
-			textRenderer.drawWithShadow(matrices, label, getX() + (getWidth() / 2.0F - TextUtil.getWidth(label) / 2.0F), getY() + (getHeight() / 2.0F - TextUtil.getHeight(label) / 2.0F), 0xFCFCFC);
+			// TODO: Check if this is equivalent to the 1.19.2 code.
+			context.drawTextWithShadow(textRenderer, label.asOrderedText(), (int) (getX() + (getWidth() / 2.0F - TextUtil.getWidth(label) / 2.0F)), (int) (getY() + (getHeight() / 2.0F - TextUtil.getHeight(label) / 2.0F)), 0xFCFCFC);
 		}
 	}
 	

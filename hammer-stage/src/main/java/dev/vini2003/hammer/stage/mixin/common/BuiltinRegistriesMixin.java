@@ -1,6 +1,6 @@
 package dev.vini2003.hammer.stage.mixin.common;
 
-import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.registry.BuiltinRegistries;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

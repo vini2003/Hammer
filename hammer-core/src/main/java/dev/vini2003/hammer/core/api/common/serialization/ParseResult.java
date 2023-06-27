@@ -1,6 +1,6 @@
 package dev.vini2003.hammer.core.api.common.serialization;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.NoSuchElementException;
 
 public record ParseResult<T>(

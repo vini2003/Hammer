@@ -32,7 +32,8 @@ public class StackUtil {
 	public static void merge(ItemStack source, ItemStack target, BiConsumer<ItemStack, ItemStack> consumer) {
 		var targetMax = target.getMaxCount();
 		
-		if (ItemStack.areItemsEqual(source, target) && ItemStack.areNbtEqual(source, target)) {
+		// TODO: Check if this is equivalent to the 1.19.2 code.
+		if (ItemStack.areItemsEqual(source, target) && ItemStack.areEqual(source, target)) {
 			var sourceCount = source.getCount();
 			var targetCount = target.getCount();
 			

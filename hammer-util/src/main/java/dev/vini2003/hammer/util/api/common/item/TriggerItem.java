@@ -74,7 +74,7 @@ public class TriggerItem extends Item {
 	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
 		var stack = user.getStackInHand(hand);
 		
-		if (world.isClient && client || !world.isClient && server) {
+		if (world.isClient() && client || !world.isClient() && server) {
 			if (trigger != null) {
 				trigger.onTrigger(world, user, hand);
 			}

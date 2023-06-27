@@ -31,7 +31,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.Direction;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ZoneDrawingUtil {
 	public static void drawZone(

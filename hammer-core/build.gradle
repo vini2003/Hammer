@@ -3,5 +3,5 @@ loom {
 }
 
 jar {
-    baseName("hammer-core")
+	archiveBaseName = "hammer-core"
 }

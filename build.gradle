@@ -1,54 +1,43 @@
 plugins {
-    // Fabric Loom
-    id "fabric-loom"
+	id "maven-publish"
 
-    // Maven Publish
-    id "maven-publish"
-
-    // Licenser
-    id "org.cadixdev.licenser"
+    id "fabric-loom" apply false
+    id "org.cadixdev.licenser" apply false
+	id "io.github.juuxel.loom-quiltflower" apply false
 }
 
-allprojects {
-    apply plugin: 'org.cadixdev.licenser'
-
-    license {
-        header = rootProject.file("LICENSE")
-
-        ignoreFailures = true
-    }
-}
-
-dependencies {
-	subprojects.forEach {
-		implementation project(path: it.path, configuration: "namedElements")
-	}
-}
-
-loom {
-	runs {
-		client {
-			client()
-			setConfigName("Minecraft Client ($projectName)")
-			ideConfigGenerated(true)
-			runDir("runClient")
-		}
-
-		server {
-			server()
-			setConfigName("Minecraft Server ($projectName)")
-			ideConfigGenerated(true)
-			runDir("runServer")
-		}
-	}
-}
-
-allprojects {
+subprojects {
     apply plugin: "fabric-loom"
     apply plugin: "maven-publish"
+	apply plugin: "io.github.juuxel.loom-quiltflower"
+	apply plugin: 'org.cadixdev.licenser'
+
+	license {
+		header = rootProject.file("LICENSE")
+
+		ignoreFailures = true
+	}
 
     group = projectGroup
     version = projectVersion
+
+	loom {
+		runs {
+			client {
+				client()
+				setConfigName("Minecraft Client ($projectName)")
+				ideConfigGenerated(true)
+				runDir("runClient")
+			}
+
+			server {
+				server()
+				setConfigName("Minecraft Server ($projectName)")
+				ideConfigGenerated(true)
+				runDir("runServer")
+			}
+		}
+	}
 
     java {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -77,11 +66,7 @@ allprojects {
 		}
     }
 
-    configurations.all {
-        exclude(module: "colonel")
-    }
-
-    dependencies {
+	dependencies {
         // Minecraft
         minecraft("com.mojang:minecraft:${minecraftVersion}")
 
@@ -95,7 +80,7 @@ allprojects {
         modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
 
 		// FindBugs
-		modImplementation("com.google.code.findbugs:jsr305:3.0.2")
+		modImplementation("com.google.code.findbugs:jsr305:${findBugsVersion}")
     }
 
     publishing {

@@ -58,7 +58,7 @@ public class HUCommands {
 		
 		HCConfig.ENABLE_END = !HCConfig.ENABLE_END;
 		
-		source.sendFeedback(Text.translatable("command.hammer." + (HCConfig.ENABLE_END ? "enable" : "disable") + "_end"), true);
+		source.sendFeedback(() -> Text.translatable("command.hammer." + (HCConfig.ENABLE_END ? "enable" : "disable") + "_end"), true);
 		
 		return Command.SINGLE_SUCCESS;
 	}
@@ -69,7 +69,7 @@ public class HUCommands {
 		
 		HCConfig.ENABLE_NETHER = !HCConfig.ENABLE_NETHER;
 		
-		source.sendFeedback(Text.translatable("command.hammer." + (HCConfig.ENABLE_NETHER ? "enable" : "disable") + "_nether"), true);
+		source.sendFeedback(() -> Text.translatable("command.hammer." + (HCConfig.ENABLE_NETHER ? "enable" : "disable") + "_nether"), true);
 		
 		return Command.SINGLE_SUCCESS;
 	}
@@ -81,8 +81,8 @@ public class HUCommands {
 		for (var otherPlayer : players) {
 			PlayerUtil.setFrozen(otherPlayer, true);
 			
-			source.sendFeedback(Text.translatable("command.hammer.freeze.other", otherPlayer.getDisplayName()), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.freeze.self"), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.freeze.other", otherPlayer.getDisplayName()), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.freeze.self"), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -113,8 +113,8 @@ public class HUCommands {
 		for (var otherPlayer : players) {
 			PlayerUtil.setFrozen(otherPlayer, false);
 			
-			source.sendFeedback(Text.translatable("command.hammer.unfreeze.other", otherPlayer.getDisplayName()), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.unfreeze.self"), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.unfreeze.other", otherPlayer.getDisplayName()), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.unfreeze.self"), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -146,8 +146,8 @@ public class HUCommands {
 		for (var otherPlayer : players) {
 			otherPlayer.setHealth(otherPlayer.getMaxHealth());
 			
-			source.sendFeedback(Text.translatable("command.hammer.heal.other", otherPlayer.getDisplayName()), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.heal.self", otherPlayer.getDisplayName()), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.heal.other", otherPlayer.getDisplayName()), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.heal.self", otherPlayer.getDisplayName()), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -179,8 +179,8 @@ public class HUCommands {
 			otherPlayer.getHungerManager().setFoodLevel(20);
 			otherPlayer.getHungerManager().setSaturationLevel(20.0F);
 			
-			source.sendFeedback(Text.translatable("command.hammer.satiate.other", otherPlayer.getDisplayName()), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.satiate.self", otherPlayer.getDisplayName()), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.satiate.other", otherPlayer.getDisplayName()), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.satiate.self", otherPlayer.getDisplayName()), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -213,8 +213,8 @@ public class HUCommands {
 		for (var otherPlayer : players) {
 			PlayerUtil.setAllowMovement(otherPlayer, allowMovement);
 			
-			source.sendFeedback(Text.translatable("command.hammer.allow_movement.other", otherPlayer.getDisplayName(), allowMovement ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.allow_movement.self", allowMovement ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.allow_movement.other", otherPlayer.getDisplayName(), allowMovement ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.allow_movement.self", allowMovement ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -247,8 +247,8 @@ public class HUCommands {
 		for (var otherPlayer : players) {
 			PlayerUtil.setAllowInteraction(otherPlayer, allowInteraction);
 			
-			source.sendFeedback(Text.translatable("command.hammer.allow_interaction.other", otherPlayer.getDisplayName(), allowInteraction ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.allow_interaction.self", allowInteraction ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.allow_interaction.other", otherPlayer.getDisplayName(), allowInteraction ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.allow_interaction.self", allowInteraction ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -287,8 +287,8 @@ public class HUCommands {
 			
 			ServerPlayNetworking.send(otherPlayer, HUNetworking.FLY_SPEED_UPDATE, PacketByteBufs.duplicate(buf));
 			
-			source.sendFeedback(Text.translatable("command.hammer.fly_speed.other", otherPlayer.getDisplayName(), speed), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.fly_speed.self", otherPlayer.getDisplayName(), speed), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.fly_speed.other", otherPlayer.getDisplayName(), speed), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.fly_speed.self", otherPlayer.getDisplayName(), speed), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -326,8 +326,8 @@ public class HUCommands {
 			
 			ServerPlayNetworking.send(otherPlayer, HUNetworking.WALK_SPEED_UPDATE, PacketByteBufs.duplicate(buf));
 			
-			source.sendFeedback(Text.translatable("command.hammer.walk_speed.other", otherPlayer.getDisplayName(), speed), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.walk_speed.self", otherPlayer.getDisplayName(), speed), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.walk_speed.other", otherPlayer.getDisplayName(), speed), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.walk_speed.self", otherPlayer.getDisplayName(), speed), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;

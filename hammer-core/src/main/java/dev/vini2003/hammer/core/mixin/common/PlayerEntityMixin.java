@@ -319,7 +319,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	@Inject(at = @At("HEAD"), method = "addExhaustion", cancellable = true)
 	private void hammer$addExhaustion(float exhaustion, CallbackInfo ci) {
 		if (!abilities.invulnerable) {
-			if (!world.isClient()) {
+			if (!getWorld().isClient()) {
 				hungerManager.addExhaustion(exhaustion * hammer$getExhaustionMultiplier());
 				
 				ci.cancel();

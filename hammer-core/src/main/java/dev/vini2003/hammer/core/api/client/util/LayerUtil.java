@@ -41,7 +41,7 @@ public class LayerUtil {
 			false,
 			true,
 			RenderLayer.MultiPhaseParameters.builder()
-											.shader(new RenderPhase.Shader(GameRenderer::getPositionColorShader))
+					.program(new RenderPhase.ShaderProgram(GameRenderer::getPositionColorProgram))
 											.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
 											.build(true)
 	);
@@ -60,7 +60,7 @@ public class LayerUtil {
 						true,
 						true,
 						RenderLayer.MultiPhaseParameters.builder()
-														.shader(new RenderPhase.Shader(GameRenderer::getPositionColorTexLightmapShader))
+														.program(new RenderPhase.ShaderProgram(GameRenderer::getPositionColorTexLightmapProgram))
 														.texture(new RenderPhase.Texture(texture, false, false))
 														.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
 														.overlay(RenderPhase.DISABLE_OVERLAY_COLOR)

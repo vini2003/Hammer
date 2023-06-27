@@ -86,7 +86,7 @@ public class HSCommands {
 			StageManager.setActive(world.getRegistryKey(), stage);
 			
 			try {
-				source.sendFeedback(Text.translatable("command.hammer.stage.load.progress"), false);
+				source.sendFeedback(() -> Text.translatable("command.hammer.stage.load.progress"), false);
 				
 				stage.load(world);
 			} catch (Exception e) {
@@ -94,7 +94,7 @@ public class HSCommands {
 				return Command.SINGLE_SUCCESS;
 			}
 			
-			source.sendFeedback(Text.translatable("command.hammer.stage.load.success", stageId), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.stage.load.success", stageId), false);
 		} catch (Exception e) {
 			source.sendError(Text.translatable("command.hammer.stage.load.failure", stageId, e.getMessage()));
 		}
@@ -134,7 +134,7 @@ public class HSCommands {
 			StageManager.setActive(world.getRegistryKey(), stage);
 			
 			try {
-				source.sendFeedback(Text.translatable("command.hammer.stage.load.progress"), false);
+				source.sendFeedback(() -> Text.translatable("command.hammer.stage.load.progress"), false);
 				
 				stage.load(world);
 			} catch (Exception e) {
@@ -142,7 +142,7 @@ public class HSCommands {
 				return Command.SINGLE_SUCCESS;
 			}
 			
-			source.sendFeedback(Text.translatable("command.hammer.stage.load.success", stageId), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.stage.load.success", stageId), false);
 		} catch (Exception e) {
 			source.sendError(Text.translatable("command.hammer.stage.load.failure", stageId, e.getMessage()));
 		}
@@ -173,7 +173,7 @@ public class HSCommands {
 			
 			StageManager.setActive(world.getRegistryKey(), null);
 			
-			source.sendFeedback(Text.translatable("command.hammer.stage.unload.success"), true);
+			source.sendFeedback(() -> Text.translatable("command.hammer.stage.unload.success"), true);
 		} else {
 			source.sendError(Text.translatable("command.hammer.stage.unload.failure", Text.translatable("command.hammer.stage.none_active")));
 		}
@@ -202,7 +202,7 @@ public class HSCommands {
 				return Command.SINGLE_SUCCESS;
 			}
 			
-			source.sendFeedback(Text.translatable("command.hammer.stage.prepare.success"), true);
+			source.sendFeedback(() -> Text.translatable("command.hammer.stage.prepare.success"), true);
 		} else {
 			source.sendError(Text.translatable("command.hammer.stage.prepare.failure", Text.translatable("command.hammer.stage.none_active")));
 		}
@@ -231,7 +231,7 @@ public class HSCommands {
 				return Command.SINGLE_SUCCESS;
 			}
 			
-			source.sendFeedback(Text.translatable("command.hammer.stage.start.success"), true);
+			source.sendFeedback(() -> Text.translatable("command.hammer.stage.start.success"), true);
 		} else {
 			source.sendError(Text.translatable("command.hammer.stage.start.failure", Text.translatable("command.hammer.stage.none_active")));
 		}
@@ -260,7 +260,7 @@ public class HSCommands {
 				return Command.SINGLE_SUCCESS;
 			}
 			
-			source.sendFeedback(Text.translatable("command.hammer.stage.stop.success"), true);
+			source.sendFeedback(() -> Text.translatable("command.hammer.stage.stop.success"), true);
 		} else {
 			source.sendError(Text.translatable("command.hammer.stage.stop.failure", Text.translatable("command.hammer.stage.none_active")));
 		}
@@ -290,9 +290,9 @@ public class HSCommands {
 			}
 			
 			if (stage.getState() == Stage.State.PAUSED) {
-				source.sendFeedback(Text.translatable("command.hammer.stage.pause.success"), true);
+				source.sendFeedback(() -> Text.translatable("command.hammer.stage.pause.success"), true);
 			} else {
-				source.sendFeedback(Text.translatable("command.hammer.stage.unpause.success"), true);
+				source.sendFeedback(() -> Text.translatable("command.hammer.stage.unpause.success"), true);
 			}
 		} else {
 			source.sendError(Text.translatable("command.hammer.stage.pause.failure", Text.translatable("command.hammer.stage.none_active")));
@@ -322,7 +322,7 @@ public class HSCommands {
 				return Command.SINGLE_SUCCESS;
 			}
 			
-			source.sendFeedback(Text.translatable("command.hammer.stage.restart.success"), true);
+			source.sendFeedback(() -> Text.translatable("command.hammer.stage.restart.success"), true);
 		} else {
 			source.sendError(Text.translatable("command.hammer.stage.restart.failure", Text.translatable("command.hammer.stage.none_active")));
 		}

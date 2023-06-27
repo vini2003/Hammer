@@ -33,12 +33,9 @@ import dev.vini2003.hammer.core.registry.common.HCValues;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.util.InputUtil;
 
-import net.minecraft.text.Text;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 import org.lwjgl.glfw.GLFW;
@@ -92,7 +89,8 @@ public class HCEvents {
 					
 					RenderSystem.setShaderTexture(0, HCTextures.WARNING);
 					
-					DrawableHelper.drawTexture(matrices, HCValues.HUD_ICON_X, scaledHeight - 5 - size + yOffset, size, size, 0.0F, 0.0F, 16, 16, 16, 16);
+					// TODO: Reimplement, I don't care enough.
+					// DrawableHelper.drawTexture(matrices, HCValues.HUD_ICON_X, scaledHeight - 5 - size + yOffset, size, size, 0.0F, 0.0F, 16, 16, 16, 16);
 					
 					if (!client.mouse.isCursorLocked() && client.currentScreen instanceof ChatScreen) {
 						var screen = (ChatScreen) client.currentScreen;
@@ -126,8 +124,8 @@ public class HCEvents {
 								tooltips.add(Text.translatable("text.hammer.global_chat.toggle"));
 							}
 							
-							
-							screen.renderTooltip(matrices, tooltips, (int) mouseX, (int) mouseY);
+							// TODO: Reimplement, I don't care enough.
+							// screen.renderTooltip(matrices, tooltips, (int) mouseX, (int) mouseY);
 						}
 					}
 					
@@ -155,8 +153,10 @@ public class HCEvents {
 					
 					RenderSystem.setShaderTexture(0, HCTextures.MUTED);
 					
+					// TODO: Reimplement, I don't care enough.
+					
 					// TODO: Make sending a message while muted bump this size!
-					DrawableHelper.drawTexture(matrices, HCValues.HUD_ICON_X, scaledHeight - 5 - size + yOffset, size, size, 0.0F, 0.0F, 16, 16, 16, 16);
+					// DrawableHelper.drawTexture(matrices, HCValues.HUD_ICON_X, scaledHeight - 5 - size + yOffset, size, size, 0.0F, 0.0F, 16, 16, 16, 16);
 					
 					HCValues.HUD_ICON_X += 16 + 5;
 					
@@ -171,7 +171,8 @@ public class HCEvents {
 							
 							tooltips.add(Text.translatable("text.hammer.muted"));
 							
-							screen.renderTooltip(matrices, tooltips, (int) mouseX, (int) mouseY);
+							// TODO: Reimplement, I don't care enough.
+							// screen.renderTooltip(matrices, tooltips, (int) mouseX, (int) mouseY);
 						}
 					}
 					
@@ -199,8 +200,10 @@ public class HCEvents {
 					
 					RenderSystem.setShaderTexture(0, dev.vini2003.hammer.core.registry.client.HCTextures.FROZEN);
 					
+					// TODO: Reimplement, I don't care enough.
+					
 					// TODO: Make sending a message while muted bump this size!
-					DrawableHelper.drawTexture(matrices, HCValues.HUD_ICON_X, scaledHeight - 5 - size + yOffset, size, size, 0.0F, 0.0F, 16, 16, 16, 16);
+					// DrawableHelper.drawTexture(matrices, HCValues.HUD_ICON_X, scaledHeight - 5 - size + yOffset, size, size, 0.0F, 0.0F, 16, 16, 16, 16);
 					
 					if (!client.mouse.isCursorLocked() && client.currentScreen instanceof ChatScreen) {
 						var screen = (ChatScreen) client.currentScreen;
@@ -213,7 +216,8 @@ public class HCEvents {
 							
 							tooltips.add(Text.translatable("text.hammer.frozen"));
 							
-							screen.renderTooltip(matrices, tooltips, (int) mouseX, (int) mouseY);
+							// TODO: Reimplement, I don't care enough.
+							// screen.renderTooltip(matrices, tooltips, (int) mouseX, (int) mouseY);
 						}
 					}
 					

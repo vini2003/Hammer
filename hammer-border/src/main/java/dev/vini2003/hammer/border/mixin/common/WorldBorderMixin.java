@@ -158,7 +158,7 @@ public abstract class WorldBorderMixin implements CubicWorldBorder {
 	
 	@Inject(at = @At("HEAD"), method = "clamp", cancellable = true)
 	private void hammer$clamp(double x, double y, double z, CallbackInfoReturnable<BlockPos> cir) {
-		cir.setReturnValue(new BlockPos(MathHelper.clamp(x, getBoundWest(), getBoundEast()), MathHelper.clamp(y, getBoundDown(), getBoundUp()), MathHelper.clamp(z, getBoundNorth(), getBoundSouth())));
+		cir.setReturnValue(new BlockPos((int) MathHelper.clamp(x, getBoundWest(), getBoundEast()), (int) MathHelper.clamp(y, getBoundDown(), getBoundUp()), (int) MathHelper.clamp(z, getBoundNorth(), getBoundSouth())));
 	}
 	
 	@Inject(at = @At("HEAD"), method = "asVoxelShape", cancellable = true)

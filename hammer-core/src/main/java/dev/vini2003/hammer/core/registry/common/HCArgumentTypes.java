@@ -10,10 +10,6 @@ import net.minecraft.registry.Registries;
 
 public class HCArgumentTypes {
 	public static void init() {
-		ArgumentTypes.register(Registries.COMMAND_ARGUMENT_TYPE, "hammer:color", ColorArgumentType.class, ConstantArgumentSerializer.of(ColorArgumentType::color));
-		ArgumentTypes.register(Registries.COMMAND_ARGUMENT_TYPE, "hammer:position", PositionArgumentType.class, ConstantArgumentSerializer.of(PositionArgumentType::position));
-		ArgumentTypes.register(Registries.COMMAND_ARGUMENT_TYPE, "hammer:size", SizeArgumentType.class, ConstantArgumentSerializer.of(SizeArgumentType::size));
-		
 		CommandManager.registerArgumentType(PositionArgumentType.class, PositionArgumentType::position);
 		
 		CommandManager.registerArgumentType(Vec3ArgumentType.class, () -> Vec3ArgumentType.vec3());
@@ -141,9 +137,10 @@ public class HCArgumentTypes {
 			}
 		});
 		
-		CommandManager.registerArgumentTypeGetter(EntitySummonArgumentType.class, (context, name) -> {
+		// TODO: Check if this is equivalent to the 1.19.2 code.
+		CommandManager.registerArgumentTypeGetter(EntityArgumentType.class, (context, name) -> {
 			try {
-				return EntitySummonArgumentType.getEntitySummon(context, name);
+				return EntityArgumentType.getEntity(context, name);
 			} catch (Exception ignored) {
 				return null;
 			}

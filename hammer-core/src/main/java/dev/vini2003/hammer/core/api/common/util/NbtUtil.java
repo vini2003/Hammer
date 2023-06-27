@@ -26,13 +26,16 @@ package dev.vini2003.hammer.core.api.common.util;
 
 import com.mojang.brigadier.StringReader;
 import net.minecraft.client.util.math.Vector2f;
-import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
-import net.minecraft.registry.RegistryKey;
+import org.joml.Quaternionf;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public class NbtUtil {
 	public static NbtCompound parseNbt(String nbtString) {
@@ -114,9 +117,9 @@ public class NbtUtil {
 	}
 	
 	public static void putVector3f(NbtCompound nbt, String key, Vector3f value) {
-		nbt.putFloat(key + "X", value.getX());
-		nbt.putFloat(key + "Y", value.getX());
-		nbt.putFloat(key + "Z", value.getZ());
+		nbt.putFloat(key + "X", value.x());
+		nbt.putFloat(key + "Y", value.y());
+		nbt.putFloat(key + "Z", value.z());
 	}
 	
 	public static Vector3f getVector3f(NbtCompound nbt, String key) {
@@ -143,9 +146,9 @@ public class NbtUtil {
 	}
 	
 	public static void putVector3d(NbtCompound nbt, String key, Vector3d value) {
-		nbt.putDouble(key + "X", value.x);
-		nbt.putDouble(key + "Y", value.y);
-		nbt.putDouble(key + "Z", value.z);
+		nbt.putDouble(key + "X", value.x());
+		nbt.putDouble(key + "Y", value.y());
+		nbt.putDouble(key + "Z", value.z());
 	}
 	
 	public static Vector3d getVector3d(NbtCompound nbt, String key) {
@@ -153,24 +156,24 @@ public class NbtUtil {
 	}
 	
 	public static void putVector4f(NbtCompound nbt, String key, Vector4f value) {
-		nbt.putFloat(key + "X", value.getX());
-		nbt.putFloat(key + "Y", value.getY());
-		nbt.putFloat(key + "Z", value.getZ());
-		nbt.putFloat(key + "W", value.getW());
+		nbt.putFloat(key + "X", value.x());
+		nbt.putFloat(key + "Y", value.y());
+		nbt.putFloat(key + "Z", value.z());
+		nbt.putFloat(key + "W", value.w());
 	}
 	
 	public static Vector4f getVector4f(NbtCompound nbt, String key) {
 		return new Vector4f(nbt.getFloat(key + "X"), nbt.getFloat(key + "Y"), nbt.getFloat(key + "Z"), nbt.getFloat(key + "W"));
 	}
 	
-	public static void putQuaternion(NbtCompound nbt, String key, Quaternion value) {
-		nbt.putFloat(key + "X", value.getX());
-		nbt.putFloat(key + "Y", value.getY());
-		nbt.putFloat(key + "Z", value.getZ());
-		nbt.putFloat(key + "W", value.getW());
+	public static void putQuaternion(NbtCompound nbt, String key, Quaternionf value) {
+		nbt.putFloat(key + "X", value.x());
+		nbt.putFloat(key + "Y", value.y());
+		nbt.putFloat(key + "Z", value.z());
+		nbt.putFloat(key + "W", value.w());
 	}
 	
-	public static Quaternion getQuaternion(NbtCompound nbt, String key) {
-		return new Quaternion(nbt.getFloat(key + "X"), nbt.getFloat(key + "Y"), nbt.getFloat(key + "Z"), nbt.getFloat(key + "W"));
+	public static Quaternionf getQuaternion(NbtCompound nbt, String key) {
+		return new Quaternionf(nbt.getFloat(key + "X"), nbt.getFloat(key + "Y"), nbt.getFloat(key + "Z"), nbt.getFloat(key + "W"));
 	}
 }

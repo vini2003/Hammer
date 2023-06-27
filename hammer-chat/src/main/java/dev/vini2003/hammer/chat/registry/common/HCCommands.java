@@ -93,24 +93,26 @@ public class HCCommands {
 		
 		var channels = ChannelManager.channels();
 		
-		var text = "";
+		var ref = new Object() {
+			String text = "";
+		};
 		
 		for (var channel : channels) {
 			if (channel.isIn(player)) {
-				text += "§a⚪§r" + channel.getName() + "§r, ";
+				ref.text += "§a⚪§r" + channel.getName() + "§r, ";
 			} else if (channel.getRole().isIn(player)) {
-				text += "§e⚪§r" + channel.getName() + "§r, ";
+				ref.text += "§e⚪§r" + channel.getName() + "§r, ";
 			}
 		}
 		
-		if (text.length() > 0) {
-			text = text.substring(0, text.length() - 2);
+		if (ref.text.length() > 0) {
+			ref.text = ref.text.substring(0, ref.text.length() - 2);
 		}
 		
 		if (player == source.getPlayer()) {
-			source.sendFeedback(Text.translatable("text.hammer.channel.list.self", text), false);
+			source.sendFeedback(() -> Text.translatable("text.hammer.channel.list.self", ref.text), false);
 		} else {
-			source.sendFeedback(Text.translatable("text.hammer.channel.list.other", text), false);
+			source.sendFeedback(() -> Text.translatable("text.hammer.channel.list.other", ref.text), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -238,8 +240,8 @@ public class HCCommands {
 			
 			ChannelUtil.setSelected(otherPlayer, channel);
 			
-			source.sendFeedback(Text.translatable("text.hammer.channel.select.other", Text.literal("#" + channel.getName()).formatted(Formatting.DARK_GRAY), otherPlayer.getDisplayName()), false);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("text.hammer.channel.select.self", Text.literal("#" + channel.getName()).formatted(Formatting.DARK_GRAY), otherPlayer.getDisplayName()), false);
+			source.sendFeedback(() -> Text.translatable("text.hammer.channel.select.other", Text.literal("#" + channel.getName()).formatted(Formatting.DARK_GRAY), otherPlayer.getDisplayName()), false);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("text.hammer.channel.select.self", Text.literal("#" + channel.getName()).formatted(Formatting.DARK_GRAY), otherPlayer.getDisplayName()), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -271,40 +273,44 @@ public class HCCommands {
 		var playerManager = server.getPlayerManager();
 		var players = playerManager.getPlayerList();
 		
-		boolean state;
+		var ref = new Object() {
+			boolean state;
+		};
 		
 		try {
-			state = BoolArgumentType.getBool(context, "state");
+			ref.state = BoolArgumentType.getBool(context, "state");
 		} catch (Exception e) {
-			state = !ChatUtil.shouldShowGlobalChat(players.iterator().next());
+			ref.state = !ChatUtil.shouldShowGlobalChat(players.iterator().next());
 		}
 		
 		for (var player : players) {
-			ChatUtil.setShowGlobalChat(player, state);
+			ChatUtil.setShowGlobalChat(player, ref.state);
 		}
 		
-		source.sendFeedback(Text.translatable("command.hammer.show_global_chat", state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), true);
+		source.sendFeedback(() -> Text.translatable("command.hammer.show_global_chat", ref.state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), true);
 		
 		return Command.SINGLE_SUCCESS;
 	}
 	
 	// Enables or disables the chat.
 	private static int executeShowChat(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> players) {
-		boolean state;
+		var ref = new Object() {
+			boolean state;
+		};
 		
 		try {
-			state = BoolArgumentType.getBool(context, "state");
+			ref.state = BoolArgumentType.getBool(context, "state");
 		} catch (Exception e) {
-			state = !ChatUtil.shouldShowChat(players.iterator().next());
+			ref.state = !ChatUtil.shouldShowChat(players.iterator().next());
 		}
 		
 		var source = context.getSource();
 
 		for (var otherPlayer : players) {
-			ChatUtil.setShowChat(otherPlayer, state);
+			ChatUtil.setShowChat(otherPlayer, ref.state);
 			
-			source.sendFeedback(Text.translatable("command.hammer.show_chat.other", state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.show_chat.self", state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.show_chat.other", ref.state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.show_chat.self", ref.state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -330,21 +336,23 @@ public class HCCommands {
 	
 	// Enables or disables the warnings.
 	private static int executeShowWarnings(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> players) {
-		boolean state;
+		var ref = new Object() {
+			boolean state;
+		};
 		
 		try {
-			state = BoolArgumentType.getBool(context, "state");
+			ref.state = BoolArgumentType.getBool(context, "state");
 		} catch (Exception e) {
-			state = !ChatUtil.shouldShowWarnings(players.iterator().next());
+			ref.state = !ChatUtil.shouldShowWarnings(players.iterator().next());
 		}
 		
 		var source = context.getSource();
 
 		for (var otherPlayer : players) {
-			ChatUtil.setShowWarnings(otherPlayer, state);
+			ChatUtil.setShowWarnings(otherPlayer, ref.state);
 			
-			source.sendFeedback(Text.translatable("command.hammer.show_warnings.other", state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.show_warnings.self", state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.show_warnings.other", ref.state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.show_warnings.self", ref.state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -370,21 +378,23 @@ public class HCCommands {
 	
 	// Enables or disables direct messages.
 	private static int executeShowDirectMessages(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> players) {
-		boolean state;
+		var ref = new Object() {
+			boolean state;
+		};
 		
 		try {
-			state = BoolArgumentType.getBool(context, "state");
+			ref.state = BoolArgumentType.getBool(context, "state");
 		} catch (Exception e) {
-			state = !ChatUtil.shouldShowDirectMessages(players.iterator().next());
+			ref.state = !ChatUtil.shouldShowDirectMessages(players.iterator().next());
 		}
 		
 		var source = context.getSource();
 		
 		for (var otherPlayer : players) {
-			ChatUtil.setShowDirectMessages(otherPlayer, state);
+			ChatUtil.setShowDirectMessages(otherPlayer, ref.state);
 			
-			source.sendFeedback(Text.translatable("command.hammer.show_direct_messages.other", state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.show_direct_messages.self", state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.show_direct_messages.other", ref.state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.show_direct_messages.self", ref.state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -410,21 +420,23 @@ public class HCCommands {
 	
 	// Enables or disables command feedback.
 	private static int executeShowCommandFeedback(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> players) {
-		boolean state;
+		var ref = new Object() {
+			boolean state;
+		};
 		
 		try {
-			state = BoolArgumentType.getBool(context, "state");
+			ref.state = BoolArgumentType.getBool(context, "state");
 		} catch (Exception e) {
-			state = !ChatUtil.shouldShowCommandFeedback(players.iterator().next());
+			ref.state = !ChatUtil.shouldShowCommandFeedback(players.iterator().next());
 		}
 		
 		var source = context.getSource();
 
 		for (var otherPlayer : players) {
-			ChatUtil.setShowCommandFeedback(otherPlayer, state);
+			ChatUtil.setShowCommandFeedback(otherPlayer, ref.state);
 
-			source.sendFeedback(Text.translatable("command.hammer.show_command_feedback.other", state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.show_command_feedback.self", state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.show_command_feedback.other", ref.state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.show_command_feedback.self", ref.state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -450,21 +462,23 @@ public class HCCommands {
 	
 	// Enables or disables fast chat fade.
 	private static int executeFastChatFade(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> players) {
-		boolean state;
+		var ref = new Object() {
+			boolean state;
+		};
 		
 		try {
-			state = BoolArgumentType.getBool(context, "state");
+			ref.state = BoolArgumentType.getBool(context, "state");
 		} catch (Exception e) {
-			state = !ChatUtil.hasFastChatFade(players.iterator().next());
+			ref.state = !ChatUtil.hasFastChatFade(players.iterator().next());
 		}
 		
 		var source = context.getSource();
 
 		for (var otherPlayer : players) {
-			ChatUtil.setFastChatFade(otherPlayer, state);
+			ChatUtil.setFastChatFade(otherPlayer, ref.state);
 			
-			source.sendFeedback(Text.translatable("command.hammer.fast_chat_fade.other", state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.fast_chat_fade.self", state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.fast_chat_fade.other", ref.state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.fast_chat_fade.self", ref.state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case"), otherPlayer.getDisplayName()), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -495,8 +509,8 @@ public class HCCommands {
 		for (var otherPlayer : players) {
 			ChatUtil.setMuted(otherPlayer, true);
 			
-			source.sendFeedback(Text.translatable("command.hammer.mute.other", otherPlayer.getDisplayName()), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.mute.self", otherPlayer.getDisplayName()), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.mute.other", otherPlayer.getDisplayName()), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.mute.self", otherPlayer.getDisplayName()), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;
@@ -514,8 +528,8 @@ public class HCCommands {
 		for (var otherPlayer : players) {
 			ChatUtil.setMuted(otherPlayer, false);
 			
-			source.sendFeedback(Text.translatable("command.hammer.unmute.other", otherPlayer.getDisplayName()), true);
-			otherPlayer.getCommandSource().sendFeedback(Text.translatable("command.hammer.unmute.self", otherPlayer.getDisplayName()), false);
+			source.sendFeedback(() -> Text.translatable("command.hammer.unmute.other", otherPlayer.getDisplayName()), true);
+			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.unmute.self", otherPlayer.getDisplayName()), false);
 		}
 		
 		return Command.SINGLE_SUCCESS;

@@ -37,7 +37,6 @@ import net.minecraft.registry.Registry;
 
 import static com.mojang.brigadier.arguments.FloatArgumentType.floatArg;
 import static com.mojang.brigadier.arguments.FloatArgumentType.getFloat;
-import static net.minecraft.command.argument.RegistryKeyArgumentType.getKey;
 import static net.minecraft.command.argument.RegistryKeyArgumentType.registryKey;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -57,7 +56,7 @@ public class HGCommands {
 		
 		GravityManager.set(world, gravity);
 		
-		source.sendFeedback(Text.translatable("command.hammer.gravity", world.getValue().toString(), gravity), true);
+		source.sendFeedback(() -> Text.translatable("command.hammer.gravity", world.getValue().toString(), gravity), true);
 		
 		return Command.SINGLE_SUCCESS;
 	}

@@ -79,7 +79,7 @@ public class WorldBorderRenderer {
 			var blue = (color & 0xFF) / 255.0F;
 			
 			RenderSystem.setShaderColor(red, green, blue, (float) scaledDistanceToBorder);
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
+			RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 			RenderSystem.polygonOffset(-3.0F, -3.0F);
 			RenderSystem.enablePolygonOffset();
 			RenderSystem.disableCull();
@@ -128,7 +128,8 @@ public class WorldBorderRenderer {
 			
 			var builtBuffer = bufferBuilder.end();
 			
-			BufferRenderer.drawWithShader(builtBuffer);
+			// TODO: Check if this is equivalent to the 1.19.2 code.
+			BufferRenderer.drawWithGlobalProgram(builtBuffer);
 			RenderSystem.enableCull();
 			RenderSystem.polygonOffset(0.0F, 0.0F);
 			RenderSystem.disablePolygonOffset();

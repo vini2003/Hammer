@@ -26,10 +26,12 @@ pluginManagement {
         id "fabric-loom" version loomVersion
 
         id "org.cadixdev.licenser" version licenserVersion
+
+		id "io.github.juuxel.loom-quiltflower" version loomQuiltFlowerVersion
     }
 }
 
-rootProject.name = "hammer"
+rootProject.name = "Hammer"
 
 include "hammer-core"
 include "hammer-chat"

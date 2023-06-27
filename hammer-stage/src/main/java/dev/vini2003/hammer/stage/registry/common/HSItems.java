@@ -22,9 +22,9 @@ public class HSItems {
 						   if (active != null) {
 							   active.prepare(world);
 							
-							   user.getCommandSource().sendFeedback(Text.translatable("command.hammer.stage.prepare.success"), true);
+							   user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.stage.prepare.success"), true);
 						   } else {
-							   user.getCommandSource().sendFeedback(Text.translatable("command.hammer.stage.prepare.failure"), true);
+							   user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.stage.prepare.failure"), true);
 						   }
 						})
 						.build()
@@ -40,9 +40,9 @@ public class HSItems {
 							if (active != null) {
 								active.start(world);
 								
-								user.getCommandSource().sendFeedback(Text.translatable("command.hammer.stage.start.success"), true);
+								user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.stage.start.success"), true);
 							} else {
-								user.getCommandSource().sendFeedback(Text.translatable("command.hammer.stage.start.failure"), true);
+								user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.stage.start.failure"), true);
 							}
 						})
 						.build()
@@ -58,9 +58,9 @@ public class HSItems {
 							if (active != null) {
 								active.stop(world);
 								
-								user.getCommandSource().sendFeedback(Text.translatable("command.hammer.stage.stop.success"), true);
+								user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.stage.stop.success"), true);
 							} else {
-								user.getCommandSource().sendFeedback(Text.translatable("command.hammer.stage.stop.failure"), true);
+								user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.stage.stop.failure"), true);
 							}
 						})
 						.build()
@@ -77,12 +77,12 @@ public class HSItems {
 								active.pause(world);
 								
 								if (active.getState() == Stage.State.PAUSED) {
-									user.getCommandSource().sendFeedback(Text.translatable("command.hammer.stage.pause.success"), true);
+									user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.stage.pause.success"), true);
 								} else {
-									user.getCommandSource().sendFeedback(Text.translatable("command.hammer.stage.unpause.success"), true);
+									user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.stage.unpause.success"), true);
 								}
 							} else {
-								user.getCommandSource().sendFeedback(Text.translatable("command.hammer.stage.pause.failure"), true);
+								user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.stage.pause.failure"), true);
 							}
 						})
 						.build()
@@ -98,9 +98,9 @@ public class HSItems {
 						   if (active != null) {
 							   active.restart(world);
 							
-							   user.getCommandSource().sendFeedback(Text.translatable("command.hammer.stage.restart.success"), true);
+							   user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.stage.restart.success"), true);
 						   } else {
-							   user.getCommandSource().sendFeedback(Text.translatable("command.hammer.stage.restart.failure"), true);
+							   user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.stage.restart.failure"), true);
 						   }
 						})
 						.build()

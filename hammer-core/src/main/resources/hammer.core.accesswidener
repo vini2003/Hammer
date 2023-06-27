@@ -40,6 +40,7 @@ accessible class net/minecraft/client/render/RenderLayer$MultiPhaseParameters
 accessible class net/minecraft/client/render/RenderPhase$Texture
 accessible class net/minecraft/client/render/RenderPhase$Shader
 accessible class net/minecraft/client/render/RenderPhase$Transparency
+accessible class net/minecraft/client/render/RenderPhase$ShaderProgram
 
 accessible field net/minecraft/client/render/RenderPhase beginAction Ljava/lang/Runnable;
 accessible field net/minecraft/client/render/RenderPhase endAction Ljava/lang/Runnable;

@@ -41,7 +41,7 @@ public class StepAndDestroyBlockGoalMixin {
 	
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.08D))
 	double getGravity(double original) {
-		var gravity = GravityManager.get(stepAndDestroyMob.world.getRegistryKey());
+		var gravity = GravityManager.get(stepAndDestroyMob.getWorld().getRegistryKey());
 		
 		return gravity;
 	}

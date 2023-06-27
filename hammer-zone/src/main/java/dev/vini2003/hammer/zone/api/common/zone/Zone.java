@@ -33,6 +33,7 @@ import dev.vini2003.hammer.core.api.common.util.NbtUtil;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneGroupManager;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -229,7 +230,7 @@ public class Zone {
 		
 		if (object.has("group_id")) {
 			zone = new Zone(
-					RegistryKey.of(Registry.WORLD_KEY, new Identifier(object.get("world_id").getAsString())),
+					RegistryKey.of(RegistryKeys.WORLD, new Identifier(object.get("world_id").getAsString())),
 					new Identifier(object.get("id").getAsString()),
 					ZoneGroupManager.getOrCreate(new Identifier(object.get("zone_id").getAsString())),
 					Position.fromJson(object.get("min_pos")),
@@ -237,7 +238,7 @@ public class Zone {
 			);
 		} else {
 			zone = new Zone(
-					RegistryKey.of(Registry.WORLD_KEY, new Identifier(object.get("world_id").getAsString())),
+					RegistryKey.of(RegistryKeys.WORLD, new Identifier(object.get("world_id").getAsString())),
 					new Identifier(object.get("id").getAsString()),
 					Position.fromJson(object.get("min_pos")),
 					Position.fromJson(object.get("max_pos"))

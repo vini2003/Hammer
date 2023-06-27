@@ -12,7 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.registry.Registry;
 
 public class HSItems {
-	public static final Item PREPARE_STAGE = Registry.register(Registry.ITEM,
+	public static final Item PREPARE_STAGE = Registry.register(Registries.ITEM,
 			HC.id("prepare_stage"),
 			TriggerItem.builder()
 					   .settings(new Item.Settings())
@@ -30,7 +30,7 @@ public class HSItems {
 						.build()
 	);
 	
-	public static final Item START_STAGE = Registry.register(Registry.ITEM,
+	public static final Item START_STAGE = Registry.register(Registries.ITEM,
 			HC.id("start_stage"),
 			TriggerItem.builder()
 					   .settings(new Item.Settings())
@@ -48,7 +48,7 @@ public class HSItems {
 						.build()
 	);
 	
-	public static final Item STOP_STAGE = Registry.register(Registry.ITEM,
+	public static final Item STOP_STAGE = Registry.register(Registries.ITEM,
 			HC.id("stop_stage"),
 			TriggerItem.builder()
 						.settings(new Item.Settings())
@@ -66,7 +66,7 @@ public class HSItems {
 						.build()
 	);
 	
-	public static final Item PAUSE_STAGE = Registry.register(Registry.ITEM,
+	public static final Item PAUSE_STAGE = Registry.register(Registries.ITEM,
 			HC.id("pause_stage"),
 			TriggerItem.builder()
 					   .settings(new Item.Settings())
@@ -88,7 +88,7 @@ public class HSItems {
 						.build()
 	);
 	
-	public static final Item RESTART_STAGE = Registry.register(Registry.ITEM,
+	public static final Item RESTART_STAGE = Registry.register(Registries.ITEM,
 			HC.id("restart_stage"),
 			TriggerItem.builder()
 					   .settings(new Item.Settings())

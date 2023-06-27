@@ -40,6 +40,7 @@ import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.*;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
@@ -198,14 +199,18 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 	}
 	
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+	public void draw(DrawContext context, float tickDelta) {
+		var matrices = context.getMatrices();
+		var provider = context.getVertexConsumers();
+		
 		var itemRenderer = DrawingUtil.getItemRenderer();
 		
 		texture.get().draw(matrices, provider, getX(), getY() + 25.0F, getWidth(), getHeight() - 25.0F);
 		
-		if (provider instanceof VertexConsumerProvider.Immediate immediate) {
-			immediate.draw();
-		}
+		// In 1.20.1, it is an Immediate by default.
+		// if (provider instanceof VertexConsumerProvider.Immediate immediate) {
+			provider.draw();
+		// }
 		
 		var tabIndex = 0;
 		
@@ -229,7 +234,7 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 			}
 			
 			
-			itemRenderer.renderGuiItemIcon(tabSymbols.get(tabIndex).get(), (int) (getX() + (26.0F * tabIndex) + 4.5F), (int) (getY() + 7));
+			context.drawItem(tabSymbols.get(tabIndex).get(), (int) (getX() + (26.0F * tabIndex) + 4.5F), (int) (getY() + 7));
 			
 			tabIndex += 1;
 		}

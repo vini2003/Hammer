@@ -21,24 +21,6 @@ subprojects {
 	group = projectGroup
 	version = projectVersion
 
-	loom {
-		runs {
-			client {
-				client()
-				setConfigName("Minecraft Client ($projectName)")
-				ideConfigGenerated(true)
-				runDir("runClient")
-			}
-
-			server {
-				server()
-				setConfigName("Minecraft Server ($projectName)")
-				ideConfigGenerated(true)
-				runDir("runServer")
-			}
-		}
-	}
-
 	java {
 		sourceCompatibility = JavaVersion.VERSION_17
 		targetCompatibility = JavaVersion.VERSION_17
@@ -86,17 +68,7 @@ subprojects {
 	publishing {
 		publications {
 			mavenJava(MavenPublication) {
-				artifactId = archivesBaseName
-				groupId = projectGroup
-				version = projectVersion
-
-				artifact(remapJar) {
-					builtBy remapJar
-				}
-
-				artifact(sourcesJar) {
-					builtBy remapSourcesJar
-				}
+				from components.java
 			}
 		}
 

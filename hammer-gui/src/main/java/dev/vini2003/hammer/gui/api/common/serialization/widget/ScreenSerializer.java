@@ -35,6 +35,7 @@ import dev.vini2003.hammer.gui.api.common.widget.type.WidgetType;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 
@@ -335,7 +336,7 @@ public class ScreenSerializer {
 				case FLUID, TILED_FLUID -> {
 					var variantId = getIdentifier(valueObject.get(VARIANT)).getOrThrow();
 					
-					var variant = FluidVariant.of(Registry.FLUID.get(variantId));
+					var variant = FluidVariant.of(Registries.FLUID.get(variantId));
 					
 					if (type == TextureType.FLUID) {
 						return ParseResult.ok(new FluidTexture(variant));

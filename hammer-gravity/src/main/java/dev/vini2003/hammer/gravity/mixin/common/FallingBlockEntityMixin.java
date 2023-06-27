@@ -33,6 +33,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
+// TODO: Check if this is a good idea.
 @Mixin(FallingBlockEntity.class)
 public abstract class FallingBlockEntityMixin extends Entity {
 	public FallingBlockEntityMixin(EntityType<?> entityType, World world) {
@@ -41,7 +42,7 @@ public abstract class FallingBlockEntityMixin extends Entity {
 	
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = -0.04D))
 	double getGravity(double original) {
-		var gravity = GravityManager.get(world.getRegistryKey());
+		var gravity = GravityManager.get(getWorld().getRegistryKey());
 		
 		return -gravity * 0.5F;
 	}

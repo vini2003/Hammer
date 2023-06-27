@@ -30,13 +30,19 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.command.argument.DimensionArgumentType;
+import net.minecraft.registry.BuiltinRegistries;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
 import net.minecraft.registry.Registry;
 
+import java.awt.*;
+
 import static com.mojang.brigadier.arguments.FloatArgumentType.floatArg;
 import static com.mojang.brigadier.arguments.FloatArgumentType.getFloat;
+import static net.minecraft.command.argument.RegistryKeyArgumentType.getKey;
 import static net.minecraft.command.argument.RegistryKeyArgumentType.registryKey;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -51,12 +57,12 @@ public class HGCommands {
 	private static int executeGravity(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
 		var source = context.getSource();
 
-		var world = getKey(context, "world", Registry.WORLD_KEY, new DynamicCommandExceptionType(id -> Text.translatable("command.hammer.unknown_registry_key", id)));
+		var world = DimensionArgumentType.getDimensionArgument(context, "world");
 		var gravity = getFloat(context, "gravity");
 		
 		GravityManager.set(world, gravity);
 		
-		source.sendFeedback(() -> Text.translatable("command.hammer.gravity", world.getValue().toString(), gravity), true);
+		source.sendFeedback(() -> Text.translatable("command.hammer.gravity", world.getRegistryKey().toString(), gravity), true);
 		
 		return Command.SINGLE_SUCCESS;
 	}
@@ -67,7 +73,7 @@ public class HGCommands {
 					literal("gravity")
 							.requires(HGCommands::requiresOp)
 							.then(
-									argument("world", registryKey(Registry.WORLD_KEY))
+									argument("world", DimensionArgumentType.dimension())
 											.then(
 													argument("gravity", floatArg())
 															.executes(HGCommands::executeGravity)

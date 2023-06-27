@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.preset.mixin.client;
 
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.screen.option.VideoOptionsScreen;
@@ -42,7 +43,7 @@ public abstract class VideoOptionsScreenMixin extends GameOptionsScreen {
 	}
 	
 	@Inject(at = @At("RETURN"), method = "render")
-	private void hammer$render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-		drawCenteredText(matrices, this.textRenderer, Text.translatable("text.hammer.fabulous_graphics_warning"), this.width / 2, 5 + 9 + 5, 0xFF5370);
+	private void hammer$render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+		context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("text.hammer.fabulous_graphics_warning"), this.width / 2, 5 + 9 + 5, 0xFF5370);
 	}
 }

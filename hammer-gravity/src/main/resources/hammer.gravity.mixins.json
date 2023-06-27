@@ -7,6 +7,7 @@
     "common.AbstractMinecartEntityMixin",
     "common.EggEntityMixin",
     "common.EntityMixin",
+    "common.FallingBlockEntityMixin",
     "common.FishingBobberEntityMixin",
     "common.HoneyBlockMixin",
     "common.ItemEntityMixin",

@@ -41,7 +41,7 @@ public abstract class TntEntityMixin extends Entity {
 	
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = -0.04D))
 	double getGravity(double original) {
-		var gravity = GravityManager.get(world.getRegistryKey());
+		var gravity = GravityManager.get(getWorld().getRegistryKey());
 		
 		return -gravity * 0.5F;
 	}

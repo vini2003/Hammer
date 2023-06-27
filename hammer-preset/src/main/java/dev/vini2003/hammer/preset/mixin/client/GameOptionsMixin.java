@@ -1,8 +1,10 @@
 package dev.vini2003.hammer.preset.mixin.client;
 
 import com.mojang.serialization.Codec;
+import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.GraphicsMode;
 import net.minecraft.client.option.SimpleOption;
@@ -50,15 +52,11 @@ public class GameOptionsMixin {
 		if (true) return;
 		// Screw it!
 		
-		graphicsMode = new SimpleOption<GraphicsMode>("options.graphics", (client) -> {
-			var fastGraphicsTooltip = client.textRenderer.wrapLines(FAST_GRAPHICS_TOOLTIP, 200);
-			var fancyGraphicsTooltip = client.textRenderer.wrapLines(FANCY_GRAPHICS_TOOLTIP, 200);
-			var fabulousGraphicsTooltip = client.textRenderer.wrapLines(FABULOUS_GRAPHICS_TOOLTIP, 200);
-			
-			return (graphicsMode) -> switch (graphicsMode) {
-				case FANCY -> fancyGraphicsTooltip;
-				case FAST -> fastGraphicsTooltip;
-				case FABULOUS -> fabulousGraphicsTooltip;
+		graphicsMode = new SimpleOption<GraphicsMode>("options.graphics", (graphicsMode) -> {
+			return switch (graphicsMode) {
+				case FANCY -> Tooltip.of(FANCY_GRAPHICS_TOOLTIP);
+				case FAST -> Tooltip.of(FAST_GRAPHICS_TOOLTIP);
+				case FABULOUS -> Tooltip.of(FABULOUS_GRAPHICS_TOOLTIP);
 			};
 		}, (optionText, value) -> {
 			MutableText mutableText = Text.translatable(value.getTranslationKey());

@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerMetadata.class)
 public class ServerMetadataMixin {
-	@Inject(method = "isSecureChatEnforced", at = @At("HEAD"), cancellable = true)
-	public void onSecureChatCheck(CallbackInfoReturnable<Boolean> info) {
+	@Inject(method = "secureChatEnforced", at = @At("HEAD"), cancellable = true)
+	public void hammer$secureChatCheck(CallbackInfoReturnable<Boolean> info) {
 		if (HC.CONFIG.disableChatSigning) {
 			info.setReturnValue(true);
 		}

@@ -27,6 +27,7 @@ package dev.vini2003.hammer.chat.registry.common;
 import dev.vini2003.hammer.chat.api.common.util.ChannelUtil;
 import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 
 public class HCEvents {
 	public static void init() {
@@ -43,6 +44,28 @@ public class HCEvents {
 			ChatUtil.setMuted(newPlayer, ChatUtil.isMuted(oldPlayer));
 			
 			ChannelUtil.setSelected(newPlayer, ChannelUtil.getSelected(oldPlayer));
+		});
+		
+		ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> {
+			var receiverPlayer = sender; // Fuck you for this, Yarn.
+			
+			var server = receiverPlayer.getServer();
+			if (server == null) return false;
+			
+			var playerManager = server.getPlayerManager();
+			if (playerManager == null) return false;
+			
+			var senderPlayer = playerManager.getPlayer(message.getSender());
+			if (senderPlayer == null) return false;
+			
+			var receiverChannel = ChannelUtil.getSelected(receiverPlayer);
+			var senderChannel = ChannelUtil.getSelected(senderPlayer);
+			
+			if (receiverChannel != senderChannel) {
+				return false;
+			}
+			
+			return true;
 		});
 	}
 }

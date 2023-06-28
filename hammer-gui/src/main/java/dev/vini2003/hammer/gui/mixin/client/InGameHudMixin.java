@@ -134,7 +134,6 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 		
 		provider.draw();
 		
-		// TODO: Check if this is equivalent to the 1.19.2 code.
 		InGameHudEvents.RENDER.invoker().onRender(context.getMatrices(), provider, hammer$self(), this);
 	}
 	

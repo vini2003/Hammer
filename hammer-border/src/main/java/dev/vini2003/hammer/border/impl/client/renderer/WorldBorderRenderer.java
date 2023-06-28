@@ -128,7 +128,6 @@ public class WorldBorderRenderer {
 			
 			var builtBuffer = bufferBuilder.end();
 			
-			// TODO: Check if this is equivalent to the 1.19.2 code.
 			BufferRenderer.drawWithGlobalProgram(builtBuffer);
 			RenderSystem.enableCull();
 			RenderSystem.polygonOffset(0.0F, 0.0F);

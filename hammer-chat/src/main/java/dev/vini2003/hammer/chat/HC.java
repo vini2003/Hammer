@@ -30,8 +30,10 @@ import dev.vini2003.hammer.chat.impl.common.config.HCConfig;
 import dev.vini2003.hammer.chat.registry.common.HCCommands;
 import dev.vini2003.hammer.chat.registry.common.HCEvents;
 import dev.vini2003.hammer.chat.registry.common.HCNetworking;
+import dev.vini2003.hammer.config.api.common.config.Config;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -39,14 +41,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 @ApiStatus.Internal
 public class HC implements ModInitializer {
-	public static final HCConfig CONFIG = new HCConfig();
+	public static final String ID = "hammer-chat";
+	
+	public static final HCConfig CONFIG = Config.load(ID, HCConfig.class);
 	
 	@Override
 	public void onInitialize() {
 		HCCommands.init();
 		HCEvents.init();
 		HCNetworking.init();
-		
-		// TODO: CONFIG.load();
 	}
 }

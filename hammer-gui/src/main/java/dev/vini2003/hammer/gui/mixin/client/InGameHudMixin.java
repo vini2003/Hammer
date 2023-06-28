@@ -33,6 +33,7 @@ import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.bar.HudBarWidget;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -74,7 +75,7 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 	
 	
 	@Inject(at = @At("RETURN"), method = "render")
-	private void hammer$render(MatrixStack matrices, float delta, CallbackInfo ci) {
+	private void hammer$render(DrawContext context, float tickDelta, CallbackInfo ci) {
 		if (client == null) {
 			return;
 		}
@@ -126,13 +127,15 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 			}
 		}
 		
+		// TODO: Check if this is equivalent to the 1.19.2 code.
 		getChildren().stream()
 					 .filter(widget -> !widget.isHidden())
-					 .forEach(widget -> widget.draw(matrices, provider, delta));
+					 .forEach(widget -> widget.draw(context, tickDelta));
 		
 		provider.draw();
 		
-		InGameHudEvents.RENDER.invoker().onRender(matrices, provider, hammer$self(), this);
+		// TODO: Check if this is equivalent to the 1.19.2 code.
+		InGameHudEvents.RENDER.invoker().onRender(context.getMatrices(), provider, hammer$self(), this);
 	}
 	
 	@NotNull

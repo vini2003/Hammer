@@ -21,7 +21,8 @@ public class HPMixinPlugin implements IMixinConfigPlugin {
 	
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		return !mixinClassName.contains("VideoOptionsScreenMixin") || HP.CONFIG.disableFabulousGraphics;
+		// TODO: Reimplement the configuration entry for this. For VideoOptionsScreenMixin.
+		return true;
 	}
 	
 	@Override

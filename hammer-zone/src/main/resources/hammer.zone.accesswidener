@@ -1,5 +1,7 @@
 accessWidener v1 named
 
+accessible method net/minecraft/util/math/Box traceCollisionSide (Lnet/minecraft/util/math/Box;Lnet/minecraft/util/math/Vec3d;[DLnet/minecraft/util/math/Direction;DDD)Lnet/minecraft/util/math/Direction;
+
 accessible field net/minecraft/world/gen/WorldPreset dimensions Ljava/util/Map;
 mutable field net/minecraft/world/gen/WorldPreset dimensions Ljava/util/Map;
 

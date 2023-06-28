@@ -38,15 +38,17 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
 	@Inject(at = @At("RETURN"), method = "getWindowTitle", cancellable = true)
-	private void hidenseek$getWindowTitle(CallbackInfoReturnable<String> cir) {
+	private void hammer$getWindowTitle(CallbackInfoReturnable<String> cir) {
 		if (!HP.CONFIG.windowName.isEmpty()) {
 			cir.setReturnValue(HP.CONFIG.windowName + " - " + cir.getReturnValue());
 		}
 	}
 	
-	@ModifyArgs(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;setIcon(Ljava/io/InputStream;Ljava/io/InputStream;)V"), method = "<init>")
-	private void hidenseek$init_setIcon(Args args) {
-		args.set(0, HC.class.getResourceAsStream(HP.CONFIG.iconLowResPath));
-		args.set(1, HC.class.getResourceAsStream(HP.CONFIG.iconHighResPath));
+	@ModifyArgs(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;setIcon(Lnet/minecraft/resource/ResourcePack;Lnet/minecraft/client/util/Icons;)V"), method = "<init>")
+	private void hammer$init$setIcon(Args args) {
+		// TODO: Reimplement this.
+		
+		// args.set(0, HC.class.getResourceAsStream(HP.CONFIG.iconLowResPath));
+		// args.set(1, HC.class.getResourceAsStream(HP.CONFIG.iconHighResPath));
 	}
 }

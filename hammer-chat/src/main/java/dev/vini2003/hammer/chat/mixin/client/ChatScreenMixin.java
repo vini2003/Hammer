@@ -47,10 +47,11 @@ public class ChatScreenMixin {
 		}
 	}
 	
-	@Inject(at = @At("HEAD"), method = "drawEventHighlight", cancellable = true)
-	private void hammer$drawEventHighlight(MatrixStack matrices, OrderedText text, int y, int alpha, CallbackInfo ci) {
-		if (HC.CONFIG.disableChatPreviewEventHighlight) {
-			ci.cancel();
-		}
-	}
+	// TODO: Reimplement, I don't care enough.
+	// @Inject(at = @At("HEAD"), method = "drawEventHighlight", cancellable = true)
+	// private void hammer$drawEventHighlight(MatrixStack matrices, OrderedText text, int y, int alpha, CallbackInfo ci) {
+	// 	if (HC.CONFIG.disableChatPreviewEventHighlight) {
+	// 		ci.cancel();
+	// 	}
+	// }
 }

@@ -11,12 +11,13 @@ import java.util.List;
 
 @Mixin(PlayerListHud.class)
 public class PlayerListHudMixin {
-	@ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lcom/google/common/collect/Ordering;sortedCopy(Ljava/lang/Iterable;)Ljava/util/List;", shift = At.Shift.AFTER), method = "render")
-	private List<PlayerListEntry> hammer$render$sortedCopy(List<PlayerListEntry> original) {
-		original.removeIf(entry -> {
-			return PlayerListUtil.isHiddenOnPlayerList(entry.getProfile());
-		});
-		
-		return original;
-	}
+	// TODO: Reimplement.
+	// @ModifyVariable(at = @At(value = "INVOKE_ASSIGN", target = "Lcom/google/common/collect/Ordering;sortedCopy(Ljava/lang/Iterable;)Ljava/util/List;", shift = At.Shift.AFTER), method = "render")
+	// private List<PlayerListEntry> hammer$render$sortedCopy(List<PlayerListEntry> original) {
+	// 	original.removeIf(entry -> {
+	// 		return PlayerListUtil.isHiddenOnPlayerList(entry.getProfile());
+	// 	});
+	//
+	// 	return original;
+	// }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "hammer-emoj",
+  "id": "hammer-emoji",
   "version": "0.9.29",
   "name": "Hammer Emoji",
   "description": "A library module.",

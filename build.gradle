@@ -59,7 +59,7 @@ subprojects {
 		modImplementation("net.fabricmc:fabric-loader:${fabricLoaderVersion}")
 
 		// Fabric API
-		modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
+		modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}") { exclude group: 'net.fabricmc', module: 'fabric-loader' }
 
 		// FindBugs
 		modImplementation("com.google.code.findbugs:jsr305:${findBugsVersion}")

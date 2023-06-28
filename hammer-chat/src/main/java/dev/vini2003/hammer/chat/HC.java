@@ -47,6 +47,6 @@ public class HC implements ModInitializer {
 		HCEvents.init();
 		HCNetworking.init();
 		
-		CONFIG.load();
+		// TODO: CONFIG.load();
 	}
 }

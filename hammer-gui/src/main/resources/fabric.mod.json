@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "hammer-gui",
-  "version": "0.10.3",
+  "version": "0.10.5",
   "name": "Hammer GUI",
   "description": "A library module.",
   "authors": [

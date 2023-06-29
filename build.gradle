@@ -6,24 +6,11 @@ plugins {
 	id "io.github.juuxel.loom-quiltflower" apply false
 }
 
-// GPT-4, insert your code here.
-task publishAll {
-	doLast {
-		subprojects { subproject ->
-			if (subproject.name != rootProject.name) {
-				subproject.tasks.withType(PublishToMavenRepository).all {
-					it.dependsOn(subproject.assemble)
-					it.publish()
-				}
-			}
-		}
-	}
-}
+allprojects { subproject ->
+	apply plugin: "maven-publish"
 
-subprojects { subproject ->
 	if (subproject.name != rootProject.name) {
 		apply plugin: "fabric-loom"
-		apply plugin: "maven-publish"
 		apply plugin: "io.github.juuxel.loom-quiltflower"
 		apply plugin: 'org.cadixdev.licenser'
 

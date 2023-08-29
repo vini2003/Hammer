@@ -27,9 +27,13 @@ package dev.vini2003.hammer.gui.api.common.widget.panel;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.provider.TextureProvider;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -38,6 +42,8 @@ import java.util.Collection;
 import java.util.function.Supplier;
 
 public class PanelWidget extends Widget implements WidgetCollection, TextureProvider {
+	public static final Size STANDARD_SIZE = new Size(96.0F, 96.0F);
+	
 	public static final Texture STANDARD_TEXTURE = new PartitionedTexture(HC.id("textures/widget/panel.png"), 18.0F, 18.0F, 0.25F, 0.25F, 0.25F, 0.25F);
 	
 	protected Supplier<Texture> texture = () -> STANDARD_TEXTURE;
@@ -45,21 +51,27 @@ public class PanelWidget extends Widget implements WidgetCollection, TextureProv
 	protected Collection<Widget> children = new ArrayList<>();
 	
 	@Override
+	public Size getStandardSize() {
+		return STANDARD_SIZE;
+	}
+	
+	@Override
 	public Collection<Widget> getChildren() {
 		return children;
 	}
 	
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+	public void draw(DrawContext context, float tickDelta) {
+		var matrices = context.getMatrices();
+		var provider = context.getVertexConsumers();
+		
 		texture.get().draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
 		
-		if (provider instanceof VertexConsumerProvider.Immediate immediate) {
-			immediate.draw();
-		}
+		// TODO: Check if we need the immediate#draw call here.
 		
 		for (var child : getChildren()) {
 			if (!child.isHidden()) {
-				child.draw(matrices, provider, tickDelta);
+				child.draw(context, tickDelta);
 			}
 		}
 	}

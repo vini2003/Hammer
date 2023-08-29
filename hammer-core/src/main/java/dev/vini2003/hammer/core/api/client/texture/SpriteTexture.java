@@ -28,6 +28,8 @@ import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.texture.Sprite;
@@ -40,7 +42,8 @@ public class SpriteTexture implements Texture {
 		this.sprite = sprite;
 	}
 	
-	@Override
+	@Override 
+	@Environment(EnvType.CLIENT)
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float x, float y, float width, float height) {
 		var client = InstanceUtil.getClient();
 		

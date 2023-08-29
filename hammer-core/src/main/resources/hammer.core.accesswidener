@@ -1,5 +1,8 @@
 accessWidener v1 named
 
+accessible field net/minecraft/client/render/entity/model/PlayerEntityModel cloak Lnet/minecraft/client/model/ModelPart;
+accessible field net/minecraft/client/render/entity/model/PlayerEntityModel ear Lnet/minecraft/client/model/ModelPart;
+
 accessible field net/minecraft/world/gen/WorldPreset dimensions Ljava/util/Map;
 mutable field net/minecraft/world/gen/WorldPreset dimensions Ljava/util/Map;
 
@@ -27,8 +30,6 @@ accessible field net/minecraft/client/gui/screen/ingame/HandledScreen playerInve
 accessible field net/minecraft/client/gui/screen/ingame/HandledScreen playerInventoryTitleY I
 accessible field net/minecraft/client/gui/screen/ingame/HandledScreen backgroundWidth I
 accessible field net/minecraft/client/gui/screen/ingame/HandledScreen backgroundHeight I
-
-accessible method net/minecraft/command/argument/RegistryKeyArgumentType getKey (Lcom/mojang/brigadier/context/CommandContext;Ljava/lang/String;Lnet/minecraft/registry/RegistryKey;Lcom/mojang/brigadier/exceptions/DynamicCommandExceptionType;)Lnet/minecraft/registry/RegistryKey;
 
 accessible method net/minecraft/client/render/RenderLayer of (Ljava/lang/String;Lnet/minecraft/client/render/VertexFormat;Lnet/minecraft/client/render/VertexFormat$DrawMode;IZZLnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;)Lnet/minecraft/client/render/RenderLayer$MultiPhase;
 accessible method net/minecraft/client/render/RenderLayer of (Lnet/minecraft/client/render/RenderPhase$ShaderProgram;)Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;

@@ -31,7 +31,7 @@ public class HGUIEvents {
 	public static void init() {
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (client.player != null && client.player.currentScreenHandler instanceof BaseScreenHandler screenHandler) {
-				screenHandler.tick();
+				screenHandler.onTick();
 			}
 		});
 	}

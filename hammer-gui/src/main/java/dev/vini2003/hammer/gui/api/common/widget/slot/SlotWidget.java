@@ -37,6 +37,9 @@ import dev.vini2003.hammer.gui.api.common.event.RemovedEvent;
 import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.TextureProvider;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -46,6 +49,8 @@ import net.minecraft.screen.slot.Slot;
 import java.util.function.Supplier;
 
 public class SlotWidget extends Widget implements TextureProvider {
+	public static final Size STANDARD_SIZE = new Size(18.0F, 18.0F);
+	
 	public static final Texture STANDARD_TEXTURE = new PartitionedTexture(HC.id("textures/widget/slot.png"), 18.0F, 18.0F, 0.055F, 0.055F, 0.055F, 0.055F);
 	
 	protected Supplier<Texture> texture = () -> STANDARD_TEXTURE;
@@ -76,6 +81,11 @@ public class SlotWidget extends Widget implements TextureProvider {
 		this.index = index;
 		
 		this.slotSupplier = slotSupplier;
+	}
+	
+	@Override
+	public Size getStandardSize() {
+		return STANDARD_SIZE;
 	}
 	
 	@Override
@@ -169,7 +179,10 @@ public class SlotWidget extends Widget implements TextureProvider {
 	}
 	
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+	public void draw(DrawContext context, float tickDelta) {
+		var matrices = context.getMatrices();
+		var provider = context.getVertexConsumers();
+		
 		var client = InstanceUtil.getClient();
 		
 		var screen = (HandledScreen<?>) client.currentScreen;

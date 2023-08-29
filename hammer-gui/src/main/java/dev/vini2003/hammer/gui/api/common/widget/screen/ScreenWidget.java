@@ -1,11 +1,20 @@
 package dev.vini2003.hammer.gui.api.common.widget.screen;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class ScreenWidget extends Widget {
+	@Override
+	public Size getStandardSize() {
+		return new Size(getWidth(), getHeight());
+	}
+	
 	@Override
 	public float getX() {
 		return 0.0F;
@@ -27,7 +36,7 @@ public class ScreenWidget extends Widget {
 	}
 	
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+	public void draw(DrawContext context, float tickDelta) {
 	
 	}
 }

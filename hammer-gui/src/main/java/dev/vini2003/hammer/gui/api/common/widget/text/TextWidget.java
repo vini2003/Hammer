@@ -26,10 +26,14 @@ package dev.vini2003.hammer.gui.api.common.widget.text;
 
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
+import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.ColorProvider;
 import dev.vini2003.hammer.gui.api.common.widget.provider.ShadowProvider;
 import dev.vini2003.hammer.gui.api.common.widget.provider.TextProvider;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -43,6 +47,15 @@ public class TextWidget extends Widget implements TextProvider, ShadowProvider, 
 	protected boolean shadow = false;
 	
 	protected Color color = new Color(0x404040FFL);
+	
+	@Override
+	public Size getStandardSize() {
+		if (text.get() != null) {
+			return new Size(TextUtil.getWidth(text.get()) + 8.0F, 18.0F);
+		} else {
+			return new Size(8.0F, 18.0F);
+		}
+	}
 	
 	@Override
 	public void draw(DrawContext context, float tickDelta) {

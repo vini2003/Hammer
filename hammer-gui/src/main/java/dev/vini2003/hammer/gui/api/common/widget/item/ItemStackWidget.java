@@ -27,9 +27,12 @@ package dev.vini2003.hammer.gui.api.common.widget.item;
 import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.ItemStackProvider;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -39,6 +42,8 @@ import net.minecraft.item.ItemStack;
 import java.util.function.Supplier;
 
 public class ItemStackWidget extends Widget implements ItemStackProvider {
+	public static final Size STANDARD_SIZE = new Size(18.0F, 18.0F);
+	
 	protected Supplier<ItemStack> stack = () -> ItemStack.EMPTY;
 	
 	public ItemStackWidget() {
@@ -58,6 +63,12 @@ public class ItemStackWidget extends Widget implements ItemStackProvider {
 	}
 	
 	@Override
+	public Size getStandardSize() {
+		return STANDARD_SIZE;
+	}
+	
+	@Override
+	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
 		context.drawItem(stack.get(), (int) getX(), (int) getY());
 	}

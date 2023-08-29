@@ -29,11 +29,14 @@ import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
 import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.*;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -45,6 +48,8 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 public class ToggleWidget extends Widget implements EnabledTextureProvider, DisabledTextureProvider, DisabledProvider, LabelProvider {
+	public static final Size STANDARD_SIZE = new Size(18.0F, 18.0F);
+	
 	public static final Texture STANDARD_ENABLED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/toggle_enabled.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 	public static final Texture STANDARD_DISABLED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/toggle_disabled.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 
@@ -56,12 +61,20 @@ public class ToggleWidget extends Widget implements EnabledTextureProvider, Disa
 	protected Supplier<Text> label = () -> null;
 	
 	@Override
+	public Size getStandardSize() {
+		return STANDARD_SIZE;
+	}
+	
+	@Override
 	protected void onMouseClicked(MouseClickedEvent event) {
 		if (isFocused() && rootCollection != null && rootCollection.isScreenHandler()) {
 			if (rootCollection.isClient()) {
 				playSound();
 			}
 		}
+		
+		var isDisabled = isDisabled();
+		setDisabled(() -> !isDisabled);
 	}
 	
 	@Override
@@ -69,7 +82,8 @@ public class ToggleWidget extends Widget implements EnabledTextureProvider, Disa
 		return type == EventType.MOUSE_CLICKED;
 	}
 	
-	@Override
+	@Override 
+	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();

@@ -29,11 +29,14 @@ import dev.vini2003.hammer.core.api.client.texture.PartitionedTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
 import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.*;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -58,15 +61,20 @@ public class ButtonWidget extends Widget implements EnabledTextureProvider, Disa
 	protected Supplier<Text> label = () -> null;
 	
 	@Override
+	public Size getStandardSize() {
+		if (label.get() == null) {
+			return new Size(18.0F, 18.0F);
+		} else {
+			return new Size(TextUtil.getWidth(label.get()) + 8.0F, 18.0F);
+		}
+	}
+	
+	@Override
 	protected void onMouseClicked(MouseClickedEvent event) {
 		if (isFocused() && rootCollection != null && rootCollection.isScreenHandler()) {
 			if (rootCollection.isClient()) {
 				playSound();
 			}
-		}
-		
-		if (isFocused()) {
-			setDisabled(() -> !isDisabled());
 		}
 	}
 	
@@ -75,7 +83,8 @@ public class ButtonWidget extends Widget implements EnabledTextureProvider, Disa
 		return type == EventType.MOUSE_CLICKED;
 	}
 	
-	@Override
+	@Override 
+	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();

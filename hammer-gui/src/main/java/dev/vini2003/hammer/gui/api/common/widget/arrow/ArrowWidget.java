@@ -24,15 +24,17 @@
 
 package dev.vini2003.hammer.gui.api.common.widget.arrow;
 
-import com.google.gson.JsonObject;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget;
+import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 
 public class ArrowWidget extends ImageBarWidget {
+	public static final Size STANDARD_VERTICAL_SIZE = new Size(16.0F, 22.0F);
+	public static final Size STANDARD_HORIZONTAL_SIZE = new Size(22.0F, 16.0F);
+	
 	public static final Texture STANDARD_VERTICAL_FOREGROUND_TEXTURE = new ImageTexture(HC.id("textures/widget/vertical_arrow_foreground.png"));
 	public static final Texture STANDARD_VERTICAL_BACKGROUND_TEXTURE = new ImageTexture(HC.id("textures/widget/vertical_arrow_background.png"));
 	
@@ -50,8 +52,14 @@ public class ArrowWidget extends ImageBarWidget {
 	}
 	
 	@Override
+	public Size getStandardSize() {
+		return vertical ? STANDARD_VERTICAL_SIZE : STANDARD_HORIZONTAL_SIZE;
+	}
+	
+	@Override
 	public void setHorizontal(boolean horizontal) {
 		super.setHorizontal(horizontal);
+		setInvert(false);
 		
 		foregroundTexture = () -> STANDARD_HORIZONTAL_FOREGROUND_TEXTURE;
 		backgroundTexture = () -> STANDARD_HORIZONTAL_BACKGROUND_TEXTURE;
@@ -60,6 +68,7 @@ public class ArrowWidget extends ImageBarWidget {
 	@Override
 	public void setVertical(boolean vertical) {
 		super.setVertical(vertical);
+		setInvert(true);
 		
 		foregroundTexture = () -> STANDARD_VERTICAL_FOREGROUND_TEXTURE;
 		backgroundTexture = () -> STANDARD_VERTICAL_BACKGROUND_TEXTURE;

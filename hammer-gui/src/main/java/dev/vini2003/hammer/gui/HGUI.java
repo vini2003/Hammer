@@ -24,9 +24,13 @@
 
 package dev.vini2003.hammer.gui;
 
+import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 import dev.vini2003.hammer.gui.registry.common.HGUIEvents;
 import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
+import dev.vini2003.hammer.gui.registry.common.debug.HGUICommands;
+import dev.vini2003.hammer.gui.registry.common.debug.HGUIScreenHandlerTypes;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
@@ -35,5 +39,10 @@ public class HGUI implements ModInitializer {
 	public void onInitialize() {
 		HGUIEvents.init();
 		HGUINetworking.init();
+		
+		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+			HGUIScreenHandlerTypes.init();
+			HGUICommands.init();
+		}
 	}
 }

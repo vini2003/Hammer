@@ -38,6 +38,7 @@ import net.minecraft.client.gui.tooltip.TooltipPositioner;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.joml.Vector2i;
 
 import java.util.List;
@@ -49,27 +50,33 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 	
 	@Override
 	protected void init() {
-		handler.getChildren().clear();
-		handler.getSlots().clear();
-		
-		backgroundWidth = width;
-		backgroundHeight = height;
-		
-		super.init();
-		
-		handler.init(width, height);
-		
-		handler.onLayoutChanged();
-		
-		for (var child : handler.getAllChildren()) {
-			child.dispatchEvent(new LayoutChangedEvent());
+		try {
+			handler.getChildren().clear();
+			handler.getSlots().clear();
+			
+			backgroundWidth = width;
+			backgroundHeight = height;
+			
+			super.init();
+			
+			handler.init(width, height);
+			
+			handler.onLayoutChanged();
+			
+			for (var child : handler.getAllChildren()) {
+				child.dispatchEvent(new LayoutChangedEvent());
+			}
+			
+			var buf = PacketByteBufs.create();
+			buf.writeInt(width);
+			buf.writeInt(height);
+			
+			ClientPlayNetworking.send(HGUINetworking.SYNC_SCREEN_HANDLER, buf);
+		} catch (Exception e) {
+			e.printStackTrace();
+			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			handler.onClosed(handler.getPlayer());
 		}
-		
-		var buf = PacketByteBufs.create();
-		buf.writeInt(width);
-		buf.writeInt(height);
-		
-		ClientPlayNetworking.send(HGUINetworking.SYNC_SCREEN_HANDLER, buf);
 	}
 	
 	@Override
@@ -90,113 +97,193 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 	
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		for (var child : handler.getChildren()) {
-			child.dispatchEvent(new MouseClickedEvent((float) mouseX, (float) mouseY, button));
+		try {
+			for (var child : handler.getChildren()) {
+				child.dispatchEvent(new MouseClickedEvent((float) mouseX, (float) mouseY, button));
+			}
+			
+			return super.mouseClicked(mouseX, mouseY, button);
+		} catch (Exception e) {
+			e.printStackTrace();
+			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			handler.onClosed(handler.getPlayer());
+			
+			return false;
 		}
-		
-		return super.mouseClicked(mouseX, mouseY, button);
 	}
 	
 	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		for (var child : handler.getChildren()) {
-			child.dispatchEvent(new MouseReleasedEvent((float) mouseX, (float) mouseY, button));
+		try {
+			for (var child : handler.getChildren()) {
+				child.dispatchEvent(new MouseReleasedEvent((float) mouseX, (float) mouseY, button));
+			}
+			
+			return super.mouseReleased(mouseX, mouseY, button);
+		} catch (Exception e) {
+			e.printStackTrace();
+			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			handler.onClosed(handler.getPlayer());
+			
+			return false;
 		}
-		
-		return super.mouseReleased(mouseX, mouseY, button);
 	}
 	
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		for (var child : handler.getChildren()) {
-			child.dispatchEvent(new MouseDraggedEvent((float) mouseX, (float) mouseY, button, deltaX, deltaY));
+		try {
+			for (var child : handler.getChildren()) {
+				child.dispatchEvent(new MouseDraggedEvent((float) mouseX, (float) mouseY, button, deltaX, deltaY));
+			}
+			
+			return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+		} catch (Exception e) {
+			e.printStackTrace();
+			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			handler.onClosed(handler.getPlayer());
+			
+			return false;
 		}
-		
-		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 	}
 	
 	@Override
 	public void mouseMoved(double mouseX, double mouseY) {
-		for (var child : handler.getChildren()) {
-			child.dispatchEvent(new MouseMovedEvent((float) mouseX, (float) mouseY));
+		try {
+			for (var child : handler.getChildren()) {
+				child.dispatchEvent(new MouseMovedEvent((float) mouseX, (float) mouseY));
+			}
+			
+			super.mouseMoved(mouseX, mouseY);
+		} catch (Exception e) {
+			e.printStackTrace();
+			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			handler.onClosed(handler.getPlayer());
 		}
-		
-		super.mouseMoved(mouseX, mouseY);
 	}
 	
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-		for (var child : handler.getChildren()) {
-			child.dispatchEvent(new MouseScrolledEvent((float) mouseX, (float) mouseX, amount));
+		try {
+			for (var child : handler.getChildren()) {
+				child.dispatchEvent(new MouseScrolledEvent((float) mouseX, (float) mouseX, amount));
+			}
+			
+			return super.mouseScrolled(mouseX, mouseY, amount);
+		} catch (Exception e) {
+			e.printStackTrace();
+			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			handler.onClosed(handler.getPlayer());
+			
+			return false;
 		}
-		
-		return super.mouseScrolled(mouseX, mouseY, amount);
 	}
 	
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		for (var child : handler.getChildren()) {
-			child.dispatchEvent(new KeyPressedEvent(keyCode, scanCode, modifiers));
+		try {
+			var held = false;
+			
+			for (var child : handler.getChildren()) {
+				child.dispatchEvent(new KeyPressedEvent(keyCode, scanCode, modifiers));
+			}
+			
+			for (var child : handler.getAllChildren()) {
+				if (child.isHeld()) {
+					held = true;
+				}
+			}
+			
+			if (!held) {
+				return super.keyPressed(keyCode, scanCode, modifiers);
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			handler.onClosed(handler.getPlayer());
+			
+			return false;
 		}
-		
-		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 	
 	@Override
 	public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-		for (var child : handler.getChildren()) {
-			child.dispatchEvent(new KeyReleasedEvent(keyCode, scanCode, modifiers));
+		try {
+			for (var child : handler.getChildren()) {
+				child.dispatchEvent(new KeyReleasedEvent(keyCode, scanCode, modifiers));
+			}
+			
+			return super.keyReleased(keyCode, scanCode, modifiers);
+		} catch (Exception e) {
+			e.printStackTrace();
+			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			handler.onClosed(handler.getPlayer());
+			
+			return false;
 		}
-		
-		return super.keyReleased(keyCode, scanCode, modifiers);
 	}
 	
 	@Override
 	public boolean charTyped(char chr, int modifiers) {
-		for (var child : handler.getChildren()) {
-			child.dispatchEvent(new CharacterTypedEvent(chr, modifiers));
+		try {
+			for (var child : handler.getChildren()) {
+				child.dispatchEvent(new CharacterTypedEvent(chr, modifiers));
+			}
+			
+			return super.charTyped(chr, modifiers);
+		} catch (Exception e) {
+			e.printStackTrace();
+			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			handler.onClosed(handler.getPlayer());
+			
+			return false;
 		}
-		
-		return super.charTyped(chr, modifiers);
 	}
 	
 	@Override
 	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-		super.renderBackground(context);
-		
-		var client = InstanceUtil.getClient();
-		
-		var provider = client.getBufferBuilders().getEffectVertexConsumers();
-		
-		for (var child : handler.getChildren()) {
-			if (!child.isHidden()) {
-				child.draw(context.getMatrices(), provider, delta);
-			}
-		}
-		
-		var mousePos = PositionUtil.getMousePosition();
-		
-		Widget minChild = null;
-		float minDist = Float.MAX_VALUE;
-		
-		for (var child : handler.getAllChildren()) {
-			if (!child.isHidden() && child.isFocused()) {
-				if (minChild == null || minDist == Float.MAX_VALUE || minChild.getPosition().distanceTo(mousePos) > child.getPosition().distanceTo(mousePos)) {
-					minChild = child;
-					minDist = child.getPosition().distanceTo(mousePos);
+		try {
+			super.renderBackground(context);
+			
+			var client = InstanceUtil.getClient();
+			
+			var provider = client.getBufferBuilders().getEffectVertexConsumers();
+			
+			for (var child : handler.getChildren()) {
+				if (!child.isHidden()) {
+					child.draw(context, delta);
 				}
 			}
+			
+			var mousePos = PositionUtil.getMousePosition();
+			
+			Widget minChild = null;
+			float minDist = Float.MAX_VALUE;
+			
+			for (var child : handler.getAllChildren()) {
+				if (!child.isHidden() && child.isFocused()) {
+					if (minChild == null || minDist == Float.MAX_VALUE || minChild.getPosition().distanceTo(mousePos) > child.getPosition().distanceTo(mousePos)) {
+						minChild = child;
+						minDist = child.getPosition().distanceTo(mousePos);
+					}
+				}
+			}
+			
+			if (minChild != null) {
+				// TODO: Fix this, it's very bad.
+				context.drawTooltip(textRenderer, minChild.getTooltip(), ($, $$, $$$, $$$$, $$$$$, $$$$$$) -> new Vector2i(mouseX + 12, mouseY - 12), mouseX, mouseY);
+			}
+			
+			provider.draw();
+			
+			super.render(context, mouseX, mouseY, delta);
+			
+			super.drawMouseoverTooltip(context, mouseX, mouseY);
+		} catch (Exception e) {
+			e.printStackTrace();
+			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			handler.onClosed(handler.getPlayer());
 		}
-		
-		if (minChild != null) {
-			// TODO: Fix this, it's very bad.
-			context.drawTooltip(textRenderer, minChild.getTooltip(), ($, $$, $$$, $$$$, $$$$$, $$$$$$) -> new Vector2i(mouseX, mouseY), mouseX, mouseY);
-		}
-		
-		provider.draw();
-		
-		super.render(context, mouseX, mouseY, delta);
-		
-		super.drawMouseoverTooltip(context, mouseX, mouseY);
 	}
 }

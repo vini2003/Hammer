@@ -31,6 +31,8 @@ import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.client.util.LayerUtil;
 import dev.vini2003.hammer.core.api.common.math.padding.Padding;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -94,7 +96,8 @@ public class PartitionedTexture implements Texture {
 		this.center = new Part(leftPadding, topPadding, 1.0F - rightPadding, 1.0F - bottomPadding);
 	}
 	
-	@Override
+	@Override 
+	@Environment(EnvType.CLIENT)
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float x, float y, float width, float height) {
 		var scaleWidth = width / textureSize.getWidth();
 		var scaleHeight = height / textureSize.getHeight();

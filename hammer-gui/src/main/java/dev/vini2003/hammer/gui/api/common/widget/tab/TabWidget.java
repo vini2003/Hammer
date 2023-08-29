@@ -32,6 +32,7 @@ import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.event.AddedEvent;
 import dev.vini2003.hammer.gui.api.common.event.LayoutChangedEvent;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
@@ -40,6 +41,8 @@ import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.*;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
@@ -94,6 +97,11 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 			
 			return ImmutableList.of();
 		});
+	}
+	
+	@Override
+	public Size getStandardSize() {
+		return new Size(Math.max(128.0F, tabCollections.size() * 26.0F), 96.0F);
 	}
 	
 	public TabCollection addTab(Supplier<ItemStack> symbol) {
@@ -163,9 +171,19 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 		super.onLayoutChanged(event);
 		
 		children.clear();
+
+		tabRectangles.clear();
+		
+		var tabIndex = 0;
 		
 		for (var tabCollection : tabCollections) {
+			tabRectangles.add(new Shape.Rectangle2D(26.0F, 25.0F).translate(getX() + tabIndex * 26.0F, getY()));
+
 			children.addAll(tabCollection.getChildren());
+			
+			tabCollection.setY(getY());
+			
+			tabIndex += 1;
 		}
 	}
 	
@@ -198,7 +216,8 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 		return children;
 	}
 	
-	@Override
+	@Override 
+	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();
@@ -241,7 +260,7 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 		
 		for (var child : getChildren()) {
 			if (!child.isHidden()) {
-				child.draw(matrices, provider, tickDelta);
+				child.draw(context, tickDelta);
 			}
 		}
 	}
@@ -253,6 +272,11 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 		
 		public TabCollection(int number) {
 			this.number = number;
+		}
+		
+		@Override
+		public Size getStandardSize() {
+			return new Size(18.0F, 18.0F);
 		}
 		
 		@Override
@@ -268,10 +292,16 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 		}
 		
 		@Override
-		public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		public void draw(DrawContext context, float tickDelta) {
+			// draw lines around the border using context, remember to cast to int
+			context.drawHorizontalLine((int) getX(), (int) (getX() + getWidth()), (int) getY(), 0xFF000000);
+			context.drawHorizontalLine((int) getX(), (int) (getX() + getWidth()), (int) (getY() + getHeight()), 0xFF000000);
+			context.drawVerticalLine((int) getX(), (int) getY(), (int) (getY() + getHeight()), 0xFF000000);
+			context.drawVerticalLine((int) (getX() + getWidth()), (int) getY(), (int) (getY() + getHeight()), 0xFF000000);
+			
 			for (var child : getChildren()) {
 				if (!child.isHidden()) {
-					child.draw(matrices, provider, tickDelta);
+					child.draw(context, tickDelta);
 				}
 			}
 		}

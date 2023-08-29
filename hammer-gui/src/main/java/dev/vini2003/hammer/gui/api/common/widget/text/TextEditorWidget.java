@@ -46,6 +46,8 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class TextEditorWidget extends Widget {
+	public static final Size STANDARD_SIZE = new Size(90.0F, 72.0F);
+	
 	protected final List<String> lines = new ArrayList<>();
 	
 	protected final Cursor cursor = new Cursor(0, 0);
@@ -66,14 +68,19 @@ public abstract class TextEditorWidget extends Widget {
 	
 	protected Selection selection = new Selection();
 	
-	public void tick() {
+	@Override
+	public Size getStandardSize() {
+		return STANDARD_SIZE;
+	}
+	
+	public void onTick() {
 		if (cursorTick > 0) {
 			--cursorTick;
 		} else {
 			cursorTick = 20;
 		}
 		
-		super.tick();
+		super.onTick();
 	}
 	
 	@Override
@@ -798,7 +805,7 @@ public abstract class TextEditorWidget extends Widget {
 			var line = lines.get(i);
 			
 			// TODO: Check if this is equivalent to the 1.19.2 code.
-			textRenderer.draw(text, innerX, innerY + (charHeight + 2) * adjustedI, 0xFFFFFF, false, matrices.peek().getPositionMatrix(), provider, TextRenderer.TextLayerType.NORMAL, 0, 15728880);
+			textRenderer.draw(line, innerX, innerY + (charHeight + 2) * adjustedI, 0xFFFFFF, false, matrices.peek().getPositionMatrix(), provider, TextRenderer.TextLayerType.NORMAL, 0, 15728880);
 			
 			var selection = getSelection(i);
 			

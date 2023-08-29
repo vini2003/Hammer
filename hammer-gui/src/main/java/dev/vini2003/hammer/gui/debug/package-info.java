@@ -1,3 +1,4 @@
+
 /*
  * MIT License
  *
@@ -22,19 +23,12 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.gui.registry.common;
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+@ApiStatus.Internal
+package dev.vini2003.hammer.gui.debug;
 
-import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.util.annotation.MethodsReturnNonnullByDefault;
+import org.jetbrains.annotations.ApiStatus;
 
-public class HGUIEvents {
-	public static void init() {
-		ServerTickEvents.END_SERVER_TICK.register(server -> {
-			for (var player : server.getPlayerManager().getPlayerList()) {
-				if (player.currentScreenHandler instanceof BaseScreenHandler screenHandler) {
-					screenHandler.onTick();
-				}
-			}
-		});
-	}
-}
+import javax.annotation.ParametersAreNonnullByDefault;

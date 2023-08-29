@@ -32,6 +32,7 @@ import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.cache.Cached;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.event.*;
 import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
@@ -40,6 +41,9 @@ import dev.vini2003.hammer.gui.api.common.widget.provider.FocusedScrollerTexture
 import dev.vini2003.hammer.gui.api.common.widget.provider.ScrollbarTextureProvider;
 import dev.vini2003.hammer.gui.api.common.widget.provider.ScrollerTextureProvider;
 import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.inventory.Inventory;
@@ -92,6 +96,11 @@ public class SlotListWidget extends Widget implements WidgetCollection, Scrollba
 		this.heightInSlots = heightInSlots;
 		
 		this.maxSlots = maxSlots;
+	}
+	
+	@Override
+	public Size getStandardSize() {
+		return new Size(widthInSlots * 18.0F, heightInSlots * 18.0F);
 	}
 	
 	@Override
@@ -216,7 +225,10 @@ public class SlotListWidget extends Widget implements WidgetCollection, Scrollba
 	}
 	
 	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+	public void draw(DrawContext context, float tickDelta) {
+		var matrices = context.getMatrices();
+		var provider = context.getVertexConsumers();
+		
 		scrollbarTexture.get().draw(matrices, provider, getX() + getWidth() - 18.0F, getY(), 18.0F, getHeight());
 		
 		var scrollerFocused = scrollerRectangle.get().isPositionWithin(PositionUtil.getMousePosition());
@@ -231,7 +243,7 @@ public class SlotListWidget extends Widget implements WidgetCollection, Scrollba
 		
 		for (var child : getChildren()) {
 			if (!child.isHidden()) {
-				child.draw(matrices, provider, tickDelta);
+				child.draw(context, tickDelta);
 			}
 		}
 		

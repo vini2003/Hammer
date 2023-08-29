@@ -19,14 +19,14 @@ loom {
 	runs {
 		client {
 			client()
-			setConfigName("Minecraft Client ($projectName)")
+			setConfigName("Minecraft Client")
 			ideConfigGenerated(true)
 			runDir("runClient")
 		}
 
 		server {
 			server()
-			setConfigName("Minecraft Server ($projectName)")
+			setConfigName("Minecraft Server")
 			ideConfigGenerated(true)
 			runDir("runServer")
 		}

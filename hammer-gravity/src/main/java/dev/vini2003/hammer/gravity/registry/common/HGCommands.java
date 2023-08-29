@@ -27,23 +27,14 @@ package dev.vini2003.hammer.gravity.registry.common;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import dev.vini2003.hammer.gravity.api.common.manager.GravityManager;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.DimensionArgumentType;
-import net.minecraft.registry.BuiltinRegistries;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
-import net.minecraft.registry.Registry;
-
-import java.awt.*;
-
 import static com.mojang.brigadier.arguments.FloatArgumentType.floatArg;
 import static com.mojang.brigadier.arguments.FloatArgumentType.getFloat;
-import static net.minecraft.command.argument.RegistryKeyArgumentType.getKey;
-import static net.minecraft.command.argument.RegistryKeyArgumentType.registryKey;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 

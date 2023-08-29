@@ -25,49 +25,29 @@
 package dev.vini2003.hammer.gui.api.common.widget;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.position.Positioned;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.math.size.Sized;
-import dev.vini2003.hammer.core.api.common.tick.Tickable;
+import dev.vini2003.hammer.core.api.common.tick.Ticks;
 import dev.vini2003.hammer.gui.api.common.event.*;
 import dev.vini2003.hammer.gui.api.common.event.base.Event;
 import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.listener.EventListener;
-import dev.vini2003.hammer.gui.api.common.widget.arrow.ArrowWidget;
 import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 
 import java.util.*;
 import java.util.function.Supplier;
 
-public abstract class Widget implements Positioned, Sized, EventListener, Tickable {
-	public static final Codec<Widget> CODEC = RecordCodecBuilder.create(
-			instance -> instance.group(
-					Codec.DOUBLE.fieldOf("foo").forGetter($ -> 0.0D)
-			).apply(instance, ($) -> new Widget() {
-				@Override
-				public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
-				
-				}
-			})
-	);
-	
-	public static final Codec<ArrowWidget> ARROW_CODEC = CODEC.dispatch(arrow -> arrow, widget -> RecordCodecBuilder.create(
-			instance -> instance.group(
-					Codec.DOUBLE.fieldOf("bar").forGetter($ -> 0.0D)
-			).apply(instance, ($) -> new ArrowWidget())
-	));
-	
+public abstract class Widget implements Positioned, Sized, EventListener, Ticks {
 	protected Position position = new Position(0.0F, 0.0F);
 	protected Size size = new Size(0.0F, 0.0F);
 	
@@ -132,7 +112,6 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	}
 	
 	protected void onMouseClicked(MouseClickedEvent event) {
-		setHeld(focused);
 	}
 	
 	protected void onMouseDragged(MouseDraggedEvent event) {
@@ -144,7 +123,6 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	}
 	
 	protected void onMouseReleased(MouseReleasedEvent event) {
-		setHeld(false);
 	}
 	
 	protected void onMouseScrolled(MouseScrolledEvent event) {
@@ -259,23 +237,12 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	/**
 	 * Draws this widget.
 	 *
-	 * @param matrices  the position and normal matrices.
-	 * @param provider  the buffer provider.
-	 * @param tickDelta the time elapsed since the last tick.
-	 */
-	@Deprecated
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
-		// Deprecated.
-	}
-	
-	/**
-	 * Draws this widget.
-	 *
 	 * @param context	the draw context.
 	 * @param tickDelta	the tick delta.
 	 */
+	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
-		draw(context.getMatrices(), context.getVertexConsumers(), tickDelta);
+	
 	}
 	
 	@Deprecated
@@ -310,6 +277,10 @@ public abstract class Widget implements Positioned, Sized, EventListener, Tickab
 	
 	@Override
 	public Size getSize() {
+		if (size.getWidth() == 0.0F && size.getHeight() == 0.0F) {
+			size = getStandardSize();
+		}
+		
 		return size;
 	}
 	

@@ -32,14 +32,19 @@ import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.cache.Cached;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
+import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.event.*;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import dev.vini2003.hammer.gui.api.common.widget.provider.FocusedScrollerTextureProvider;
 import dev.vini2003.hammer.gui.api.common.widget.provider.ScrollbarTextureProvider;
 import dev.vini2003.hammer.gui.api.common.widget.provider.ScrollerTextureProvider;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,8 +63,10 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 	
 	protected boolean scrollerHeld = false;
 	
+	protected float scrolledY = 0.0F;
+	
 	protected Cached<Float> maxY = new Cached<>(() -> {
-		var maxY = 0.0F;
+		var maxY = Float.MIN_VALUE;
 		
 		for (var child : getChildren()) {
 			if (child.getY() + child.getHeight() > maxY) {
@@ -71,7 +78,7 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 	});
 	
 	protected Cached<Float> minY = new Cached<>(() -> {
-		var minY = 0.0F;
+		var minY = Float.MAX_VALUE;
 		
 		for (var child : getChildren()) {
 			if (child.getY() < minY) {
@@ -83,17 +90,11 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 	});
 	
 	protected Cached<Float> scrollerHeight = new Cached<>(() -> {
-		var height = 0.0F;
-		
-		for (var child : getChildren()) {
-			height += child.getHeight();
-		}
-		
-		return Math.min(getHeight() - 2.0F, getHeight() / height * getHeight());
+		return Math.min(getHeight() - 2.0F, Math.max((getHeight() / (maxY.get() - minY.get())) * getHeight(), 10.0F));
 	});
 	
 	protected Cached<Float> scrollerY = new Cached<>(() -> {
-		return Math.max(getY() + 2.0F, Math.min(getY() + getHeight() - scrollerHeight.get(), (Math.abs(getY() - minY.get()) / (maxY.get() - minY.get()) * (getHeight() + scrollerHeight.get()) + getY() + 1.0F)));
+		return MathHelper.clamp((maxY.get() - minY.get() <= getHeight()) ? getY() : getY() + ((scrolledY * -1) / (maxY.get() - minY.get() - getHeight() - 5.0F)) * (getHeight() - 5.0F - scrollerHeight.get()) + 2.0F, getY() + 2.0F, getY() + getHeight() - scrollerHeight.get());
 	});
 	
 	protected Cached<Shape> scrollerRectangle = new Cached<>(() -> {
@@ -105,8 +106,23 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 	});
 	
 	@Override
+	public Size getStandardSize() {
+		return new Size(
+				Math.max(64.0F, getChildren().stream().map(Widget::getWidth).max(Float::compareTo).orElse(0.0F)),
+				Math.min(96.0F, getChildren().stream().map(Widget::getHeight).reduce(Float::sum).orElse(0.0F))
+		);
+	}
+	
+	@Override
 	public Collection<Widget> getChildren() {
 		return children;
+	}
+	
+	@Override
+	public void add(Widget child) {
+		WidgetCollection.super.add(child);
+		
+		size = getStandardSize();
 	}
 	
 	@Override
@@ -155,6 +171,8 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 		if (focused || scrollerHeld) {
 			if (!children.isEmpty()) {
 				if (event.deltaY() > 0.0D && minY.get() < getY() + 2.0F) {
+					scrolledY += event.deltaY() * 5.0F;
+					
 					for (var child : getAllChildren()) {
 						child.setY(child.getY() + (float) event.deltaY() * 2.5F);
 						child.dispatchEvent(new LayoutChangedEvent());
@@ -166,9 +184,10 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 						}
 					}
 					
-					// This was inside the loop!
 					dispatchEvent(new LayoutChangedEvent());
 				} else if (event.deltaY() <= 0.0D && maxY.get() >= getY() + getHeight() - 2.0F) {
+					scrolledY += event.deltaY() * 5.0F;
+					
 					for (var child : getAllChildren()) {
 						child.setY(child.getY() + (float) event.deltaY() * 2.5F);
 						child.dispatchEvent(new LayoutChangedEvent());
@@ -180,10 +199,23 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 						}
 					}
 					
-					// This was inside the loop!
 					dispatchEvent(new LayoutChangedEvent());
 				}
 			}
+		}
+	}
+	
+	@Override
+	protected void onLayoutChanged(LayoutChangedEvent event) {
+		super.onLayoutChanged(event);
+		
+		var y = getY() + 2.0F + scrolledY;
+		
+		for (var child : getChildren()) {
+			child.setX(getX());
+			child.setY(y);
+			
+			y += child.getHeight() + 2.0F;
 		}
 		
 		maxY.refresh();
@@ -197,21 +229,10 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 	}
 	
 	@Override
-	protected void onLayoutChanged(LayoutChangedEvent event) {
-		super.onLayoutChanged(event);
+	public void draw(DrawContext context, float tickDelta) {
+		var matrices = context.getMatrices();
+		var provider = context.getVertexConsumers();
 		
-		maxY.refresh();
-		minY.refresh();
-		
-		scrollerHeight.refresh();
-		scrollerY.refresh();
-		
-		scrollerRectangle.refresh();
-		scrollbarRectangle.refresh();
-	}
-	
-	@Override
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
 		scrollbarTexture.get().draw(matrices, provider, getX() + getWidth() - 18.0F, getY(), 18.0F, getHeight());
 		
 		var scrollerFocused = scrollerRectangle.get().isPositionWithin(PositionUtil.getMousePosition());
@@ -225,9 +246,9 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 		var scissors = new Scissors(getX(), getY(), getWidth(), getHeight(), provider);
 		
 		for (var child : getChildren()) {
-			if (!child.isHidden()) {
-				child.draw(matrices, provider, tickDelta);
-			}
+//			if (!child.isHidden()) {
+				child.draw(context, tickDelta);
+//			}
 		}
 		
 		scissors.destroy();

@@ -26,22 +26,26 @@ package dev.vini2003.hammer.gui.api.common.screen.handler;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
-import dev.vini2003.hammer.core.api.common.tick.Tickable;
+import dev.vini2003.hammer.core.api.common.tick.Ticks;
 import dev.vini2003.hammer.core.api.common.util.StackUtil;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public abstract class BaseScreenHandler extends ScreenHandler implements WidgetCollection.Root, Tickable {
+public abstract class BaseScreenHandler extends ScreenHandler implements WidgetCollection.Root, Ticks {
 	protected final PlayerEntity player;
 	
 	protected Collection<Widget> children = new ArrayList<>();
@@ -58,60 +62,91 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 	
 	@Override
 	public void onLayoutChanged() {
-		var minimumX = Float.MAX_VALUE;
-		var minimumY = Float.MIN_VALUE;
-		
-		var maximumX = 0.0F;
-		var maximumY = 0.0F;
-		
-		for (var child : getChildren()) {
-			if (child.getX() < minimumX) {
-				minimumX = child.getX();
+		try {
+			var minimumX = Float.MAX_VALUE;
+			var minimumY = Float.MIN_VALUE;
+			
+			var maximumX = 0.0F;
+			var maximumY = 0.0F;
+			
+			for (var child : getChildren()) {
+				if (child.getX() < minimumX) {
+					minimumX = child.getX();
+				}
+				
+				if (child.getY() < minimumY) {
+					minimumY = child.getY();
+				}
+				
+				if (child.getX() > maximumX) {
+					maximumX = child.getX();
+				}
+				
+				if (child.getY() > maximumY) {
+					maximumY = child.getY();
+				}
 			}
 			
-			if (child.getY() < minimumY) {
-				minimumY = child.getY();
-			}
+			shape = new Shape.Rectangle2D(maximumX - minimumX, maximumY - minimumY).translate(minimumX, minimumY, 0.0F);
 			
-			if (child.getX() > maximumX) {
-				maximumX = child.getX();
+			if (isClient()) {
+				onLayoutChangedClient();
 			}
-			
-			if (child.getY() > maximumY) {
-				maximumY = child.getY();
-			}
-		}
-		
-		shape = new Shape.Rectangle2D(maximumX - minimumX, maximumY - minimumY).translate(minimumX, minimumY, 0.0F);
-		
-		if (isClient()) {
-			onLayoutChangedClient();
+		} catch (Exception e) {
+			e.printStackTrace();
+			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			onClosed(player);
 		}
 	}
 	
 	public void onLayoutChangedClient() {
-		var client = InstanceUtil.getClient();
-		
-		var screen = (HandledScreen<?>) client.currentScreen;
-		
-		screen.x = (int) shape.getStartPos().getX();
-		screen.y = (int) shape.getStartPos().getY();
-		
-		screen.backgroundWidth = (int) shape.getWidth();
-		screen.backgroundHeight = (int) shape.getHeight();
+		try {
+			var client = InstanceUtil.getClient();
+			
+			var screen = (HandledScreen<?>) client.currentScreen;
+			
+			screen.x = (int) shape.getStartPos().getX();
+			screen.y = (int) shape.getStartPos().getY();
+			
+			screen.backgroundWidth = (int) shape.getWidth();
+			screen.backgroundHeight = (int) shape.getHeight();
+		} catch (Exception e) {
+			e.printStackTrace();
+			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			onClosed(player);
+		}
 	}
 	
 	@Override
 	public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
-		if (actionType == SlotActionType.QUICK_MOVE) {
-			if (slotIndex >= 0 && slotIndex < slots.size()) {
-				var slot = slots.get(slotIndex);
-				
-				if (!slot.getStack().isEmpty() && slot.canTakeItems(player)) {
-					for (var otherSlotIndex = 0; otherSlotIndex < slots.size(); ++otherSlotIndex) {
-						var newSlot = slots.get(otherSlotIndex);
+		try {
+			if (actionType == SlotActionType.QUICK_MOVE) {
+				if (slotIndex >= 0 && slotIndex < slots.size()) {
+					var slot = slots.get(slotIndex);
+					
+					if (!slot.getStack().isEmpty() && slot.canTakeItems(player)) {
+						for (var otherSlotIndex = 0; otherSlotIndex < slots.size(); ++otherSlotIndex) {
+							var newSlot = slots.get(otherSlotIndex);
+							
+							if (!newSlot.getStack().isEmpty()) {
+								if (newSlot.canInsert(slot.getStack())) {
+									if (newSlot != slot && newSlot.inventory != slot.inventory) {
+										StackUtil.merge(slot.getStack(), newSlot.getStack(), (stackA, stackB) -> {
+											slot.setStack(stackA);
+											newSlot.setStack(stackB);
+										});
+									}
+									
+									if (slot.getStack().isEmpty()) {
+										break;
+									}
+								}
+							}
+						}
 						
-						if (!newSlot.getStack().isEmpty()) {
+						for (var otherSlotNumber = 0; otherSlotNumber < slots.size(); ++otherSlotNumber) {
+							var newSlot = slots.get(otherSlotNumber);
+							
 							if (newSlot.canInsert(slot.getStack())) {
 								if (newSlot != slot && newSlot.inventory != slot.inventory) {
 									StackUtil.merge(slot.getStack(), newSlot.getStack(), (stackA, stackB) -> {
@@ -126,36 +161,29 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 							}
 						}
 					}
-					
-					for (var otherSlotNumber = 0; otherSlotNumber < slots.size(); ++otherSlotNumber) {
-						var newSlot = slots.get(otherSlotNumber);
-						
-						if (newSlot.canInsert(slot.getStack())) {
-							if (newSlot != slot && newSlot.inventory != slot.inventory) {
-								StackUtil.merge(slot.getStack(), newSlot.getStack(), (stackA, stackB) -> {
-									slot.setStack(stackA);
-									newSlot.setStack(stackB);
-								});
-							}
-							
-							if (slot.getStack().isEmpty()) {
-								break;
-							}
-						}
-					}
 				}
+			} else {
+				super.onSlotClick(slotIndex, button, actionType, player);
 			}
-		} else {
-			super.onSlotClick(slotIndex, button, actionType, player);
+		} catch (Exception e) {
+			e.printStackTrace();
+			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			onClosed(player);
 		}
 	}
 	
 	@Override
 	public void add(Widget child) {
-		child.setCollection(this);
-		child.setRootCollection(this);
-		
-		Root.super.add(child);
+		try {
+			child.setCollection(this);
+			child.setRootCollection(this);
+			
+			Root.super.add(child);
+		}  catch (Exception e) {
+			e.printStackTrace();
+			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			onClosed(player);
+		}
 	}
 	
 	public Slot addSlot(Slot slot) {
@@ -175,9 +203,15 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 	}
 	
 	@Override
-	public void tick() {
-		for (var child : getChildren()) {
-			child.tick();
+	public void onTick() {
+		try {
+			for (var child : getChildren()) {
+				child.onTick();
+			}
+		}  catch (Exception e) {
+			e.printStackTrace();
+			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			onClosed(player);
 		}
 	}
 	
@@ -211,5 +245,11 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 	@Override
 	public BaseScreenHandler getScreenHandler() {
 		return this;
+	}
+	
+	@Override
+	public ItemStack quickMove(PlayerEntity player, int index) {
+		onSlotClick(index, GLFW.GLFW_MOUSE_BUTTON_1, SlotActionType.QUICK_MOVE, player);
+		return ItemStack.EMPTY;
 	}
 }

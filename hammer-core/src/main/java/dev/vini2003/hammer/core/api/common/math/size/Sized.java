@@ -30,6 +30,12 @@ package dev.vini2003.hammer.core.api.common.math.size;
  */
 public interface Sized extends SizeHolder {
 	/**
+	 * Provides a default size for this object.
+	 * @return a default size for this object.
+	 */
+	Size getStandardSize();
+	
+	/**
 	 * Returns this object's size.
 	 * @return this object's size.
 	 */

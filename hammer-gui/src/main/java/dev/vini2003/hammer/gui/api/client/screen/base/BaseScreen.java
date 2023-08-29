@@ -25,7 +25,7 @@
 package dev.vini2003.hammer.gui.api.client.screen.base;
 
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
-import dev.vini2003.hammer.core.api.common.tick.Tickable;
+import dev.vini2003.hammer.core.api.common.tick.Ticks;
 import dev.vini2003.hammer.gui.api.common.event.*;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
@@ -35,7 +35,7 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public abstract class BaseScreen extends Screen implements WidgetCollection.Root, Tickable {
+public abstract class BaseScreen extends Screen implements WidgetCollection.Root, Ticks {
 	protected Collection<Widget> children = new ArrayList<>();
 	
 	protected Shape shape = new Shape.Rectangle2D(0.0F, 0.0F);
@@ -163,9 +163,9 @@ public abstract class BaseScreen extends Screen implements WidgetCollection.Root
 	}
 	
 	@Override
-	public void tick() {
+	public void onTick() {
 		for (var child : getChildren()) {
-			child.tick();
+			child.onTick();
 		}
 	}
 	

@@ -44,6 +44,6 @@ public abstract class VideoOptionsScreenMixin extends GameOptionsScreen {
 	
 	@Inject(at = @At("RETURN"), method = "render")
 	private void hammer$render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-		context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("text.hammer.fabulous_graphics_warning"), this.width / 2, 5 + 9 + 5, 0xFF5370);
+		context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("text.hammer.fabulous_graphics_warning"), this.width / 2, 5 + 9 + 5 + 18, 0xFF5370);
 	}
 }

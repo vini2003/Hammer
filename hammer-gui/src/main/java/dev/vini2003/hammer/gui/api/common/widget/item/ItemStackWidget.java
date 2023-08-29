@@ -25,7 +25,6 @@
 package dev.vini2003.hammer.gui.api.common.widget.item;
 
 import com.google.common.collect.ImmutableList;
-import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
@@ -35,8 +34,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
 import java.util.function.Supplier;
@@ -49,6 +46,13 @@ public class ItemStackWidget extends Widget implements ItemStackProvider {
 	public ItemStackWidget() {
 		super();
 		
+		if (rootCollection.isClient()) {
+			initOnClient();
+		}
+	}
+	
+	@Environment(EnvType.CLIENT)
+	protected void initOnClient() {
 		setTooltipSupplier(() -> {
 			var stack = this.stack.get();
 			

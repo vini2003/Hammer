@@ -27,7 +27,6 @@ package dev.vini2003.hammer.gui.api.common.widget.bar;
 import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.api.client.scissor.Scissors;
 import dev.vini2003.hammer.core.api.client.texture.TiledFluidTexture;
-import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.util.FluidTextUtil;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
@@ -39,10 +38,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
 
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class FluidBarWidget extends BarWidget implements SmoothProvider, TiledProvider {
@@ -78,6 +74,7 @@ public class FluidBarWidget extends BarWidget implements SmoothProvider, TiledPr
 	}
 	
 	@Override
+	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();

@@ -25,27 +25,19 @@
 package dev.vini2003.hammer.gui.api.common.widget.bar;
 
 import dev.vini2003.hammer.core.api.client.scissor.Scissors;
-import dev.vini2003.hammer.core.api.client.texture.SpriteTexture;
 import dev.vini2003.hammer.core.api.client.texture.TiledSpriteTexture;
-import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.provider.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.util.math.MatrixStack;
 
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class SpriteBarWidget extends BarWidget implements ForegroundSpriteProvider, BackgroundSpriteProvider, SmoothProvider, InvertProvider, StepWidthProvider, StepHeightProvider {
 	public static final Size STANDARD_VERTICAL_SIZE = new Size(24.0F, 48.0F);
 	public static final Size STANDARD_HORIZONTAL_SIZE = new Size(48.0F, 24.0F);
-	
-	protected Supplier<Sprite> foregroundSprite = () -> null;
-	protected Supplier<Sprite> backgroundSprite = () -> null;
 	
 	protected float stepWidth = -1.0F;
 	protected float stepHeight = -1.0F;
@@ -59,6 +51,7 @@ public class SpriteBarWidget extends BarWidget implements ForegroundSpriteProvid
 	}
 	
 	@Override
+	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();
@@ -132,27 +125,27 @@ public class SpriteBarWidget extends BarWidget implements ForegroundSpriteProvid
 	}
 	
 	@Override
+	@Environment(EnvType.CLIENT)
 	public Supplier<Sprite> getForegroundSprite() {
-		return foregroundSprite;
+		return null; // EnvType... we can't save it.
 	}
 	
 	@Override
+	@Environment(EnvType.CLIENT)
 	public void setForegroundSprite(Supplier<Sprite> foregroundSprite) {
-		this.foregroundSprite = foregroundSprite;
-		
 		var foregroundTexture = new TiledSpriteTexture(foregroundSprite.get());
 		this.foregroundTexture = () -> foregroundTexture;
 	}
 	
 	@Override
+	@Environment(EnvType.CLIENT)
 	public Supplier<Sprite> getBackgroundSprite() {
-		return backgroundSprite;
+		return null; // EnvType... we can't save it.
 	}
 	
 	@Override
+	@Environment(EnvType.CLIENT)
 	public void setBackgroundSprite(Supplier<Sprite> backgroundSprite) {
-		this.backgroundSprite = backgroundSprite;
-		
 		var backgroundTexture = new TiledSpriteTexture(backgroundSprite.get());
 		this.backgroundTexture = () -> backgroundTexture;
 	}

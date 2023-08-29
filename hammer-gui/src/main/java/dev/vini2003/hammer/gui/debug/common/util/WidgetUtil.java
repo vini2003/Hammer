@@ -25,10 +25,13 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.random.Random;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,16 +45,16 @@ public class WidgetUtil {
 		list.addAll(createSpriteBars());
 		list.addAll(createButtons());
 		list.addAll(createImages());
-		list.addAll(createItemStacks());
-		list.addAll(createItems());
+//		list.addAll(createItemStacks());
+//		list.addAll(createItems());
 		list.addAll(createLists());
 		list.addAll(createPanels());
 		list.addAll(createSlots());
 		list.addAll(createSlotLists());
 		list.addAll(createTabs());
-		list.addAll(createTextAreas());
+//		list.addAll(createTextAreas());
 //		list.addAll(createTextFields());
-		list.addAll(createTexts());
+//		list.addAll(createTexts());
 		list.addAll(createToggles());
 		return list;
 	}
@@ -99,20 +102,25 @@ public class WidgetUtil {
 	}
 	
 	public static List<Widget> createSpriteBars() {
-		var client = InstanceUtil.getClient();
-		
-		var stoneSprite = client.getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier("block/stone"));
-		var dirtSprite = client.getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier("block/dirt"));
-		
 		var horizontalSpriteBar = new SpriteBarWidget();
 		horizontalSpriteBar.setHorizontal(true);
-		horizontalSpriteBar.setBackgroundSprite(() -> stoneSprite);
-		horizontalSpriteBar.setForegroundSprite(() -> dirtSprite);
 		
 		var verticalSpriteBar = new SpriteBarWidget();
 		verticalSpriteBar.setVertical(true);
-		verticalSpriteBar.setBackgroundSprite(() -> stoneSprite);
-		verticalSpriteBar.setForegroundSprite(() -> dirtSprite);
+		
+		if (InstanceUtil.isClient()) {
+			var client = InstanceUtil.getClient();
+			
+			var stoneSprite = client.getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier("block/stone"));
+			var dirtSprite = client.getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier("block/dirt"));
+			
+			horizontalSpriteBar.setBackgroundSprite(() -> stoneSprite);
+			horizontalSpriteBar.setForegroundSprite(() -> dirtSprite);
+			
+			
+			verticalSpriteBar.setBackgroundSprite(() -> stoneSprite);
+			verticalSpriteBar.setForegroundSprite(() -> dirtSprite);
+		}
 		
 		return List.of(horizontalSpriteBar, verticalSpriteBar);
 	}
@@ -148,8 +156,13 @@ public class WidgetUtil {
 	
 	public static List<Widget> createSlotLists() {
 		var inventory = new SimpleInventory(9 * 6);
+		for (var i = 0; i < inventory.size(); ++i) {
+			// get random from registry item and set stack
+			var randomItem = Registries.ITEM.getRandom(Random.create()).orElse(Items.AIR.getRegistryEntry()).value();
+			inventory.setStack(i, new ItemStack(randomItem, (int) (Math.random() * 64)));
+		}
 		
-		var slotList = new SlotListWidget(inventory, 9, 6, 0);
+		var slotList = new SlotListWidget(inventory, 6, 3, 0);
 		
 		return List.of(slotList);
 	}

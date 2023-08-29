@@ -44,8 +44,6 @@ import dev.vini2003.hammer.gui.api.common.widget.slot.SlotWidget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.slot.Slot;
 
@@ -164,6 +162,8 @@ public class SlotListWidget extends Widget implements WidgetCollection, Scrollba
 	protected void onMouseScrolled(MouseScrolledEvent event) {
 		super.onMouseScrolled(event);
 		
+		if (rootCollection.isClient()) return;
+		
 		if (focused || scrollerHeld) {
 			if (event.deltaY() > 0.0D && row > 0) {
 				--row;
@@ -179,7 +179,7 @@ public class SlotListWidget extends Widget implements WidgetCollection, Scrollba
 					
 					rootCollection.getScreenHandler().sendContentUpdates();
 				}
-			} else if (event.deltaY() <= 0.0D && row < getBottomRow()) {
+			} else if (event.deltaY() <= 0.0D && row > getBottomRow()) {
 				++row;
 				
 				for (var child : getChildren()) {
@@ -225,6 +225,7 @@ public class SlotListWidget extends Widget implements WidgetCollection, Scrollba
 	}
 	
 	@Override
+	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();

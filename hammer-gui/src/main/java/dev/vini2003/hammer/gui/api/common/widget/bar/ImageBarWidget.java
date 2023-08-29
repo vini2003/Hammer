@@ -25,7 +25,6 @@
 package dev.vini2003.hammer.gui.api.common.widget.bar;
 
 import dev.vini2003.hammer.core.api.client.scissor.Scissors;
-import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.provider.InvertProvider;
 import dev.vini2003.hammer.gui.api.common.widget.provider.ScissorProvider;
@@ -33,11 +32,6 @@ import dev.vini2003.hammer.gui.api.common.widget.provider.SmoothProvider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
-
-import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 
 public class ImageBarWidget extends BarWidget implements SmoothProvider, ScissorProvider, InvertProvider {
 	public static final Size STANDARD_VERTICAL_SIZE = new Size(24.0F, 48.0F);
@@ -53,6 +47,7 @@ public class ImageBarWidget extends BarWidget implements SmoothProvider, Scissor
 	}
 	
 	@Override
+	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();

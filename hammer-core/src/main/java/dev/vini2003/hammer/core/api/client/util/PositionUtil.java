@@ -25,12 +25,16 @@
 package dev.vini2003.hammer.core.api.client.util;
 
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 
 public class PositionUtil {
+	@Environment(EnvType.CLIENT)
 	public static Position getMousePosition() {
 		return new Position(getMouseX(), getMouseY());
 	}
 	
+	@Environment(EnvType.CLIENT)
 	public static float getMouseX() {
 		var client = InstanceUtil.getClient();
 		
@@ -41,6 +45,7 @@ public class PositionUtil {
 		return (float) (client.mouse.getX() * (client.getWindow().getScaledWidth() / (Math.max(1.0F, client.getWindow().getWidth()))));
 	}
 	
+	@Environment(EnvType.CLIENT)
 	public static float getMouseY() {
 		var client = InstanceUtil.getClient();
 		

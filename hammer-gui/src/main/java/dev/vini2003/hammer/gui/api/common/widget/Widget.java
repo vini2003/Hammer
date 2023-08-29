@@ -130,7 +130,9 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 	}
 	
 	protected void onLayoutChanged(LayoutChangedEvent event) {
-		updateFocus(PositionUtil.getMouseX(), PositionUtil.getMouseY());
+		if (rootCollection != null && rootCollection.isClient()) {
+			updateFocus(PositionUtil.getMouseX(), PositionUtil.getMouseY());
+		}
 	}
 	
 	/**
@@ -184,7 +186,7 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 		
 		var rootCollection = getRootCollection();
 		
-		if (shouldSync(event.type()) && isFocused() || rootCollection != null && rootCollection.isScreenHandler() && rootCollection.isClient()) {
+		if (shouldSync(event.type()) && (isFocused() || rootCollection != null && rootCollection.isScreenHandler() && rootCollection.isClient())) {
 			var buf = PacketByteBufs.create();
 			buf.writeInt(hashCode());
 			

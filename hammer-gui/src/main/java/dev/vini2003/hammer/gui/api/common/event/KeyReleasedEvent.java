@@ -27,7 +27,6 @@ package dev.vini2003.hammer.gui.api.common.event;
 import dev.vini2003.hammer.gui.api.common.event.base.Event;
 import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.network.PacketByteBuf;
 
 /**

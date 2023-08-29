@@ -34,13 +34,14 @@ import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.event.MouseClickedEvent;
 import dev.vini2003.hammer.gui.api.common.event.type.EventType;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
-import dev.vini2003.hammer.gui.api.common.widget.provider.*;
+import dev.vini2003.hammer.gui.api.common.widget.provider.DisabledProvider;
+import dev.vini2003.hammer.gui.api.common.widget.provider.DisabledTextureProvider;
+import dev.vini2003.hammer.gui.api.common.widget.provider.EnabledTextureProvider;
+import dev.vini2003.hammer.gui.api.common.widget.provider.LabelProvider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 

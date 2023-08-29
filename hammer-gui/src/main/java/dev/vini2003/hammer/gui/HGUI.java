@@ -24,7 +24,6 @@
 
 package dev.vini2003.hammer.gui;
 
-import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 import dev.vini2003.hammer.gui.registry.common.HGUIEvents;
 import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
 import dev.vini2003.hammer.gui.registry.common.debug.HGUICommands;

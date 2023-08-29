@@ -29,7 +29,6 @@ import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget;
-import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 
 public class ArrowWidget extends ImageBarWidget {
 	public static final Size STANDARD_VERTICAL_SIZE = new Size(16.0F, 22.0F);

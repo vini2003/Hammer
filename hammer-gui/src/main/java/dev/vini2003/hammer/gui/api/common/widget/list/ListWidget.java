@@ -42,8 +42,6 @@ import dev.vini2003.hammer.gui.api.common.widget.provider.ScrollerTextureProvide
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
@@ -229,6 +227,7 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 	}
 	
 	@Override
+	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();

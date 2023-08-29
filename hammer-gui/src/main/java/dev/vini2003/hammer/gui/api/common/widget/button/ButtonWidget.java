@@ -38,9 +38,7 @@ import dev.vini2003.hammer.gui.api.common.widget.provider.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 
@@ -114,6 +112,7 @@ public class ButtonWidget extends Widget implements EnabledTextureProvider, Disa
 		}
 	}
 	
+	@Environment(EnvType.CLIENT)
 	protected void playSound() {
 		var client = InstanceUtil.getClient();
 		

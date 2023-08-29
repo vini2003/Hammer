@@ -33,8 +33,6 @@ import dev.vini2003.hammer.gui.api.common.widget.provider.TextureProvider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -88,20 +86,27 @@ public class TextAreaWidget extends TextEditorWidget implements TextureProvider 
 		if (lineWrap) {
 			lines.clear();
 			newLine.clear();
+			
 			this.text = text;
-			String currentLine = "";
-			float lineWidth = 0.0F;
-			for (char c : text.toCharArray()) {
+			
+			var currentLine = "";
+			var lineWidth = 0.0F;
+			
+			for (var c : text.toCharArray()) {
 				lineWidth += Math.round(TextUtil.getWidth(String.valueOf(c)) * scale);
+				
 				if (lineWidth >= getInnerWidth() || c == '\n') {
 					lines.add(currentLine);
 					newLine.add(c == '\n');
 					lineWidth = Math.round(TextUtil.getWidth(String.valueOf(c)) * scale);
 					currentLine = "";
 				}
+				
 				if (c != '\n') currentLine += c;
 			}
-			String finalLine = currentLine;
+			
+			var finalLine = currentLine;
+			
 			if (!finalLine.isEmpty() || text.endsWith("\n")) {
 				newLine.add(text.endsWith("\n"));
 				lines.add(finalLine);
@@ -161,6 +166,7 @@ public class TextAreaWidget extends TextEditorWidget implements TextureProvider 
 	}
 	
 	@Override
+	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();

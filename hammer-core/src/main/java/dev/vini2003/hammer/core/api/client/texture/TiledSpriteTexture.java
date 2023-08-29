@@ -36,7 +36,8 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class TiledSpriteTexture implements Texture {
-	private final Sprite sprite;
+	
+	private final Object spriteObject;
 	
 	private final float maxTilesX;
 	private final float maxTilesY;
@@ -44,8 +45,8 @@ public class TiledSpriteTexture implements Texture {
 	private final float stepTilesX;
 	private final float stepTilesY;
 	
-	public TiledSpriteTexture(Sprite sprite) {
-		this.sprite = sprite;
+	public TiledSpriteTexture(Object sprite) {
+		this.spriteObject = sprite;
 		
 		this.maxTilesX = Integer.MAX_VALUE;
 		this.maxTilesY = Integer.MAX_VALUE;
@@ -54,8 +55,8 @@ public class TiledSpriteTexture implements Texture {
 		this.stepTilesY = Integer.MAX_VALUE;
 	}
 	
-	public TiledSpriteTexture(Sprite sprite, float maxTilesX, float maxTilesY, float stepTilesX, float stepTilesY) {
-		this.sprite = sprite;
+	public TiledSpriteTexture(Object sprite, float maxTilesX, float maxTilesY, float stepTilesX, float stepTilesY) {
+		this.spriteObject = sprite;
 		
 		this.maxTilesX = maxTilesX;
 		this.maxTilesY = maxTilesY;
@@ -67,6 +68,8 @@ public class TiledSpriteTexture implements Texture {
 	@Override 
 	@Environment(EnvType.CLIENT)
 	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float x, float y, float width, float height) {
+		var sprite = (Sprite) spriteObject;
+		
 		var client = InstanceUtil.getClient();
 		
 		var scaledX = x - ((int) x) == 0 ? (int) x : x - (x % (client.getWindow().getScaledWidth() / (float) client.getWindow().getWidth()));

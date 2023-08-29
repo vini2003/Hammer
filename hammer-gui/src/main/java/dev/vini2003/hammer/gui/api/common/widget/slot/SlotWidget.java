@@ -41,8 +41,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.slot.Slot;
 
@@ -96,7 +94,12 @@ public class SlotWidget extends Widget implements TextureProvider {
 		slot.index = index;
 		
 		if (rootCollection instanceof BaseScreenHandler handler) {
-			handler.addSlot(slot);
+			try {
+				handler.getSlot(slot.index);
+			} catch (Exception e) {
+				handler.addSlot(slot);
+				System.out.println("Added slot " + slot + " to handler " + handler);
+			}
 		}
 	}
 	
@@ -179,6 +182,7 @@ public class SlotWidget extends Widget implements TextureProvider {
 	}
 	
 	@Override
+	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();

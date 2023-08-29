@@ -34,14 +34,10 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.tooltip.TooltipPositioner;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.joml.Vector2i;
-
-import java.util.List;
 
 public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends HandledScreen<T> {
 	public BaseHandledScreen(T screenHandler, PlayerInventory playerInventory, Text text) {
@@ -77,6 +73,11 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
 			handler.onClosed(handler.getPlayer());
 		}
+	}
+	
+	@Override
+	protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
+	
 	}
 	
 	@Override

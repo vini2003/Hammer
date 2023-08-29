@@ -25,9 +25,12 @@
 package dev.vini2003.hammer.core.api.client.scissor;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
 import org.lwjgl.opengl.GL11;
 
+@Environment(EnvType.CLIENT)
 public class Scissors {
 	private static final Scissors[] SCISSORS = new Scissors[512];
 	

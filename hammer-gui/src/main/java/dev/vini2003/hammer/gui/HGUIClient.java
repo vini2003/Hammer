@@ -26,9 +26,7 @@ package dev.vini2003.hammer.gui;
 
 import dev.vini2003.hammer.gui.registry.client.HGUIEvents;
 import dev.vini2003.hammer.gui.registry.client.debug.HGUIScreens;
-import dev.vini2003.hammer.gui.registry.common.debug.HGUIScreenHandlerTypes;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
 

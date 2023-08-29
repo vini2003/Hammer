@@ -6,8 +6,6 @@ import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
 
 public class ScreenWidget extends Widget {
 	@Override
@@ -36,6 +34,7 @@ public class ScreenWidget extends Widget {
 	}
 	
 	@Override
+	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
 	
 	}

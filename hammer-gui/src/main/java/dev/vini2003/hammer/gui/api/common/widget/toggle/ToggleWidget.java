@@ -73,8 +73,10 @@ public class ToggleWidget extends Widget implements EnabledTextureProvider, Disa
 			}
 		}
 		
-		var isDisabled = isDisabled();
-		setDisabled(() -> !isDisabled);
+		if (isFocused()) {
+			var isDisabled = isDisabled();
+			setDisabled(() -> !isDisabled);
+		}
 	}
 	
 	@Override

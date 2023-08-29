@@ -88,18 +88,13 @@ public class SlotWidget extends Widget implements TextureProvider {
 	
 	@Override
 	protected void onAdded(AddedEvent event) {
+		System.out.println("Added for " + this);
 		super.onAdded(event);
 		
 		slot = slotSupplier.apply(inventory, index, getSlotX(), getSlotY());
-		slot.index = index;
 		
 		if (rootCollection instanceof BaseScreenHandler handler) {
-			try {
-				handler.getSlot(slot.index);
-			} catch (Exception e) {
-				handler.addSlot(slot);
-				System.out.println("Added slot " + slot + " to handler " + handler);
-			}
+			handler.addSlot(slot);
 		}
 	}
 	

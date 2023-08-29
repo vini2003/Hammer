@@ -60,7 +60,7 @@ public class ButtonWidget extends Widget implements EnabledTextureProvider, Disa
 	
 	@Override
 	public Size getStandardSize() {
-		if (label.get() == null) {
+		if (label.get() == null || rootCollection == null || !rootCollection.isClient()) {
 			return new Size(18.0F, 18.0F);
 		} else {
 			return new Size(TextUtil.getWidth(label.get()) + 8.0F, 18.0F);

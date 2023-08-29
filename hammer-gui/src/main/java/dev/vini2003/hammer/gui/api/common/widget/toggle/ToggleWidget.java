@@ -116,6 +116,7 @@ public class ToggleWidget extends Widget implements EnabledTextureProvider, Disa
 		}
 	}
 	
+	@Environment(EnvType.CLIENT)
 	protected void playSound() {
 		var client = InstanceUtil.getClient();
 		

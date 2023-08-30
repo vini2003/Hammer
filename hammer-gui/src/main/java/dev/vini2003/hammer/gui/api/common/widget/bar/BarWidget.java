@@ -51,8 +51,8 @@ public abstract class BarWidget extends Widget implements BackgroundTextureProvi
 	protected BarWidget() {
 		super();
 		
-		setTooltipSupplier(() -> {
-			return ImmutableList.of(TextUtil.getPercentage(getCurrent().getAsDouble(), getMaximum().getAsDouble()));
+		setTooltip(() -> {
+			return ImmutableList.of(TextUtil.getPercentage(getCurrent().getAsDouble(), getMaximum().getAsDouble()).asOrderedText());
 		});
 	}
 	

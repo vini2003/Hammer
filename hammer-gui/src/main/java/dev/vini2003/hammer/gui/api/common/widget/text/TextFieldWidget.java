@@ -35,6 +35,9 @@ import net.minecraft.client.gui.DrawContext;
 
 import java.util.function.Supplier;
 
+/**
+ * <b>This widget is client-side only.</b>
+ */
 public class TextFieldWidget extends TextEditorWidget implements TextureProvider {
 	public static final Size STANDARD_SIZE = new Size(72.0F, 18.0F);
 	public static final Texture STANDARD_TEXTURE = new PartitionedTexture(HC.id("textures/widget/text_field.png"), 18.0F, 18.0F, 0.055F, 0.055F, 0.055F, 0.055F);
@@ -42,6 +45,11 @@ public class TextFieldWidget extends TextEditorWidget implements TextureProvider
 	protected Supplier<Texture> texture = () -> STANDARD_TEXTURE;
 	
 	protected int length = 15;
+	
+	@Override
+	public Size getStandardSize() {
+		return STANDARD_SIZE;
+	}
 	
 	@Override
 	public void setText(String text) {

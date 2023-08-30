@@ -45,6 +45,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * <b>This widget is client-side only.</b>
+ */
 public abstract class TextEditorWidget extends Widget {
 	public static final Size STANDARD_SIZE = new Size(90.0F, 72.0F);
 	

@@ -72,8 +72,6 @@ public class SlotListWidget extends Widget implements WidgetCollection {
 	protected void onAdded(AddedEvent event) {
 		super.onAdded(event);
 		
-		var i = 0;
-		
 		for (var h = 0; h < heightInSlots; ++h) {
 			for (var w = 0; w < widthInSlots; ++w) {
 				if (inventory.size() > h + w) {

@@ -39,6 +39,9 @@ import net.minecraft.text.Text;
 
 import java.util.function.Supplier;
 
+/**
+ * <b>This widget is client-side only.</b>
+ */
 public class TextWidget extends Widget implements TextProvider, ShadowProvider, ColorProvider {
 	protected Supplier<Text> text = () -> null;
 	

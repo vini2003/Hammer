@@ -39,6 +39,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * <b>This widget is client-side only.</b>
+ */
 public class TextAreaWidget extends TextEditorWidget implements TextureProvider {
 	public static final Size STANDARD_SIZE = new Size(90.0F, 72.0F);
 	

@@ -45,8 +45,8 @@ public class WidgetUtil {
 		list.addAll(createSpriteBars());
 		list.addAll(createButtons());
 		list.addAll(createImages());
-//		list.addAll(createItemStacks());
-//		list.addAll(createItems());
+		list.addAll(createItemStacks());
+		list.addAll(createItems());
 		list.addAll(createLists());
 		list.addAll(createPanels());
 		list.addAll(createSlots());

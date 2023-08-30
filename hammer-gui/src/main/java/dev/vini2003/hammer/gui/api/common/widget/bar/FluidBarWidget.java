@@ -38,6 +38,7 @@ import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.Text;
 
 import java.util.function.Supplier;
 
@@ -53,17 +54,17 @@ public class FluidBarWidget extends BarWidget implements SmoothProvider, TiledPr
 	public FluidBarWidget() {
 		super();
 		
-		setTooltipSupplier(() -> {
+		setTooltip(() -> {
 			var storageView = this.storageView.get();
 			
 			if (storageView != null) {
 				if (Screen.hasShiftDown()) {
-					return FluidTextUtil.getDetailedStorageTooltips(storageView);
+					return FluidTextUtil.getDetailedStorageTooltips(storageView).stream().map(Text::asOrderedText).toList();
 				} else {
-					return FluidTextUtil.getShortenedStorageTooltips(storageView);
+					return FluidTextUtil.getShortenedStorageTooltips(storageView).stream().map(Text::asOrderedText).toList();
 				}
 			} else {
-				return ImmutableList.of(TextUtil.getPercentage(getCurrent().getAsDouble(), getMaximum().getAsDouble()));
+				return ImmutableList.of(TextUtil.getPercentage(getCurrent().getAsDouble(), getMaximum().getAsDouble()).asOrderedText());
 			}
 		});
 	}

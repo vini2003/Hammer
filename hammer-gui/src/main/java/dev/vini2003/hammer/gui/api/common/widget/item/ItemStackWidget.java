@@ -35,7 +35,10 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.OrderedText;
+import net.minecraft.text.Text;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class ItemStackWidget extends Widget implements ItemStackProvider {
@@ -43,27 +46,23 @@ public class ItemStackWidget extends Widget implements ItemStackProvider {
 	
 	protected Supplier<ItemStack> stack = () -> ItemStack.EMPTY;
 	
+	protected boolean initializedTooltip = false;
+	
 	public ItemStackWidget() {
 		super();
-		
-		if (rootCollection.isClient()) {
-			initOnClient();
-		}
 	}
 	
 	@Environment(EnvType.CLIENT)
-	protected void initOnClient() {
-		setTooltipSupplier(() -> {
-			var stack = this.stack.get();
+	protected List<OrderedText> getTooltipOnClient() {
+		var stack = this.stack.get();
+		
+		if (stack.isEmpty()) {
+			return ImmutableList.of(TextUtil.getEmpty().asOrderedText());
+		} else {
+			var client = InstanceUtil.getClient();
 			
-			if (stack.isEmpty()) {
-				return ImmutableList.of(TextUtil.getEmpty());
-			} else {
-				var client = InstanceUtil.getClient();
-				
-				return stack.getTooltip(client.player, client.options.advancedItemTooltips ? TooltipContext.ADVANCED : TooltipContext.BASIC);
-			}
-		});
+			return stack.getTooltip(client.player, client.options.advancedItemTooltips ? TooltipContext.ADVANCED : TooltipContext.BASIC).stream().map(Text::asOrderedText).toList();
+		}
 	}
 	
 	@Override
@@ -74,6 +73,12 @@ public class ItemStackWidget extends Widget implements ItemStackProvider {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		if (!initializedTooltip) {
+			initializedTooltip = true;
+			
+			setTooltip(this::getTooltipOnClient);
+		}
+		
 		context.drawItem(stack.get(), (int) getX(), (int) getY());
 	}
 	

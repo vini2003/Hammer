@@ -36,7 +36,10 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.text.OrderedText;
+import net.minecraft.text.Text;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class ItemWidget extends Widget implements ItemProvider {
@@ -44,20 +47,23 @@ public class ItemWidget extends Widget implements ItemProvider {
 	
 	protected Supplier<Item> item = () -> Items.AIR;
 	
+	protected boolean initializedTooltip = false;
+	
 	public ItemWidget() {
 		super();
+	}
+	
+	@Environment(EnvType.CLIENT)
+	protected List<OrderedText> getTooltipOnClient() {
+		var item = this.item.get();
 		
-		setTooltipSupplier(() -> {
-			var item = this.item.get();
+		if (item == Items.AIR) {
+			return ImmutableList.of(TextUtil.getEmpty().asOrderedText());
+		} else {
+			var client = InstanceUtil.getClient();
 			
-			if (item == Items.AIR) {
-				return ImmutableList.of(TextUtil.getEmpty());
-			} else {
-				var client = InstanceUtil.getClient();
-				
-				return item.getDefaultStack().getTooltip(client.player, client.options.advancedItemTooltips ? TooltipContext.ADVANCED : TooltipContext.BASIC);
-			}
-		});
+			return item.getDefaultStack().getTooltip(client.player, client.options.advancedItemTooltips ? TooltipContext.ADVANCED : TooltipContext.BASIC).stream().map(Text::asOrderedText).toList();
+		}
 	}
 	
 	@Override
@@ -68,6 +74,12 @@ public class ItemWidget extends Widget implements ItemProvider {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		if (!initializedTooltip) {
+			initializedTooltip = true;
+			
+			setTooltip(this::getTooltipOnClient);
+		}
+		
 		context.drawItem(item.get().getDefaultStack(), (int) getX(), (int) getY());
 	}
 	

@@ -189,7 +189,6 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 		if (shouldSync(event.type()) && (isFocused() || rootCollection != null && rootCollection.isScreenHandler() && rootCollection.isClient())) {
 			var buf = PacketByteBufs.create();
 			buf.writeInt(Objects.hash(position, size));
-			System.out.println(Objects.hash(position, size));
 			
 			event.writeToBuf(buf);
 			
@@ -334,7 +333,9 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 	
 	@Deprecated
 	public void setTooltipSupplier(Supplier<List<Text>> tooltipSupplier) {
-		this.tooltip = () -> tooltipSupplier.get().stream().map(Text::asOrderedText).toList();
+		if (tooltipSupplier.get() != null) {
+			this.tooltip = () -> tooltipSupplier.get().stream().map(Text::asOrderedText).toList();
+		}
 	}
 	
 	public void setHidden(boolean hidden) {

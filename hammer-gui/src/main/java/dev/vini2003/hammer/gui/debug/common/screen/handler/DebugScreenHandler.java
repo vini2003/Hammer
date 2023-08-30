@@ -45,8 +45,6 @@ public class DebugScreenHandler extends BaseScreenHandler {
 			
 			panel.add(widget);
 		}
-		
-		System.out.println(" ??? ? ");
 	}
 	
 	@Override

@@ -80,13 +80,13 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 	protected int selected = 0;
 	
 	public TabWidget() {
-		setTooltipSupplier(() -> {
+		setTooltip(() -> {
 			var tabIndex = 0;
 			
 			for (var tabRectangle : tabRectangles) {
 				if (tabRectangle.isPositionWithin(PositionUtil.getMousePosition())) {
 					if (tabTooltips.size() >= tabIndex) {
-						return tabTooltips.get(tabIndex).get();
+						return tabTooltips.get(tabIndex).get().stream().map(Text::asOrderedText).toList();
 					}
 				}
 				
@@ -103,7 +103,7 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 	}
 	
 	public TabCollection addTab(Supplier<ItemStack> symbol) {
-		return addTab(symbol, () -> null);
+		return addTab(symbol, () -> ImmutableList.of());
 	}
 	
 	public TabCollection addTab(Supplier<ItemStack> symbol, Supplier<List<Text>> tooltip) {

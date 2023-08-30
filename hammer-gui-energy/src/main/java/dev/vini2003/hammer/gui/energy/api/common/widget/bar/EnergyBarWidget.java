@@ -32,6 +32,7 @@ import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget;
 import dev.vini2003.hammer.gui.energy.api.common.util.EnergyTextUtil;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.Text;
 import team.reborn.energy.api.EnergyStorage;
 
 import java.util.function.Supplier;
@@ -46,15 +47,15 @@ public class EnergyBarWidget extends ImageBarWidget {
 		foregroundTexture = () -> STANDARD_FOREGROUND_TEXTURE;
 		backgroundTexture = () -> STANDARD_BACKGROUND_TEXTURE;
 		
-		setTooltipSupplier(() -> {
+		setTooltip(() -> {
 			if (storage.get() == null) {
-				return ImmutableList.of(TextUtil.getEmpty());
+				return ImmutableList.of(TextUtil.getEmpty().asOrderedText());
 			}
 			
 			if (Screen.hasShiftDown()) {
-				return EnergyTextUtil.getDetailedTooltips(storage.get());
+				return EnergyTextUtil.getDetailedTooltips(storage.get()).stream().map(Text::asOrderedText).toList();
 			} else {
-				return EnergyTextUtil.getShortenedTooltips(storage.get());
+				return EnergyTextUtil.getShortenedTooltips(storage.get()).stream().map(Text::asOrderedText).toList();
 			}
 		});
 	}

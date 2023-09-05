@@ -25,7 +25,6 @@
 package dev.vini2003.hammer.core.api.common.util;
 
 import com.mojang.brigadier.StringReader;
-import net.minecraft.client.util.math.Vector2f;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.registry.RegistryKey;
@@ -134,15 +133,6 @@ public class NbtUtil {
 	
 	public static Vec3i getVec3i(NbtCompound nbt, String key) {
 		return new Vec3i(nbt.getInt(key + "X"), nbt.getInt(key + "Y"), nbt.getInt(key + "Z"));
-	}
-	
-	public static void putVector2f(NbtCompound nbt, String key, Vector2f value) {
-		nbt.putFloat(key + "X", value.getX());
-		nbt.putFloat(key + "Y", value.getY());
-	}
-	
-	public static Vector2f getVector2f(NbtCompound nbt, String key) {
-		return new Vector2f(nbt.getFloat(key + "X"), nbt.getFloat(key + "Y"));
 	}
 	
 	public static void putVector3d(NbtCompound nbt, String key, Vector3d value) {

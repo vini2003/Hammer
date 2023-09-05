@@ -186,7 +186,7 @@ public class Zone {
 			);
 		}
 		
-		zone.setColor(Color.fromNbt(nbt.getCompound("Color")));
+		zone.setColor(Color.fromNbt(nbt.get("Color")));
 		
 		if (nbt.contains("Group")) {
 			zone.setGroup(ZoneGroupManager.getOrCreate(NbtUtil.getIdentifier(nbt, "Group")));
@@ -371,15 +371,39 @@ public class Zone {
 	}
 	
 	/**
-	 * Returns whether this zone contains a position.
+	 * Returns whether this zone contains a position or not.
 	 * @param position The position.
-	 * @return Whether this zone contains the position.
+	 * @return Whether this zone contains the position or not.
 	 */
 	public boolean isPositionWithin(Position position) {
 		return position.getX() >= minPos.getX() && position.getX() <= maxPos.getX() &&
 			   position.getY() >= minPos.getY() && position.getY() <= maxPos.getY() &&
 			   position.getZ() >= minPos.getZ() && position.getZ() <= maxPos.getZ();
 	}
+	
+	/**
+	 * Returns whether this zone contains a  coordinate or not.
+	 * @param x The X coordinate component.
+	 * @param y The Y coordinate component.
+	 * @param z The Z coordinate component.
+	 * @return Whether this zone contains the coordinate or not.
+	 */
+	public boolean isPositionWithin(float x, float y, float z) {
+		return x >= minPos.getX() && x <= maxPos.getX() &&
+			   y >= minPos.getY() && y <= maxPos.getY() &&
+			   z >= minPos.getZ() && z <= maxPos.getZ();
+	}
+	
+	/**
+	 * Returns whether this zone contains a  coordinate or not.
+	 * @param x The X coordinate component.
+	 * @param z The Z coordinate component.
+	 * @return Whether this zone contains the coordinate or not.
+	 */
+	 public boolean isPositionWithin(float x, float z) {
+		return x >= minPos.getX() && x <= maxPos.getX() &&
+			   z >= minPos.getZ() && z <= maxPos.getZ();
+	 }
 	
 	/**
 	 * Returns the positions within this zone.
@@ -416,27 +440,30 @@ public class Zone {
 		
 		this.setMinPos(centerPos);
 		this.setMaxPos(centerPos);
+		
+		// TODO: Check if this works as expected.
+		this.setGroup(null);
 	}
 	
 	/**
-	 * Returns whether or not the zone is removed.
-	 * @return Whether or not the zone is removed.
+	 * Returns whether the zone is removed or not.
+	 * @return Whether the zone is removed or not.
 	 */
 	public boolean isRemoved() {
 		return removed;
 	}
 	
 	/**
-	 * Sets whether the zone is locked.
-	 * @param locked Whether the zone is locked.
+	 * Sets whether the zone is locked or not.
+	 * @param locked Whether the zone is locked or not.
 	 */
 	public void setLocked(boolean locked) {
 		this.locked = locked;
 	}
 	
 	/**
-	 * Returns whether or not this zone is locked.
-	 * @return Whether or not this zone is locked.
+	 * Returns whether this zone is locked or not.
+	 * @return Whether this zone is locked or not.
 	 */
 	public boolean isLocked() {
 		return locked;

@@ -258,7 +258,8 @@ public class HZCommands {
 			
 			index += 1;
 			
-			source.sendFeedback(Text.translatable("command.hammer.zone.list.entry", zone.getId(), String.format("#%08X", zone.getColor().toRgba())));
+			var group = zone.getGroup();
+			source.sendFeedback(Text.translatable("command.hammer.zone.list.entry", zone.getId(), String.format("#%08X", zone.getColor().toRgba()), group == null ? "none" : group.getId()));
 		}
 		
 		if (zones.size() / 10 > 0) {
@@ -294,7 +295,8 @@ public class HZCommands {
 		
 		for (var zone : zones) {
 			if (index > (page * 10) && index < ((page + 1) * 10)) {
-				source.sendFeedback(Text.translatable("command.hammer.zone.list.entry", zone.getId(), String.format("#%08X", zone.getColor().toRgba())));
+				var group = zone.getGroup();
+				source.sendFeedback(Text.translatable("command.hammer.zone.list.entry", zone.getId(), String.format("#%08X", zone.getColor().toRgba()), group == null ? "none" : group.getId()));
 			}
 			
 			index += 1;

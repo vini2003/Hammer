@@ -976,6 +976,10 @@ public abstract class TextEditorWidget extends Widget {
 	}
 	
 	protected int getLineWidth(int lineIndex) {
+		if (lineIndex < 0) {
+			return 0;
+		}
+		
 		if (lineIndex > lines.size() - 1) {
 			return 0;
 		}

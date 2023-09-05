@@ -28,7 +28,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.util.math.Vector2f;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.*;
@@ -316,15 +315,6 @@ public class Position implements PositionHolder {
 	}
 	
 	/**
-	 * Converts a {@link Vector2f} to a position.
-	 * @param vector2f The vector.
-	 * @return The position.
-	 */
-	public Position(Vector2f vector2f) {
-		this(vector2f.getX(), vector2f.getY());
-	}
-	
-	/**
 	 * Converts a {@link Vector3d} to a position.
 	 * @param vector3d The vector.
 	 * @return The position.
@@ -381,14 +371,6 @@ public class Position implements PositionHolder {
 	 */
 	public Vec3i toVec3i() {
 		return new Vec3i((int) x, (int) y, (int) z);
-	}
-	
-	/**
-	 * Converts this position to a {@link Vector2f}.
-	 * @return The vector.
-	 */
-	public Vector2f toVector2f() {
-		return new Vector2f(x, y);
 	}
 	
 	/**

@@ -24,7 +24,6 @@
 
 package dev.vini2003.hammer.core.api.common.util;
 
-import net.minecraft.client.util.math.Vector2f;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.tag.TagKey;
@@ -96,15 +95,6 @@ public class BufUtil {
 	
 	public static Vec3i readVec3i(PacketByteBuf buf) {
 		return new Vec3i(buf.readInt(), buf.readInt(), buf.readInt());
-	}
-	
-	public static void writeVector2f(PacketByteBuf buf, Vector2f value) {
-		buf.writeFloat(value.getX());
-		buf.writeFloat(value.getY());
-	}
-	
-	public static Vector2f readVector2f(PacketByteBuf buf) {
-		return new Vector2f(buf.readFloat(), buf.readFloat());
 	}
 	
 	public static void writeVector3d(PacketByteBuf buf, Vector3d value) {

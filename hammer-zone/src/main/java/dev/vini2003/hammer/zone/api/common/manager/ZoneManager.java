@@ -60,6 +60,7 @@ public class ZoneManager {
 	 */
 	public static void add(World world, Zone zone) {
 		HZComponents.ZONES.get(world).add(zone);
+		sync(world);
 	}
 	
 	/**
@@ -69,6 +70,7 @@ public class ZoneManager {
 	 */
 	public static void remove(World world, Zone zone) {
 		HZComponents.ZONES.get(world).remove(zone);
+		sync(world);
 	}
 	
 	/**

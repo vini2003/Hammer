@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.zone.api.common.resource;
 
+import com.google.gson.JsonObject;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneManager;
@@ -59,7 +60,7 @@ public class ZoneReloadListener implements SimpleSynchronousResourceReloadListen
 				
 				var resourceString = IOUtils.toString(resourceInputStream, "UTF-8");
 				
-				var zone = HC.GSON.fromJson(resourceString, Zone.class);
+				var zone = Zone.fromJson(HC.GSON.fromJson(resourceString, JsonObject.class));
 				
 				ServerTaskQueue.enqueue((server) -> {
 					var zoneWorld = server.getWorld(zone.getWorld());

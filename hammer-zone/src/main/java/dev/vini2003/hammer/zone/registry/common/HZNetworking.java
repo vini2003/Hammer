@@ -124,8 +124,6 @@ public class HZNetworking {
 					
 					ZoneManager.add(player.getWorld(), zone);
 				}
-				
-				ZoneManager.sync(player.getWorld());
 			});
 		});
 		
@@ -160,7 +158,7 @@ public class HZNetworking {
 				}
 				
 				zone.setColor(new Color((long) 0xF500497E));
-					
+				
 				zone.markRemoved();
 				
 				ZoneManager.sync(player.getWorld());

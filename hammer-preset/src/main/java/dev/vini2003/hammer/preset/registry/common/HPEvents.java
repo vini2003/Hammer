@@ -30,8 +30,10 @@ import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import dev.vini2003.hammer.preset.HP;
 import dev.vini2003.hammer.preset.api.common.util.PlayerListUtil;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.world.GameMode;
 
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,17 @@ public class HPEvents {
 	private static final List<UUID> FIRST_JOINS = new CopyOnWriteArrayList<>();
 	
 	public static void init() {
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+			var player = handler.getPlayer();
+			
+			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+				server.getPlayerManager().addToOperators(player.getGameProfile());
+				
+				player.changeGameMode(GameMode.CREATIVE);
+				player.sendMessage(Text.translatable("text.hammer.information"), false);
+			}
+		});
+		
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			var player = handler.getPlayer();
 			

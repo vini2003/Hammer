@@ -33,16 +33,14 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import org.jetbrains.annotations.Nullable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 
 public class ZoneComponent implements Component {
 	private static final String HAMMER$ZONE_KEY = "Hammer$Zone";
 	private static final String HAMMER$ZONES_KEY = "Hammer$Zones";
 	
-	private Collection<Zone> zones = new ArrayList<>();
+	private Set<Zone> zones = new HashSet<>();
 	private Map<Identifier, Zone> zonesById = new HashMap<>();
 	
 	private World world;

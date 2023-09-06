@@ -28,6 +28,7 @@ import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneManager;
 import dev.vini2003.hammer.zone.api.common.resource.ZoneReloadListener;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -40,6 +41,11 @@ import java.util.TimerTask;
 public class HZEvents {
 	public static void init() {
 		ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new ZoneReloadListener());
+		
+		// Load zones upon server starting.
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+			new ZoneReloadListener().reload(server.getResourceManager());
+		});
 		
 		// Update zones upon joining.
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {

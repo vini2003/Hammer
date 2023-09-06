@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "hammer-emoji",
-  "version": "0.10.5",
+  "version": "${version}",
   "name": "Hammer Emoji",
   "description": "A library module.",
   "authors": [

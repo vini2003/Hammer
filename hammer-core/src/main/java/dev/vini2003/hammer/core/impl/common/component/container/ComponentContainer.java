@@ -78,18 +78,26 @@ public class ComponentContainer {
 	}
 	
 	public void readFromNbt(NbtCompound nbt) {
-		var entryNbtList = nbt.getList(HAMMER$COMPONENTS_KEY, NbtElement.COMPOUND_TYPE);
-		
-		for (var entryElement : entryNbtList) {
-			var entryNbt = (NbtCompound) entryElement;
+		try {
+			var entryNbtList = nbt.getList(HAMMER$COMPONENTS_KEY, NbtElement.COMPOUND_TYPE);
 			
-			var componentId = NbtUtil.getIdentifier(entryNbt, HAMMER$ID_KEY);
-			var componentKey = ComponentManager.getKey(componentId);
-			
-			var component = get(componentKey);
-			
-			var componentNbt = entryNbt.getCompound(HAMMER$COMPONENT_KEY);
-			component.readFromNbt(componentNbt);
+			for (var entryElement : entryNbtList) {
+				try {
+					var entryNbt = (NbtCompound) entryElement;
+					
+					var componentId = NbtUtil.getIdentifier(entryNbt, HAMMER$ID_KEY);
+					var componentKey = ComponentManager.getKey(componentId);
+					
+					var component = get(componentKey);
+					
+					var componentNbt = entryNbt.getCompound(HAMMER$COMPONENT_KEY);
+					component.readFromNbt(componentNbt);
+				} catch (Throwable throwable) {
+					System.err.println("Failed to read component from NBT!");
+				}
+			}
+		} catch (Throwable throwable) {
+			System.err.println("Failed to read component container from NBT!");
 		}
 	}
 	

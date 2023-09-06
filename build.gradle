@@ -67,6 +67,14 @@ allprojects { subproject ->
 			modImplementation("com.google.code.findbugs:jsr305:${findBugsVersion}")
 		}
 
+		processResources {
+			inputs.property "version", project.version
+
+			filesMatching("fabric.mod.json") {
+				expand "version": project.version
+			}
+		}
+
 		publishing {
 			publications {
 				mavenJava(MavenPublication) {

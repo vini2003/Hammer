@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "hammer-border",
-  "version": "0.10.5",
+  "version": "${version}",
   "name": "Hammer Border",
   "description": "A library module.",
   "authors": [

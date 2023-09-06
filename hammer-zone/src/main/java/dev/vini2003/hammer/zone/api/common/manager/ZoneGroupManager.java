@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ZoneGroupManager {
-	private static final ThreadLocal<Map<Identifier, ZoneGroup>> GROUPS = ThreadLocal.withInitial(() -> new HashMap<>());
+	private static final ThreadLocal<Map<Identifier, ZoneGroup>> GROUPS = ThreadLocal.withInitial(HashMap::new);
 	
 	/**
 	 * Returns the group with the given ID, or creates

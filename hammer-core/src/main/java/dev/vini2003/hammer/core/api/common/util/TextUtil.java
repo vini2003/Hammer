@@ -38,7 +38,7 @@ import org.apache.commons.lang3.text.WordUtils;
 
 public class TextUtil {
 	public static MutableText getEmpty() {
-		return Text.literal("text.hammer.empty").formatted(Formatting.GRAY);
+		return Text.translatable("text.hammer.empty").formatted(Formatting.GRAY);
 	}
 	
 	public static float getWidth(Text text) {

@@ -192,6 +192,10 @@ public class HZEvents {
 		
 		// Draw all the zones in the world.
 		WorldRenderEvents.AFTER_ENTITIES.register(context -> {
+			if (!HZValues.ZONE_EDITOR) {
+				return;
+			}
+			
 			var client = InstanceUtil.getClient();
 			
 			var window = client.getWindow();

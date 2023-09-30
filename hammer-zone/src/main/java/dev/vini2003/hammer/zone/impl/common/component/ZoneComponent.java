@@ -41,7 +41,6 @@ public class ZoneComponent implements Component {
 	private static final String HAMMER$ZONES_KEY = "Hammer$Zones";
 	
 	private Set<Zone> zones = new HashSet<>();
-	private Map<Identifier, Zone> zonesById = new HashMap<>();
 	
 	private World world;
 	
@@ -55,17 +54,18 @@ public class ZoneComponent implements Component {
 	
 	@Nullable
 	public Zone getById(Identifier id) {
-		return zonesById.get(id);
+		return zones.stream()
+					.filter(it -> it.getId().equals(id))
+					.findFirst()
+					.orElse(null);
 	}
 	
 	public void add(Zone zone) {
 		zones.add(zone);
-		zonesById.put(zone.getId(), zone);
 	}
 	
 	public void remove(Zone zone) {
 		zones.remove(zone);
-		zonesById.remove(zone.getId());
 	}
 	
 	@Override
@@ -87,12 +87,10 @@ public class ZoneComponent implements Component {
 			var zoneNbt = (NbtCompound) zoneElement;
 			var zone = Zone.fromNbt(zoneNbt);
 			
-			if (!zonesById.containsKey(zone.getId())) {
+			if (!zones.contains(zone)) {
 				zones.add(zone);
-				
-				zonesById.put(zone.getId(), zone);
 			} else {
-				var existingZone = zonesById.get(zone.getId());
+				var existingZone = getById(zone.getId());
 				
 				existingZone.setMinPos(zone.getMinPos());
 				existingZone.setMaxPos(zone.getMaxPos());

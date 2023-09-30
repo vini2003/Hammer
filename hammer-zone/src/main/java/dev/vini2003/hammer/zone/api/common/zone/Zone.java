@@ -595,7 +595,7 @@ public class Zone {
 		
 		var zone = (Zone) o;
 		
-		return Objects.equals(minPos, zone.minPos) && Objects.equals(maxPos, zone.maxPos);
+		return Objects.equals(id, zone.id);
 	}
 	
 	@Override

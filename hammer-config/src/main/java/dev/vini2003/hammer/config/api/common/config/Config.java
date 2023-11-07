@@ -36,17 +36,16 @@ public class Config {
 		var configPath = InstanceUtil.getFabric().getConfigDir();
 		var configFilePath = configPath.resolve(path);
 		
+		if (!Files.exists(configFilePath)) {
+			save();
+		}
+		
 		try (var reader = Files.newBufferedReader(configFilePath)) {
-			for (var i = 0; i < 2; ++i) {
-				if (i == 1) {
-					save();
-				} else {
-					var config = HC.GSON.fromJson(reader, getClass());
-					
-					for (var field : getClass().getDeclaredFields()) {
-						field.set(this, field.get(config));
-					}
-				}
+			var config = HC.GSON.fromJson(reader, getClass());
+			
+			for (var field : getClass().getDeclaredFields()) {
+				field.setAccessible(true);
+				field.set(this, field.get(config));
 			}
 		} catch (Exception e) {
 			HC.LOGGER.error("Failed to load config at " + path + "!");
@@ -58,10 +57,13 @@ public class Config {
 		var configPath = InstanceUtil.getFabric().getConfigDir();
 		var configFilePath = configPath.resolve(path);
 		
-		try (var writer = Files.newBufferedWriter(configFilePath)) {
-			HC.GSON.toJson(this, writer);
+		try {
+			Files.createDirectories(configPath);
 			
-			writer.flush();
+			try (var writer = Files.newBufferedWriter(configFilePath)) {
+				HC.GSON.toJson(this, writer);
+				writer.flush();
+			}
 		} catch (Exception e) {
 			HC.LOGGER.error("Failed to save config at " + path + "!");
 			e.printStackTrace();

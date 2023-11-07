@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.gravity.api.common.manager;
 
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.util.BufUtil;
 import dev.vini2003.hammer.gravity.registry.common.HGNetworking;
@@ -83,7 +84,8 @@ public class GravityManager {
 			} else {
 				syncOnClient();
 			}
-		} catch (Exception ignored) {
+		} catch (Exception e) {
+			HC.LOGGER.error("Failed to synchronize gravities!");
 		}
 	}
 	

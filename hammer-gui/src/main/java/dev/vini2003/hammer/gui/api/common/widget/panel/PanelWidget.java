@@ -40,7 +40,7 @@ import java.util.Collection;
 import java.util.function.Supplier;
 
 public class PanelWidget extends Widget implements WidgetCollection, TextureProvider {
-	public static final Size STANDARD_SIZE = new Size(96.0F, 96.0F);
+	public static final Size STANDARD_SIZE = Size.of(96.0F, 96.0F);
 	
 	public static final Texture STANDARD_TEXTURE = new PartitionedTexture(HC.id("textures/widget/panel.png"), 18.0F, 18.0F, 0.25F, 0.25F, 0.25F, 0.25F);
 	
@@ -61,18 +61,16 @@ public class PanelWidget extends Widget implements WidgetCollection, TextureProv
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		onBeginDraw(context, tickDelta);
+		
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();
 		
 		texture.get().draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
 		
-		// TODO: Check if we need the immediate#draw call here.
+		super.draw(context, tickDelta);
 		
-		for (var child : getChildren()) {
-			if (!child.isHidden()) {
-				child.draw(context, tickDelta);
-			}
-		}
+		onEndDraw(context, tickDelta);
 	}
 	
 	@Override

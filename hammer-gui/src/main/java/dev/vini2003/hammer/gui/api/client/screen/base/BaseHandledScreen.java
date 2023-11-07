@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.gui.api.client.screen.base;
 
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.gui.api.common.event.*;
@@ -35,6 +36,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.joml.Vector2i;
@@ -69,8 +71,12 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			
 			ClientPlayNetworking.send(HGUINetworking.SYNC_SCREEN_HANDLER, buf);
 		} catch (Exception e) {
+			HC.LOGGER.error("A screen failed to initialize!");
 			e.printStackTrace();
-			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			
+			handler.getPlayer().sendMessage(Text.literal("A screen failed to initialize!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			
 			handler.onClosed(handler.getPlayer());
 		}
 	}
@@ -105,8 +111,12 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			
 			return super.mouseClicked(mouseX, mouseY, button);
 		} catch (Exception e) {
+			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
-			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			
+			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			
 			handler.onClosed(handler.getPlayer());
 			
 			return false;
@@ -122,8 +132,12 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			
 			return super.mouseReleased(mouseX, mouseY, button);
 		} catch (Exception e) {
+			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
-			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			
+			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			
 			handler.onClosed(handler.getPlayer());
 			
 			return false;
@@ -139,8 +153,12 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			
 			return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 		} catch (Exception e) {
+			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
-			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			
+			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			
 			handler.onClosed(handler.getPlayer());
 			
 			return false;
@@ -156,8 +174,12 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			
 			super.mouseMoved(mouseX, mouseY);
 		} catch (Exception e) {
+			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
-			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			
+			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			
 			handler.onClosed(handler.getPlayer());
 		}
 	}
@@ -171,8 +193,12 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			
 			return super.mouseScrolled(mouseX, mouseY, amount);
 		} catch (Exception e) {
+			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
-			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			
+			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			
 			handler.onClosed(handler.getPlayer());
 			
 			return false;
@@ -200,8 +226,12 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 				return false;
 			}
 		} catch (Exception e) {
+			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
-			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			
+			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			
 			handler.onClosed(handler.getPlayer());
 			
 			return false;
@@ -217,8 +247,12 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			
 			return super.keyReleased(keyCode, scanCode, modifiers);
 		} catch (Exception e) {
+			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
-			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			
+			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			
 			handler.onClosed(handler.getPlayer());
 			
 			return false;
@@ -234,8 +268,12 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			
 			return super.charTyped(chr, modifiers);
 		} catch (Exception e) {
+			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
-			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			
+			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			
 			handler.onClosed(handler.getPlayer());
 			
 			return false;
@@ -245,7 +283,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 	@Override
 	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
 		try {
-			super.renderBackground(context);
+			renderBackground(context);
 			
 			var client = InstanceUtil.getClient();
 			
@@ -282,8 +320,12 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			
 			super.drawMouseoverTooltip(context, mouseX, mouseY);
 		} catch (Exception e) {
+			HC.LOGGER.error("A screen failed to render!");
 			e.printStackTrace();
-			handler.getPlayer().sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			
+			handler.getPlayer().sendMessage(Text.literal("A screen failed to render!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			
 			handler.onClosed(handler.getPlayer());
 		}
 	}

@@ -39,7 +39,7 @@ import java.util.function.Supplier;
  * <b>This widget is client-side only.</b>
  */
 public class TextFieldWidget extends TextEditorWidget implements TextureProvider {
-	public static final Size STANDARD_SIZE = new Size(72.0F, 18.0F);
+	public static final Size STANDARD_SIZE = Size.of(72.0F, 18.0F);
 	public static final Texture STANDARD_TEXTURE = new PartitionedTexture(HC.id("textures/widget/text_field.png"), 18.0F, 18.0F, 0.055F, 0.055F, 0.055F, 0.055F);
 	
 	protected Supplier<Texture> texture = () -> STANDARD_TEXTURE;
@@ -65,12 +65,16 @@ public class TextFieldWidget extends TextEditorWidget implements TextureProvider
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		onBeginDraw(context, tickDelta);
+		
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();
 		
 		texture.get().draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
 		
 		renderField(matrices, provider);
+		
+		onEndDraw(context, tickDelta);
 	}
 	
 	public void setLength(int length) {

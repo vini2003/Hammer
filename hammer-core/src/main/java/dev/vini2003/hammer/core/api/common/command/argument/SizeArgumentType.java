@@ -108,7 +108,7 @@ public class SizeArgumentType implements ArgumentType<Size> {
 
 		if (!reader.canRead()) {
 			try {
-				return new Size(width, height);
+				return Size.of(width, height);
 			} catch (NumberFormatException exception) {
 				reader.setCursor(cursor);
 				
@@ -127,7 +127,7 @@ public class SizeArgumentType implements ArgumentType<Size> {
 		cursor = reader.getCursor();
 		
 		try {
-			return new Size(width, height, length);
+			return Size.of(width, height, length);
 		} catch (NumberFormatException exception) {
 			reader.setCursor(cursor);
 			

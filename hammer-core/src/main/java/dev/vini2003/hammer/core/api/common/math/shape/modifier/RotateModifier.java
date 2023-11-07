@@ -25,10 +25,9 @@
 package dev.vini2003.hammer.core.api.common.math.shape.modifier;
 
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 import org.joml.Quaternionf;
-
-import java.util.Random;
 
 /**
  * A {@link RotateModifier} is a {@link Shape} modifier that applies a rotation to blocks inside the shape.
@@ -51,8 +50,8 @@ public class RotateModifier implements Modifier {
 	 * @return the modified shape.
 	 */
 	@Override
-	public Position modifyStartPos(Shape shape) {
-		var minPos = new Position(Float.MAX_VALUE, Float.MAX_VALUE);
+	public StaticPosition modifyStartPos(Shape shape) {
+		var minPos = Position.of(Float.MAX_VALUE, Float.MAX_VALUE);
 		
 		for (var p : shape.getPositions()) {
 			if (p.getX() < minPos.getX() || p.getY() < minPos.getY() || p.getZ() < minPos.getZ()) {
@@ -73,8 +72,8 @@ public class RotateModifier implements Modifier {
 	 * @return the modified shape.
 	 */
 	@Override
-	public Position modifyEndPos(Shape shape) {
-		var maxPos = new Position(Float.MIN_VALUE, Float.MIN_VALUE);
+	public StaticPosition modifyEndPos(Shape shape) {
+		var maxPos = Position.of(Float.MIN_VALUE, Float.MIN_VALUE);
 		
 		for (var p : shape.getPositions()) {
 			if (p.getX() > maxPos.getX() || p.getY() > maxPos.getY() || p.getZ() > maxPos.getZ()) {
@@ -95,7 +94,7 @@ public class RotateModifier implements Modifier {
 	 * @return the modified position.
 	 */
 	@Override
-	public Position modifyEquation(Position pos) {
+	public StaticPosition modifyEquation(StaticPosition pos) {
 		return pos.rotate(rotation);
 	}
 }

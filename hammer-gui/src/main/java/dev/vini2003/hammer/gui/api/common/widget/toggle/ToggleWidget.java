@@ -49,7 +49,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 public class ToggleWidget extends Widget implements EnabledTextureProvider, DisabledTextureProvider, DisabledProvider, LabelProvider {
-	public static final Size STANDARD_SIZE = new Size(18.0F, 18.0F);
+	public static final Size STANDARD_SIZE = Size.of(18.0F, 18.0F);
 	
 	public static final Texture STANDARD_ENABLED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/toggle_enabled.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
 	public static final Texture STANDARD_DISABLED_TEXTURE = new PartitionedTexture(HC.id("textures/widget/toggle_disabled.png"), 18.0F, 18.0F, 0.11F, 0.11F, 0.11F, 0.16F);
@@ -88,6 +88,8 @@ public class ToggleWidget extends Widget implements EnabledTextureProvider, Disa
 	@Override 
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		onBeginDraw(context, tickDelta);
+		
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();
 		
@@ -101,10 +103,7 @@ public class ToggleWidget extends Widget implements EnabledTextureProvider, Disa
 		
 		texture.draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
 		
-		// In 1.20.1, it is an Immediate by default.
-		// if (provider instanceof VertexConsumerProvider.Immediate immediate) {
-			provider.draw();
-		// }
+		provider.draw();
 		
 		var label = this.label.get();
 		
@@ -114,6 +113,8 @@ public class ToggleWidget extends Widget implements EnabledTextureProvider, Disa
 			// TODO: Check if this is equivalent to the 1.19.2 code.
 			context.drawTextWithShadow(textRenderer, label.asOrderedText(), (int) (getX() + (getWidth() / 2.0F - TextUtil.getWidth(label) / 2.0F)), (int) (getY() + (getHeight() / 2.0F - TextUtil.getHeight(label) / 2.0F)), 0xFCFCFC);
 		}
+		
+		onEndDraw(context, tickDelta);
 	}
 	
 	@Environment(EnvType.CLIENT)

@@ -34,7 +34,7 @@ public abstract class SchematicStage extends Stage {
 			var gridPosition = gridComponent.allocatePosition();
 			
 			setPosition(gridPosition);
-			setSize(new Size(1024.0F, 1024.0F));
+			setSize(Size.of(1024.0F, 1024.0F));
 		} catch (Exception exception) {
 			throw new RuntimeException("Failed to create stage", exception);
 		}

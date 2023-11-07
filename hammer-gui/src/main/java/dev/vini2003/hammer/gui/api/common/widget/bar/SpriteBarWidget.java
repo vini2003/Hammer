@@ -36,8 +36,8 @@ import net.minecraft.client.texture.Sprite;
 import java.util.function.Supplier;
 
 public class SpriteBarWidget extends BarWidget implements ForegroundSpriteProvider, BackgroundSpriteProvider, SmoothProvider, InvertProvider, StepWidthProvider, StepHeightProvider {
-	public static final Size STANDARD_VERTICAL_SIZE = new Size(24.0F, 48.0F);
-	public static final Size STANDARD_HORIZONTAL_SIZE = new Size(48.0F, 24.0F);
+	public static final Size STANDARD_VERTICAL_SIZE = Size.of(24.0F, 48.0F);
+	public static final Size STANDARD_HORIZONTAL_SIZE = Size.of(48.0F, 24.0F);
 	
 	protected float stepWidth = -1.0F;
 	protected float stepHeight = -1.0F;
@@ -53,6 +53,8 @@ public class SpriteBarWidget extends BarWidget implements ForegroundSpriteProvid
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		onBeginDraw(context, tickDelta);
+		
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();
 		
@@ -122,6 +124,8 @@ public class SpriteBarWidget extends BarWidget implements ForegroundSpriteProvid
 				scissors.destroy();
 			}
 		}
+		
+		onEndDraw(context, tickDelta);
 	}
 	
 	@Override

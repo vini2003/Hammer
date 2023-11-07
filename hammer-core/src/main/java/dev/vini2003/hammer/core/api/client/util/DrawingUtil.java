@@ -26,6 +26,7 @@ package dev.vini2003.hammer.core.api.client.util;
 
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
@@ -37,8 +38,6 @@ import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-
-import javax.swing.plaf.synth.ColorType;
 
 public class DrawingUtil {
 	public static final int DEFAULT_OVERLAY = OverlayTexture.DEFAULT_UV;
@@ -177,17 +176,17 @@ public class DrawingUtil {
 		
 		var peek = matrices.peek();
 		
-		var a = new Position(x - (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F));
-		var b = new Position(x + (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F));
+		var a = Position.of(x - (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F));
+		var b = Position.of(x + (width / 2.0F), y - (height / 2.0F), z - (depth / 2.0F));
 		
-		var c = new Position(x - (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F));
-		var d = new Position(x + (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F));
+		var c = Position.of(x - (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F));
+		var d = Position.of(x + (width / 2.0F), y + (height / 2.0F), z - (depth / 2.0F));
 				
-		var e = new Position(x - (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F));
-		var f = new Position(x + (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F));
+		var e = Position.of(x - (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F));
+		var f = Position.of(x + (width / 2.0F), y - (height / 2.0F), z + (depth / 2.0F));
 				
-		var g = new Position(x - (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F));
-		var h = new Position(x + (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F));
+		var g = Position.of(x - (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F));
+		var h = Position.of(x + (width / 2.0F), y + (height / 2.0F), z + (depth / 2.0F));
 		
 		
 		// A to B

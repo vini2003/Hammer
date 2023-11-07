@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.core.api.common.util;
 
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.loader.api.FabricLoader;
 
 import net.minecraft.text.MutableText;
@@ -42,11 +43,19 @@ public class TextUtil {
 	}
 	
 	public static float getWidth(Text text) {
-		return DrawingUtil.getTextRenderer().getWidth(text);
+		if (InstanceUtil.isClient()) {
+			return DrawingUtil.getTextRenderer().getWidth(text);
+		} else {
+			return 0.0F;
+		}
 	}
 	
 	public static float getWidth(String string) {
-		return DrawingUtil.getTextRenderer().getWidth(string);
+		if (InstanceUtil.isClient()) {
+			return DrawingUtil.getTextRenderer().getWidth(string);
+		} else {
+			return 0.0F;
+		}
 	}
 	
 	public static float getHeight(Text text) {

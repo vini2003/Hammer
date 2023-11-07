@@ -74,6 +74,14 @@ public interface WidgetCollection {
 		}
 	}
 	
+	default void add(Widget child, float offsetX, float offsetY) {
+		if (this instanceof Widget parent) {
+			child.setPosition(parent, offsetX, offsetY);
+			
+			add(child);
+		}
+	}
+	
 	/**
 	 * Removes a widget from this collection.
 	 *

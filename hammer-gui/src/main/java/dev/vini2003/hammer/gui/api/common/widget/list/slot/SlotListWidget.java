@@ -65,7 +65,7 @@ public class SlotListWidget extends Widget implements WidgetCollection {
 	
 	@Override
 	public Size getStandardSize() {
-		return new Size(widthInSlots * 18.0F, heightInSlots * 18.0F);
+		return Size.of(widthInSlots * 18.0F, heightInSlots * 18.0F);
 	}
 	
 	@Override
@@ -129,16 +129,6 @@ public class SlotListWidget extends Widget implements WidgetCollection {
 	@Override
 	public Collection<Widget> getChildren() {
 		return children;
-	}
-	
-	@Override
-	@Environment(EnvType.CLIENT)
-	public void draw(DrawContext context, float tickDelta) {
-		for (var child : getChildren()) {
-			if (!child.isHidden()) {
-				child.draw(context, tickDelta);
-			}
-		}
 	}
 	
 	protected int getBottomRow() {

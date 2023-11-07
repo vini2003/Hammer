@@ -43,8 +43,8 @@ import net.minecraft.text.Text;
 import java.util.function.Supplier;
 
 public class FluidBarWidget extends BarWidget implements SmoothProvider, TiledProvider {
-	public static final Size STANDARD_VERTICAL_SIZE = new Size(24.0F, 48.0F);
-	public static final Size STANDARD_HORIZONTAL_SIZE = new Size(48.0F, 24.0F);
+	public static final Size STANDARD_VERTICAL_SIZE = Size.of(24.0F, 48.0F);
+	public static final Size STANDARD_HORIZONTAL_SIZE = Size.of(48.0F, 24.0F);
 	
 	protected Supplier<StorageView<FluidVariant>> storageView = () -> null;
 	
@@ -77,6 +77,8 @@ public class FluidBarWidget extends BarWidget implements SmoothProvider, TiledPr
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		onBeginDraw(context, tickDelta);
+		
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();
 		
@@ -110,6 +112,8 @@ public class FluidBarWidget extends BarWidget implements SmoothProvider, TiledPr
 			
 			scissors.destroy();
 		}
+		
+		onEndDraw(context, tickDelta);
 	}
 	
 	public void setStorageView(Supplier<StorageView<FluidVariant>> storageViewSupplier) {

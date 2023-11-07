@@ -26,25 +26,12 @@ package dev.vini2003.hammer.core;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.vini2003.hammer.core.api.common.command.argument.PositionArgumentType;
-import dev.vini2003.hammer.core.api.common.manager.CommandManager;
-import dev.vini2003.hammer.core.api.common.manager.CommandManager.*;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.registry.common.*;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.command.argument.BlockPosArgumentType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 @ApiStatus.Internal
 public class HC implements ModInitializer {

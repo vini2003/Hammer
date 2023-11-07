@@ -28,6 +28,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.core.api.common.util.BufUtil;
 import dev.vini2003.hammer.core.api.common.util.NbtUtil;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneGroupManager;
@@ -37,7 +38,6 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.World;
 
@@ -65,11 +65,11 @@ public class Zone {
 	private final RegistryKey<World> world;
 	private final Identifier id;
 	
-	private Position minPos;
-	private Position maxPos;
+	private StaticPosition minPos;
+	private StaticPosition maxPos;
 	
-	private transient Position lerpedMinPos;
-	private transient Position lerpedMaxPos;
+	private transient StaticPosition lerpedMinPos;
+	private transient StaticPosition lerpedMaxPos;
 	
 	private Color color = new Color((long) 0x25ABFF7E);
 	
@@ -87,8 +87,8 @@ public class Zone {
 	public static PacketByteBuf toBuf(Zone zone, PacketByteBuf buf) {
 		BufUtil.writeRegistryKey(buf, zone.getWorld());
 		buf.writeIdentifier(zone.getId());
-		Position.toBuf(zone.getMinPos(), buf);
-		Position.toBuf(zone.getMaxPos(), buf);
+		StaticPosition.toBuf(zone.getMinPos(), buf);
+		StaticPosition.toBuf(zone.getMaxPos(), buf);
 		Color.toBuf(zone.getColor(), buf);
 		
 		if (zone.getGroup() != null) {
@@ -109,8 +109,8 @@ public class Zone {
 	public static Zone fromBuf(PacketByteBuf buf) {
 		var world = BufUtil.<World>readRegistryKey(buf);
 		var id = buf.readIdentifier();
-		var minPos = Position.fromBuf(buf);
-		var maxPos = Position.fromBuf(buf);
+		var minPos = StaticPosition.fromBuf(buf);
+		var maxPos = StaticPosition.fromBuf(buf);
 		var color = Color.fromBuf(buf);
 		
 		if (buf.readBoolean()) {
@@ -149,8 +149,8 @@ public class Zone {
 		
 		NbtUtil.putIdentifier(nbt, "Id", zone.getId());
 		
-		nbt.put("MinPos", Position.toNbt(zone.getMinPos()));
-		nbt.put("MaxPos", Position.toNbt(zone.getMaxPos()));
+		nbt.put("MinPos", StaticPosition.toNbt(zone.getMinPos()));
+		nbt.put("MaxPos", StaticPosition.toNbt(zone.getMaxPos()));
 		
 		nbt.put("Color", Color.toNbt(zone.getColor()));
 		
@@ -174,15 +174,15 @@ public class Zone {
 					NbtUtil.getRegistryKey(nbt, "WorldId"),
 					NbtUtil.getIdentifier(nbt, "Id"),
 					ZoneGroupManager.getOrCreate(NbtUtil.getIdentifier(nbt, "GroupId")),
-					Position.fromNbt(nbt.getCompound("MinPos")),
-					Position.fromNbt(nbt.getCompound("MaxPos"))
+					StaticPosition.fromNbt(nbt.getCompound("MinPos")),
+					StaticPosition.fromNbt(nbt.getCompound("MaxPos"))
 			);
 		} else {
 			zone = new Zone(
 					NbtUtil.getRegistryKey(nbt, "WorldId"),
 					NbtUtil.getIdentifier(nbt, "Id"),
-					Position.fromNbt(nbt.getCompound("MinPos")),
-					Position.fromNbt(nbt.getCompound("MaxPos"))
+					StaticPosition.fromNbt(nbt.getCompound("MinPos")),
+					StaticPosition.fromNbt(nbt.getCompound("MaxPos"))
 			);
 		}
 		
@@ -211,8 +211,8 @@ public class Zone {
 		
 		json.addProperty("id", zone.getId().toString());
 		
-		json.add("min_pos", Position.toJson(zone.getMinPos()));
-		json.add("max_pos", Position.toJson(zone.getMaxPos()));
+		json.add("min_pos", StaticPosition.toJson(zone.getMinPos()));
+		json.add("max_pos", StaticPosition.toJson(zone.getMaxPos()));
 		json.add("color", Color.toJson(zone.getColor()));
 		
 		return json;
@@ -233,15 +233,15 @@ public class Zone {
 					RegistryKey.of(RegistryKeys.WORLD, new Identifier(object.get("world_id").getAsString())),
 					new Identifier(object.get("id").getAsString()),
 					ZoneGroupManager.getOrCreate(new Identifier(object.get("zone_id").getAsString())),
-					Position.fromJson(object.get("min_pos")),
-					Position.fromJson(object.get("max_pos"))
+					StaticPosition.fromJson(object.get("min_pos")),
+					StaticPosition.fromJson(object.get("max_pos"))
 			);
 		} else {
 			zone = new Zone(
 					RegistryKey.of(RegistryKeys.WORLD, new Identifier(object.get("world_id").getAsString())),
 					new Identifier(object.get("id").getAsString()),
-					Position.fromJson(object.get("min_pos")),
-					Position.fromJson(object.get("max_pos"))
+					StaticPosition.fromJson(object.get("min_pos")),
+					StaticPosition.fromJson(object.get("max_pos"))
 			);
 		}
 		
@@ -250,26 +250,26 @@ public class Zone {
 		return zone;
 	}
 	
-	public Zone(RegistryKey<World> world, Identifier id, Position startPos, Position endPos) {
+	public Zone(RegistryKey<World> world, Identifier id, StaticPosition startPos, StaticPosition endPos) {
 		this.world = world;
 		
 		this.id = id;
 		
-		this.minPos = Position.min(startPos, endPos);
-		this.maxPos = Position.max(startPos, endPos);
+		this.minPos = StaticPosition.min(startPos, endPos);
+		this.maxPos = StaticPosition.max(startPos, endPos);
 		
 		this.lerpedMinPos = getCenterPos();
 		this.lerpedMaxPos = getCenterPos();
 	}
 	
-	public Zone(RegistryKey<World> world, Identifier id, ZoneGroup group, Position startPos, Position endPos) {
+	public Zone(RegistryKey<World> world, Identifier id, ZoneGroup group, StaticPosition startPos, StaticPosition endPos) {
 		this.world = world;
 		
 		this.id = id;
 		this.group = group;
 		
-		this.minPos = Position.min(startPos, endPos);
-		this.maxPos = Position.max(startPos, endPos);
+		this.minPos = StaticPosition.min(startPos, endPos);
+		this.maxPos = StaticPosition.max(startPos, endPos);
 		
 		this.lerpedMinPos = getCenterPos();
 		this.lerpedMaxPos = getCenterPos();
@@ -296,7 +296,7 @@ public class Zone {
 	 * Returns this zone's minimum positon.
 	 * @return This zone's minimum position.
 	 */
-	public Position getMinPos() {
+	public StaticPosition getMinPos() {
 		return minPos;
 	}
 	
@@ -304,16 +304,16 @@ public class Zone {
 	 * Sets this zone's minimum position.
 	 * @param minPos The new minimum position.
 	 */
-	public void setMinPos(Position minPos) {
-		this.minPos = Position.min(maxPos, minPos);
-		this.maxPos = Position.max(maxPos, minPos);
+	public void setMinPos(StaticPosition minPos) {
+		this.minPos = StaticPosition.min(maxPos, minPos);
+		this.maxPos = StaticPosition.max(maxPos, minPos);
 	}
 	
 	/**
 	 * Returns this zone's maximum position.
 	 * @return This zone's maximum position.
 	 */
-	public Position getMaxPos() {
+	public StaticPosition getMaxPos() {
 		return maxPos;
 	}
 	
@@ -321,17 +321,17 @@ public class Zone {
 	 * Sets this zone's maximum position.
 	 * @param maxPos The new maximum position.
 	 */
-	public void setMaxPos(Position maxPos) {
-		this.minPos = Position.min(maxPos, minPos);
-		this.maxPos = Position.max(maxPos, minPos);
+	public void setMaxPos(StaticPosition maxPos) {
+		this.minPos = StaticPosition.min(maxPos, minPos);
+		this.maxPos = StaticPosition.max(maxPos, minPos);
 	}
 	
 	/**
 	 * Returns this zone's center position.
 	 * @return This zone's center position.
 	 */
-	public Position getCenterPos() {
-		return new Position(
+	public StaticPosition getCenterPos() {
+		return Position.of(
 				(minPos.getX() + maxPos.getX()) / 2,
 				(minPos.getY() + maxPos.getY()) / 2,
 				(minPos.getZ() + maxPos.getZ()) / 2
@@ -344,8 +344,8 @@ public class Zone {
 	 * @param tickDelta The tick delta.
 	 * @return The interpolated minimum position.
 	 */
-	public Position getLerpedMinPos(float tickDelta) {
-		lerpedMinPos = new Position(
+	public StaticPosition getLerpedMinPos(float tickDelta) {
+		lerpedMinPos = Position.of(
 				MathHelper.lerp(tickDelta, lerpedMinPos.getX(), minPos.getX()),
 				MathHelper.lerp(tickDelta, lerpedMinPos.getY(), minPos.getY()),
 				MathHelper.lerp(tickDelta, lerpedMinPos.getZ(), minPos.getZ())
@@ -360,8 +360,8 @@ public class Zone {
 	 * @param tickDelta The tick delta.
 	 * @return The interpolated maximum position.
 	 */
-	public Position getLerpedMaxPos(float tickDelta) {
-		lerpedMaxPos = new Position(
+	public StaticPosition getLerpedMaxPos(float tickDelta) {
+		lerpedMaxPos = Position.of(
 				MathHelper.lerp(tickDelta, lerpedMaxPos.getX(), maxPos.getX()),
 				MathHelper.lerp(tickDelta, lerpedMaxPos.getY(), maxPos.getY()),
 				MathHelper.lerp(tickDelta, lerpedMaxPos.getZ(), maxPos.getZ())
@@ -375,7 +375,7 @@ public class Zone {
 	 * @param position The position.
 	 * @return Whether this zone contains the position or not.
 	 */
-	public boolean isPositionWithin(Position position) {
+	public boolean isPositionWithin(StaticPosition position) {
 		return position.getX() >= minPos.getX() && position.getX() <= maxPos.getX() &&
 			   position.getY() >= minPos.getY() && position.getY() <= maxPos.getY() &&
 			   position.getZ() >= minPos.getZ() && position.getZ() <= maxPos.getZ();
@@ -410,8 +410,8 @@ public class Zone {
 	 *
 	 * @return the result.
 	 */
-	public Collection<Position> getPositions() {
-		return Position.collect(minPos, maxPos);
+	public Collection<StaticPosition> getPositions() {
+		return StaticPosition.collect(minPos, maxPos);
 	}
 	
 	/**

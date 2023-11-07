@@ -58,7 +58,7 @@ public class PartitionedTexture implements Texture {
 	public PartitionedTexture(Identifier textureId, float textureWidth, float textureHeight, float leftPadding, float rightPadding, float topPadding, float bottomPadding) {
 		this.textureId = textureId;
 		
-		this.textureSize = new Size(textureWidth, textureHeight);
+		this.textureSize = Size.of(textureWidth, textureHeight);
 		
 		this.texturePadding = new Padding(leftPadding, rightPadding, topPadding, bottomPadding);
 		

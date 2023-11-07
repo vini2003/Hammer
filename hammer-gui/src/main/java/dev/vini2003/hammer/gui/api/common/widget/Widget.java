@@ -25,8 +25,10 @@
 package dev.vini2003.hammer.gui.api.common.widget;
 
 import com.google.common.collect.ImmutableList;
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.core.api.common.math.position.Positioned;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.math.size.Sized;
@@ -43,20 +45,21 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Supplier;
 
 public abstract class Widget implements Positioned, Sized, EventListener, Ticks {
-	protected Position position = new Position(0.0F, 0.0F);
-	protected Size size = new Size(0.0F, 0.0F);
+	protected Position position = Position.of(0.0F, 0.0F);
+	protected Size size = Size.of(0.0F, 0.0F);
 	
 	protected WidgetCollection collection;
 	protected WidgetCollection.Root rootCollection;
 	
 	protected Widget parent;
 	
-	protected Supplier<List<OrderedText>> tooltip = () -> ImmutableList.of();
+	protected Supplier<List<OrderedText>> tooltip = ImmutableList::of;
 	
 	protected boolean hidden = false;
 	protected boolean focused = false;
@@ -64,6 +67,13 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 	protected boolean locking = false;
 	
 	protected Map<EventType, Collection<EventListener<?>>> listeners = new HashMap<>();
+	
+	/**
+	 * The widget's ID is used to identify it when
+	 * synchronizing events between the client and the server.
+	 */
+	@Nullable
+	protected String id;
 	
 	protected Widget() {
 		onEvent(EventType.ADDED, this::onAdded);
@@ -112,6 +122,7 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 	}
 	
 	protected void onMouseClicked(MouseClickedEvent event) {
+	
 	}
 	
 	protected void onMouseDragged(MouseDraggedEvent event) {
@@ -123,6 +134,7 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 	}
 	
 	protected void onMouseReleased(MouseReleasedEvent event) {
+	
 	}
 	
 	protected void onMouseScrolled(MouseScrolledEvent event) {
@@ -186,9 +198,18 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 		
 		var rootCollection = getRootCollection();
 		
-		if (shouldSync(event.type()) && (isFocused() || rootCollection != null && rootCollection.isScreenHandler() && rootCollection.isClient())) {
+		// Always propagate Layout Changed, as some widgets may
+		// handle special logic in there that will not run on the server
+		// if it is not propagated correctly.
+		if ((shouldSync(event.type()) || event.type() == EventType.LAYOUT_CHANGED) && (isFocused() || rootCollection != null && rootCollection.isScreenHandler() && rootCollection.isClient())) {
+			if (id == null) {
+				HC.LOGGER.debug("A widget was not given an ID, but tried to synchronize an event!");
+				
+				return;
+			}
+			
 			var buf = PacketByteBufs.create();
-			buf.writeInt(Objects.hash(position, size));
+			buf.writeString(id);
 			
 			event.writeToBuf(buf);
 			
@@ -215,6 +236,24 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 		var wasFocused = isFocused();
 		var isFocused = isPointWithin(x, y);
 		
+		var isBelowOtherWidget = false;
+		
+		for (var child : getRootCollection().getAllChildren()) {
+			if (child == this) {
+				continue;
+			}
+			
+			if (child.isPointWithin(x, y) && child.getZ() > getZ()) {
+				isBelowOtherWidget = true;
+				
+				break;
+			}
+		}
+		
+		if (isBelowOtherWidget) {
+			isFocused = false;
+		}
+		
 		setFocused(isFocused);
 		
 		if (wasFocused && !isFocused) {
@@ -239,6 +278,30 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 	}
 	
 	/**
+	 * Configures transforms before drawing.
+	 * Useful for translating to the correct Z layer.
+	 *
+	 * @param context	the draw context.
+	 * @param tickDelta the tick delta.
+	 */
+	@Environment(EnvType.CLIENT)
+	public void onBeginDraw(DrawContext context, float tickDelta) {
+		context.getMatrices().push();
+		context.getMatrices().translate(0.0F, 0.0F, getZ());
+	}
+	
+	/**
+	 * Reverts transforms after drawing.
+	 *
+	 * @param context	the draw context.
+	 * @param tickDelta the tick delta.
+	 */
+	@Environment(EnvType.CLIENT)
+	public void onEndDraw(DrawContext context, float tickDelta) {
+		context.getMatrices().pop();
+	}
+	
+	/**
 	 * Draws this widget.
 	 *
 	 * @param context	the draw context.
@@ -246,7 +309,17 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 	 */
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
-	
+		onBeginDraw(context, tickDelta);
+		
+		if (this instanceof WidgetCollection collection) {
+			for (var child : collection.getChildren()) {
+				if (!child.isHidden()) {
+					child.draw(context, tickDelta);
+				}
+			}
+		}
+		
+		onEndDraw(context, tickDelta);
 	}
 	
 	@Deprecated
@@ -293,6 +366,15 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 		this.size = size;
 		
 		dispatchEvent(new LayoutChangedEvent());
+	}
+	
+	@Nullable
+	public String getId() {
+		return this.id;
+	}
+	
+	public void setId(@Nullable String id) {
+		this.id = id;
 	}
 	
 	public boolean allowsEvents() {

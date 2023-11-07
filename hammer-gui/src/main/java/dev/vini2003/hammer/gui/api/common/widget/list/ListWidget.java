@@ -31,6 +31,7 @@ import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.cache.Cached;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.event.*;
@@ -105,7 +106,7 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 	
 	@Override
 	public Size getStandardSize() {
-		return new Size(
+		return Size.of(
 				Math.max(64.0F, getChildren().stream().map(Widget::getWidth).max(Float::compareTo).orElse(0.0F)),
 				Math.min(96.0F, getChildren().stream().map(Widget::getHeight).reduce(Float::sum).orElse(0.0F))
 		);
@@ -127,7 +128,7 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 	protected void onMouseClicked(MouseClickedEvent event) {
 		super.onMouseClicked(event);
 		
-		var pos = new Position(event.x(), event.y());
+		var pos = Position.of(event.x(), event.y());
 		
 		if (scrollerRectangle.get().isPositionWithin(pos)) {
 			scrollerHeld = true;
@@ -229,6 +230,9 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		onBeginDraw(context, tickDelta);
+//		super.draw(context, tickDelta);
+		
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();
 		
@@ -251,6 +255,8 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 		}
 		
 		scissors.destroy();
+		
+		onEndDraw(context, tickDelta);
 	}
 	
 	@Override

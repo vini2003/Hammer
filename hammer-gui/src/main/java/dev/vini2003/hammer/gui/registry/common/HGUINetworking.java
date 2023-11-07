@@ -50,12 +50,15 @@ public class HGUINetworking {
 					
 					screenHandler.init(width, height);
 				});
-			} catch (Exception ignored) {}
+			} catch (Exception e) {
+				HC.LOGGER.error("Failed to synchronize screen handler!");
+				e.printStackTrace();
+			}
 		});
 		
 		ServerPlayNetworking.registerGlobalReceiver(SYNC_WIDGET_EVENT, (server, player, handler, buf, responseSender) -> {
 			try {
-				var hashCode = buf.readInt();
+				var id = buf.readString();
 				
 				var event = Event.fromBuf(buf);
 				
@@ -63,12 +66,15 @@ public class HGUINetworking {
 					var screenHandler = (BaseScreenHandler) player.currentScreenHandler;
 					
 					for (var child : screenHandler.getAllChildren()) {
-						if (Objects.hash(child.getPosition(), child.getSize()) == hashCode) {
+						if (child.getId() != null && child.getId().equals(id)) {
 							child.dispatchEvent(event);
 						}
 					}
 				});
-			} catch (Exception ignored) {}
+			} catch (Exception e) {
+				HC.LOGGER.error("Failed to synchronize widget event");
+				e.printStackTrace();
+			}
 		});
 	}
 }

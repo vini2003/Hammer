@@ -24,8 +24,7 @@
 
 package dev.vini2003.hammer.core.api.common.math.position;
 
-import dev.vini2003.hammer.core.api.common.math.size.Size;
-import dev.vini2003.hammer.core.api.common.math.size.SizeHolder;
+import dev.vini2003.hammer.core.api.common.supplier.FloatSupplier;
 
 /**
  * A {@link Positioned} represents an object which has
@@ -51,7 +50,20 @@ public interface Positioned extends PositionHolder {
 	 * @param z the new position's Z.
 	 */
 	default void setPosition(float x, float y, float z) {
-		setPosition(new Position(x, y, z));
+		setPosition(Position.of(x, y, z));
+	}
+	
+	
+	
+	/**
+	 * Sets this object's position.
+	 * @param anchor the new position's anchor.
+	 * @param relativeX the new position's relative X.
+	 * @param relativeY the new position's relative Y.
+	 * @param relativeZ the new position's relative Z.
+	 */
+	default void setPosition(PositionHolder anchor, float relativeX, float relativeY, float relativeZ) {
+		setPosition(new StaticPosition(anchor, relativeX, relativeY, relativeZ));
 	}
 	
 	/**
@@ -60,7 +72,67 @@ public interface Positioned extends PositionHolder {
 	 * @param y the new position's Y.
 	 */
 	default void setPosition(float x, float y) {
-		setPosition(new Position(x, y));
+		setPosition(new StaticPosition(x, y));
+	}
+	
+	/**
+	 * Sets this object's position.
+	 * @param anchor the new position's anchor.
+	 * @param relativeX the new position's relative X.
+	 * @param relativeY the new position's relative Y.
+	 */
+	default void setPosition(PositionHolder anchor, float relativeX, float relativeY) {
+		setPosition(new StaticPosition(anchor, relativeX, relativeY));
+	}
+	
+	/**
+	 * Sets this object's position.
+	 * @param anchor the new position's anchor.
+	 * @param relativePosition the new position's relative position.
+	 */
+	default void setPosition(PositionHolder anchor, StaticPosition relativePosition) {
+		setPosition(new StaticPosition(anchor, relativePosition));
+	}
+	
+	/**
+	 * Sets this object's position using static or dynamic coordinates.
+	 * @param xSupplier the supplier for the new position's X coordinate.
+	 * @param ySupplier the supplier for the new position's Y coordinate.
+	 * @param zSupplier the supplier for the new position's Z coordinate.
+	 */
+	default void setPosition(FloatSupplier xSupplier, FloatSupplier ySupplier, FloatSupplier zSupplier) {
+		setPosition(new DynamicPosition(xSupplier, ySupplier, zSupplier));
+	}
+	
+	/**
+	 * Sets this object's position relative to an anchor with dynamic or static offsets.
+	 * @param anchor the new position's anchor.
+	 * @param xSupplier the supplier for the new position's relative X coordinate.
+	 * @param ySupplier the supplier for the new position's relative Y coordinate.
+	 * @param zSupplier the supplier for the new position's relative Z coordinate.
+	 */
+	default void setPosition(PositionHolder anchor, FloatSupplier xSupplier, FloatSupplier ySupplier, FloatSupplier zSupplier) {
+		setPosition(new DynamicPosition(anchor, xSupplier, ySupplier, zSupplier));
+	}
+	
+	/**
+	 * Sets this object's position using static or dynamic coordinates, assuming Z as 0.
+	 * @param xSupplier the supplier for the new position's X coordinate.
+	 * @param ySupplier the supplier for the new position's Y coordinate.
+	 */
+	default void setPosition(FloatSupplier xSupplier, FloatSupplier ySupplier) {
+		setPosition(new DynamicPosition(xSupplier, ySupplier, () -> 0.0F));
+	}
+	
+	/**
+	 * Sets this object's position relative to an anchor with dynamic or static offsets,
+	 * assuming Z as the anchor's Z.
+	 * @param anchor the new position's anchor.
+	 * @param xSupplier the supplier for the new position's relative X coordinate.
+	 * @param ySupplier the supplier for the new position's relative Y coordinate.
+	 */
+	default void setPosition(PositionHolder anchor, FloatSupplier xSupplier, FloatSupplier ySupplier) {
+		setPosition(new DynamicPosition(anchor, xSupplier, ySupplier));
 	}
 	
 	/**
@@ -68,7 +140,7 @@ public interface Positioned extends PositionHolder {
 	 * @param x the new X.
 	 */
 	default void setX(float x) {
-		setPosition(new Position(x, getX(), getZ()));
+		setPosition(new StaticPosition(x, getX(), getZ()));
 	}
 	
 	/**
@@ -76,7 +148,7 @@ public interface Positioned extends PositionHolder {
 	 * @param y the new Y.
 	 */
 	default void setY(float y) {
-		setPosition(new Position(getX(), y, getZ()));
+		setPosition(new StaticPosition(getX(), y, getZ()));
 	}
 	
 	/**
@@ -84,7 +156,31 @@ public interface Positioned extends PositionHolder {
 	 * @param z the new Z.
 	 */
 	default void setZ(float z) {
-		setPosition(new Position(getX(), getY(), z));
+		setPosition(new StaticPosition(getX(), getY(), z));
+	}
+	
+	/**
+	 * Sets this object's X using a supplier.
+	 * @param xSupplier the supplier for the new X coordinate.
+	 */
+	default void setX(FloatSupplier xSupplier) {
+		setPosition(xSupplier, getPosition()::getY, getPosition()::getZ);
+	}
+	
+	/**
+	 * Sets this object's Y using a supplier.
+	 * @param ySupplier the supplier for the new Y coordinate.
+	 */
+	default void setY(FloatSupplier ySupplier) {
+		setPosition(getPosition()::getX, ySupplier, getPosition()::getZ);
+	}
+	
+	/**
+	 * Sets this object's Z using a supplier.
+	 * @param zSupplier the supplier for the new Z coordinate.
+	 */
+	default void setZ(FloatSupplier zSupplier) {
+		setPosition(getPosition()::getX, getPosition()::getY, zSupplier);
 	}
 	
 	@Override

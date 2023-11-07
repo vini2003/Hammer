@@ -43,7 +43,7 @@ import java.util.function.Supplier;
  * <b>This widget is client-side only.</b>
  */
 public class TextAreaWidget extends TextEditorWidget implements TextureProvider {
-	public static final Size STANDARD_SIZE = new Size(90.0F, 72.0F);
+	public static final Size STANDARD_SIZE = Size.of(90.0F, 72.0F);
 	
 	public static final Texture STANDARD_TEXTURE = new PartitionedTexture(HC.id("textures/widget/text_area.png"), 18.0F, 18.0F, 0.055F, 0.055F, 0.055F, 0.055F);
 	
@@ -171,6 +171,8 @@ public class TextAreaWidget extends TextEditorWidget implements TextureProvider 
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		onBeginDraw(context, tickDelta);
+		
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();
 		
@@ -181,6 +183,8 @@ public class TextAreaWidget extends TextEditorWidget implements TextureProvider 
 		}
 		
 		renderField(matrices, provider);
+		
+		onEndDraw(context, tickDelta);
 	}
 	
 	@Override

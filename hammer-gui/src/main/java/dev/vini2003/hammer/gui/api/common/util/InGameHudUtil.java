@@ -26,6 +26,7 @@ package dev.vini2003.hammer.gui.api.common.util;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.LivingEntity;
@@ -44,11 +45,11 @@ public class InGameHudUtil {
 		return (WidgetCollection.Root) getHud();
 	}
 	
-	public static Position getLeftBarPos(PlayerEntity player) {
+	public static StaticPosition getLeftBarPos(PlayerEntity player) {
 		return getArmorBarPos(player);
 	}
 	
-	public static Position getRightBarPos(PlayerEntity player) {
+	public static StaticPosition getRightBarPos(PlayerEntity player) {
 		if (player.getAir() < player.getMaxAir()) {
 			return getAirBarPos(player);
 		} else {
@@ -56,13 +57,13 @@ public class InGameHudUtil {
 		}
 	}
 	
-	public static Position getHeartBarPos(PlayerEntity player) {
+	public static StaticPosition getHeartBarPos(PlayerEntity player) {
 		var hud = getHud();
 		
-		return new Position(hud.scaledWidth / 2.0F - 91.0F, hud.scaledHeight - 39.0F);
+		return Position.of(hud.scaledWidth / 2.0F - 91.0F, hud.scaledHeight - 39.0F);
 	}
 	
-	public static Position getArmorBarPos(PlayerEntity player) {
+	public static StaticPosition getArmorBarPos(PlayerEntity player) {
 		var hud = getHud();
 		
 		var heartsY = hud.scaledHeight - 39;
@@ -77,12 +78,12 @@ public class InGameHudUtil {
 		if (player.getArmor() == 0) {
 			return getHeartBarPos(player);
 		} else {
-			return new Position(hud.scaledWidth / 2.0F - 91.0F, armorY);
+			return Position.of(hud.scaledWidth / 2.0F - 91.0F, armorY);
 		}
 		
 	}
 	
-	public static Position getAirBarPos(PlayerEntity player) {
+	public static StaticPosition getAirBarPos(PlayerEntity player) {
 		var hud = getHud();
 		
 		var heartsY = hud.scaledHeight - 39;
@@ -99,10 +100,10 @@ public class InGameHudUtil {
 			bubblesY += 10;
 		}
 		
-		return new Position(hud.scaledWidth / 2.0F + 91.0F - 9 * 8 - 9, bubblesY);
+		return Position.of(hud.scaledWidth / 2.0F + 91.0F - 9 * 8 - 9, bubblesY);
 	}
 	
-	public static Position getHungerBarPos(PlayerEntity player) {
+	public static StaticPosition getHungerBarPos(PlayerEntity player) {
 		var hud = getHud();
 		
 		var heartsY = hud.scaledHeight - 39;
@@ -126,6 +127,6 @@ public class InGameHudUtil {
 			hungerY += 10;
 		}
 		
-		return new Position(hud.scaledWidth / 2.0F + 91.0F - 9 * 8 - 9, hungerY);
+		return Position.of(hud.scaledWidth / 2.0F + 91.0F - 9 * 8 - 9, hungerY);
 	}
 }

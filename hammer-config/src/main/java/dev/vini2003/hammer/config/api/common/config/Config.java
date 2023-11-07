@@ -18,13 +18,15 @@ public class Config {
 			
 			try {
 				config.load();
-			} catch (Exception ignored) {
-				System.err.println("Failed to load config " + name + ".json!");
+			} catch (Exception e) {
+				HC.LOGGER.error("Failed to load config " + name + ".json!");
+				e.printStackTrace();
 			}
 			
 			return config;
-		} catch (Exception ignored) {
-			ignored.printStackTrace();
+		} catch (Exception e) {
+			HC.LOGGER.error("Failed to load config " + name + ".json!");
+			e.printStackTrace();
 		}
 		
 		throw new UnsupportedOperationException("Could not instantiate config class! Did you add a no-args constructor?");
@@ -46,7 +48,10 @@ public class Config {
 					}
 				}
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {
+			HC.LOGGER.error("Failed to load config at " + path + "!");
+			e.printStackTrace();
+		}
 	}
 	
 	public void save() {
@@ -57,6 +62,9 @@ public class Config {
 			HC.GSON.toJson(this, writer);
 			
 			writer.flush();
-		} catch (Exception ignored) {}
+		} catch (Exception e) {
+			HC.LOGGER.error("Failed to save config at " + path + "!");
+			e.printStackTrace();
+		}
 	}
 }

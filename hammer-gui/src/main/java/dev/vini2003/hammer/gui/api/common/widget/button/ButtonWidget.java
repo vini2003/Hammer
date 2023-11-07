@@ -61,9 +61,9 @@ public class ButtonWidget extends Widget implements EnabledTextureProvider, Disa
 	@Override
 	public Size getStandardSize() {
 		if (label.get() == null || rootCollection == null || !rootCollection.isClient()) {
-			return new Size(18.0F, 18.0F);
+			return Size.of(18.0F, 18.0F);
 		} else {
-			return new Size(TextUtil.getWidth(label.get()) + 8.0F, 18.0F);
+			return Size.of(TextUtil.getWidth(label.get()) + 8.0F, 18.0F);
 		}
 	}
 	
@@ -84,6 +84,8 @@ public class ButtonWidget extends Widget implements EnabledTextureProvider, Disa
 	@Override 
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		onBeginDraw(context, tickDelta);
+		
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();
 		
@@ -99,17 +101,15 @@ public class ButtonWidget extends Widget implements EnabledTextureProvider, Disa
 		
 		texture.draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
 		
-		// In 1.20.1, it is an Immediate by default.
-		// if (provider instanceof VertexConsumerProvider.Immediate immediate) {
-			provider.draw();
-		// }
+		provider.draw();
 		
 		var label = this.label.get();
 		
 		if (label != null) {
-			// In 1.20.1, we must draw using the DrawContext.
 			context.drawTextWithShadow(DrawingUtil.getTextRenderer(), label.asOrderedText(), (int) (getX() + (getWidth() / 2.0F - TextUtil.getWidth(label) / 2.0F)), (int) (getY() + (getHeight() / 2.0F - TextUtil.getHeight(label) / 2.0F)), 0xFCFCFC);
 		}
+		
+		onEndDraw(context, tickDelta);
 	}
 	
 	@Environment(EnvType.CLIENT)

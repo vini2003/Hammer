@@ -24,249 +24,132 @@
 
 package dev.vini2003.hammer.core.api.common.math.size;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.vini2003.hammer.core.api.common.math.position.Position;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
+import dev.vini2003.hammer.core.api.common.supplier.FloatSupplier;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
- * <p>A {@link Size} represents a three-dimensional size.
+ * A {@link Size} represents a three-dimensional shape
+ * whose dimensions do not have a fixed storage medium.
  *
- * <p>The following serialization methods are provided:</p>
- * <ul>
- *     <li>{@link #toJson(Size)} - from {@link Size} to {@link JsonElement}.</li>
- *     <li>{@link #toNbt(Size)} - from {@link Size} to {@link NbtCompound}.</li>
- *     <li>{@link #toBuf(Size, PacketByteBuf)} - from {@link Size} to {@link PacketByteBuf}.</li>
- * </ul>
- 
- * <ul>
- *     <li>{@link #fromJson(JsonElement)} - from {@link JsonElement} to {@link Size}.</li>
- *     <li>{@link #fromNbt(NbtCompound)} - from {@link NbtCompound} to {@link Size}.</li>
- *     <li>{@link #fromBuf(PacketByteBuf)} - from {@link PacketByteBuf} to {@link Size}.</li>
- * </ul>
+ * Implementations include {@link StaticSize}, whose dimensions
+ * are fixed, and {@link DynamicSize}, whose dimensions are not.
  */
-public class Size implements SizeHolder {
-	public static final Codec<Size> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			Codec.FLOAT.optionalFieldOf("width", 0.0F).forGetter(Size::getWidth),
-			Codec.FLOAT.optionalFieldOf("height", 0.0F).forGetter(Size::getHeight),
-			Codec.FLOAT.optionalFieldOf("length", 0.0F).forGetter(Size::getLength)
-	).apply(instance, Size::new));
-	
-	public static final Size ZERO = new Size(0.0F, 0.0F, 0.0F);
-	
-	private final float width;
-	private final float height;
-	private final float length;
-	
+public abstract class Size implements SizeHolder {
 	/**
-	 * Serializes a size to a {@link PacketByteBuf}.
-	 * @param size The size to serialize.
-	 * @param buf The buffer to serialize to.
-	 * @return The buffer.
+	 * A factory for creating a StaticSize with specified width, height, and length components.
+	 *
+	 * @param width  the width component of the size.
+	 * @param height the height component of the size.
+	 * @param length the length component of the size.
+	 * @return a new StaticSize instance with the specified dimensions.
 	 */
-	public static PacketByteBuf toBuf(Size size, PacketByteBuf buf) {
-		buf.writeFloat(size.getWidth());
-		buf.writeFloat(size.getHeight());
-		buf.writeFloat(size.getLength());
-		
-		return buf;
+	public static StaticSize of(float width, float height, float length) {
+		return new StaticSize(width, height, length);
 	}
 	
 	/**
-	 * Deserializes a size from a {@link PacketByteBuf}.
-	 * @param buf The buffer to deserialize from.
-	 * @return The size.
+	 * A factory for creating a StaticSize with specified width and height components, assuming length as zero.
+	 *
+	 * @param width  the width component of the size.
+	 * @param height the height component of the size.
+	 * @return a new StaticSize instance with the specified dimensions and length set to zero.
 	 */
-	public static Size fromBuf(PacketByteBuf buf) {
-		return new Size(buf.readFloat(), buf.readFloat(), buf.readFloat());
+	public static StaticSize of(float width, float height) {
+		return new StaticSize(width, height);
 	}
 	
 	/**
-	 * Serializes a size to an {@link NbtCompound}.
-	 * @param size The size.
-	 * @return The serialized size.
+	 * A factory for creating a StaticSize relative to an anchor with additional relative width, height, and length components.
+	 *
+	 * @param anchor         the size holder to serve as an anchor.
+	 * @param relativeWidth  the relative width component to add to the anchor's width.
+	 * @param relativeHeight the relative height component to add to the anchor's height.
+	 * @param relativeLength the relative length component to add to the anchor's length.
+	 * @return a new StaticSize instance offset from the anchor by the relative components.
 	 */
-	public static NbtCompound toNbt(Size size) {
-		var nbt = new NbtCompound();
-		
-		nbt.putFloat("width", size.getWidth());
-		nbt.putFloat("height", size.getHeight());
-		nbt.putFloat("length", size.getLength());
-		
-		return nbt;
+	public static StaticSize of(SizeHolder anchor, float relativeWidth, float relativeHeight, float relativeLength) {
+		return new StaticSize(anchor, relativeWidth, relativeHeight, relativeLength);
 	}
 	
 	/**
-	 * Deserializes a size from an {@link NbtCompound}.
-	 * @param nbt The serialized size.
-	 * @return The size.
+	 * A factory for creating a StaticSize relative to an anchor with additional relative width and height components.
+	 *
+	 * @param anchor        the size holder to serve as an anchor.
+	 * @param relativeWidth the relative width component to add to the anchor's width.
+	 * @param relativeHeight the relative height component to add to the anchor's height.
+	 * @return a new StaticSize instance offset from the anchor by the relative components with the same length as the anchor.
 	 */
-	public static Size fromNbt(NbtCompound nbt) {
-		return new Size(nbt.getFloat("width"), nbt.getFloat("height"), nbt.getFloat("length"));
+	public static StaticSize of(SizeHolder anchor, float relativeWidth, float relativeHeight) {
+		return new StaticSize(anchor, relativeWidth, relativeHeight);
 	}
 	
 	/**
-	 * Serializes a size to a {@link JsonElement}.
-	 * @param size The size.
-	 * @return The serialized size.
+	 * A factory for creating a StaticSize with the same dimensions as the given size holder.
+	 *
+	 * @param anchor the size holder whose dimensions should be copied.
+	 * @return a new StaticSize instance with the same dimensions as the anchor.
 	 */
-	public static JsonElement toJson(Size size) {
-		var json = new JsonObject();
-		
-		json.addProperty("width", size.getWidth());
-		json.addProperty("height", size.getHeight());
-		json.addProperty("length", size.getLength());
-		
-		return json;
+	public static StaticSize of(SizeHolder anchor) {
+		return new StaticSize(anchor);
 	}
 	
+	/**
+	 * A factory for creating a DynamicSize with suppliers for width, height, and length.
+	 *
+	 * @param width  the supplier for the width component of the size.
+	 * @param height the supplier for the height component of the size.
+	 * @param length the supplier for the length component of the size.
+	 * @return a new DynamicSize instance with dynamically supplied dimensions.
+	 */
+	public static DynamicSize of(FloatSupplier width, FloatSupplier height, FloatSupplier length) {
+		return new DynamicSize(width, height, length);
+	}
 	
 	/**
-	 * Deserializes a size from a {@link JsonElement}.
-	 * @param json The serialized size.
-	 * @return The size.
+	 * A factory for creating a DynamicSize with suppliers for width and height, assuming length as zero.
+	 *
+	 * @param width  the supplier for the width component of the size.
+	 * @param height the supplier for the height component of the size.
+	 * @return a new DynamicSize instance with dynamically supplied dimensions and length set to zero.
 	 */
-	public static Size fromJson(JsonElement json) {
-		var object = json.getAsJsonObject();
-		
-		return new Size(
-				object.get("width").getAsFloat(),
-				object.get("height").getAsFloat(),
-				object.get("length").getAsFloat()
+	public static DynamicSize of(FloatSupplier width, FloatSupplier height) {
+		return new DynamicSize(width, height, () -> 0.0F);
+	}
+	
+	/**
+	 * A factory for creating a DynamicSize relative to an anchor with suppliers for relative width, height, and length.
+	 *
+	 * @param anchor         the size holder to serve as an anchor.
+	 * @param relativeWidth  the supplier for the relative width component.
+	 * @param relativeHeight the supplier for the relative height component.
+	 * @param relativeLength the supplier for the relative length component.
+	 * @return a new DynamicSize instance dynamically offset from the anchor by the relative components.
+	 */
+	public static DynamicSize of(SizeHolder anchor, FloatSupplier relativeWidth, FloatSupplier relativeHeight, FloatSupplier relativeLength) {
+		return new DynamicSize(
+				() -> anchor.getWidth() + relativeWidth.get(),
+				() -> anchor.getHeight() + relativeHeight.get(),
+				() -> anchor.getLength() + relativeLength.get()
 		);
 	}
 	
 	/**
-	 * Constructs a position.
+	 * A factory for creating a DynamicSize relative to an anchor with suppliers for relative width and height.
 	 *
-	 * @param width  the width size component.
-	 * @param height the height size component.
-	 * @param length the length size component.
-	 *
-	 * @return the position.
+	 * @param anchor        the size holder to serve as an anchor.
+	 * @param relativeWidth the supplier for the relative width component.
+	 * @param relativeHeight the supplier for the relative height component.
+	 * @return a new DynamicSize instance dynamically offset from the anchor by the relative components with the same length as the anchor.
 	 */
-	public Size(float width, float height, float length) {
-		this.width = width;
-		this.height = height;
-		this.length = length;
+	public static DynamicSize of(SizeHolder anchor, FloatSupplier relativeWidth, FloatSupplier relativeHeight) {
+		return new DynamicSize(
+				() -> anchor.getWidth() + relativeWidth.get(),
+				() -> anchor.getHeight() + relativeHeight.get(),
+				anchor::getLength
+		);
 	}
-	
-	/**
-	 * Constructs a size.
-	 *
-	 * @param width  the width size component
-	 * @param height the height size component.
-	 *
-	 * @return the size.
-	 */
-	public Size(float width, float height) {
-		this.width = width;
-		this.height = height;
-		this.length = 0.0F;
-	}
-	
-	/**
-	 * Constructs an anchored size.
-	 *
-	 * @param anchor the anchor.
-	 * @param width  the relative with size component.
-	 * @param height the relative height size component.
-	 * @param length the relative length size component.
-	 *
-	 * @return the size.
-	 */
-	public Size(SizeHolder anchor, float width, float height, float length) {
-		this(anchor.getWidth() + width, anchor.getHeight() + height, anchor.getLength() + length);
-	}
-	
-	/**
-	 * Constructs an anchored size.
-	 *
-	 * @param anchor the anchor.
-	 * @param width  the relative with size component.
-	 * @param height the relative height size component.
-	 *
-	 * @return the size.
-	 */
-	public Size(SizeHolder anchor, float width, float height) {
-		this(anchor.getWidth() + width, anchor.getHeight() + height, anchor.getLength());
-	}
-	
-	/**
-	 * Constructs an anchor's size.
-	 *
-	 * @param anchor the anchor.
-	 *
-	 * @return the size.
-	 */
-	public Size(SizeHolder anchor) {
-		this(anchor.getWidth(), anchor.getHeight(), anchor.getLength());
-	}
-	
-	/**
-	 * Returns this size, adding another size to it.
-	 *
-	 * @param size the size.
-	 *
-	 * @return the resulting size.
-	 */
-	public Size plus(Size size) {
-		return new Size(width + size.width, height + size.height, length + size.length);
-	}
-	
-	/**
-	 * Returns this size, subtracting another size from it.
-	 *
-	 * @param size the size.
-	 *
-	 * @return the resulting size.
-	 */
-	public Size minus(Size size) {
-		return new Size(width + size.width, height + size.height, length + size.length);
-	}
-	
-	/**
-	 * Returns this size, multiplying its components by a given number.
-	 *
-	 * @param number the number.
-	 *
-	 * @return the resulting size.
-	 */
-	public Size times(float number) {
-		return new Size(width * number, height * number, length * number);
-	}
-	
-	/**
-	 * Returns this size, dividing its components by a given number.
-	 *
-	 * @param number the number.
-	 *
-	 * @return the resulting size.
-	 */
-	public Size div(float number) {
-		return new Size(width / number, height / number, length / number);
-	}
-	
-	@Override
-	public float getWidth() {
-		return width;
-	}
-	
-	@Override
-	public float getHeight() {
-		return height;
-	}
-	
-	@Override
-	public float getLength() {
-		return length;
-	}
+
 	
 	@Override
 	public boolean equals(Object o) {
@@ -280,11 +163,11 @@ public class Size implements SizeHolder {
 		
 		var size = (Size) o;
 		
-		return Float.compare(size.width, width) == 0 && Float.compare(size.height, height) == 0 && Float.compare(size.length, length) == 0;
+		return Float.compare(size.getWidth(), getWidth()) == 0 && Float.compare(size.getHeight(), getHeight()) == 0 && Float.compare(size.getLength(), getLength()) == 0;
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(width, height, length);
+		return Objects.hash(getWidth(), getHeight(), getLength());
 	}
 }

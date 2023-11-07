@@ -28,9 +28,9 @@ import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
-import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.event.AddedEvent;
@@ -75,8 +75,6 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 	protected List<Supplier<ItemStack>> tabSymbols = new ArrayList<>();
 	protected List<Supplier<List<Text>>> tabTooltips = new ArrayList<>();
 	
-	protected Collection<Widget> children = new ArrayList<>();
-	
 	protected int selected = 0;
 	
 	public TabWidget() {
@@ -99,7 +97,7 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 	
 	@Override
 	public Size getStandardSize() {
-		return new Size(Math.max(128.0F, tabCollections.size() * 26.0F), 96.0F);
+		return Size.of(Math.max(128.0F, tabCollections.size() * 26.0F), 96.0F);
 	}
 	
 	public TabCollection addTab(Supplier<ItemStack> symbol) {
@@ -120,7 +118,7 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 		
 		var tabIndex = 0;
 		
-		for (var tabCollection : tabCollections) {
+		for (var ignored : tabCollections) {
 			tabRectangles.add(new Shape.Rectangle2D(26.0F, 25.0F).translate(getX() + tabIndex * 26.0F, getY()));
 			
 			tabIndex += 1;
@@ -133,7 +131,7 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 	protected void onMouseClicked(MouseClickedEvent event) {
 		super.onMouseClicked(event);
 		
-		var pos = new Position(event.x(), event.y());
+		var pos = Position.of(event.x(), event.y());
 		
 		Shape focusedTabRectangle = null;
 		
@@ -168,7 +166,7 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 	protected void onLayoutChanged(LayoutChangedEvent event) {
 		super.onLayoutChanged(event);
 		
-		children.clear();
+//		children.clear();
 
 		tabRectangles.clear();
 		
@@ -177,7 +175,7 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 		for (var tabCollection : tabCollections) {
 			tabRectangles.add(new Shape.Rectangle2D(26.0F, 25.0F).translate(getX() + tabIndex * 26.0F, getY()));
 
-			children.addAll(tabCollection.getChildren());
+//			children.addAll(tabCollection.getChildren());
 			
 			tabCollection.setY(getY());
 			
@@ -211,23 +209,26 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 	
 	@Override
 	public Collection<Widget> getChildren() {
+		var children = new ArrayList<Widget>();
+		
+		for (var tabCollection : tabCollections) {
+			children.addAll(tabCollection.getChildren());
+		}
+		
 		return children;
 	}
 	
 	@Override 
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		onBeginDraw(context, tickDelta);
+		
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();
 		
-		var itemRenderer = DrawingUtil.getItemRenderer();
-		
 		texture.get().draw(matrices, provider, getX(), getY() + 25.0F, getWidth(), getHeight() - 25.0F);
 		
-		// In 1.20.1, it is an Immediate by default.
-		// if (provider instanceof VertexConsumerProvider.Immediate immediate) {
-			provider.draw();
-		// }
+		provider.draw();
 		
 		var tabIndex = 0;
 		
@@ -256,11 +257,9 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 			tabIndex += 1;
 		}
 		
-		for (var child : getChildren()) {
-			if (!child.isHidden()) {
-				child.draw(context, tickDelta);
-			}
-		}
+		super.draw(context, tickDelta);
+		
+		onEndDraw(context, tickDelta);
 	}
 	
 	public static class TabCollection extends Widget implements WidgetCollection {
@@ -274,7 +273,7 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 		
 		@Override
 		public Size getStandardSize() {
-			return new Size(18.0F, 18.0F);
+			return Size.of(18.0F, 18.0F);
 		}
 		
 		@Override
@@ -291,17 +290,16 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 		
 		@Override
 		public void draw(DrawContext context, float tickDelta) {
-			// draw lines around the border using context, remember to cast to int
+			onBeginDraw(context, tickDelta);
+			
 			context.drawHorizontalLine((int) getX(), (int) (getX() + getWidth()), (int) getY(), 0xFF000000);
 			context.drawHorizontalLine((int) getX(), (int) (getX() + getWidth()), (int) (getY() + getHeight()), 0xFF000000);
 			context.drawVerticalLine((int) getX(), (int) getY(), (int) (getY() + getHeight()), 0xFF000000);
 			context.drawVerticalLine((int) (getX() + getWidth()), (int) getY(), (int) (getY() + getHeight()), 0xFF000000);
 			
-			for (var child : getChildren()) {
-				if (!child.isHidden()) {
-					child.draw(context, tickDelta);
-				}
-			}
+			super.draw(context, tickDelta);
+			
+			onEndDraw(context, tickDelta);
 		}
 	}
 	

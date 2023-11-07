@@ -52,21 +52,25 @@ public class TextWidget extends Widget implements TextProvider, ShadowProvider, 
 	@Override
 	public Size getStandardSize() {
 		if (text.get() != null) {
-			return new Size(TextUtil.getWidth(text.get()) + 8.0F, 18.0F);
+			return Size.of(TextUtil.getWidth(text.get()), TextUtil.getHeight(text.get()));
 		} else {
-			return new Size(8.0F, 18.0F);
+			return Size.of(8.0F, TextUtil.getHeight(text.get()));
 		}
 	}
 	
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		onBeginDraw(context, tickDelta);
+		
 		var textRenderer = DrawingUtil.getTextRenderer();
 		
 		if (text.get() != null) {
 			// TODO: Check if this is equivalent to the 1.19.2 code.
 			context.drawText(textRenderer, text.get().asOrderedText(), (int) getX(), (int) getY(), color.toRgb(), shadow);
 		}
+		
+		onEndDraw(context, tickDelta);
 	}
 	
 	@Override

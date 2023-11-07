@@ -28,22 +28,17 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.command.CommandSource;
-import net.minecraft.server.command.CommandManager;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
 public class PositionArgumentType implements ArgumentType<PositionArgumentType> {
@@ -90,9 +85,9 @@ public class PositionArgumentType implements ArgumentType<PositionArgumentType> 
 		return new PositionArgumentType(0.0F, 0.0F, 0.0F, false, false, false);
 	}
 	
-	public static Position getPosition(CommandContext<ServerCommandSource> context, String name) {
+	public static StaticPosition getPosition(CommandContext<ServerCommandSource> context, String name) {
 		var posArg = context.getArgument(name, PositionArgumentType.class);
-		var pos = new Position(posArg.x, posArg.y, posArg.z);
+		var pos = Position.of(posArg.x, posArg.y, posArg.z);
 		
 		if (posArg.relativeX) {
 			pos = pos.offset((float) context.getSource().getPosition().getX(), 0.0F, 0.0F);

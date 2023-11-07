@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class ItemStackWidget extends Widget implements ItemStackProvider {
-	public static final Size STANDARD_SIZE = new Size(18.0F, 18.0F);
+	public static final Size STANDARD_SIZE = Size.of(18.0F, 18.0F);
 	
 	protected Supplier<ItemStack> stack = () -> ItemStack.EMPTY;
 	
@@ -73,6 +73,8 @@ public class ItemStackWidget extends Widget implements ItemStackProvider {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		onBeginDraw(context, tickDelta);
+		
 		if (!initializedTooltip) {
 			initializedTooltip = true;
 			
@@ -80,6 +82,8 @@ public class ItemStackWidget extends Widget implements ItemStackProvider {
 		}
 		
 		context.drawItem(stack.get(), (int) getX(), (int) getY());
+		
+		onEndDraw(context, tickDelta);
 	}
 	
 	@Override

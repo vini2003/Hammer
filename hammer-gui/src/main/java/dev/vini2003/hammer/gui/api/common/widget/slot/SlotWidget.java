@@ -30,6 +30,7 @@ import dev.vini2003.hammer.core.api.client.texture.base.Texture;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.function.QuadFunction;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.event.AddedEvent;
 import dev.vini2003.hammer.gui.api.common.event.LayoutChangedEvent;
@@ -47,7 +48,7 @@ import net.minecraft.screen.slot.Slot;
 import java.util.function.Supplier;
 
 public class SlotWidget extends Widget implements TextureProvider {
-	public static final Size STANDARD_SIZE = new Size(18.0F, 18.0F);
+	public static final Size STANDARD_SIZE = Size.of(18.0F, 18.0F);
 	
 	public static final Texture STANDARD_TEXTURE = new PartitionedTexture(HC.id("textures/widget/slot.png"), 18.0F, 18.0F, 0.055F, 0.055F, 0.055F, 0.055F);
 	
@@ -117,7 +118,7 @@ public class SlotWidget extends Widget implements TextureProvider {
 	
 	@Override
 	public void setPosition(Position position) {
-		super.setPosition(new Position((int) position.getX(), (int) position.getY(), (int) position.getZ()));
+		super.setPosition(Position.of((int) position.getX(), (int) position.getY(), (int) position.getZ()));
 		
 		if (slot != null) {
 			updateSlot();
@@ -126,7 +127,7 @@ public class SlotWidget extends Widget implements TextureProvider {
 	
 	@Override
 	public void setSize(Size size) {
-		super.setSize(new Size((int) size.getWidth(), (int) size.getHeight(), (int) size.getLength()));
+		super.setSize(Size.of((int) size.getWidth(), (int) size.getHeight(), (int) size.getLength()));
 		
 		if (slot != null) {
 			updateSlot();
@@ -178,6 +179,8 @@ public class SlotWidget extends Widget implements TextureProvider {
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		onBeginDraw(context, tickDelta);
+		
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();
 		
@@ -186,6 +189,8 @@ public class SlotWidget extends Widget implements TextureProvider {
 		var screen = (HandledScreen<?>) client.currentScreen;
 		
 		texture.get().draw(matrices, provider, Math.round(slot.x + screen.x) - 1.0F, Math.round(slot.y + screen.y) - 1.0F, Math.round(getWidth()), Math.round(getHeight()));
+		
+		onEndDraw(context, tickDelta);
 	}
 	
 	public Slot getSlot() {

@@ -29,17 +29,15 @@ import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneManager;
 import dev.vini2003.hammer.zone.api.common.util.ZoneDrawingUtil;
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
 import dev.vini2003.hammer.zone.api.common.zone.ZoneGroup;
-import dev.vini2003.hammer.zone.registry.common.HZComponents;
 import dev.vini2003.hammer.zone.registry.common.HZNetworking;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.InputUtil;
@@ -230,7 +228,7 @@ public class HZEvents {
 				var minPos = zone.getLerpedMinPos(context.tickDelta() / 64.0F);
 				var maxPos = zone.getLerpedMaxPos(context.tickDelta() / 64.0F);
 				
-				var centerPos = new Position(
+				var centerPos = Position.of(
 						(maxPos.getX() + minPos.getX()) / 2.0F,
 						(maxPos.getY() + minPos.getY()) / 2.0F,
 						(maxPos.getZ() + minPos.getZ()) / 2.0F

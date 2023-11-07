@@ -25,13 +25,14 @@
 package dev.vini2003.hammer.core.api.client.util;
 
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 public class PositionUtil {
 	@Environment(EnvType.CLIENT)
-	public static Position getMousePosition() {
-		return new Position(getMouseX(), getMouseY());
+	public static StaticPosition getMousePosition() {
+		return Position.of(getMouseX(), getMouseY());
 	}
 	
 	@Environment(EnvType.CLIENT)

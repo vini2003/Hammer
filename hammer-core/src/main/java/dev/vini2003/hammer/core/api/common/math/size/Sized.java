@@ -24,6 +24,8 @@
 
 package dev.vini2003.hammer.core.api.common.math.size;
 
+import dev.vini2003.hammer.core.api.common.supplier.FloatSupplier;
+
 /**
  * A {@link Sized} represents an object which has
  * a three-dimensional size, delegated to a {@link Size}.
@@ -54,7 +56,18 @@ public interface Sized extends SizeHolder {
 	 * @param length the new size's length.
 	 */
 	default void setSize(float width, float height, float length) {
-		setSize(new Size(width, height, length));
+		setSize(new StaticSize(width, height, length));
+	}
+	
+	/**
+	 * Sets this object's size.
+	 * @param anchor the new size's anchor.
+	 * @param width the new size's width.
+	 * @param height the new size's height.
+	 * @param length the new size's length.
+	 */
+	default void setSize(SizeHolder anchor, float width, float height, float length) {
+		setSize(new StaticSize(anchor, width, height, length));
 	}
 	
 	/**
@@ -63,7 +76,74 @@ public interface Sized extends SizeHolder {
 	 * @param height the new size's height.
 	 */
 	default void setSize(float width, float height) {
-		setSize(new Size(width, height));
+		setSize(new StaticSize(width, height));
+	}
+	
+	/**
+	 * Sets this object's size.
+	 * @param anchor the new size's anchor.
+	 * @param relativeWidth the new size's relative width.
+	 * @param relativeHeight the new size's relative height.
+	 */
+	default void setSize(SizeHolder anchor, float relativeWidth, float relativeHeight) {
+		setSize(new StaticSize(anchor, relativeWidth, relativeHeight));
+	}
+	
+	/**
+	 * Sets this object's size.
+	 * @param anchor the new size's anchor.
+	 * @param relativeSize the new size's relative size.
+	 */
+	default void setSize(SizeHolder anchor, SizeHolder relativeSize) {
+		setSize(new StaticSize(anchor, relativeSize));
+	}
+	
+	/**
+	 * Sets this object's size using dynamic width, height, and length.
+	 * @param widthSupplier the supplier for the new size's width.
+	 * @param heightSupplier the supplier for the new size's height.
+	 * @param lengthSupplier the supplier for the new size's length.
+	 */
+	default void setSize(FloatSupplier widthSupplier, FloatSupplier heightSupplier, FloatSupplier lengthSupplier) {
+		setSize(new DynamicSize(widthSupplier, heightSupplier, lengthSupplier));
+	}
+	
+	/**
+	 * Sets this object's size relative to an anchor with dynamic width, height, and length.
+	 * @param anchor the new size's anchor.
+	 * @param widthSupplier the supplier for the new size's relative width.
+	 * @param heightSupplier the supplier for the new size's relative height.
+	 * @param lengthSupplier the supplier for the new size's relative length.
+	 */
+	default void setSize(SizeHolder anchor, FloatSupplier widthSupplier, FloatSupplier heightSupplier, FloatSupplier lengthSupplier) {
+		setSize(new DynamicSize(
+				() -> anchor.getWidth() + widthSupplier.get(),
+				() -> anchor.getHeight() + heightSupplier.get(),
+				() -> anchor.getLength() + lengthSupplier.get()
+		));
+	}
+	
+	/**
+	 * Sets this object's size using dynamic width and height, assuming length as 0.
+	 * @param widthSupplier the supplier for the new size's width.
+	 * @param heightSupplier the supplier for the new size's height.
+	 */
+	default void setSize(FloatSupplier widthSupplier, FloatSupplier heightSupplier) {
+		setSize(new DynamicSize(widthSupplier, heightSupplier, () -> 0.0F));
+	}
+	
+	/**
+	 * Sets this object's size relative to an anchor with dynamic width and height, assuming length as the anchor's length.
+	 * @param anchor the new size's anchor.
+	 * @param widthSupplier the supplier for the new size's relative width.
+	 * @param heightSupplier the supplier for the new size's relative height.
+	 */
+	default void setSize(SizeHolder anchor, FloatSupplier widthSupplier, FloatSupplier heightSupplier) {
+		setSize(new DynamicSize(
+				() -> anchor.getWidth() + widthSupplier.get(),
+				() -> anchor.getHeight() + heightSupplier.get(),
+				anchor::getLength
+		));
 	}
 	
 	/**
@@ -71,7 +151,7 @@ public interface Sized extends SizeHolder {
 	 * @param width the new width.
 	 */
 	default void setWidth(float width) {
-		setSize(new Size(width, getHeight(), getLength()));
+		setSize(new StaticSize(width, getHeight(), getLength()));
 	}
 	
 	/**
@@ -79,7 +159,7 @@ public interface Sized extends SizeHolder {
 	 * @param height the new height.
 	 */
 	default void setHeight(float height) {
-		setSize(new Size(getWidth(), height, getLength()));
+		setSize(new StaticSize(getWidth(), height, getLength()));
 	}
 	
 	/**
@@ -87,7 +167,31 @@ public interface Sized extends SizeHolder {
 	 * @param length the new length.
 	 */
 	default void setLength(float length) {
-		setSize(new Size(getWidth(), getHeight(), length));
+		setSize(new StaticSize(getWidth(), getHeight(), length));
+	}
+	
+	/**
+	 * Sets this object's width using a supplier.
+	 * @param widthSupplier the supplier for the new width.
+	 */
+	default void setWidth(FloatSupplier widthSupplier) {
+		setSize(widthSupplier, getSize()::getHeight, getSize()::getLength);
+	}
+	
+	/**
+	 * Sets this object's height using a supplier.
+	 * @param heightSupplier the supplier for the new height.
+	 */
+	default void setHeight(FloatSupplier heightSupplier) {
+		setSize(getSize()::getWidth, heightSupplier, getSize()::getLength);
+	}
+	
+	/**
+	 * Sets this object's length using a supplier.
+	 * @param lengthSupplier the supplier for the new length.
+	 */
+	default void setLength(FloatSupplier lengthSupplier) {
+		setSize(getSize()::getWidth, getSize()::getHeight, lengthSupplier);
 	}
 	
 	@Override
@@ -104,5 +208,4 @@ public interface Sized extends SizeHolder {
 	default float getLength() {
 		return getSize().getLength();
 	}
-	
 }

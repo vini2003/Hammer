@@ -34,8 +34,8 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
 
 public class ImageBarWidget extends BarWidget implements SmoothProvider, ScissorProvider, InvertProvider {
-	public static final Size STANDARD_VERTICAL_SIZE = new Size(24.0F, 48.0F);
-	public static final Size STANDARD_HORIZONTAL_SIZE = new Size(48.0F, 24.0F);
+	public static final Size STANDARD_VERTICAL_SIZE = Size.of(24.0F, 48.0F);
+	public static final Size STANDARD_HORIZONTAL_SIZE = Size.of(48.0F, 24.0F);
 	
 	protected boolean smooth = false;
 	protected boolean scissor = true;
@@ -49,6 +49,8 @@ public class ImageBarWidget extends BarWidget implements SmoothProvider, Scissor
 	@Override
 	@Environment(EnvType.CLIENT)
 	public void draw(DrawContext context, float tickDelta) {
+		onBeginDraw(context, tickDelta);
+		
 		var matrices = context.getMatrices();
 		var provider = context.getVertexConsumers();
 	
@@ -102,6 +104,8 @@ public class ImageBarWidget extends BarWidget implements SmoothProvider, Scissor
 				scissors.destroy();
 			}
 		}
+		
+		onEndDraw(context, tickDelta);
 	}
 	
 	@Override

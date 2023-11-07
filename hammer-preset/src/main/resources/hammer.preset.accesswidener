@@ -14,3 +14,5 @@ accessible class net/minecraft/entity/mob/SpiderEntity$AttackGoal
 accessible class net/minecraft/entity/mob/SpiderEntity$TargetGoal
 
 accessible field net/minecraft/client/render/WorldRenderer bufferBuilders Lnet/minecraft/client/render/BufferBuilderStorage;
+
+accessible class net/minecraft/world/chunk/WorldChunk$DirectBlockEntityTickInvoker

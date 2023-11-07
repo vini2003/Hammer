@@ -40,7 +40,7 @@ public class NbtUtil {
 	public static NbtCompound parseNbt(String nbtString) {
 		try {
 			return new StringNbtReader(new StringReader(nbtString)).parseCompound();
-		} catch (Exception ignore) {
+		} catch (Exception ignored) {
 			return new NbtCompound();
 		}
 	}

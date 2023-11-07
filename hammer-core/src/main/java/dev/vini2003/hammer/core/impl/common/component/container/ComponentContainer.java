@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.core.impl.common.component.container;
 
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.common.component.base.Component;
 import dev.vini2003.hammer.core.api.common.component.base.key.ComponentKey;
 import dev.vini2003.hammer.core.api.common.manager.ComponentManager;
@@ -93,11 +94,11 @@ public class ComponentContainer {
 					var componentNbt = entryNbt.getCompound(HAMMER$COMPONENT_KEY);
 					component.readFromNbt(componentNbt);
 				} catch (Throwable throwable) {
-					System.err.println("Failed to read component from NBT!");
+					HC.LOGGER.error("Failed to read component from NBT!");
 				}
 			}
 		} catch (Throwable throwable) {
-			System.err.println("Failed to read component container from NBT!");
+			HC.LOGGER.error("Failed to read component container from NBT!");
 		}
 	}
 	

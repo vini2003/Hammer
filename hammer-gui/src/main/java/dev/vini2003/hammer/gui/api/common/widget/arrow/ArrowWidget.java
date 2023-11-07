@@ -31,8 +31,8 @@ import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.bar.ImageBarWidget;
 
 public class ArrowWidget extends ImageBarWidget {
-	public static final Size STANDARD_VERTICAL_SIZE = new Size(16.0F, 22.0F);
-	public static final Size STANDARD_HORIZONTAL_SIZE = new Size(22.0F, 16.0F);
+	public static final Size STANDARD_VERTICAL_SIZE = Size.of(16.0F, 22.0F);
+	public static final Size STANDARD_HORIZONTAL_SIZE = Size.of(22.0F, 16.0F);
 	
 	public static final Texture STANDARD_VERTICAL_FOREGROUND_TEXTURE = new ImageTexture(HC.id("textures/widget/vertical_arrow_foreground.png"));
 	public static final Texture STANDARD_VERTICAL_BACKGROUND_TEXTURE = new ImageTexture(HC.id("textures/widget/vertical_arrow_background.png"));

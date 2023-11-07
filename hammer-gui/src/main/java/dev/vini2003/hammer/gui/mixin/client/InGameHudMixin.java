@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.gui.mixin.client;
 
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.client.event.InGameHudEvents;
 import dev.vini2003.hammer.gui.api.common.event.LayoutChangedEvent;
@@ -102,13 +103,13 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 		for (var bar : bars) {
 			switch (bar.getSide()) {
 				case LEFT -> {
-					leftPos = leftPos.plus(new Position(0.0F, -10.0F));
+					leftPos = leftPos.plus(Position.of(0.0F, -10.0F));
 					
 					bar.setPosition(leftPos);
 				}
 				
 				case RIGHT -> {
-					rightPos = rightPos.plus(new Position(0.0F, -10.0F));
+					rightPos = rightPos.plus(Position.of(0.0F, -10.0F));
 					
 					bar.setPosition(rightPos);
 				}
@@ -116,11 +117,11 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 			
 			switch (bar.getType()) {
 				case CONTINUOS -> {
-					bar.setSize(new Size(10.0F * 9.0F - 9.0F, 9.0F));
+					bar.setSize(Size.of(10.0F * 9.0F - 9.0F, 9.0F));
 				}
 				
 				case TILED -> {
-					bar.setSize(new Size(10.0F * 9.0F, 9.0F));
+					bar.setSize(Size.of(10.0F * 9.0F, 9.0F));
 				}
 			}
 		}

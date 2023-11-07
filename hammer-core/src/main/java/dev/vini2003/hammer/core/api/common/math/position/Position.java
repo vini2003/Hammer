@@ -24,122 +24,303 @@
 
 package dev.vini2003.hammer.core.api.common.math.position;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
+import dev.vini2003.hammer.core.api.common.supplier.FloatSupplier;
 import net.minecraft.util.math.*;
-import org.joml.Quaternionf;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
- * <p>A {@link Position} represents a three-dimensional position.
+ * An {@link Position} represents a three-dimensional position
+ * whose coordinates do not have a fixed storage medium.
  *
- * <p>The following serialization methods are provided:</p>
- * <ul>
- *     <li>{@link #toJson(Position)} - from {@link Position} to {@link JsonElement}.</li>
- *     <li>{@link #toNbt(Position)} - from {@link Position} to {@link NbtCompound}.</li>
- *     <li>{@link #toBuf(Position, PacketByteBuf)} - from {@link Position} to {@link PacketByteBuf}.</li>
- * </ul>
- 
- * <ul>
- *     <li>{@link #fromJson(JsonElement)} - from {@link JsonElement} to {@link Position}.</li>
- *     <li>{@link #fromNbt(NbtCompound)} - from {@link NbtCompound} to {@link Position}.</li>
- *     <li>{@link #fromBuf(PacketByteBuf)} - from {@link PacketByteBuf} to {@link Position}.</li>
- * </ul>
+ * Implementations include {@link StaticPosition}, whose coordinates
+ * are fixed, and {@link DynamicPosition}, whose coordinates are not.
  */
-public class Position implements PositionHolder {
-	public static final Codec<Position> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			Codec.FLOAT.optionalFieldOf("x", 0.0F).forGetter(Position::getX),
-			Codec.FLOAT.optionalFieldOf("y", 0.0F).forGetter(Position::getY),
-			Codec.FLOAT.optionalFieldOf("z", 0.0F).forGetter(Position::getZ)
-	).apply(instance, Position::new));
-	
-	public static final Position ZERO = new Position(0.0F, 0.0F, 0.0F);
-	
-	private final float x;
-	private final float y;
-	private final float z;
-	
+public abstract class Position implements PositionHolder {
 	/**
-	 * Serializes a position to a {@link PacketByteBuf}.
-	 * @param position The position to serialize.
-	 * @param buf The buffer to serialize to.
-	 * @return The buffer.
+	 * A factory for creating a StaticPosition with specified X, Y, and Z components.
+	 *
+	 * @param x the X coordinate of the position.
+	 * @param y the Y coordinate of the position.
+	 * @param z the Z coordinate of the position.
+	 * @return a new StaticPosition instance with the specified coordinates.
 	 */
-	public static PacketByteBuf toBuf(Position position, PacketByteBuf buf) {
-		buf.writeFloat(position.getX());
-		buf.writeFloat(position.getY());
-		buf.writeFloat(position.getZ());
-		
-		return buf;
+	public static StaticPosition of(float x, float y, float z) {
+		return new StaticPosition(x, y, z);
 	}
 	
 	/**
-	 * Deserializes a position from a {@link PacketByteBuf}.
-	 * @param buf The buffer to deserialize from.
-	 * @return The position.
+	 * A factory for creating a StaticPosition with specified X and Y components, assuming Z as zero.
+	 *
+	 * @param x the X coordinate of the position.
+	 * @param y the Y coordinate of the position.
+	 * @return a new StaticPosition instance with the specified coordinates and Z set to zero.
 	 */
-	public static Position fromBuf(PacketByteBuf buf) {
-		return new Position(buf.readFloat(), buf.readFloat(), buf.readFloat());
+	public static StaticPosition of(float x, float y) {
+		return new StaticPosition(x, y);
 	}
 	
 	/**
-	 * Serializes a position to an {@link NbtCompound}.
-	 * @param position The position.
-	 * @return The serialized position.
+	 * A factory for creating a StaticPosition relative to an anchor with additional relative X, Y, and Z components.
+	 *
+	 * @param anchor      the position holder to serve as an anchor.
+	 * @param relativeX   the relative X component to add to the anchor's X position.
+	 * @param relativeY   the relative Y component to add to the anchor's Y position.
+	 * @param relativeZ   the relative Z component to add to the anchor's Z position.
+	 * @return a new StaticPosition instance offset from the anchor by the relative components.
 	 */
-	public static NbtCompound toNbt(Position position) {
-		var nbt = new NbtCompound();
-		
-		nbt.putFloat("x", position.getX());
-		nbt.putFloat("y", position.getY());
-		nbt.putFloat("z", position.getZ());
-		
-		return nbt;
+	public static StaticPosition of(PositionHolder anchor, float relativeX, float relativeY, float relativeZ) {
+		return new StaticPosition(anchor.getX() + relativeX, anchor.getY() + relativeY, anchor.getZ() + relativeZ);
 	}
 	
 	/**
-	 * Deserializes a position from an {@link NbtCompound}.
-	 * @param nbt The serialized position.
-	 * @return The position.
+	 * A factory for creating a StaticPosition relative to an anchor with additional relative X and Y components.
+	 *
+	 * @param anchor      the position holder to serve as an anchor.
+	 * @param relativeX   the relative X component to add to the anchor's X position.
+	 * @param relativeY   the relative Y component to add to the anchor's Y position.
+	 * @return a new StaticPosition instance offset from the anchor by the relative components with the same Z position as the anchor.
 	 */
-	public static Position fromNbt(NbtCompound nbt) {
-		return new Position(nbt.getFloat("x"), nbt.getFloat("y"), nbt.getFloat("z"));
+	public static StaticPosition of(PositionHolder anchor, float relativeX, float relativeY) {
+		return new StaticPosition(anchor.getX() + relativeX, anchor.getY() + relativeY, anchor.getZ());
 	}
 	
 	/**
-	 * Serializes a position to a {@link JsonElement}.
-	 * @param position The position.
-	 * @return The serialized position.
+	 * A factory for creating a StaticPosition with the same coordinates as the given position holder.
+	 *
+	 * @param anchor the position holder whose coordinates should be copied.
+	 * @return a new StaticPosition instance with the same coordinates as the anchor.
 	 */
-	public static JsonElement toJson(Position position) {
-		var json = new JsonObject();
-		
-		json.addProperty("x", position.getX());
-		json.addProperty("y", position.getY());
-		json.addProperty("z", position.getZ());
-		
-		return json;
+	public static StaticPosition of(PositionHolder anchor) {
+		return new StaticPosition(anchor.getX(), anchor.getY(), anchor.getZ());
 	}
 	
 	/**
-	 * Deserializes a position from a {@link JsonElement}.
-	 * @param json The serialized position.
-	 * @return The position.
+	 * A factory for creating a StaticPosition from a BlockPos.
+	 *
+	 * @param blockPos the BlockPos to convert.
+	 * @return a new StaticPosition instance with coordinates corresponding to the BlockPos.
 	 */
-	public static Position fromJson(JsonElement json) {
-		var object = json.getAsJsonObject();
-		
-		return new Position(object.get("x").getAsFloat(), object.get("y").getAsFloat(), object.get("z").getAsFloat());
+	public static StaticPosition of(BlockPos blockPos) {
+		return new StaticPosition(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+	}
+	
+	/**
+	 * A factory for creating a StaticPosition from a ChunkPos with Y set to zero.
+	 *
+	 * @param chunkPos the ChunkPos to convert.
+	 * @return a new StaticPosition instance with coordinates corresponding to the ChunkPos and Y set to zero.
+	 */
+	public static StaticPosition of(ChunkPos chunkPos) {
+		return new StaticPosition(chunkPos.x, 0.0F, chunkPos.z);
+	}
+	
+	/**
+	 * A factory for creating a StaticPosition from a Vec2f with Z set to zero.
+	 *
+	 * @param vec2f the Vec2f to convert.
+	 * @return a new StaticPosition instance with coordinates corresponding to the Vec2f and Z set to zero.
+	 */
+	public static StaticPosition of(Vec2f vec2f) {
+		return new StaticPosition(vec2f.x, vec2f.y);
+	}
+	
+	/**
+	 * A factory for creating a StaticPosition from a Vec3d.
+	 *
+	 * @param vec3d the Vec3d to convert.
+	 * @return a new StaticPosition instance with coordinates corresponding to the Vec3d.
+	 */
+	public static StaticPosition of(Vec3d vec3d) {
+		return new StaticPosition((float) vec3d.x, (float) vec3d.y, (float) vec3d.z);
+	}
+	
+	/**
+	 * A factory for creating a StaticPosition from a Vector3f.
+	 *
+	 * @param vec3f the Vector3f to convert.
+	 * @return a new StaticPosition instance with coordinates corresponding to the Vector3f.
+	 */
+	public static StaticPosition of(Vector3f vec3f) {
+		return new StaticPosition(vec3f.x(), vec3f.y(), vec3f.z());
+	}
+	
+	/**
+	 * A factory for creating a StaticPosition from a Vec3i.
+	 *
+	 * @param vec3i the Vec3i to convert.
+	 * @return a new StaticPosition instance with coordinates corresponding to the Vec3i.
+	 */
+	public static StaticPosition of(Vec3i vec3i) {
+		return new StaticPosition(vec3i.getX(), vec3i.getY(), vec3i.getZ());
+	}
+	
+	/**
+	 * A factory for creating a StaticPosition from a Vector3d.
+	 *
+	 * @param vector3d the Vector3d to convert.
+	 * @return a new StaticPosition instance with coordinates corresponding to the Vector3d.
+	 */
+	public static StaticPosition of(Vector3d vector3d) {
+		return new StaticPosition((float) vector3d.x(), (float) vector3d.y(), (float) vector3d.z());
+	}
+	
+	/**
+	 * A factory for creating a DynamicPosition with supplied functions for X, Y, and Z components.
+	 *
+	 * @param x the supplier for the X dynamic position component.
+	 * @param y the supplier for the Y dynamic position component.
+	 * @param z the supplier for the Z dynamic position component.
+	 * @return a new DynamicPosition instance with supplied dynamic components.
+	 */
+	public static DynamicPosition of(FloatSupplier x, FloatSupplier y, FloatSupplier z) {
+		return new DynamicPosition(x, y, z);
+	}
+	
+	/**
+	 * A factory for creating a DynamicPosition with supplied functions for X and Y components, assuming Z as zero.
+	 *
+	 * @param x the supplier for the X dynamic position component.
+	 * @param y the supplier for the Y dynamic position component.
+	 * @return a new DynamicPosition instance with supplied dynamic components and Z set to zero.
+	 */
+	public static DynamicPosition of(FloatSupplier x, FloatSupplier y) {
+		return new DynamicPosition(x, y, () -> 0.0F);
+	}
+	
+	/**
+	 * Converts this position to a {@link BlockPos}.
+	 *
+	 * @return the block pos.
+	 */
+	public BlockPos toBlockPos() {
+		return new BlockPos((int) getX(), (int) getY(), (int) getZ());
+	}
+	
+	/**
+	 * Converts this position to a {@link ChunkPos}
+	 *
+	 * @return the chunk pos.
+	 */
+	public ChunkPos toChunkPos() {
+		return new ChunkPos((int) getX(), (int) getZ());
+	}
+	
+	/**
+	 * Converts this position to a {@link Vec2f}.
+	 * @return The vector.
+	 */
+	public Vec2f toVec2f() {
+		return new Vec2f(getX(), getY());
+	}
+	
+	/**
+	 * Converts this position to a {@link Vec3d}.
+	 * @return The vector.
+	 */
+	public Vec3d toVec3d() {
+		return new Vec3d(getX(), getY(), getZ());
+	}
+	
+	/**
+	 * Converts this position to a {@link Vector3f}.
+	 * @return The vector.
+	 */
+	public Vector3f toVector3f() {
+		return new Vector3f(getX(), getY(), getZ());
+	}
+	
+	/**
+	 * Converts this position to a {@link Vec3i}.
+	 * @return The vector.
+	 */
+	public Vec3i toVec3i() {
+		return new Vec3i((int) getX(), (int) getY(), (int) getZ());
+	}
+	
+	/**
+	 * Converts this position to a {@link Vector3d}.
+	 * @return The vector.
+	 */
+	public Vector3d toVector3d() {
+		return new Vector3d(getX(), getY(), getZ());
+	}
+	
+	
+	/**
+	 * Returns this static position offset by X, Y and Z components.
+	 *
+	 * @param x the X component to offset this position by.
+	 * @param y the Y component to offset this position by.
+	 * @param z the Z component to offset this position by.
+	 *
+	 * @return the resulting position.
+	 */
+	public StaticPosition offset(float x, float y, float z) {
+		return new StaticPosition(this.getX() + x, this.getY() + y, this.getZ() + z);
+	}
+	
+	/**
+	 * Returns this static position offset by X and Y components.
+	 *
+	 * @param x the X component to offset this position by.
+	 * @param y the Y component to offset this position by.
+	 *
+	 * @return the resulting position.
+	 */
+	public StaticPosition offset(float x, float y) {
+		return new StaticPosition(this.getX() + x, this.getY() + y, this.getZ());
+	}
+	
+	/**
+	 * Returns this position offset by X, Y and Z components.
+	 *
+	 * @param x the X component to offset this position by.
+	 * @param y the Y component to offset this position by.
+	 * @param z the Z component to offset this position by.
+	 *
+	 * @return the resulting position.
+	 */
+	public DynamicPosition offset(FloatSupplier x, FloatSupplier y, FloatSupplier z) {
+		return new DynamicPosition(() -> this.getX() + x.get(), () -> this.getY() + y.get(), () -> this.getZ() + z.get());
+	}
+	
+	/**
+	 * Returns this position offset by X and Y components.
+	 *
+	 * @param x the X component to offset this position by.
+	 * @param y the Y component to offset this position by.
+	 *
+	 * @return the resulting position.
+	 */
+	public DynamicPosition offset(FloatSupplier x, FloatSupplier y) {
+		return new DynamicPosition(() -> this.getX() + x.get(), () -> this.getY() + y.get(), this::getZ);
+	}
+	
+	/**
+	 * Returns the distance between this and the distant position.
+	 *
+	 * @param position the distant position.
+	 *
+	 * @return the distance.
+	 */
+	public float distanceTo(PositionHolder position) {
+		return (float) Math.sqrt(Math.pow((getX() - position.getX()), 2.0D) + Math.pow((getY() - position.getY()), 2.0D) + Math.pow((getZ() - position.getZ()), 2.0D));
+	}
+	
+	/**
+	 * Returns the squared distance between this and the distant position.
+	 *
+	 * @param position the distant position.
+	 *
+	 * @return the distance.
+	 */
+	public float squaredDistanceTo(PositionHolder position) {
+		return (float) (Math.pow((getX() - position.getX()), 2.0D) + Math.pow((getY() - position.getY()), 2.0D) + Math.pow((getZ() - position.getZ()), 2.0D));
 	}
 	
 	/**
@@ -150,20 +331,20 @@ public class Position implements PositionHolder {
 	 *
 	 * @return the collection.
 	 */
-	public static Collection<Position> collect(Position startPosition, Position endPosition) {
-		var minPosition = new Position(Math.min(startPosition.x, endPosition.x), Math.min(startPosition.y, endPosition.y), Math.min(startPosition.z, endPosition.z));
-		var maxPosition = new Position(Math.max(startPosition.x, endPosition.y), Math.max(startPosition.y, endPosition.y), Math.max(startPosition.z, endPosition.z));
+	public static Collection<StaticPosition> collect(PositionHolder startPosition, PositionHolder endPosition) {
+		var minPosition = new StaticPosition(Math.min(startPosition.getX(), endPosition.getX()), Math.min(startPosition.getY(), endPosition.getY()), Math.min(startPosition.getZ(), endPosition.getZ()));
+		var maxPosition = new StaticPosition(Math.max(startPosition.getX(), endPosition.getY()), Math.max(startPosition.getY(), endPosition.getY()), Math.max(startPosition.getZ(), endPosition.getZ()));
 		
-		var x = (int) minPosition.x;
-		var y = (int) minPosition.y;
-		var z = (int) minPosition.z;
+		var x = (int) minPosition.getX();
+		var y = (int) minPosition.getY();
+		var z = (int) minPosition.getZ();
 		
-		var positions = new ArrayList<Position>();
+		var positions = new ArrayList<StaticPosition>();
 		
-		while (x < maxPosition.x) {
-			while (y < maxPosition.y) {
-				while (z < maxPosition.z) {
-					positions.add(new Position(x, y, z));
+		while (x < maxPosition.getX()) {
+			while (y < maxPosition.getY()) {
+				while (z < maxPosition.getZ()) {
+					positions.add(new StaticPosition(x, y, z));
 					
 					++z;
 				}
@@ -177,400 +358,23 @@ public class Position implements PositionHolder {
 		return positions;
 	}
 	
-	/**
-	 * Constructs a position.
-	 *
-	 * @param x the X position component.
-	 * @param y the Y position component.
-	 * @param z the Z position component.
-	 *
-	 * @return the position.
-	 */
-	public Position(float x, float y, float z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
-	
-	/**
-	 * Constructs a position.
-	 *
-	 * @param x the X position component.
-	 * @param y the Y position component.
-	 *
-	 * @return the position.
-	 */
-	public Position(float x, float y) {
-		this.x = x;
-		this.y = y;
-		this.z = 0.0F;
-	}
-	
-	/**
-	 * Constructs an anchored position.
-	 *
-	 * @param anchor           the anchor.
-	 * @param relativePosition the relative position.
-	 *
-	 * @return the position.
-	 */
-	public Position(PositionHolder anchor, Position relativePosition) {
-		this(anchor.getX() + relativePosition.getX(), anchor.getY() + relativePosition.getY(), anchor.getZ() + relativePosition.getZ());
-	}
-	
-	/**
-	 * Constructs an anchored position.
-	 *
-	 * @param anchor    the anchor.
-	 * @param relativeX the relative X component.
-	 * @param relativeY the relative Y component.
-	 * @param relativeZ the relative Z component.
-	 *
-	 * @return the position.
-	 */
-	public Position(PositionHolder anchor, float relativeX, float relativeY, float relativeZ) {
-		this(anchor.getX() + relativeX, anchor.getY() + relativeY, anchor.getZ() + relativeZ);
-	}
-	
-	/**
-	 * Constructs an anchored position.
-	 *
-	 * @param anchor    the anchor.
-	 * @param relativeX the relative X component.
-	 * @param relativeY the relative Y component.
-	 *
-	 * @return the position.
-	 */
-	public Position(PositionHolder anchor, float relativeX, float relativeY) {
-		this(anchor.getX() + relativeX, anchor.getY() + relativeY, anchor.getZ());
-	}
-	
-	/**
-	 * Constructs an anchor's position.
-	 *
-	 * @param anchor the anchor.
-	 *
-	 * @return the position.
-	 */
-	public Position(PositionHolder anchor) {
-		this(anchor.getX(), anchor.getY(), anchor.getZ());
-	}
-	
-	/**
-	 * Converts a {@link BlockPos} to a position.
-	 *
-	 * @param blockPos the block pos.
-	 *
-	 * @return the position.
-	 */
-	public Position(BlockPos blockPos) {
-		this(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-	}
-	
-	/**
-	 * Converts a {@link ChunkPos} to a position.
-	 *
-	 * @param chunkPos the chunk pos.
-	 *
-	 * @return the position.
-	 */
-	public Position(ChunkPos chunkPos) {
-		this(chunkPos.x, 0.0F, chunkPos.z);
-	}
-	
-	/**
-	 * Converts a {@link Vec2f} to a position.
-	 * @param vec2f The vector.
-	 * @return The position.
-	 */
-	public Position(Vec2f vec2f) {
-		this(vec2f.x, vec2f.y);
-	}
-	
-	/**
-	 * Converts a {@link Vec3d} to a position.
-	 * @param vec3d The vector.
-	 * @return The position.
-	 */
-	public Position(Vec3d vec3d) {
-		this((float) vec3d.x, (float) vec3d.y, (float) vec3d.z);
-	}
-	
-	/**
-	 * Converts a {@link Vector3f} to a position.
-	 * @param vec3f The vector.
-	 * @return The position.
-	 */
-	public Position(Vector3f vec3f) {
-		this(vec3f.x(), vec3f.y(), vec3f.z());
-	}
-	
-	/**
-	 * Converts a {@link Vec3i} to a position.
-	 * @param vec3i The vector.
-	 * @return The position.
-	 */
-	public Position(Vec3i vec3i) {
-		this(vec3i.getX(), vec3i.getY(), vec3i.getZ());
-	}
-	
-	/**
-	 * Converts a {@link Vector3d} to a position.
-	 * @param vector3d The vector.
-	 * @return The position.
-	 */
-	 public Position(Vector3d vector3d) {
-		this((float) vector3d.x(), (float) vector3d.y(), (float) vector3d.z());
-	 }
-	
-	/**
-	 * Converts this position to a {@link BlockPos}.
-	 *
-	 * @return the block pos.
-	 */
-	public BlockPos toBlockPos() {
-		return new BlockPos((int) x, (int) y, (int) z);
-	}
-	
-	/**
-	 * Converts this position to a {@link ChunkPos}
-	 *
-	 * @return the chunk pos.
-	 */
-	public ChunkPos toChunkPos() {
-		return new ChunkPos((int) x, (int) z);
-	}
-	
-	/**
-	 * Converts this position to a {@link Vec2f}.
-	 * @return The vector.
-	 */
-	public Vec2f toVec2f() {
-		return new Vec2f(x, y);
-	}
-	
-	/**
-	 * Converts this position to a {@link Vec3d}.
-	 * @return The vector.
-	 */
-	public Vec3d toVec3d() {
-		return new Vec3d(x, y, z);
-	}
-	
-	/**
-	 * Converts this position to a {@link Vector3f}.
-	 * @return The vector.
-	 */
-	public Vector3f toVector3f() {
-		return new Vector3f(x, y, z);
-	}
-	
-	/**
-	 * Converts this position to a {@link Vec3i}.
-	 * @return The vector.
-	 */
-	public Vec3i toVec3i() {
-		return new Vec3i((int) x, (int) y, (int) z);
-	}
-	
-	/**
-	 * Converts this position to a {@link Vector3d}.
-	 * @return The vector.
-	 */
-	public Vector3d toVector3d() {
-		return new Vector3d(x, y, z);
-	}
-	
-	/**
-	 * Returns the distance between this and the distant position.
-	 *
-	 * @param position the distant position.
-	 *
-	 * @return the distance.
-	 */
-	public float distanceTo(Position position) {
-		return (float) Math.sqrt(Math.pow((x - position.x), 2.0D) + Math.pow((y - position.y), 2.0D) + Math.pow((z - position.z), 2.0D));
-	}
-	
-	/**
-	 * Returns the squared distance between this and the distant position.
-	 *
-	 * @param position the distant position.
-	 *
-	 * @return the distance.
-	 */
-	public float squaredDistanceTo(Position position) {
-		return (float) (Math.pow((x - position.x), 2.0D) + Math.pow((y - position.y), 2.0D) + Math.pow((z - position.z), 2.0D));
-	}
-	
-	/**
-	 * Returns this position offset by X, Y and Z components.
-	 *
-	 * @param x the X component to offset this position by.
-	 * @param y the Y component to offset this position by.
-	 * @param z the Z component to offset this position by.
-	 *
-	 * @return the resulting position.
-	 */
-	public Position offset(float x, float y, float z) {
-		return new Position(this.x + x, this.y + y, this.z + z);
-	}
-	
-	/**
-	 * Returns this position offset by X and Y components.
-	 *
-	 * @param x the X component to offset this position by.
-	 * @param y the Y component to offset this position by.
-	 *
-	 * @return the resulting position.
-	 */
-	public Position offset(float x, float y) {
-		return new Position(this.x + x, this.y + y, this.z);
-	}
-	
-	/**
-	 * Returns this position, adding another position to it.
-	 *
-	 * @param position the position.
-	 *
-	 * @return the resulting position.
-	 */
-	public Position plus(Position position) {
-		return new Position(x + position.x, y + position.y, z + position.z);
-	}
-	
-	/**
-	 * Returns this position, subtracting another position from it.
-	 *
-	 * @param position the position.
-	 *
-	 * @return the resulting position.
-	 */
-	public Position minus(Position position) {
-		return new Position(x + position.x, y + position.y, z + position.z);
-	}
-	
-	/**
-	 * Returns this position, multiplying its components by a given number.
-	 *
-	 * @param number the number.
-	 *
-	 * @return the resulting position.
-	 */
-	public Position times(float number) {
-		return new Position(x * number, y * number, z * number);
-	}
-	
-	/**
-	 * Returns this position, dividing its components by a given number.
-	 *
-	 * @param number the number.
-	 *
-	 * @return the resulting position.
-	 */
-	public Position div(float number) {
-		return new Position(x / number, y / number, z / number);
-	}
-	
-	/**
-	 * Returns this position, rotated by the given quaternion.
-	 *
-	 * @return the resulting position.
-	 */
-	public Position rotate(Quaternionf quaternion) {
-		// TODO: Check if this is equivalent to the 1.19.2 code.
-		
-		var q1 = new Quaternionf(quaternion);
-		q1.mul(new Quaternionf(this.getX(), this.getY(), this.getZ(), 0.0F));
-		var q2 = new Quaternionf(quaternion);
-		q2.conjugate();
-		q1.mul(q2);
-		
-		return new Position(q1.x(), q1.y(), q1.z());
-	}
-	
-	/**
-	 * Returns the maximum position by the given function.
-	 *
-	 * @return the maximum position.
-	 */
-	public static Position maxBy(Position a, Position b, Function<Position, Float> function) {
-		var resA = function.apply(a);
-		var resB = function.apply(b);
-		
-		if (resA >= resB) {
-			return a;
-		} else {
-			return b;
-		}
-	}
-	
-	/**
-	 * Returns the minimum position by the given function.
-	 *
-	 * @return the minimum position.
-	 */
-	public static Position minBy(Position a, Position b, Function<Position, Float> function) {
-		var resA = function.apply(a);
-		var resB = function.apply(b);
-		
-		if (resA <= resB) {
-			return a;
-		} else {
-			return b;
-		}
-	}
-	
-	/**
-	 * Returns the maximum position.
-	 *
-	 * @return the maximum position.
-	 */
-	public static Position max(Position a, Position b) {
-		return new Position(Math.max(a.x, b.x), Math.max(a.y, b.y), Math.max(a.z, b.z));
-	}
-	
-	/**
-	 * Returns the minimum position.
-	 *
-	 * @return the minimum position.
-	 */
-	public static Position min(Position a, Position b) {
-		return new Position(Math.min(a.x, b.x), Math.min(a.y, b.y), Math.min(a.z, b.z));
-	}
-	
-	@Override
-	public float getX() {
-		return x;
-	}
-	
-	@Override
-	public float getY() {
-		return y;
-	}
-	
-	@Override
-	public float getZ() {
-		return z;
-	}
-	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
 		}
 		
-		if (!(o instanceof Position)) {
+		if (!(o instanceof StaticPosition)) {
 			return false;
 		}
 		
-		var position = (Position) o;
+		var position = (StaticPosition) o;
 		
-		return Float.compare(position.x, x) == 0 && Float.compare(position.y, y) == 0 && Float.compare(position.z, z) == 0;
+		return Float.compare(position.getX(), getX()) == 0 && Float.compare(position.getY(), getY()) == 0 && Float.compare(position.getZ(), getZ()) == 0;
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(x, y, z);
+		return Objects.hash(getX(), getY(), getZ());
 	}
 }

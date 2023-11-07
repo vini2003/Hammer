@@ -27,6 +27,7 @@ package dev.vini2003.hammer.zone.registry.common;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneGroupManager;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneManager;
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
@@ -110,8 +111,8 @@ public class HZNetworking {
 					var zone = new Zone(
 							player.getWorld().getRegistryKey(),
 							id,
-							new Position((float) (pos.getX() - 0.5F), (float) (pos.getY() - 0.5F), (float) (pos.getZ() - 0.5F)),
-							new Position((float) (pos.getX() + 0.5F), (float) (pos.getY() + 0.5F), (float) (pos.getZ() + 0.5F))
+							Position.of((float) (pos.getX() - 0.5F), (float) (pos.getY() - 0.5F), (float) (pos.getZ() - 0.5F)),
+							Position.of((float) (pos.getX() + 0.5F), (float) (pos.getY() + 0.5F), (float) (pos.getZ() + 0.5F))
 					);
 					
 					for (var existingZone : ZoneManager.getAll(player.getWorld())) {

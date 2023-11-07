@@ -30,6 +30,7 @@ import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.client.util.LayerUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
 import dev.vini2003.hammer.gui.api.common.event.*;
@@ -49,7 +50,7 @@ import java.util.Objects;
  * <b>This widget is client-side only.</b>
  */
 public abstract class TextEditorWidget extends Widget {
-	public static final Size STANDARD_SIZE = new Size(90.0F, 72.0F);
+	public static final Size STANDARD_SIZE = Size.of(90.0F, 72.0F);
 	
 	protected final List<String> lines = new ArrayList<>();
 	
@@ -1027,8 +1028,8 @@ public abstract class TextEditorWidget extends Widget {
 		return (int) Math.round(TextUtil.getWidth("m") * scale);
 	}
 	
-	public Position getInnerPosition() {
-		return new Position(this, 3.0F, 3.0F);
+	public StaticPosition getInnerPosition() {
+		return Position.of(this, 3.0F, 3.0F);
 	}
 	
 	public float getInnerX() {
@@ -1044,7 +1045,7 @@ public abstract class TextEditorWidget extends Widget {
 	}
 	
 	public Size getInnerSize() {
-		return new Size(getWidth() - 6.0F, getHeight() - 6.0F);
+		return Size.of(getWidth() - 6.0F, getHeight() - 6.0F);
 	}
 	
 	public float getInnerWidth() {

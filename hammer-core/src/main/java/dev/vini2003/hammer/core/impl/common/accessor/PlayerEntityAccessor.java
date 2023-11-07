@@ -1,85 +1,135 @@
-/*
- * MIT License
- *
- * Copyright (c) 2020 - 2022 vini2003
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package dev.vini2003.hammer.core.impl.common.accessor;
 
+import dev.vini2003.hammer.core.api.common.exception.NoMixinException;
+
 public interface PlayerEntityAccessor {
-	float hammer$getAttackDamageMultiplier();
+	default float hammer$getAttackDamageMultiplier() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setAttackDamageMultiplier(float multiplier);
+	default void hammer$setAttackDamageMultiplier(float multiplier) {
+		throw new NoMixinException();
+	}
 	
-	float hammer$getDamageMultiplier();
+	default float hammer$getDamageMultiplier() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setDamageMultiplier(float multiplier);
+	default void hammer$setDamageMultiplier(float multiplier) {
+		throw new NoMixinException();
+	}
 	
-	float hammer$getFallDamageMultiplier();
+	default float hammer$getFallDamageMultiplier() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setFallDamageMultiplier(float multiplier);
+	default void hammer$setFallDamageMultiplier(float multiplier) {
+		throw new NoMixinException();
+	}
 	
-	float hammer$getMovementSpeedMultiplier();
+	default float hammer$getMovementSpeedMultiplier() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setMovementSpeedMultiplier(float multiplier);
+	default void hammer$setMovementSpeedMultiplier(float multiplier) {
+		throw new NoMixinException();
+	}
 	
-	float hammer$getJumpMultiplier();
+	default float hammer$getJumpMultiplier() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setJumpMultiplier(float multiplier);
+	default void hammer$setJumpMultiplier(float multiplier) {
+		throw new NoMixinException();
+	}
 	
-	float hammer$getHealMultiplier();
+	default float hammer$getHealMultiplier() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setHealMultiplier(float multiplier);
+	default void hammer$setHealMultiplier(float multiplier) {
+		throw new NoMixinException();
+	}
 	
-	float hammer$getExhaustionMultiplier();
+	default float hammer$getExhaustionMultiplier() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setExhaustionMultiplier(float multiplier);
+	default void hammer$setExhaustionMultiplier(float multiplier) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$isFrozen();
+	default boolean hammer$isFrozen() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setFrozen(boolean frozen);
+	default void hammer$setFrozen(boolean frozen) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$hasHead();
+	default boolean hammer$hasHead() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setHead(boolean head);
+	default void hammer$setHead(boolean head) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$hasTorso();
+	default boolean hammer$hasTorso() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setTorso(boolean torso);
+	default void hammer$setTorso(boolean torso) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$hasLeftArm();
+	default boolean hammer$hasLeftArm() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setLeftArm(boolean leftArm);
+	default void hammer$setLeftArm(boolean leftArm) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$hasRightArm();
+	default boolean hammer$hasRightArm() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setRightArm(boolean rightArm);
+	default void hammer$setRightArm(boolean rightArm) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$hasLeftLeg();
+	default boolean hammer$hasLeftLeg() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setLeftLeg(boolean leftLeg);
+	default void hammer$setLeftLeg(boolean leftLeg) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$hasRightLeg();
+	default boolean hammer$hasRightLeg() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setRightLeg(boolean rightLeg);
+	default void hammer$setRightLeg(boolean rightLeg) {
+		throw new NoMixinException();
+	}
+	
+	default void hammer$setAllowMovement(boolean allowsMovement) {
+		throw new NoMixinException();
+	}
+	
+	default boolean hammer$allowMovement() {
+		throw new NoMixinException();
+	}
+	
+	default void hammer$setAllowInteraction(boolean allowsInteraction) {
+		throw new NoMixinException();
+	}
+	
+	default boolean hammer$allowInteraction() {
+		throw new NoMixinException();
+	}
 	
 	default boolean hammer$hasAnyArm() {
 		return hammer$hasLeftArm() || hammer$hasRightArm();
@@ -88,12 +138,4 @@ public interface PlayerEntityAccessor {
 	default boolean hammer$hasAnyLeg() {
 		return hammer$hasLeftLeg() || hammer$hasRightLeg();
 	}
-	
-	void hammer$setAllowMovement(boolean allowsMovement);
-	
-	boolean hammer$allowMovement();
-	
-	void hammer$setAllowInteraction(boolean allowsInteraction);
-	
-	boolean hammer$allowInteraction();
 }

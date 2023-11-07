@@ -24,21 +24,15 @@
 
 package dev.vini2003.hammer.preset.registry.common;
 
-import dev.vini2003.hammer.chat.api.common.util.ChannelUtil;
-import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import dev.vini2003.hammer.preset.HP;
-import dev.vini2003.hammer.preset.api.common.util.PlayerListUtil;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
@@ -64,19 +58,19 @@ public class HPEvents {
 			else FIRST_JOINS.add(player.getUuid());
 			
 			if (HP.CONFIG.enableChannels) {
-				ChannelUtil.setSelected(player, HPChannels.GENERAL);
+				player.hammer$setSelectedChannel(HPChannels.GENERAL);
 			}
 			
-			ChatUtil.setShowDirectMessages(player, HP.CONFIG.defaultShowDirectMessages);
-			ChatUtil.setShowWarnings(player, HP.CONFIG.defaultShowWarnings);
-			ChatUtil.setShowCommandFeedback(player, HP.CONFIG.defaultShowCommandFeedback);
-			ChatUtil.setShowChat(player, HP.CONFIG.defaultShowChat);
-			ChatUtil.setShowGlobalChat(player, HP.CONFIG.defaultShowGlobalChat);
+			player.hammer$setShowDirectMessages(HP.CONFIG.defaultShowDirectMessages);
+			player.hammer$setShowWarnings(HP.CONFIG.defaultShowWarnings);
+			player.hammer$setShowCommandFeedback(HP.CONFIG.defaultShowCommandFeedback);
+			player.hammer$setShowChat(HP.CONFIG.defaultShowChat);
+			player.hammer$setShowGlobalChat(HP.CONFIG.defaultShowGlobalChat);
 			
-			ChatUtil.setFastChatFade(player, HP.CONFIG.defaultFastChatFade);
+			player.hammer$setFastChatFade(HP.CONFIG.defaultFastChatFade);
 			
 			ServerTaskQueue.enqueue(($) -> {
-				ChatUtil.setFastChatFade(handler.player, HP.CONFIG.defaultFastChatFade);
+				player.hammer$setFastChatFade(HP.CONFIG.defaultFastChatFade);
 			}, 5000L);
 			
 			if (HP.CONFIG.enableWelcome) {

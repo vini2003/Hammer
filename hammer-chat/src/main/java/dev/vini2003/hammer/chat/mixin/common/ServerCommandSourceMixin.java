@@ -24,7 +24,6 @@
 
 package dev.vini2003.hammer.chat.mixin.common;
 
-import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.CommandOutput;
 import net.minecraft.server.command.ServerCommandSource;
@@ -49,7 +48,7 @@ public abstract class ServerCommandSourceMixin {
 	@Inject(at = @At("HEAD"), method = "sendFeedback", cancellable = true)
 	private void hammer$sendFeedback(Supplier<Text> feedbackSupplier, boolean broadcastToOps, CallbackInfo ci) {
 		if (output instanceof PlayerEntity player) {
-			if (!ChatUtil.shouldShowCommandFeedback(player)) {
+			if (!player.hammer$shouldShowCommandFeedback()) {
 				ci.cancel();
 			}
 		}
@@ -58,7 +57,7 @@ public abstract class ServerCommandSourceMixin {
 	@Inject(at = @At("HEAD"), method = "sendError", cancellable = true)
 	private void hammer$sendError(Text message, CallbackInfo ci) {
 		if (output instanceof PlayerEntity player) {
-			if (!ChatUtil.shouldShowCommandFeedback(player)) {
+			if (!player.hammer$shouldShowCommandFeedback()) {
 				ci.cancel();
 			}
 		}
@@ -66,7 +65,7 @@ public abstract class ServerCommandSourceMixin {
 	
 	@Redirect(at = @At(value = "INVOKE",  target = "Lnet/minecraft/server/network/ServerPlayerEntity;sendMessage(Lnet/minecraft/text/Text;)V"), method = "sendToOps")
 	private void hammer$sendToOps$sendMessage(ServerPlayerEntity instance, Text message) {
-		if (ChatUtil.shouldShowCommandFeedback(instance)) {
+		if (instance.hammer$shouldShowCommandFeedback()) {
 			instance.sendMessage(message);
 		}
 	}

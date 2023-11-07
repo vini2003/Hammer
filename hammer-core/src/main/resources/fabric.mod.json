@@ -32,5 +32,10 @@
   },
   "mixins": [
     "hammer.mixins.json"
-  ]
+  ],
+  "custom": {
+    "loom:injected_interfaces": {
+      "net/minecraft/class_1657": ["dev/vini2003/hammer/core/impl/common/accessor/PlayerEntityAccessor"]
+    }
+  }
 }

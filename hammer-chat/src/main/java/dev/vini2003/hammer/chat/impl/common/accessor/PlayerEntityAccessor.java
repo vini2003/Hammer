@@ -25,41 +25,80 @@
 package dev.vini2003.hammer.chat.impl.common.accessor;
 
 import dev.vini2003.hammer.chat.api.common.channel.Channel;
+import dev.vini2003.hammer.core.api.common.exception.NoMixinException;
 
 import java.util.List;
 
 public interface PlayerEntityAccessor {
-	void hammer$setShowChat(boolean showChat);
+	default void hammer$setShowChat(boolean showChat) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$shouldShowChat();
+	default boolean hammer$shouldShowChat() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setShowGlobalChat(boolean showGlobalChat);
+	default void hammer$setShowGlobalChat(boolean showGlobalChat) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$shouldShowGlobalChat();
+	default boolean hammer$shouldShowGlobalChat() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setShowCommandFeedback(boolean showFeedback);
+	default void hammer$setShowCommandFeedback(boolean showFeedback) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$shouldShowCommandFeedback();
+	default boolean hammer$shouldShowCommandFeedback() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setShowWarnings(boolean showWarnings);
+	default void hammer$setShowWarnings(boolean showWarnings) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$shouldShowWarnings();
+	default boolean hammer$shouldShowWarnings() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setMuted(boolean muted);
+	default void hammer$setMuted(boolean muted) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$shouldShowDirectMessages();
+	default boolean hammer$shouldShowDirectMessages() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setShowDirectMessages(boolean showDirectMessages);
+	default void hammer$setShowDirectMessages(boolean showDirectMessages) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$isMuted();
+	default boolean hammer$isMuted() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setSelectedChannel(Channel selectedChannel);
+	default void hammer$setSelectedChannel(Channel selectedChannel) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$hasFastChatFade();
+	default boolean hammer$hasFastChatFade() {
+		throw new NoMixinException();
+	}
 	
-	void hammer$setFastChatFade(boolean fastChatFade);
+	default void hammer$setFastChatFade(boolean fastChatFade) {
+		throw new NoMixinException();
+	}
 	
-	Channel hammer$getSelectedChannel();
+	default Channel hammer$getSelectedChannel() {
+		throw new NoMixinException();
+	}
 	
-	List<Channel> hammer$getPreviousSelectedChannels();
+	default Channel hammer$getPreviousSelectedChannel() {
+		throw new NoMixinException();
+	}
+	
+	default List<Channel> hammer$getPreviousSelectedChannels() {
+		throw new NoMixinException();
+	}
 }

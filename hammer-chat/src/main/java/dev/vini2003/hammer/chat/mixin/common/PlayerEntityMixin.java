@@ -140,12 +140,30 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	
 	@Override
 	public void hammer$setSelectedChannel(Channel hammer$selectedChannel) {
+		var prev = this.hammer$selectedChannel;
+		
+		if (prev != null) {
+			hammer$previousSelectedChannels.add(prev);
+		}
+		
 		this.hammer$selectedChannel = hammer$selectedChannel;
 	}
 	
 	@Override
 	public Channel hammer$getSelectedChannel() {
 		return hammer$selectedChannel;
+	}
+	
+	@Override
+	public Channel hammer$getPreviousSelectedChannel() {
+		if (!hammer$previousSelectedChannels.isEmpty()) {
+			var first = hammer$previousSelectedChannels.get(0);
+			hammer$previousSelectedChannels.remove(0);
+			
+			return first;
+		} else {
+			return null;
+		}
 	}
 	
 	@Override

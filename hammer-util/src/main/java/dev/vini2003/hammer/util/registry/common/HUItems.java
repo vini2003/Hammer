@@ -24,16 +24,13 @@
 
 package dev.vini2003.hammer.util.registry.common;
 
-import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import dev.vini2003.hammer.core.registry.common.HCConfig;
-import dev.vini2003.hammer.core.registry.common.HCItemGroups;
 import dev.vini2003.hammer.util.api.common.item.TriggerItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 import net.minecraft.util.hit.EntityHitResult;
@@ -69,9 +66,9 @@ public class HUItems {
 							var entity = entityHit.getEntity();
 					
 							if (entity instanceof PlayerEntity player) {
-								var muted = !ChatUtil.isMuted(player);
+								var muted = !player.hammer$isMuted();
 						
-								ChatUtil.setMuted(player, muted);
+								player.hammer$setMuted(muted);
 						
 								user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer." + (muted ? "mute" : "unmute"), player.getDisplayName()), true);
 							}

@@ -24,26 +24,21 @@
 
 package dev.vini2003.hammer.chat.registry.common;
 
-import dev.vini2003.hammer.chat.api.common.util.ChannelUtil;
-import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 
 public class HCEvents {
 	public static void init() {
 		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
-			ChatUtil.setShowChat(newPlayer, ChatUtil.shouldShowChat(oldPlayer));
-			ChatUtil.setShowGlobalChat(newPlayer, ChatUtil.shouldShowGlobalChat(oldPlayer));
-			ChatUtil.setShowCommandFeedback(newPlayer, ChatUtil.shouldShowCommandFeedback(oldPlayer));
-			ChatUtil.setShowWarnings(newPlayer, ChatUtil.shouldShowWarnings(oldPlayer));
+			newPlayer.hammer$setShowChat(oldPlayer.hammer$shouldShowChat());
+			newPlayer.hammer$setShowGlobalChat(oldPlayer.hammer$shouldShowGlobalChat());
+			newPlayer.hammer$setShowCommandFeedback(oldPlayer.hammer$shouldShowCommandFeedback());
+			newPlayer.hammer$setShowWarnings(oldPlayer.hammer$shouldShowWarnings());
+			newPlayer.hammer$setShowDirectMessages(oldPlayer.hammer$shouldShowDirectMessages());
+			newPlayer.hammer$setFastChatFade(oldPlayer.hammer$hasFastChatFade());
+			newPlayer.hammer$setMuted(oldPlayer.hammer$isMuted());
 			
-			ChatUtil.setShowDirectMessages(newPlayer, ChatUtil.shouldShowDirectMessages(oldPlayer));
-			
-			ChatUtil.setFastChatFade(newPlayer, ChatUtil.hasFastChatFade(oldPlayer));
-			
-			ChatUtil.setMuted(newPlayer, ChatUtil.isMuted(oldPlayer));
-			
-			ChannelUtil.setSelected(newPlayer, ChannelUtil.getSelected(oldPlayer));
+			newPlayer.hammer$setSelectedChannel(oldPlayer.hammer$getSelectedChannel());
 		});
 		
 		ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> {
@@ -58,8 +53,8 @@ public class HCEvents {
 			var senderPlayer = playerManager.getPlayer(message.getSender());
 			if (senderPlayer == null) return false;
 			
-			var receiverChannel = ChannelUtil.getSelected(receiverPlayer);
-			var senderChannel = ChannelUtil.getSelected(senderPlayer);
+			var receiverChannel = receiverPlayer.hammer$getSelectedChannel();
+			var senderChannel = senderPlayer.hammer$getSelectedChannel();
 			
 			if (receiverChannel != senderChannel) {
 				return false;

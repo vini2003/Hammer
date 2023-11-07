@@ -24,21 +24,16 @@
 
 package dev.vini2003.hammer.chat.mixin.common;
 
-import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
-import net.minecraft.command.argument.MessageArgumentType;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.command.MessageCommand;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,7 +45,7 @@ public class MessageCommandMixin {
 		var targetsToRemove = new ArrayList<ServerPlayerEntity>();
 		
 		for (var target : targets) {
-			if (!ChatUtil.shouldShowDirectMessages(target)) {
+			if (!target.hammer$shouldShowCommandFeedback()) {
 				source.sendFeedback(() -> Text.translatable("text.hammer.message_command.direct_messages_disabled", target.getDisplayName()), false);
 				
 				targetsToRemove.add(target);

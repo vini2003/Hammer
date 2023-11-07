@@ -24,7 +24,6 @@
 
 package dev.vini2003.hammer.chat.mixin.client;
 
-import dev.vini2003.hammer.chat.api.common.util.ChatUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.MessageIndicator;
@@ -45,7 +44,10 @@ public class ChatHudMixin {
 	
 	@Inject(method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;ILnet/minecraft/client/gui/hud/MessageIndicator;Z)V", at = @At("HEAD"), cancellable = true)
 	private void hammer$chat$addChatMessage(Text message, MessageSignatureData signature, int ticks, MessageIndicator indicator, boolean refresh, CallbackInfo ci) {
-		if (!ChatUtil.shouldShowChat(client.player) || !ChatUtil.shouldShowGlobalChat(client.player)) {
+		var player = client.player;
+		if (player == null) return;
+		
+		if (!player.hammer$shouldShowChat() || !player.hammer$shouldShowGlobalChat()) {
 			ci.cancel();
 		}
 	}

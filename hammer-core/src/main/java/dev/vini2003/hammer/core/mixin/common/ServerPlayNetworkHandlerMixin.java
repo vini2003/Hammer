@@ -24,7 +24,6 @@
 
 package dev.vini2003.hammer.core.mixin.common;
 
-import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;

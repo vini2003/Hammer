@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.chat.mixin.common;
 
 import dev.vini2003.hammer.chat.api.common.channel.Channel;
+import dev.vini2003.hammer.chat.api.common.event.ChannelEvents;
 import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
 import dev.vini2003.hammer.core.api.common.component.TrackedDataComponent;
 import dev.vini2003.hammer.core.api.common.data.TrackedDataHandler;
@@ -50,6 +51,9 @@ import java.util.List;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEntityAccessor {
+	@Shadow
+	public abstract void remove(RemovalReason reason);
+	
 	private final TrackedDataHandler<Boolean> hammer$showChat = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true,"ShowChat");
 	private final TrackedDataHandler<Boolean> hammer$showGlobalChat = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "ShowGlobalChat");
 	private final TrackedDataHandler<Boolean> hammer$showCommandFeedback = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "ShowCommandFeedback");
@@ -66,6 +70,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	
 	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);
+	}
+	
+	private PlayerEntity hammer$self() {
+		return (PlayerEntity) (Object) this;
 	}
 	
 	@Override
@@ -136,6 +144,25 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	@Override
 	public boolean hammer$hasFastChatFade() {
 		return hammer$fastChatFade.get();
+	}
+	
+	@Override
+	public boolean hammer$isInChannel(Channel channel) {
+		return channel.getHolders().contains(getUuid());
+	}
+	
+	@Override
+	public void hammer$joinChannel(Channel channel) {
+		channel.getHolders().add(getUuid());
+		
+		ChannelEvents.ADD.invoker().onAdd(hammer$self(), channel);
+	}
+	
+	@Override
+	public void hammer$leaveChannel(Channel channel) {
+		channel.getHolders().remove(getUuid());
+		
+		ChannelEvents.REMOVE.invoker().onRemove(hammer$self(), channel);
 	}
 	
 	@Override

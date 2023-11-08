@@ -25,9 +25,7 @@
 package dev.vini2003.hammer.permission.mixin.client;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.core.api.common.util.RaycastUtil;
 import dev.vini2003.hammer.permission.api.common.manager.RoleManager;
-import dev.vini2003.hammer.permission.api.common.util.RoleUtil;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
@@ -45,7 +43,7 @@ public class EntityRenderDispatcherMixin {
 		var client = InstanceUtil.getClient();
 		
 		if (entity instanceof PlayerEntity player) {
-			if (RoleUtil.hasRoleOutline(player)) {
+			if (player.hammer$hasRoleOutline()) {
 				var color = RoleManager.getRolePrefixColor(player);
 				
 				if (color != null) {

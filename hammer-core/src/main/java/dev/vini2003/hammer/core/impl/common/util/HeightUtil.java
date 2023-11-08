@@ -1,6 +1,5 @@
 package dev.vini2003.hammer.core.impl.common.util;
 
-import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.player.PlayerEntity;
 

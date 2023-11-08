@@ -70,7 +70,7 @@ public class HCCommands {
 		}
 		
 		for (var channel : ChannelManager.channels()) {
-			if (channel.isIn(player)) {
+			if (player.hammer$isInChannel(channel)) {
 				builder.suggest(channel.getName());
 			}
 		}
@@ -93,9 +93,9 @@ public class HCCommands {
 		};
 		
 		for (var channel : channels) {
-			if (channel.isIn(player)) {
+			if (player.hammer$isInChannel(channel)) {
 				ref.text += "§a⚪§r" + channel.getName() + "§r, ";
-			} else if (channel.getRole().isIn(player)) {
+			} else if (player.hammer$hasRole(channel.getRole())) {
 				ref.text += "§e⚪§r" + channel.getName() + "§r, ";
 			}
 		}
@@ -137,8 +137,8 @@ public class HCCommands {
 		var channel = ChannelManager.getChannelByName(channelName);
 		
 		for (var player : players) {
-			if (channel.isIn(player)) {
-				channel.removeFrom(player);
+			if (player.hammer$isInChannel(channel)) {
+				player.hammer$leaveChannel(channel);
 				
 				player.hammer$setSelectedChannel(player.hammer$getPreviousSelectedChannel());
 			}
@@ -171,8 +171,8 @@ public class HCCommands {
 		var channel = ChannelManager.getChannelByName(channelName);
 		
 		for (var player : players) {
-			if (!channel.isIn(player) && (channel.getRole() == null || channel.getRole().isIn(player))) {
-				channel.addTo(player);
+			if (!player.hammer$isInChannel(channel) && (channel.getRole() == null || player.hammer$hasRole(channel.getRole()))) {
+				player.hammer$joinChannel(channel);
 				
 				player.hammer$setSelectedChannel(channel);
 			}
@@ -227,9 +227,9 @@ public class HCCommands {
 		var channel = ChannelManager.getChannelByName(channelName);
 		
 		for (var otherPlayer : players) {
-			if (channel.isIn(otherPlayer)) {
+			if (otherPlayer.hammer$isInChannel(channel)) {
 				if (requiresOp(otherPlayer.getCommandSource())) {
-					channel.addTo(otherPlayer);
+					otherPlayer.hammer$joinChannel(channel);
 				}
 			}
 			

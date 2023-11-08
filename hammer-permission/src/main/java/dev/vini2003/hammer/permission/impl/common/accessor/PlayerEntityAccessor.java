@@ -24,8 +24,46 @@
 
 package dev.vini2003.hammer.permission.impl.common.accessor;
 
+import dev.vini2003.hammer.core.api.common.exception.NoMixinException;
+import dev.vini2003.hammer.permission.api.common.role.Role;
+import net.luckperms.api.node.Node;
+
+import java.util.Collection;
+
 public interface PlayerEntityAccessor {
-	void hammer$setRoleOutline(boolean roleOutline);
+	default void hammer$setRoleOutline(boolean roleOutline) {
+		throw new NoMixinException();
+	}
 	
-	boolean hammer$hasRoleOutline();
+	default boolean hammer$hasRoleOutline() {
+		throw new NoMixinException();
+	}
+	
+	default void hammer$addPermissionNode(Node node) {
+		throw new NoMixinException();
+	}
+	
+	default void hammer$removePermissionNode(Node node) {
+		throw new NoMixinException();
+	}
+	
+	default boolean hammer$hasPermission(String node) {
+		throw new NoMixinException();
+	}
+	
+	default boolean hammer$hasRole(Role role) {
+		throw new NoMixinException();
+	}
+	
+	default void hammer$addRole(Role role) {
+		throw new NoMixinException();
+	}
+	
+	default void hammer$removeRole(Role role) {
+		throw new NoMixinException();
+	}
+	
+	default Collection<Role> hammer$getRoles() {
+		throw new NoMixinException();
+	}
 }

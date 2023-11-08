@@ -90,6 +90,18 @@ public interface PlayerEntityAccessor {
 		throw new NoMixinException();
 	}
 	
+	default boolean hammer$isInChannel(Channel channel) {
+		throw new NoMixinException();
+	}
+	
+	default void hammer$joinChannel(Channel channel) {
+		throw new NoMixinException();
+	}
+	
+	default void hammer$leaveChannel(Channel channel) {
+		throw new NoMixinException();
+	}
+	
 	default Channel hammer$getSelectedChannel() {
 		throw new NoMixinException();
 	}

@@ -65,7 +65,7 @@ public class ComponentContainer {
 			
 			var entryNbt = new NbtCompound();
 			
-			NbtUtil.putIdentifier(entryNbt, HAMMER$ID_KEY, key.getId());
+			entryNbt.hammer$putIdentifier(HAMMER$ID_KEY, key.getId());
 			
 			var componentNbt = new NbtCompound();
 			component.writeToNbt(componentNbt);
@@ -86,7 +86,7 @@ public class ComponentContainer {
 				try {
 					var entryNbt = (NbtCompound) entryElement;
 					
-					var componentId = NbtUtil.getIdentifier(entryNbt, HAMMER$ID_KEY);
+					var componentId = entryNbt.hammer$getIdentifier(HAMMER$ID_KEY);
 					var componentKey = ComponentManager.getKey(componentId);
 					
 					var component = get(componentKey);

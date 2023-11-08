@@ -67,8 +67,8 @@ public class HPCommands {
 		var role = RoleManager.getRoleByName(roleName);
 		
 		for (var player : players) {
-			if (!role.isIn(player)) {
-				role.addTo(player);
+			if (!player.hammer$hasRole(role)) {
+				player.hammer$addRole(role);
 			}
 		}
 		
@@ -99,8 +99,8 @@ public class HPCommands {
 		var role = RoleManager.getRoleByName(roleName);
 		
 		for (var player : players) {
-			if (role.isIn(player)) {
-				role.removeFrom(player);
+			if (player.hammer$hasRole(role)) {
+				player.hammer$removeRole(role);
 			}
 		}
 		

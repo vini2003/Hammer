@@ -48,10 +48,10 @@ public class HPNetworking {
 			client.execute(() -> {
 				var role = RoleManager.getRoleByName(name);
 				
-				role.clearOnClient();
+				role.getHolders().clear();
 				
 				for (var holder : holders) {
-					role.addToClient(holder);
+					role.getHolders().add(holder);
 				}
 			});
 		});
@@ -61,7 +61,7 @@ public class HPNetworking {
 			var uuid = buf.readUuid();
 			
 			client.execute(() -> {
-				RoleManager.getRoleByName(name).addToClient(uuid);
+				RoleManager.getRoleByName(name).getHolders().add(uuid);
 			});
 		});
 		
@@ -70,7 +70,7 @@ public class HPNetworking {
 			var uuid = buf.readUuid();
 			
 			client.execute(() -> {
-				RoleManager.getRoleByName(name).removeFromClient(uuid);
+				RoleManager.getRoleByName(name).getHolders().remove(uuid);
 			});
 		});
 	}

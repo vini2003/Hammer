@@ -1,7 +1,6 @@
 package dev.vini2003.hammer.core.mixin.client;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
 import org.spongepowered.asm.mixin.Mixin;

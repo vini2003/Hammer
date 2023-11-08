@@ -25,8 +25,6 @@
 package dev.vini2003.hammer.permission.mixin.client;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.core.api.common.util.RaycastUtil;
-import dev.vini2003.hammer.permission.api.common.util.RoleUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -54,7 +52,7 @@ public abstract class EntityMixin {
 				return;
 			}
 			
-			if (RoleUtil.hasRoleOutline(player)) {
+			if (player.hammer$hasRoleOutline()) {
 				cir.setReturnValue(true);
 			}
 		}

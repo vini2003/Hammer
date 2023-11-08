@@ -35,7 +35,10 @@
   ],
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/class_1657": ["dev/vini2003/hammer/core/impl/common/accessor/PlayerEntityAccessor"]
+      "net/minecraft/class_1657": ["dev/vini2003/hammer/core/impl/common/accessor/PlayerEntityAccessor"],
+      "net/minecraft/class_2487": ["dev/vini2003/hammer/core/impl/common/accessor/NbtCompoundAccessor"],
+      "net/minecraft/class_2540": ["dev/vini2003/hammer/core/impl/common/accessor/PacketByteBufAccessor"],
+      "net/minecraft/server/MinecraftServer": ["dev/vini2003/hammer/core/impl/common/accessor/MinecraftServerAccessor"]
     }
   }
 }

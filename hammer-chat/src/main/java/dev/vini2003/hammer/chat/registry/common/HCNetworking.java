@@ -49,17 +49,15 @@ public class HCNetworking {
 				var channels = new ArrayList<Channel>();
 				
 				for (var channel : ChannelManager.channels()) {
-					if (channel.isIn(player)) {
+					if (player.hammer$isInChannel(channel)) {
 						channels.add(channel);
 					}
 				}
 				
 				if (channels.size() == 0) {
 					player.sendMessage(Text.translatable("text.hammer.channel.none"), false);
-					
-					return;
 				} else {
-					var selectedChannel = ((PlayerEntityAccessor) player).hammer$getSelectedChannel();
+					var selectedChannel = player.hammer$getSelectedChannel();
 					var selectedChannelIndex = channels.indexOf(selectedChannel);
 					
 					if (up) {
@@ -78,7 +76,7 @@ public class HCNetworking {
 					
 					selectedChannel = channels.get(selectedChannelIndex);
 					
-					((PlayerEntityAccessor) player).hammer$setSelectedChannel(selectedChannel);
+					player.hammer$setSelectedChannel(selectedChannel);
 					
 					player.sendMessage(Text.translatable("text.hammer.channel.select.self", Text.literal("#" + selectedChannel.getName()).formatted(Formatting.DARK_GRAY)), false);
 				}

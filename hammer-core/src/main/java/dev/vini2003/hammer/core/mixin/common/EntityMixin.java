@@ -24,7 +24,6 @@
 
 package dev.vini2003.hammer.core.mixin.common;
 
-import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import dev.vini2003.hammer.core.impl.common.component.container.ComponentContainer;
 import dev.vini2003.hammer.core.impl.common.component.holder.ComponentHolder;
 import dev.vini2003.hammer.core.impl.common.util.ComponentUtil;

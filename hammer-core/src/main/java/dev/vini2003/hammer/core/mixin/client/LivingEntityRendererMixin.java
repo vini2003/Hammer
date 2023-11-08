@@ -1,6 +1,5 @@
 package dev.vini2003.hammer.core.mixin.client;
 
-import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModel;

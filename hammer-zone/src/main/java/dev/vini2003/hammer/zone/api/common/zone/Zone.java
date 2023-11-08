@@ -29,9 +29,9 @@ import com.google.gson.JsonObject;
 import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
-import dev.vini2003.hammer.core.api.common.util.BufUtil;
 import dev.vini2003.hammer.core.api.common.util.NbtUtil;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneGroupManager;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.RegistryKeys;
@@ -85,7 +85,7 @@ public class Zone {
 	 * @return The buffer.
 	 */
 	public static PacketByteBuf toBuf(Zone zone, PacketByteBuf buf) {
-		BufUtil.writeRegistryKey(buf, zone.getWorld());
+		buf.hammer$writeRegistryKey(zone.getWorld());
 		buf.writeIdentifier(zone.getId());
 		StaticPosition.toBuf(zone.getMinPos(), buf);
 		StaticPosition.toBuf(zone.getMaxPos(), buf);
@@ -107,7 +107,7 @@ public class Zone {
 	 * @return The zone.
 	 */
 	public static Zone fromBuf(PacketByteBuf buf) {
-		var world = BufUtil.<World>readRegistryKey(buf);
+		var world = buf.<World>hammer$readRegistryKey();
 		var id = buf.readIdentifier();
 		var minPos = StaticPosition.fromBuf(buf);
 		var maxPos = StaticPosition.fromBuf(buf);
@@ -141,13 +141,13 @@ public class Zone {
 	public static NbtCompound toNbt(Zone zone) {
 		var nbt = new NbtCompound();
 		
-		NbtUtil.putRegistryKey(nbt, "WorldId", zone.getWorld());
+		nbt.hammer$putRegistryKey("WorldId", zone.getWorld());
 		
 		if (zone.getGroup() != null) {
-			NbtUtil.putIdentifier(nbt, "GroupId", zone.getGroup().getId());
+			nbt.hammer$putIdentifier("GroupId", zone.getGroup().getId());
 		}
 		
-		NbtUtil.putIdentifier(nbt, "Id", zone.getId());
+		nbt.hammer$putIdentifier("Id", zone.getId());
 		
 		nbt.put("MinPos", StaticPosition.toNbt(zone.getMinPos()));
 		nbt.put("MaxPos", StaticPosition.toNbt(zone.getMaxPos()));
@@ -155,7 +155,7 @@ public class Zone {
 		nbt.put("Color", Color.toNbt(zone.getColor()));
 		
 		if (zone.getGroup() != null) {
-			NbtUtil.putIdentifier(nbt, "Group", zone.getGroup().getId());
+			nbt.hammer$putIdentifier("Group", zone.getGroup().getId());
 		}
 		
 		return nbt;
@@ -171,16 +171,18 @@ public class Zone {
 		
 		if (nbt.contains("group_id")) {
 			zone = new Zone(
-					NbtUtil.getRegistryKey(nbt, "WorldId"),
-					NbtUtil.getIdentifier(nbt, "Id"),
-					ZoneGroupManager.getOrCreate(NbtUtil.getIdentifier(nbt, "GroupId")),
+					nbt.hammer$getRegistryKey("WorldId"),
+					nbt.hammer$getIdentifier("Id"),
+					ZoneGroupManager.getOrCreate(
+							nbt.hammer$getIdentifier("GroupId")
+					),
 					StaticPosition.fromNbt(nbt.getCompound("MinPos")),
 					StaticPosition.fromNbt(nbt.getCompound("MaxPos"))
 			);
 		} else {
 			zone = new Zone(
-					NbtUtil.getRegistryKey(nbt, "WorldId"),
-					NbtUtil.getIdentifier(nbt, "Id"),
+					nbt.hammer$getRegistryKey("WorldId"),
+					nbt.hammer$getIdentifier("Id"),
 					StaticPosition.fromNbt(nbt.getCompound("MinPos")),
 					StaticPosition.fromNbt(nbt.getCompound("MaxPos"))
 			);
@@ -189,7 +191,11 @@ public class Zone {
 		zone.setColor(Color.fromNbt(nbt.get("Color")));
 		
 		if (nbt.contains("Group")) {
-			zone.setGroup(ZoneGroupManager.getOrCreate(NbtUtil.getIdentifier(nbt, "Group")));
+			zone.setGroup(
+					ZoneGroupManager.getOrCreate(
+							nbt.hammer$getIdentifier("Group")
+					)
+			);
 		}
 		
 		return zone;

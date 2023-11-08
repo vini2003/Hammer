@@ -26,7 +26,6 @@ package dev.vini2003.hammer.gravity.api.common.manager;
 
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.core.api.common.util.BufUtil;
 import dev.vini2003.hammer.gravity.registry.common.HGNetworking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -106,7 +105,7 @@ public class GravityManager {
 		buf.writeInt(GRAVITIES.size());
 		
 		for (var entry : GRAVITIES.entrySet()) {
-			BufUtil.writeRegistryKey(buf, entry.getKey());
+			buf.hammer$writeRegistryKey(entry.getKey());
 			buf.writeFloat(entry.getValue());
 		}
 		
@@ -120,7 +119,7 @@ public class GravityManager {
 		buf.writeInt(GRAVITIES.size());
 		
 		for (var entry : GRAVITIES.entrySet()) {
-			BufUtil.writeRegistryKey(buf, entry.getKey());
+			buf.hammer$writeRegistryKey(entry.getKey());
 			buf.writeFloat(entry.getValue());
 		}
 		
@@ -135,7 +134,7 @@ public class GravityManager {
 			reset();
 			
 			for (var i = 0; i < size; ++i) {
-				var world = BufUtil.<World>readRegistryKey(buf);
+				var world = buf.<World>hammer$readRegistryKey();
 				var gravity = buf.readFloat();
 				
 				set(world, gravity);

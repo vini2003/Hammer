@@ -20,5 +20,10 @@
   },
   "mixins": [
     "hammer.border.mixins.json"
-  ]
+  ],
+  "custom": {
+    "loom:injected_interfaces": {
+      "net/minecraft/class_2784": ["dev/vini2003/hammer/border/impl/common/accessor/WorldBorderAccessor"]
+    }
+  }
 }

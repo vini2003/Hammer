@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.border.mixin.common;
 
+import dev.vini2003.hammer.border.impl.common.accessor.WorldBorderAccessor;
 import dev.vini2003.hammer.border.impl.common.border.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
@@ -43,7 +44,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(WorldBorder.class)
-public abstract class WorldBorderMixin implements CubicWorldBorder {
+public abstract class WorldBorderMixin implements CubicWorldBorder, WorldBorderAccessor {
 	@Shadow
 	private double centerX;
 	@Shadow
@@ -285,5 +286,11 @@ public abstract class WorldBorderMixin implements CubicWorldBorder {
 		var cubicProperties = (CubicWorldBorderProperties) properties;
 		
 		setCenter(properties.getCenterX(), cubicProperties.getCenterY(), properties.getCenterZ());
+	}
+	
+	@Override
+	public void hammer$setCenter(float x, float y, float z) {
+		var cubicBorder = (CubicWorldBorder) this;
+		cubicBorder.setCenter(x, y, z);
 	}
 }

@@ -1,9 +1,7 @@
 package dev.vini2003.hammer.core.mixin.client;
 
-import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
-import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;

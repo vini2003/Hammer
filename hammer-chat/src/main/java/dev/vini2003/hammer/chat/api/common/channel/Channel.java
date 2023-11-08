@@ -51,22 +51,6 @@ public class Channel {
 		this.role = role;
 	}
 	
-	public boolean isIn(PlayerEntity player) {
-		return holders.contains(player.getUuid());
-	}
-	
-	public void addTo(PlayerEntity player) {
-		holders.add(player.getUuid());
-		
-		ChannelEvents.ADD.invoker().onAdd(player, this);
-	}
-	
-	public void removeFrom(PlayerEntity player) {
-		holders.remove(player.getUuid());
-		
-		ChannelEvents.REMOVE.invoker().onRemove(player, this);
-	}
-	
 	public String getName() {
 		return name;
 	}

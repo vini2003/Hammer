@@ -71,7 +71,7 @@ public abstract class EntitySelectorOptionsMixin {
 			
 			reader.setPredicate(entity -> {
 				if (entity instanceof PlayerEntity player) {
-					return role.isIn(player) != negationCharacter;
+					return player.hammer$hasRole(role) != negationCharacter;
 				} else {
 					return false;
 				}

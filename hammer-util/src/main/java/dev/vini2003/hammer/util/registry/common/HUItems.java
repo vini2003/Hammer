@@ -25,7 +25,6 @@
 package dev.vini2003.hammer.util.registry.common;
 
 import dev.vini2003.hammer.core.HC;
-import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import dev.vini2003.hammer.core.registry.common.HCConfig;
 import dev.vini2003.hammer.util.api.common.item.TriggerItem;
 import net.minecraft.entity.player.PlayerEntity;

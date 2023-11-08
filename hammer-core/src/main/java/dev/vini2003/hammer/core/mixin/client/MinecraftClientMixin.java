@@ -1,6 +1,5 @@
 package dev.vini2003.hammer.core.mixin.client;
 
-import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.jetbrains.annotations.Nullable;

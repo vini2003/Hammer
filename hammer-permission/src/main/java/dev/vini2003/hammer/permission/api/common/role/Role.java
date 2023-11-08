@@ -110,66 +110,6 @@ public class Role {
 		PermUtil.saveGroup(group.get());
 	}
 	
-	public boolean isIn(PlayerEntity player) {
-		if (player.getWorld().isClient()) {
-			return holders.contains(player.getUuid());
-		} else {
-			return PermUtil.hasPermission(player, inheritanceNode.get().getKey());
-		}
-	}
-	
-	public void addToClient(UUID uuid) {
-		holders.add(uuid);
-	}
-	
-	public void addTo(PlayerEntity player) {
-		if (!player.getWorld().isClient()) {
-			PermUtil.addNode(player.getUuid(), inheritanceNode.get());
-			
-			var buf = PacketByteBufs.create();
-			buf.writeString(name);
-			buf.writeUuid(player.getUuid());
-			
-			for (var otherPlayer : player.getServer().getPlayerManager().getPlayerList()) {
-				ServerPlayNetworking.send(otherPlayer, HPNetworking.ADD_ROLE, PacketByteBufs.duplicate(buf));
-			}
-			
-			holders.add(player.getUuid());
-		} else {
-			addToClient(player.getUuid());
-		}
-		
-		RoleEvents.ADD.invoker().onAdd(player, this);
-	}
-	
-	public void removeFromClient(UUID uuid) {
-		holders.remove(uuid);
-	}
-	
-	public void removeFrom(PlayerEntity player) {
-		if (!player.getWorld().isClient()) {
-			PermUtil.removeNode(player.getUuid(), inheritanceNode.get());
-			
-			var buf = PacketByteBufs.create();
-			buf.writeString(name);
-			buf.writeUuid(player.getUuid());
-			
-			for (var otherPlayer : player.getServer().getPlayerManager().getPlayerList()) {
-				ServerPlayNetworking.send(otherPlayer, HPNetworking.REMOVE_ROLE, PacketByteBufs.duplicate(buf));
-			}
-			
-			holders.remove(player.getUuid());
-		} else {
-			removeFromClient(player.getUuid());
-		}
-		
-		RoleEvents.REMOVE.invoker().onRemove(player, this);
-	}
-	
-	public void clearOnClient() {
-		holders.clear();
-	}
-	
 	public String getName() {
 		return name;
 	}

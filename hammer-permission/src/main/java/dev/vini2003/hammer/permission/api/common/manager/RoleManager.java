@@ -48,6 +48,10 @@ public class RoleManager {
 		ROLES_BY_NAME.put(role.getName(), role);
 	}
 	
+	public static Collection<Role> getRoles() {
+		return ROLES;
+	}
+	
 	public static Role getRoleByName(String name) {
 		return ROLES_BY_NAME.get(name);
 	}
@@ -56,7 +60,7 @@ public class RoleManager {
 		Role maxRole = null;
 		
 		for (var role : ROLES) {
-			if (role.isIn(player)) {
+			if (player.hammer$hasRole(role)) {
 				if (maxRole == null || role.getPrefixWeight() > maxRole.getPrefixWeight()) {
 					maxRole = role;
 				}
@@ -70,7 +74,7 @@ public class RoleManager {
 		Role maxRole = null;
 		
 		for (var role : ROLES) {
-			if (role.isIn(player)) {
+			if (player.hammer$hasRole(role)) {
 				if (maxRole == null || role.getPrefixWeight() > maxRole.getPrefixWeight()) {
 					maxRole = role;
 				}

@@ -26,7 +26,6 @@ package dev.vini2003.hammer.core.registry.common;
 
 import dev.vini2003.hammer.core.api.common.component.base.PlayerComponent;
 import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
-import dev.vini2003.hammer.core.api.common.util.PlayerUtil;
 import dev.vini2003.hammer.core.impl.common.component.holder.ComponentHolder;
 import dev.vini2003.hammer.core.impl.common.state.ComponentPersistentState;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;

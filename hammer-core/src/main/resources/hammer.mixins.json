@@ -1,9 +1,9 @@
 {
-  "required" : true,
-  "minVersion" : "0.8",
-  "package" : "dev.vini2003.hammer.core.mixin",
-  "compatibilityLevel" : "JAVA_17",
-  "mixins" : [
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.vini2003.hammer.core.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
     "common.ArgumentTypesMixin",
     "common.EndPortalBlockMixin",
     "common.EntityMixin",
@@ -15,10 +15,11 @@
     "common.PacketByteBufMixin",
     "common.PlayerEntityMixin",
     "common.PlayerScreenHandlerMixin",
+    "common.ServerPlayerEntityMixin",
     "common.ServerPlayNetworkHandlerMixin",
     "common.WorldMixin"
   ],
-  "client" : [
+  "client": [
     "client.ClientPlayerInteractionManagerMixin",
     "client.HeldItemRendererMixin",
     "client.KeyboardInputMixin",
@@ -27,9 +28,9 @@
     "client.PlayerEntityRendererMixin",
     "client.WorldRendererMixin"
   ],
-  "server" : [
+  "server": [
   ],
-  "injectors" : {
-    "defaultRequire" : 1
+  "injectors": {
+    "defaultRequire": 1
   }
 }

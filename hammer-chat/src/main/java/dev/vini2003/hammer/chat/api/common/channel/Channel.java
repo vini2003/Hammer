@@ -24,9 +24,7 @@
 
 package dev.vini2003.hammer.chat.api.common.channel;
 
-import dev.vini2003.hammer.chat.api.common.event.ChannelEvents;
 import dev.vini2003.hammer.permission.api.common.role.Role;
-import net.minecraft.entity.player.PlayerEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

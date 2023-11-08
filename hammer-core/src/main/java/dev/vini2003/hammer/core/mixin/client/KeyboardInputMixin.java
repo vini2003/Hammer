@@ -17,7 +17,7 @@ public abstract class KeyboardInputMixin extends Input {
 		if (client != null && client.player != null) {
 			var player = client.player;
 			
-			if (!PlayerUtil.hasAnyLeg(player) || !PlayerUtil.allowMovement(player)) {
+			if (!player.hammer$hasAnyLeg() || !player.hammer$allowMovement()) {
 				pressingForward = false;
 				pressingBack = false;
 				pressingLeft = false;

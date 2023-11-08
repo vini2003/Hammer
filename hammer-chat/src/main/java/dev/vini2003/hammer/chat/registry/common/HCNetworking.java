@@ -26,13 +26,9 @@ package dev.vini2003.hammer.chat.registry.common;
 
 import dev.vini2003.hammer.chat.api.common.channel.Channel;
 import dev.vini2003.hammer.chat.api.common.manager.ChannelManager;
-import dev.vini2003.hammer.chat.impl.common.accessor.PlayerEntityAccessor;
 import dev.vini2003.hammer.core.HC;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 

@@ -25,7 +25,6 @@
 package dev.vini2003.hammer.core.api.client.color;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;

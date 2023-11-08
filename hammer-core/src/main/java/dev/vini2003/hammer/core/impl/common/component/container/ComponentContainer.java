@@ -28,7 +28,6 @@ import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.common.component.base.Component;
 import dev.vini2003.hammer.core.api.common.component.base.key.ComponentKey;
 import dev.vini2003.hammer.core.api.common.manager.ComponentManager;
-import dev.vini2003.hammer.core.api.common.util.NbtUtil;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;

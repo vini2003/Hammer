@@ -5,8 +5,6 @@ import dev.vini2003.hammer.core.api.common.command.argument.PositionArgumentType
 import dev.vini2003.hammer.core.api.common.command.argument.SizeArgumentType;
 import dev.vini2003.hammer.core.api.common.manager.CommandManager;
 import net.minecraft.command.argument.*;
-import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
-import net.minecraft.registry.Registries;
 
 public class HCArgumentTypes {
 	public static void init() {

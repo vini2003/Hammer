@@ -24,15 +24,14 @@
 
 package dev.vini2003.hammer.core.api.common.component.base.key;
 
+import dev.vini2003.hammer.core.api.common.component.base.Component;
 import dev.vini2003.hammer.core.impl.common.component.holder.ComponentHolder;
 import dev.vini2003.hammer.core.impl.common.util.ComponentUtil;
-import dev.vini2003.hammer.core.api.common.component.base.Component;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-
 import org.jetbrains.annotations.Nullable;
 
 /**

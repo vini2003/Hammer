@@ -1,6 +1,5 @@
 package dev.vini2003.hammer.core.mixin.common;
 
-import dev.vini2003.hammer.core.impl.common.accessor.PlayerEntityAccessor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
@@ -25,10 +24,8 @@ public abstract class PlayerScreenHandlerMixin extends ScreenHandler {
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/PlayerScreenHandler;addSlot(Lnet/minecraft/screen/slot/Slot;)Lnet/minecraft/screen/slot/Slot;", ordinal = 5), method = "<init>")
 	private Slot hammer$addSlot(PlayerScreenHandler playerScreenHandler, Slot slot) {
-		if (owner instanceof PlayerEntityAccessor player) {
-			if (player.hammer$hasLeftArm()) {
-				return addSlot(slot);
-			}
+		if (owner.hammer$hasLeftArm()) {
+			return addSlot(slot);
 		}
 		
 		return slot;

@@ -20,24 +20,24 @@ public class PlayerEntityRendererMixin {
 		var model = hammer$self().getModel();
 		
 		
-		model.head.visible = PlayerUtil.hasHead(player);
-		model.hat.visible = PlayerUtil.hasHead(player) && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.HAT);
-		model.ear.visible = PlayerUtil.hasHead(player);
+		model.head.visible = player.hammer$hasHead();
+		model.hat.visible = player.hammer$hasHead() && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.HAT);
+		model.ear.visible = player.hammer$hasHead();
 		
-		model.cloak.visible = PlayerUtil.hasTorso(player) && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.CAPE);
-		model.jacket.visible = PlayerUtil.hasTorso(player) && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.JACKET);
-		model.body.visible = PlayerUtil.hasTorso(player);
+		model.cloak.visible = player.hammer$hasTorso() && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.CAPE);
+		model.jacket.visible = player.hammer$hasTorso() && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.JACKET);
+		model.body.visible = player.hammer$hasTorso();
 		
-		model.rightArm.visible = PlayerUtil.hasRightArm(player);
-		model.rightSleeve.visible = PlayerUtil.hasRightArm(player) && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.RIGHT_SLEEVE);
+		model.rightArm.visible = player.hammer$hasRightArm();
+		model.rightSleeve.visible = player.hammer$hasRightArm() && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.RIGHT_SLEEVE);
 		
-		model.leftArm.visible = PlayerUtil.hasLeftArm(player);
-		model.leftSleeve.visible = PlayerUtil.hasLeftArm(player) && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.LEFT_SLEEVE);
+		model.leftArm.visible = player.hammer$hasLeftArm();
+		model.leftSleeve.visible = player.hammer$hasLeftArm() && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.LEFT_SLEEVE);
 		
-		model.rightLeg.visible = PlayerUtil.hasRightLeg(player);
-		model.rightPants.visible = PlayerUtil.hasRightLeg(player) && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.RIGHT_PANTS_LEG);
+		model.rightLeg.visible = player.hammer$hasRightLeg();
+		model.rightPants.visible = player.hammer$hasRightLeg() && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.RIGHT_PANTS_LEG);
 		
-		model.leftLeg.visible = PlayerUtil.hasLeftLeg(player);
-		model.leftPants.visible = PlayerUtil.hasLeftLeg(player) && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.LEFT_PANTS_LEG);
+		model.leftLeg.visible = player.hammer$hasLeftLeg();
+		model.leftPants.visible = player.hammer$hasLeftLeg() && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.LEFT_PANTS_LEG);
 	}
 }

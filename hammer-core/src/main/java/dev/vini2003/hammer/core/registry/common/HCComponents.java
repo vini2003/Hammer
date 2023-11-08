@@ -1,9 +1,9 @@
 package dev.vini2003.hammer.core.registry.common;
 
-import dev.vini2003.hammer.core.api.common.component.base.key.ComponentKey;
-import dev.vini2003.hammer.core.api.common.manager.ComponentManager;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.common.component.TrackedDataComponent;
+import dev.vini2003.hammer.core.api.common.component.base.key.ComponentKey;
+import dev.vini2003.hammer.core.api.common.manager.ComponentManager;
 import net.minecraft.entity.player.PlayerEntity;
 
 public class HCComponents {

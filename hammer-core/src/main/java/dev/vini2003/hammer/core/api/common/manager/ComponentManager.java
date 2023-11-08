@@ -29,11 +29,10 @@ import dev.vini2003.hammer.core.api.common.component.base.PlayerComponent;
 import dev.vini2003.hammer.core.api.common.component.base.key.ComponentKey;
 import dev.vini2003.hammer.core.impl.common.util.ComponentUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;

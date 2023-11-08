@@ -51,7 +51,7 @@ public class EntityMixin implements ComponentHolder {
 	
 	@Inject(at = @At("HEAD"), method = "setVelocity(Lnet/minecraft/util/math/Vec3d;)V", cancellable = true)
 	private void hammer$setVelocity(Vec3d velocity, CallbackInfo ci) {
-		if (hammer$self() instanceof PlayerEntity player && PlayerUtil.isFrozen(player)) {
+		if (hammer$self() instanceof PlayerEntity player && player.hammer$isFrozen()) {
 			this.velocity = Vec3d.ZERO;
 			
 			ci.cancel();
@@ -60,7 +60,7 @@ public class EntityMixin implements ComponentHolder {
 	
 	@Inject(at = @At("HEAD"), method = "addVelocity", cancellable = true)
 	private void hammer$addVelocity(double deltaX, double deltaY, double deltaZ, CallbackInfo ci) {
-		if (hammer$self() instanceof PlayerEntity player && PlayerUtil.isFrozen(player)) {
+		if (hammer$self() instanceof PlayerEntity player && player.hammer$isFrozen()) {
 			this.velocity = Vec3d.ZERO;
 			
 			ci.cancel();

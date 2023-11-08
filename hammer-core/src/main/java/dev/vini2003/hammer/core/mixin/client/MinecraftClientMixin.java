@@ -17,7 +17,7 @@ public class MinecraftClientMixin {
 	
 	@Inject(at = @At("HEAD"), method = "doAttack", cancellable = true)
 	void hammer$doAttack(CallbackInfoReturnable<Boolean> cir) {
-		if (!PlayerUtil.hasRightArm(player) || !PlayerUtil.allowInteraction(player)) {
+		if (!player.hammer$hasRightArm() || !player.hammer$allowInteraction()) {
 			cir.setReturnValue(false);
 			cir.cancel();
 		}

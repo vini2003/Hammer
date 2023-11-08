@@ -78,7 +78,7 @@ public class HUCommands {
 		var source = context.getSource();
 
 		for (var otherPlayer : players) {
-			PlayerUtil.setFrozen(otherPlayer, true);
+			otherPlayer.hammer$setFrozen(true);
 			
 			source.sendFeedback(() -> Text.translatable("command.hammer.freeze.other", otherPlayer.getDisplayName()), true);
 			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.freeze.self"), false);
@@ -110,7 +110,7 @@ public class HUCommands {
 		var source = context.getSource();
 
 		for (var otherPlayer : players) {
-			PlayerUtil.setFrozen(otherPlayer, false);
+			otherPlayer.hammer$setFrozen(false);
 			
 			source.sendFeedback(() -> Text.translatable("command.hammer.unfreeze.other", otherPlayer.getDisplayName()), true);
 			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.unfreeze.self"), false);
@@ -210,7 +210,7 @@ public class HUCommands {
 		var allowMovement = getBool(context, "allowMovement");
 		
 		for (var otherPlayer : players) {
-			PlayerUtil.setAllowMovement(otherPlayer, allowMovement);
+			otherPlayer.hammer$setAllowMovement(allowMovement);
 			
 			source.sendFeedback(() -> Text.translatable("command.hammer.allow_movement.other", otherPlayer.getDisplayName(), allowMovement ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), true);
 			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.allow_movement.self", allowMovement ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), false);
@@ -244,7 +244,7 @@ public class HUCommands {
 		var allowInteraction = getBool(context, "allowInteraction");
 		
 		for (var otherPlayer : players) {
-			PlayerUtil.setAllowInteraction(otherPlayer, allowInteraction);
+			otherPlayer.hammer$setAllowInteraction(allowInteraction);
 			
 			source.sendFeedback(() -> Text.translatable("command.hammer.allow_interaction.other", otherPlayer.getDisplayName(), allowInteraction ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), true);
 			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.allow_interaction.self", allowInteraction ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), false);
@@ -284,7 +284,7 @@ public class HUCommands {
 		for (var otherPlayer : players) {
 			otherPlayer.getAbilities().setFlySpeed(speed / 20.0F);
 			
-			ServerPlayNetworking.send(otherPlayer, HUNetworking.FLY_SPEED_UPDATE, PacketByteBufs.duplicate(buf));
+			ServerPlayNetworking.send(otherPlayer, dev.vini2003.hammer.registry.common.HUNetworking.FLY_SPEED_UPDATE, PacketByteBufs.duplicate(buf));
 			
 			source.sendFeedback(() -> Text.translatable("command.hammer.fly_speed.other", otherPlayer.getDisplayName(), speed), true);
 			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.fly_speed.self", otherPlayer.getDisplayName(), speed), false);
@@ -323,7 +323,7 @@ public class HUCommands {
 		for (var otherPlayer : players) {
 			otherPlayer.getAbilities().setWalkSpeed(speed / 20.0F);
 			
-			ServerPlayNetworking.send(otherPlayer, HUNetworking.WALK_SPEED_UPDATE, PacketByteBufs.duplicate(buf));
+			ServerPlayNetworking.send(otherPlayer, dev.vini2003.hammer.registry.common.HUNetworking.WALK_SPEED_UPDATE, PacketByteBufs.duplicate(buf));
 			
 			source.sendFeedback(() -> Text.translatable("command.hammer.walk_speed.other", otherPlayer.getDisplayName(), speed), true);
 			otherPlayer.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer.walk_speed.self", otherPlayer.getDisplayName(), speed), false);

@@ -28,7 +28,6 @@ import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
-import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.core.api.common.math.position.Positioned;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.math.size.Sized;
@@ -238,15 +237,19 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 		
 		var isBelowOtherWidget = false;
 		
-		for (var child : getRootCollection().getAllChildren()) {
-			if (child == this) {
-				continue;
-			}
-			
-			if (child.isPointWithin(x, y) && child.getZ() > getZ()) {
-				isBelowOtherWidget = true;
+		var rootCollection = getRootCollection();
+		
+		if (rootCollection != null) {
+			for (var child : rootCollection.getAllChildren()) {
+				if (child == this) {
+					continue;
+				}
 				
-				break;
+				if (child.isPointWithin(x, y) && child.getZ() > getZ()) {
+					isBelowOtherWidget = true;
+					
+					break;
+				}
 			}
 		}
 		

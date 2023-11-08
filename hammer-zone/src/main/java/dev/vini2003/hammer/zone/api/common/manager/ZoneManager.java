@@ -24,10 +24,8 @@
 
 package dev.vini2003.hammer.zone.api.common.manager;
 
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
 import dev.vini2003.hammer.zone.registry.common.HZComponents;
-import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 

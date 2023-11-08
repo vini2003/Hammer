@@ -22,7 +22,7 @@ public class HeldItemRendererMixin {
 		if (entity instanceof PlayerEntity player) {
 			var hand = leftHanded ? Hand.OFF_HAND : Hand.MAIN_HAND;
 			
-			if ((!PlayerUtil.hasLeftArm(player) && hand == Hand.OFF_HAND) || (!PlayerUtil.hasRightArm(player) && hand == Hand.MAIN_HAND)) {
+			if ((!player.hammer$hasLeftArm() && hand == Hand.OFF_HAND) || (!player.hammer$hasRightArm() && hand == Hand.MAIN_HAND)) {
 				ci.cancel();
 			}
 		}

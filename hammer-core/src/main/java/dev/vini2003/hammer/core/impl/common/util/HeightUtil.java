@@ -11,17 +11,17 @@ public class HeightUtil {
 		var armHeight = 0.375F * dimensions.height;
 		var legHeight = 0.368F * dimensions.height;
 		
-		if (!PlayerUtil.hasHead(player)) {
+		if (!player.hammer$hasHead()) {
 			newHeight -= headHeight;
 		}
 		
-		if (!PlayerUtil.hasAnyArm(player) && !PlayerUtil.hasTorso(player) && !PlayerUtil.hasAnyLeg(player)) {
+		if (!player.hammer$hasAnyArm() && !player.hammer$hasTorso() && !player.hammer$hasAnyLeg()) {
 			newHeight -= armHeight;
-		} else if (!PlayerUtil.hasHead(player) && !PlayerUtil.hasAnyArm(player) && !PlayerUtil.hasTorso(player) && PlayerUtil.hasAnyLeg(player)) {
+		} else if (!player.hammer$hasHead() && !player.hammer$hasAnyArm() && !player.hammer$hasTorso() && player.hammer$hasAnyLeg()) {
 			newHeight -= armHeight;
 		}
 		
-		if (!PlayerUtil.hasAnyLeg(player)) {
+		if (!player.hammer$hasAnyLeg()) {
 			newHeight -= legHeight;
 		}
 		

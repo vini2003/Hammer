@@ -25,9 +25,7 @@
 package dev.vini2003.hammer.core.registry.client;
 
 import dev.vini2003.hammer.core.api.client.queue.ClientTaskQueue;
-import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import java.util.ArrayList;
 

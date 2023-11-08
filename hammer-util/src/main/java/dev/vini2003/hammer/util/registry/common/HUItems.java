@@ -30,10 +30,9 @@ import dev.vini2003.hammer.util.api.common.item.TriggerItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
-import net.minecraft.text.Text;
-
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.registry.Registry;
+import net.minecraft.text.Text;
+import net.minecraft.util.hit.EntityHitResult;
 
 public class HUItems {
 	public static final Item FREEZE = Registry.register(Registries.ITEM, HC.id("freeze"),
@@ -43,10 +42,10 @@ public class HUItems {
 							var entity = entityHit.getEntity();
 							   
 							if (entity instanceof PlayerEntity player) {
-							  var frozen = !PlayerUtil.isFrozen(player);
-								  
-							  PlayerUtil.setFrozen(player, frozen);
-								  
+							  var frozen = !player.hammer$isFrozen();
+								 
+							  player.hammer$setFrozen(frozen);
+								 
 							  user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer." + (frozen ? "freeze" : "unfreeze"), player.getDisplayName()), true);
 							}
 						}

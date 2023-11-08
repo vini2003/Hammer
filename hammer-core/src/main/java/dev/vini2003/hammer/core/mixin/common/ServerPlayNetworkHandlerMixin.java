@@ -51,7 +51,7 @@ public class ServerPlayNetworkHandlerMixin {
 	
 	@Inject(at = @At("HEAD"), method = "onPlayerMove", cancellable = true)
 	private void hammer$onPlayerMove(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-		if (PlayerUtil.isFrozen(player)) {
+		if (player.hammer$isFrozen()) {
 			ci.cancel();
 		}
 	}
@@ -60,15 +60,15 @@ public class ServerPlayNetworkHandlerMixin {
 	private void hammer$onPlayerInteractItem(PlayerInteractItemC2SPacket packet, CallbackInfo ci) {
 		var hand = packet.getHand();
 		
-		if (!PlayerUtil.hasLeftArm(player) && hand == Hand.OFF_HAND) {
+		if (!player.hammer$hasLeftArm() && hand == Hand.OFF_HAND) {
 			ci.cancel();
 		}
 		
-		if (!PlayerUtil.hasRightArm(player) && hand == Hand.MAIN_HAND) {
+		if (!player.hammer$hasRightArm() && hand == Hand.MAIN_HAND) {
 			ci.cancel();
 		}
 		
-		if (!PlayerUtil.allowInteraction(player)) {
+		if (!player.hammer$allowInteraction()) {
 			ci.cancel();
 		}
 	}
@@ -77,26 +77,26 @@ public class ServerPlayNetworkHandlerMixin {
 	private void hammer$onPlayerInteractBlock(PlayerInteractBlockC2SPacket packet, CallbackInfo ci) {
 		var hand = packet.getHand();
 		
-		if (!PlayerUtil.hasLeftArm(player) && hand == Hand.OFF_HAND) {
+		if (!player.hammer$hasLeftArm() && hand == Hand.OFF_HAND) {
 			ci.cancel();
 		}
 		
-		if (!PlayerUtil.hasRightArm(player) && hand == Hand.MAIN_HAND) {
+		if (!player.hammer$hasRightArm() && hand == Hand.MAIN_HAND) {
 			ci.cancel();
 		}
 		
-		if (!PlayerUtil.allowInteraction(player)) {
+		if (!player.hammer$allowInteraction()) {
 			ci.cancel();
 		}
 	}
 	
 	@Inject(at = @At("HEAD"), method = "onPlayerInteractEntity", cancellable = true)
 	private void hammer$onPlayerInteractEntity(PlayerInteractEntityC2SPacket packet, CallbackInfo ci) {
-		if (!PlayerUtil.hasLeftArm(player) && !PlayerUtil.hasRightArm(player)) {
+		if (!player.hammer$hasLeftArm() && !player.hammer$hasRightArm()) {
 			ci.cancel();
 		}
 		
-		if (!PlayerUtil.allowInteraction(player)) {
+		if (!player.hammer$allowInteraction()) {
 			ci.cancel();
 		}
 	}

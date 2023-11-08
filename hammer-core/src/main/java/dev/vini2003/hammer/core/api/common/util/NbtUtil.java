@@ -27,14 +27,6 @@ package dev.vini2003.hammer.core.api.common.util;
 import com.mojang.brigadier.StringReader;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.*;
-import org.joml.Quaternionf;
-import org.joml.Vector3d;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 public class NbtUtil {
 	public static NbtCompound parseNbt(String nbtString) {

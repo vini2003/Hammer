@@ -25,8 +25,8 @@
 package dev.vini2003.hammer.util.mixin.client;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.util.api.common.item.TriggerItem;
 import dev.vini2003.hammer.core.api.common.util.RaycastUtil;
+import dev.vini2003.hammer.util.api.common.item.TriggerItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;

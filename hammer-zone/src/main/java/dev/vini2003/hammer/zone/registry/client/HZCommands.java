@@ -40,9 +40,7 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.text.ClickEvent;
-
 import net.minecraft.text.Text;
-
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 

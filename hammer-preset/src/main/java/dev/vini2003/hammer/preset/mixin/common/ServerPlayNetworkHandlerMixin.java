@@ -2,7 +2,6 @@ package dev.vini2003.hammer.preset.mixin.common;
 
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.preset.HP;
-import net.minecraft.entity.Entity;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayNetworkHandler;

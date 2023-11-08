@@ -21,52 +21,52 @@ public class ClientPlayerInteractionManagerMixin {
 		var client = InstanceUtil.getClient();
 		var player = client.player;
 		
-		if (!PlayerUtil.hasRightArm(player)) {
+		if (!player.hammer$hasRightArm()) {
 			cir.cancel();
 		}
 		
-		if (!PlayerUtil.allowInteraction(player)) {
+		if (!player.hammer$allowInteraction()) {
 			cir.setReturnValue(false);
 		}
 	}
 	
 	@Inject(at = @At("HEAD"), method = "interactItem", cancellable = true)
 	private void hammer$interactItem(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-		if (!PlayerUtil.hasLeftArm(player) && hand == Hand.OFF_HAND) {
+		if (!player.hammer$hasLeftArm() && hand == Hand.OFF_HAND) {
 			cir.setReturnValue(ActionResult.FAIL);
 		}
 		
-		if (!PlayerUtil.hasRightArm(player) && hand == Hand.MAIN_HAND) {
+		if (!player.hammer$hasRightArm() && hand == Hand.MAIN_HAND) {
 			cir.setReturnValue(ActionResult.FAIL);
 		}
 		
-		if (!PlayerUtil.allowInteraction(player)) {
+		if (!player.hammer$allowInteraction()) {
 			cir.setReturnValue(ActionResult.FAIL);
 		}
 	}
 	
 	@Inject(at = @At("HEAD"), method = "interactBlock", cancellable = true)
 	private void hammer$interactBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
-		if (!PlayerUtil.hasLeftArm(player) && hand == Hand.OFF_HAND) {
+		if (!player.hammer$hasLeftArm() && hand == Hand.OFF_HAND) {
 			cir.setReturnValue(ActionResult.FAIL);
 		}
 		
-		if (!PlayerUtil.hasRightArm(player) && hand == Hand.MAIN_HAND) {
+		if (!player.hammer$hasRightArm() && hand == Hand.MAIN_HAND) {
 			cir.setReturnValue(ActionResult.FAIL);
 		}
 		
-		if (!PlayerUtil.allowInteraction(player)) {
+		if (!player.hammer$allowInteraction()) {
 			cir.setReturnValue(ActionResult.FAIL);
 		}
 	}
 	
 	@Inject(at = @At("HEAD"), method = "interactEntity", cancellable = true)
 	private void hammer$interactEntity(PlayerEntity player, Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-		if (!PlayerUtil.hasLeftArm(player) && !PlayerUtil.hasRightArm(player)) {
+		if (!player.hammer$hasLeftArm() && !player.hammer$hasRightArm()) {
 			cir.setReturnValue(ActionResult.FAIL);
 		}
 		
-		if (!PlayerUtil.allowInteraction(player)) {
+		if (!player.hammer$allowInteraction()) {
 			cir.setReturnValue(ActionResult.FAIL);
 		}
 	}

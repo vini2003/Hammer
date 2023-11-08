@@ -1,6 +1,5 @@
 package dev.vini2003.hammer.preset.impl.mixin;
 
-import dev.vini2003.hammer.preset.HP;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;

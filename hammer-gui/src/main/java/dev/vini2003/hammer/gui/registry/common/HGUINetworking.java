@@ -30,8 +30,6 @@ import dev.vini2003.hammer.gui.api.common.screen.handler.BaseScreenHandler;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
 
-import java.util.Objects;
-
 public class HGUINetworking {
 	public static Identifier SYNC_SCREEN_HANDLER = HC.id("sync_screen_handler");
 	public static Identifier SYNC_WIDGET_EVENT = HC.id("sync_widget_event");

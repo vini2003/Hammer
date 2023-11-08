@@ -32,9 +32,7 @@ import dev.vini2003.hammer.border.impl.common.border.CubicWorldBorder;
 import net.minecraft.command.argument.Vec3ArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.command.WorldBorderCommand;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;

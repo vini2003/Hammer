@@ -27,9 +27,6 @@ package dev.vini2003.hammer.permission.api.common.event;
 import dev.vini2003.hammer.permission.api.common.role.Role;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 
 public interface RoleEvents {

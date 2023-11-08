@@ -31,9 +31,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-
 
 import java.util.Arrays;
 import java.util.Collection;

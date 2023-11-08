@@ -1,8 +1,6 @@
 package dev.vini2003.hammer.preset.mixin.client;
 
 import com.mojang.serialization.Codec;
-import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.option.GameOptions;
@@ -10,7 +8,6 @@ import net.minecraft.client.option.GraphicsMode;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.client.resource.VideoWarningManager;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Final;
@@ -22,11 +19,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static net.minecraft.client.option.GraphicsMode.*;
+import static net.minecraft.client.option.GraphicsMode.FABULOUS;
+import static net.minecraft.client.option.GraphicsMode.FANCY;
 
 @Mixin(GameOptions.class)
 public class GameOptionsMixin {

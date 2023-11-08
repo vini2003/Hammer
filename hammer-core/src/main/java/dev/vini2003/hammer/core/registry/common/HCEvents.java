@@ -39,7 +39,7 @@ public class HCEvents {
 	
 	public static void init() {
 		ServerPlayerEvents.COPY_FROM.register((oldPlayer, newPlayer, alive) -> {
-			PlayerUtil.setFrozen(newPlayer, PlayerUtil.isFrozen(oldPlayer));
+			newPlayer.hammer$setFrozen(oldPlayer.hammer$isFrozen());
 		});
 		
 		ServerTickEvents.END_SERVER_TICK.register(server -> {

@@ -20,9 +20,9 @@ public class LivingEntityRendererMixin<T extends LivingEntity, M extends EntityM
 		if (livingEntity instanceof PlayerEntity player) {
 			var dimensions = livingEntity.getDimensions(livingEntity.getPose());
 			
-			if (PlayerUtil.hasHead(player)) {
+			if (player.hammer$hasHead()) {
 				matrixStack.translate(0F, 1.8F - dimensions.height, 0F);
-			} else if ((PlayerUtil.hasLeftArm(player) || PlayerUtil.hasRightArm(player) || PlayerUtil.hasTorso(player)) && (!PlayerUtil.hasLeftLeg(player) && !PlayerUtil.hasRightLeg(player))) {
+			} else if ((player.hammer$hasLeftArm() || player.hammer$hasRightArm() || player.hammer$hasTorso()) && (!player.hammer$hasLeftLeg() && !player.hammer$hasRightLeg())) {
 				matrixStack.translate(0F, 0.675F, 0F);
 			}
 		}

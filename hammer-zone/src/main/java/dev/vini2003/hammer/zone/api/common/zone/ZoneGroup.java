@@ -24,12 +24,9 @@
 
 package dev.vini2003.hammer.zone.api.common.zone;
 
-import dev.vini2003.hammer.core.api.common.util.NbtUtil;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;

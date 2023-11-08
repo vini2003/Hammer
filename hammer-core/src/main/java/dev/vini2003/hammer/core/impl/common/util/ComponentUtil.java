@@ -24,12 +24,12 @@
 
 package dev.vini2003.hammer.core.impl.common.util;
 
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.component.base.Component;
 import dev.vini2003.hammer.core.api.common.component.base.key.ComponentKey;
-import dev.vini2003.hammer.core.registry.common.HCNetworking;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.impl.common.component.holder.ComponentHolder;
 import dev.vini2003.hammer.core.impl.common.state.ComponentPersistentState;
+import dev.vini2003.hammer.core.registry.common.HCNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;

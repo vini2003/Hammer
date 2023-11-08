@@ -24,8 +24,6 @@
 
 package dev.vini2003.hammer.core.mixin.common;
 
-import dev.vini2003.hammer.core.impl.common.accessor.PlayerEntityAccessor;
-import dev.vini2003.hammer.core.registry.common.HCConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -55,7 +53,7 @@ public abstract class LivingEntityMixin extends Entity {
 	
 	@Inject(at = @At("RETURN"), method = "getJumpVelocity", cancellable = true)
 	private void hammer$getJumpVelocity(CallbackInfoReturnable<Float> cir) {
-		if (hammer$self() instanceof PlayerEntityAccessor player) {
+		if (hammer$self() instanceof PlayerEntity player) {
 			if (!player.hammer$hasHead() && !player.hammer$hasTorso() && !player.hammer$hasLeftArm() && !player.hammer$hasRightArm()) {
 				var multiplier = 1.0F;
 				
@@ -80,7 +78,7 @@ public abstract class LivingEntityMixin extends Entity {
 	
 	@Inject(at = @At("HEAD"), method = "isClimbing", cancellable = true)
 	private void hammer$isClimbing(CallbackInfoReturnable<Boolean> cir) {
-		if (hammer$self() instanceof PlayerEntityAccessor player) {
+		if (hammer$self() instanceof PlayerEntity player) {
 			if (!player.hammer$hasAnyLeg() && !player.hammer$hasAnyArm()) {
 				cir.setReturnValue(false);
 				cir.cancel();
@@ -90,7 +88,7 @@ public abstract class LivingEntityMixin extends Entity {
 	
 	@Inject(at = @At("RETURN"), method = "travel")
 	private void hammer$travel(Vec3d movementInput, CallbackInfo ci) {
-		if (hammer$self() instanceof PlayerEntityAccessor player && isClimbing()) {
+		if (hammer$self() instanceof PlayerEntity player && isClimbing()) {
 			if (!player.hammer$hasAnyArm()) {
 				setVelocity(getVelocity().getX(), getVelocity().getY() * 0.75F, getVelocity().getZ());
 			}
@@ -103,14 +101,14 @@ public abstract class LivingEntityMixin extends Entity {
 	
 	@Inject(at = @At("RETURN"), method = "computeFallDamage", cancellable = true)
 	private void hammer$computeFallDamage(float fallDistance, float damageMultiplier, CallbackInfoReturnable<Integer> cir) {
-		if (this instanceof PlayerEntityAccessor player) {
+		if (hammer$self() instanceof PlayerEntity player) {
 			cir.setReturnValue((int) (cir.getReturnValueI() * player.hammer$getFallDamageMultiplier()));
 		}
 	}
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), method = "heal")
 	private void hammer$heal_setHealth(LivingEntity instance, float health) {
-		if (this instanceof PlayerEntityAccessor player) {
+		if (hammer$self() instanceof PlayerEntity player) {
 			var amount = health - instance.getHealth();
 			
 			instance.setHealth(instance.getHealth() + (amount * player.hammer$getHealMultiplier()));

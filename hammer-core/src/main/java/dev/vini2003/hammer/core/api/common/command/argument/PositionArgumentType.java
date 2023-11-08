@@ -36,7 +36,6 @@ import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;

@@ -4,13 +4,9 @@ import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.WidgetCollection;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class ScreenWidget extends Widget implements WidgetCollection {
 	private final Collection<Widget> children = new ArrayList<>();

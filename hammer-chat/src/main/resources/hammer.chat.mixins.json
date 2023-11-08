@@ -7,10 +7,10 @@
   "mixins" : [
     "common.MessageCommandMixin",
     "common.PlayerEntityMixin",
+    "common.PlayerManagerMixin",
     "common.SentMessageChatMixin",
     "common.ServerCommandSourceMixin",
     "common.ServerMetadataMixin",
-    "common.PlayerManagerMixin",
     "common.ServerPlayNetworkHandlerMixin",
     "common.SharedConstantsMixin",
     "common.TextVisitFactoryMixin"

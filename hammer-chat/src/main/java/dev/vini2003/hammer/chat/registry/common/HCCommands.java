@@ -34,11 +34,9 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import dev.vini2003.hammer.chat.api.common.channel.Channel;
 import dev.vini2003.hammer.chat.api.common.manager.ChannelManager;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-
 import net.minecraft.util.Formatting;
 
 import java.util.Collection;

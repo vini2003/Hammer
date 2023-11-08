@@ -2,11 +2,8 @@ package dev.vini2003.hammer.config.api.common.config;
 
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.loader.impl.FabricLoaderImpl;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class Config {
 	protected transient String path = null;

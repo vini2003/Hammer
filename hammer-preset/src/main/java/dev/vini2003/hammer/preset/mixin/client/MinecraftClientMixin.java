@@ -24,8 +24,6 @@
 
 package dev.vini2003.hammer.preset.mixin.client;
 
-import dev.vini2003.hammer.core.HC;
-import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.preset.HP;
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;

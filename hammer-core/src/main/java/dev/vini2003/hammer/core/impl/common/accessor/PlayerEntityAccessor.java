@@ -1,12 +1,6 @@
 package dev.vini2003.hammer.core.impl.common.accessor;
 
 import dev.vini2003.hammer.core.api.common.exception.NoMixinException;
-import net.minecraft.network.packet.s2c.play.ClearTitleS2CPacket;
-import net.minecraft.network.packet.s2c.play.OverlayMessageS2CPacket;
-import net.minecraft.network.packet.s2c.play.SubtitleS2CPacket;
-import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 
 public interface PlayerEntityAccessor {
 	default float hammer$getAttackDamageMultiplier() {

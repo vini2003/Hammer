@@ -25,16 +25,11 @@
 package dev.vini2003.hammer.permission.api.common.role;
 
 import dev.vini2003.hammer.core.api.common.cache.Cached;
-import dev.vini2003.hammer.permission.api.common.event.RoleEvents;
 import dev.vini2003.hammer.permission.api.common.util.PermUtil;
-import dev.vini2003.hammer.permission.registry.common.HPNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.node.types.InheritanceNode;
 import net.luckperms.api.node.types.PermissionNode;
 import net.luckperms.api.node.types.PrefixNode;
-import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.ArrayList;
 import java.util.Collection;

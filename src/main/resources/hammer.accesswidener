@@ -157,3 +157,5 @@ accessible class net/minecraft/world/chunk/WorldChunk$DirectBlockEntityTickInvok
 
 accessible field net/minecraft/client/gui/screen/option/SimpleOptionsScreen options [Lnet/minecraft/client/option/SimpleOption;
 mutable field net/minecraft/client/gui/screen/option/SimpleOptionsScreen options [Lnet/minecraft/client/option/SimpleOption;
+
+accessible method net/minecraft/util/math/Box traceCollisionSide (Lnet/minecraft/util/math/Box;Lnet/minecraft/util/math/Vec3d;[DLnet/minecraft/util/math/Direction;DDD)Lnet/minecraft/util/math/Direction;

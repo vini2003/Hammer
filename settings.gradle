@@ -24,27 +24,7 @@ pluginManagement {
 
     plugins {
         id "fabric-loom" version loomVersion
-
         id "org.cadixdev.licenser" version licenserVersion
-
 		id "io.github.juuxel.loom-quiltflower" version loomQuiltFlowerVersion
     }
 }
-
-rootProject.name = "Hammer"
-
-include "hammer-core"
-include "hammer-chat"
-include "hammer-border"
-include "hammer-emoji"
-include "hammer-config"
-include "hammer-permission"
-include "hammer-gravity"
-include "hammer-gui"
-include "hammer-gui-energy"
-include "hammer-zone"
-// include "hammer-stage"
-include "hammer-preset"
-include "hammer-util"
-
-include "hammer-everything"

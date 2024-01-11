@@ -39,7 +39,7 @@
       "dev.vini2003.hammer.core.HCServer"
     ]
   },
-  "accessWidener": "hammer.core.accesswidener",
+  "accessWidener": "hammer.accesswidener",
   "depends": {
     "fabricloader": ">=0.12.9",
     "fabric": ">=0.44.0+1.18",

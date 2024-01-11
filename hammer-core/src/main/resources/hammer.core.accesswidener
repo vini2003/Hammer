@@ -22,6 +22,12 @@ mutable field net/minecraft/screen/slot/Slot index I
 mutable field net/minecraft/screen/slot/Slot x I
 mutable field net/minecraft/screen/slot/Slot y I
 
+accessible field net/minecraft/client/gui/hud/InGameHud scaledWidth I
+accessible field net/minecraft/client/gui/hud/InGameHud scaledHeight I
+accessible field net/minecraft/client/gui/hud/InGameHud renderHealthValue I
+
+accessible method net/minecraft/client/gui/hud/InGameHud getHeartCount (Lnet/minecraft/entity/LivingEntity;)I
+
 accessible field net/minecraft/client/gui/screen/ingame/HandledScreen x I
 accessible field net/minecraft/client/gui/screen/ingame/HandledScreen y I
 accessible field net/minecraft/client/gui/screen/ingame/HandledScreen titleX I
@@ -129,3 +135,25 @@ accessible field net/minecraft/client/render/RenderPhase TRIPWIRE_PROGRAM Lnet/m
 accessible field net/minecraft/client/render/RenderPhase END_PORTAL_PROGRAM Lnet/minecraft/client/render/RenderPhase$ShaderProgram;
 accessible field net/minecraft/client/render/RenderPhase END_GATEWAY_PROGRAM Lnet/minecraft/client/render/RenderPhase$ShaderProgram;
 accessible field net/minecraft/client/render/RenderPhase LINES_PROGRAM Lnet/minecraft/client/render/RenderPhase$ShaderProgram;
+
+
+accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;
+
+accessible field net/minecraft/client/particle/Particle velocityX D
+accessible field net/minecraft/client/particle/Particle velocityY D
+accessible field net/minecraft/client/particle/Particle velocityZ D
+
+accessible field net/minecraft/client/particle/Particle x D
+accessible field net/minecraft/client/particle/Particle y D
+accessible field net/minecraft/client/particle/Particle z D
+
+accessible class net/minecraft/entity/mob/SpiderEntity$AttackGoal
+accessible class net/minecraft/entity/mob/SpiderEntity$TargetGoal
+
+accessible field net/minecraft/client/render/WorldRenderer bufferBuilders Lnet/minecraft/client/render/BufferBuilderStorage;
+
+accessible class net/minecraft/world/chunk/WorldChunk$DirectBlockEntityTickInvoker
+
+
+accessible field net/minecraft/client/gui/screen/option/SimpleOptionsScreen options [Lnet/minecraft/client/option/SimpleOption;
+mutable field net/minecraft/client/gui/screen/option/SimpleOptionsScreen options [Lnet/minecraft/client/option/SimpleOption;

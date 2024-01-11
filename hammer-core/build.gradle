@@ -1,7 +1,14 @@
 loom {
     accessWidenerPath = file("src/main/resources/hammer.core.accesswidener")
+
+	// Energy
+	modApi "teamreborn:energy:${energyVersion}"
+
+	// LuckPerms
+	modApi "net.luckperms:api:${luckPermsVersion}"
+	include "net.luckperms:api:${luckPermsVersion}"
 }
 
 jar {
-	archiveBaseName = "hammer-core"
+	archiveBaseName = "hammer"
 }

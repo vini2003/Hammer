@@ -15,10 +15,25 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.vini2003.hammer.core.HC"
+      "dev.vini2003.hammer.chat.HC",
+      "dev.vini2003.hammer.core.HC",
+      "dev.vini2003.hammer.gravity.HG",
+      "dev.vini2003.hammer.gui.HGUI",
+      "dev.vini2003.hammer.permission.HP",
+      "dev.vini2003.hammer.preset.HP",
+      "dev.vini2003.hammer.util.HU",
+      "dev.vini2003.hammer.zone.HZ"
+      
     ],
     "client": [
-      "dev.vini2003.hammer.core.HCClient"
+      "dev.vini2003.hammer.chat.HCClient",
+      "dev.vini2003.hammer.core.HCClient",
+      "dev.vini2003.hammer.gravity.HGClient",
+      "dev.vini2003.hammer.gui.HGUIClient",
+      "dev.vini2003.hammer.permission.HPClient",
+      "dev.vini2003.hammer.preset.HPClient",
+      "dev.vini2003.hammer.util.HUClient",
+      "dev.vini2003.hammer.zone.HZClient"
     ],
     "server": [
       "dev.vini2003.hammer.core.HCServer"
@@ -31,14 +46,27 @@
     "minecraft": ">=1.18"
   },
   "mixins": [
-    "hammer.mixins.json"
+    "hammer.border.mixins.json",
+    "hammer.chat.mixins.json",
+    "hammer.core.mixins.json",
+    "hammer.gravity.mixins.json",
+    "hammer.gui.mixins.json",
+    "hammer.permission.mixins.json",
+    "hammer.preset.mixins.json",
+    "hammer.util.mixins.json",
+    "hammer.zone.mixins.json"
   ],
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/class_1657": ["dev/vini2003/hammer/core/impl/common/accessor/PlayerEntityAccessor"],
+      "net/minecraft/class_1657": [
+        "dev/vini2003/hammer/core/impl/common/accessor/PlayerEntityAccessor",
+        "dev/vini2003/hammer/permission/impl/common/accessor/PlayerEntityAccessor",
+        "dev/vini2003/hammer/chat/impl/common/accessor/PlayerEntityAccessor"
+      ],
       "net/minecraft/class_2487": ["dev/vini2003/hammer/core/impl/common/accessor/NbtCompoundAccessor"],
       "net/minecraft/class_2540": ["dev/vini2003/hammer/core/impl/common/accessor/PacketByteBufAccessor"],
       "net/minecraft/class_3222": ["dev/vini2003/hammer/core/impl/common/accessor/ServerPlayerEntityAccessor"],
+      "net/minecraft/class_2784": ["dev/vini2003/hammer/border/impl/common/accessor/WorldBorderAccessor"],
       "net/minecraft/server/MinecraftServer": ["dev/vini2003/hammer/core/impl/common/accessor/MinecraftServerAccessor"]
     }
   }

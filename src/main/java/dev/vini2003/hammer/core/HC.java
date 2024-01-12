@@ -26,6 +26,7 @@ package dev.vini2003.hammer.core;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.vini2003.hammer.core.api.common.util.HammerUtil;
 import dev.vini2003.hammer.core.registry.common.HCArgumentTypes;
 import dev.vini2003.hammer.core.registry.common.HCComponents;
 import dev.vini2003.hammer.core.registry.common.HCEvents;
@@ -38,6 +39,14 @@ import org.slf4j.LoggerFactory;
 
 @ApiStatus.Internal
 public class HC implements ModInitializer {
+	private static final String HAMMER_CHAT_MOD_INITIALIZER = "dev.vini2003.hammer.chat.HC";
+	private static final String HAMMER_GRAVITY_MOD_INITIALIZER = "dev.vini2003.hammer.gravity.HG";
+	private static final String HAMMER_GUI_MOD_INITIALIZER = "dev.vini2003.hammer.gui.HGUI";
+	private static final String HAMMER_PERMISSION_MOD_INITIALIZER = "dev.vini2003.hammer.permission.HP";
+	private static final String HAMMER_PRESET_MOD_INITIALIZER = "dev.vini2003.hammer.preset.HP";
+	private static final String HAMMER_UTIL_MOD_INITIALIZER = "dev.vini2003.hammer.util.HU";
+	private static final String HAMMER_ZONE_MOD_INITIALIZER = "dev.vini2003.hammer.zone.HZ";
+	
 	public static final String ID = "hammer";
 	
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -55,5 +64,13 @@ public class HC implements ModInitializer {
 		// HCItemGroups.init();
 		HCNetworking.init();
 		HCComponents.init();
+		
+		HammerUtil.initializeIfModuleEnabled("chat", HAMMER_CHAT_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled("gravity", HAMMER_GRAVITY_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled("gui", HAMMER_GUI_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled("permission", HAMMER_PERMISSION_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled("preset", HAMMER_PRESET_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled("util", HAMMER_UTIL_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled("zone", HAMMER_ZONE_MOD_INITIALIZER);
 	}
 }

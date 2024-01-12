@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.core;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.core.api.common.util.HammerUtil;
 import dev.vini2003.hammer.core.registry.client.HCEvents;
 import dev.vini2003.hammer.core.registry.client.HCNetworking;
 import net.fabricmc.api.ClientModInitializer;
@@ -34,10 +35,26 @@ import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
 public class HCClient implements ClientModInitializer {
+	private static final String HAMMER_CHAT_CLIENT_MOD_INITIALIZER = "dev.vini2003.hammer.chat.HCClient";
+	private static final String HAMMER_GRAVITY_CLIENT_MOD_INITIALIZER = "dev.vini2003.hammer.gravity.HGClient";
+	private static final String HAMMER_GUI_CLIENT_MOD_INITIALIZER = "dev.vini2003.hammer.gui.HGUIClient";
+	private static final String HAMMER_PERMISSION_CLIENT_MOD_INITIALIZER = "dev.vini2003.hammer.permission.HPClient";
+	private static final String HAMMER_PRESET_CLIENT_MOD_INITIALIZER = "dev.vini2003.hammer.preset.HPClient";
+	private static final String HAMMER_UTIL_CLIENT_MOD_INITIALIZER = "dev.vini2003.hammer.util.HUClient";
+	private static final String HAMMER_ZONE_CLIENT_MOD_INITIALIZER = "dev.vini2003.hammer.zone.HZClient";
+	
 	@Override
 	public void onInitializeClient() {
 		HCEvents.init();
 		HCNetworking.init();
+		
+		HammerUtil.initializeIfModuleEnabled("chat", HAMMER_CHAT_CLIENT_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled("gravity", HAMMER_GRAVITY_CLIENT_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled("gui", HAMMER_GUI_CLIENT_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled("permission", HAMMER_PERMISSION_CLIENT_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled("preset", HAMMER_PRESET_CLIENT_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled("util", HAMMER_UTIL_CLIENT_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled("zone", HAMMER_ZONE_CLIENT_MOD_INITIALIZER);
 		
 		ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
 			InstanceUtil.setServerSupplier(() -> MinecraftClient.getInstance().getServer());

@@ -22,7 +22,7 @@
       "dev.vini2003.hammer.permission.HP",
       "dev.vini2003.hammer.preset.HP",
       "dev.vini2003.hammer.util.HU",
-      "dev.vini2003.hammer.zone.HZ"
+      "dev.vini2003.hammer.zone.HZDelegate"
       
     ],
     "client": [
@@ -57,6 +57,9 @@
     "hammer.zone.mixins.json"
   ],
   "custom": {
+    "hammer": {
+      "modules": [ "zone" ]
+    },
     "loom:injected_interfaces": {
       "net/minecraft/class_1657": [
         "dev/vini2003/hammer/core/impl/common/accessor/PlayerEntityAccessor",

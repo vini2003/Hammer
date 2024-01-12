@@ -27,7 +27,7 @@ public class HGMixinPlugin implements IMixinConfigPlugin {
 			return false;
 		}
 		
-		HC.LOGGER.info("Applying '" + HC.GRAVITY_MODULE_ID + "' module Mixins.");
+		HC.LOGGER.info("Applying '" + HC.GRAVITY_MODULE_ID + "' module Mixin '" + mixinClassName + "'.");
 		
 		return true;
 	}

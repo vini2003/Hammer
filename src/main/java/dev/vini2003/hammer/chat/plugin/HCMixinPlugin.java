@@ -27,7 +27,7 @@ public class HCMixinPlugin implements IMixinConfigPlugin {
 			return false;
 		}
 		
-		HC.LOGGER.info("Applying 'chat' module Mixins.");
+		HC.LOGGER.info("Applying 'chat' module Mixin '" + mixinClassName + "'.");
 		
 		var fabric = FabricLoader.getInstance();
 		

@@ -50,12 +50,12 @@ public class HCClient implements ClientModInitializer {
 		
 		HC.LOGGER.info("Initialized '" + HC.CORE_MODULE_ID + "' client module.");
 		
-		HammerUtil.initializeIfModuleEnabled("chat", HAMMER_CHAT_CLIENT_MOD_INITIALIZER);
-		HammerUtil.initializeIfModuleEnabled("gravity", HAMMER_GRAVITY_CLIENT_MOD_INITIALIZER);
-		HammerUtil.initializeIfModuleEnabled("gui", HAMMER_GUI_CLIENT_MOD_INITIALIZER);
-		HammerUtil.initializeIfModuleEnabled("permission", HAMMER_PERMISSION_CLIENT_MOD_INITIALIZER);
-		HammerUtil.initializeIfModuleEnabled("preset", HAMMER_PRESET_CLIENT_MOD_INITIALIZER);
-		HammerUtil.initializeIfModuleEnabled("util", HAMMER_UTIL_CLIENT_MOD_INITIALIZER);
-		HammerUtil.initializeIfModuleEnabled("zone", HAMMER_ZONE_CLIENT_MOD_INITIALIZER);
+		HammerUtil.initializeClientIfModuleEnabled("chat", HAMMER_CHAT_CLIENT_MOD_INITIALIZER);
+		HammerUtil.initializeClientIfModuleEnabled("gravity", HAMMER_GRAVITY_CLIENT_MOD_INITIALIZER);
+		HammerUtil.initializeClientIfModuleEnabled("gui", HAMMER_GUI_CLIENT_MOD_INITIALIZER);
+		HammerUtil.initializeClientIfModuleEnabled("permission", HAMMER_PERMISSION_CLIENT_MOD_INITIALIZER);
+		HammerUtil.initializeClientIfModuleEnabled("preset", HAMMER_PRESET_CLIENT_MOD_INITIALIZER);
+		HammerUtil.initializeClientIfModuleEnabled("util", HAMMER_UTIL_CLIENT_MOD_INITIALIZER);
+		HammerUtil.initializeClientIfModuleEnabled("zone", HAMMER_ZONE_CLIENT_MOD_INITIALIZER);
 	}
 }

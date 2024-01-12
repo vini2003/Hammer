@@ -26,7 +26,7 @@ public class HPMixinPlugin implements IMixinConfigPlugin {
 			return false;
 		}
 		
-		HC.LOGGER.info("Applying '" + HC.PERMISSION_MODULE_ID + "' module Mixins.");
+		HC.LOGGER.info("Applying '" + HC.PERMISSION_MODULE_ID + "' module Mixin '" + mixinClassName + "'.");
 		
 		return true;
 	}

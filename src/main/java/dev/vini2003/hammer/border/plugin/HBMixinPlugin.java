@@ -27,7 +27,7 @@ public class HBMixinPlugin implements IMixinConfigPlugin {
 			return false;
 		}
 		
-		HC.LOGGER.info("Applying 'border' module Mixins.");
+		HC.LOGGER.info("Applying 'border' module Mixin '" + mixinClassName + "'.");
 		
 		return true;
 	}

@@ -44,7 +44,7 @@
   ],
   "custom": {
     "hammer": {
-      "modules": [ "zone" ]
+      "modules": [ "core", "permission", "chat", "border", "gravity", "gui", "preset", "util", "zone" ]
     },
     "loom:injected_interfaces": {
       "net/minecraft/class_1657": [

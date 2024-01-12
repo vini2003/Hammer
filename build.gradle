@@ -1,113 +1,93 @@
 plugins {
-	id "maven-publish"
-	id "fabric-loom"
-	id "org.cadixdev.licenser"
-	id "io.github.juuxel.loom-quiltflower"
+	id "architectury-plugin" version "3.4-SNAPSHOT"
+	id "dev.architectury.loom" version "1.3-SNAPSHOT" apply false
 }
 
-license {
-	header = rootProject.file("LICENSE")
-
-	ignoreFailures = true
+architectury {
+	minecraft = minecraftVersion
 }
 
-loom {
-	accessWidenerPath = file("src/main/resources/hammer.accesswidener")
-}
+subprojects {
+	apply plugin: "dev.architectury.loom"
 
+	loom {
+		silentMojangMappingsLicense()
 
-group = projectGroup
-version = projectVersion
-
-java {
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
-
-	withSourcesJar()
-}
-
-repositories {
-	// vini2003
-	maven {
-		name = "vini2003"
-		url = "https://maven.vini2003.dev/releases"
+//		accessWidenerPath = file("common/src/main/resources/hammer.accesswidener")
 	}
 
-	// Fabric
-	maven {
-		name = "FabricMC"
-		url = "https://maven.fabricmc.net/"
-	}
+	dependencies {
+		minecraft "com.mojang:minecraft:${minecraftVersion}"
 
-	// EngineHub
-	maven {
-		name = "EngineHub"
-		url = "https://maven.enginehub.org/repo/"
+		mappings("net.fabricmc:yarn:${yarnVersion}:v2")
+
+		modImplementation("com.google.code.findbugs:jsr305:${findBugsVersion}")
+
+//		modApi "teamreborn:energy:${energyVersion}"
+
+//		modApi "net.luckperms:api:${luckPermsVersion}"
+//		include "net.luckperms:api:${luckPermsVersion}"
 	}
 }
 
-dependencies {
-	// Minecraft
-	minecraft("com.mojang:minecraft:${minecraftVersion}")
+allprojects {
+	apply plugin: "java"
+	apply plugin: "architectury-plugin"
+	apply plugin: "maven-publish"
 
-	// Yarn
-	mappings("net.fabricmc:yarn:${yarnVersion}:v2")
+	group = projectGroup
+	version = projectVersion
 
-	// Fabric Loader
-	modImplementation("net.fabricmc:fabric-loader:${fabricLoaderVersion}")
-
-	// Fabric API
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}") { exclude group: 'net.fabricmc', module: 'fabric-loader' }
-
-	// FindBugs
-	modImplementation("com.google.code.findbugs:jsr305:${findBugsVersion}")
-
-	// Energy
-	modApi "teamreborn:energy:${energyVersion}"
-
-	// LuckPerms
-	modApi "net.luckperms:api:${luckPermsVersion}"
-	include "net.luckperms:api:${luckPermsVersion}"
-}
-
-processResources {
-	inputs.property "version", project.version
-
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+	base {
+		archivesName = rootProject.projectId
 	}
-}
 
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			artifactId = archivesBaseName
-			groupId = projectGroup
-			version = projectVersion
+	tasks.withType(JavaCompile) {
+		options.encoding = "UTF-8"
+		options.release = 17
+	}
 
-			artifact(remapJar) {
-				builtBy remapJar
-			}
-
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
-		}
+	java {
+		withSourcesJar()
 	}
 
 	repositories {
-		maven {
-			name = "vini2003"
-			url = "https://maven.vini2003.dev/releases"
-
-			credentials {
-				username = System.getenv("MVN_USERNAME")
-				password = System.getenv("MVN_TOKEN")
-			}
-
-			authentication {
-				basic(BasicAuthentication)
-			}
-		}
+		maven { url "https://maven.vini2003.dev/releases" }
+		maven { url "https://maven.fabricmc.net/" }
+		maven { url "https://maven.enginehub.org/repo/" }
 	}
+//
+//	publishing {
+//		publications {
+//			mavenJava(MavenPublication) {
+//				artifactId = archivesBaseName
+//				groupId = projectGroup
+//				version = projectVersion
+//
+//				artifact(remapJar) {
+//					builtBy remapJar
+//				}
+//
+//				artifact(sourcesJar) {
+//					builtBy remapSourcesJar
+//				}
+//			}
+//		}
+//
+//		repositories {
+//			maven {
+//				name = "vini2003"
+//				url = "https://maven.vini2003.dev/releases"
+//
+//				credentials {
+//					username = System.getenv("MVN_USERNAME")
+//					password = System.getenv("MVN_TOKEN")
+//				}
+//
+//				authentication {
+//					basic(BasicAuthentication)
+//				}
+//			}
+//		}
+//	}
 }

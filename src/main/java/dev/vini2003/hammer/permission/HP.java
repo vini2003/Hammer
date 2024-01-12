@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.permission;
 
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.permission.registry.common.HPCommands;
 import dev.vini2003.hammer.permission.registry.common.HPEvents;
 import dev.vini2003.hammer.permission.registry.common.HPNetworking;
@@ -43,5 +44,7 @@ public class HP implements ModInitializer {
 		HPEvents.init();
 		HPNetworking.init();
 		HPCommands.init();
+		
+		HC.LOGGER.info("Initialized '" + HC.PERMISSION_MODULE_ID + "' module.");
 	}
 }

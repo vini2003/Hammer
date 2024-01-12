@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.zone;
 
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.zone.registry.common.HZComponents;
 import dev.vini2003.hammer.zone.registry.common.HZEvents;
 import dev.vini2003.hammer.zone.registry.common.HZNetworking;
@@ -37,5 +38,7 @@ public class HZ implements ModInitializer {
 		HZEvents.init();
 		HZComponents.init();
 		HZNetworking.init();
+		
+		HC.LOGGER.info("Initialized '" + HC.ZONE_MODULE_ID + "' module.");
 	}
 }

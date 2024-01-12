@@ -48,6 +48,8 @@ public class HCClient implements ClientModInitializer {
 		HCEvents.init();
 		HCNetworking.init();
 		
+		HC.LOGGER.info("Initialized '" + HC.CORE_MODULE_ID + "' client module.");
+		
 		HammerUtil.initializeIfModuleEnabled("chat", HAMMER_CHAT_CLIENT_MOD_INITIALIZER);
 		HammerUtil.initializeIfModuleEnabled("gravity", HAMMER_GRAVITY_CLIENT_MOD_INITIALIZER);
 		HammerUtil.initializeIfModuleEnabled("gui", HAMMER_GUI_CLIENT_MOD_INITIALIZER);
@@ -55,9 +57,5 @@ public class HCClient implements ClientModInitializer {
 		HammerUtil.initializeIfModuleEnabled("preset", HAMMER_PRESET_CLIENT_MOD_INITIALIZER);
 		HammerUtil.initializeIfModuleEnabled("util", HAMMER_UTIL_CLIENT_MOD_INITIALIZER);
 		HammerUtil.initializeIfModuleEnabled("zone", HAMMER_ZONE_CLIENT_MOD_INITIALIZER);
-		
-		ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
-			InstanceUtil.setServerSupplier(() -> MinecraftClient.getInstance().getServer());
-		});
 	}
 }

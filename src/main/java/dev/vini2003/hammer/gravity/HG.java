@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.gravity;
 
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.gravity.registry.common.HGCommands;
 import dev.vini2003.hammer.gravity.registry.common.HGEvents;
 import dev.vini2003.hammer.gravity.registry.common.HGNetworking;
@@ -37,5 +38,7 @@ public class HG implements ModInitializer {
 		HGCommands.init();
 		HGEvents.init();
 		HGNetworking.init();
+		
+		HC.LOGGER.info("Initialized '" + HC.GRAVITY_MODULE_ID + "' module.");
 	}
 }

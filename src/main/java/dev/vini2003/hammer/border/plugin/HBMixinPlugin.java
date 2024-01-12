@@ -1,7 +1,8 @@
-package dev.vini2003.hammer.preset.impl.mixin;
+package dev.vini2003.hammer.border.plugin;
 
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.common.util.HammerUtil;
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -9,7 +10,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
-public class HPMixinPlugin implements IMixinConfigPlugin {
+public class HBMixinPlugin implements IMixinConfigPlugin {
 	@Override
 	public void onLoad(String mixinPackage) {
 	
@@ -22,9 +23,11 @@ public class HPMixinPlugin implements IMixinConfigPlugin {
 	
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		if (!HammerUtil.isModuleEnabled(HC.PRESET_MODULE_ID)) {
+		if (!HammerUtil.isModuleEnabled(HC.BORDER_MODULE_ID)) {
 			return false;
 		}
+		
+		HC.LOGGER.info("Applying 'border' module Mixins.");
 		
 		return true;
 	}

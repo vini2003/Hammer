@@ -26,6 +26,7 @@ package dev.vini2003.hammer.chat;
 
 import dev.vini2003.hammer.chat.registry.client.HCKeyBinds;
 import dev.vini2003.hammer.chat.registry.client.HCNetworking;
+import dev.vini2003.hammer.core.HC;
 import net.fabricmc.api.ClientModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -35,5 +36,7 @@ public class HCClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		HCNetworking.init();
 		HCKeyBinds.init();
+		
+		HC.LOGGER.info("Initialized '" + dev.vini2003.hammer.core.HC.CHAT_MODULE_ID + "' client module.");
 	}
 }

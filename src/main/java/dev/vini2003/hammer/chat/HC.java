@@ -43,5 +43,7 @@ public class HC implements ModInitializer {
 		HCCommands.init();
 		HCEvents.init();
 		HCNetworking.init();
+		
+		dev.vini2003.hammer.core.HC.LOGGER.info("Initialized '" + dev.vini2003.hammer.core.HC.CHAT_MODULE_ID + "' module.");
 	}
 }

@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.util;
 
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.util.registry.common.HUCommands;
 import dev.vini2003.hammer.util.registry.common.HUNetworking;
 import dev.vini2003.hammer.util.registry.common.HUItems;
@@ -37,5 +38,7 @@ public class HU implements ModInitializer {
 		HUCommands.init();
 		HUNetworking.init();
 		HUItems.init();
+		
+		HC.LOGGER.info("Initialized '" + HC.UTIL_MODULE_ID + "' module.");
 	}
 }

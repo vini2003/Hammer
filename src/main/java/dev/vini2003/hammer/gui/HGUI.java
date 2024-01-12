@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.gui;
 
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.gui.registry.common.HGUIEvents;
 import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
 import dev.vini2003.hammer.gui.registry.common.debug.HGUICommands;
@@ -43,5 +44,7 @@ public class HGUI implements ModInitializer {
 			HGUIScreenHandlerTypes.init();
 			HGUICommands.init();
 		}
+		
+		HC.LOGGER.info("Initialized '" + HC.GUI_MODULE_ID + "' module.");
 	}
 }

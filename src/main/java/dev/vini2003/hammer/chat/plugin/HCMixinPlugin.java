@@ -1,5 +1,7 @@
 package dev.vini2003.hammer.chat.plugin;
 
+import dev.vini2003.hammer.core.HC;
+import dev.vini2003.hammer.core.api.common.util.HammerUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -21,6 +23,12 @@ public class HCMixinPlugin implements IMixinConfigPlugin {
 	
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+		if (!HammerUtil.isModuleEnabled(HC.CHAT_MODULE_ID)) {
+			return false;
+		}
+		
+		HC.LOGGER.info("Applying 'chat' module Mixins.");
+		
 		var fabric = FabricLoader.getInstance();
 		
 		if (fabric.isModLoaded("nochatreports")) {

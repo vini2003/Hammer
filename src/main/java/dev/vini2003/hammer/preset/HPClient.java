@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.preset;
 
+import dev.vini2003.hammer.core.HC;
 import net.fabricmc.api.ClientModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -31,5 +32,6 @@ import org.jetbrains.annotations.ApiStatus;
 public class HPClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
+		HC.LOGGER.info("Initialized '" + HC.PRESET_MODULE_ID + "' client module.");
 	}
 }

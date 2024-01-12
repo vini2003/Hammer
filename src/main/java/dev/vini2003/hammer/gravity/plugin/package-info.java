@@ -22,19 +22,12 @@
  * SOFTWARE.
  */
 
-package dev.vini2003.hammer.gravity;
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+@ApiStatus.Internal
+package dev.vini2003.hammer.gravity.plugin;
 
-import dev.vini2003.hammer.core.HC;
-import dev.vini2003.hammer.gravity.registry.client.HGNetworking;
-import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.util.annotation.MethodsReturnNonnullByDefault;
 import org.jetbrains.annotations.ApiStatus;
 
-@ApiStatus.Internal
-public class HGClient implements ClientModInitializer {
-	@Override
-	public void onInitializeClient() {
-		HGNetworking.init();
-		
-		HC.LOGGER.info("Initialized '" + HC.GRAVITY_MODULE_ID + "' client module.");
-	}
-}
+import javax.annotation.ParametersAreNonnullByDefault;

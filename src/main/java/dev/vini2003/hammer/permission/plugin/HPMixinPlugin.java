@@ -1,4 +1,4 @@
-package dev.vini2003.hammer.preset.impl.mixin;
+package dev.vini2003.hammer.permission.plugin;
 
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.common.util.HammerUtil;
@@ -22,9 +22,11 @@ public class HPMixinPlugin implements IMixinConfigPlugin {
 	
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		if (!HammerUtil.isModuleEnabled(HC.PRESET_MODULE_ID)) {
+		if (!HammerUtil.isModuleEnabled(HC.PERMISSION_MODULE_ID)) {
 			return false;
 		}
+		
+		HC.LOGGER.info("Applying '" + HC.PERMISSION_MODULE_ID + "' module Mixins.");
 		
 		return true;
 	}

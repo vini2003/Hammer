@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.gui;
 
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.gui.registry.client.HGUIEvents;
 import dev.vini2003.hammer.gui.registry.client.debug.HGUIScreens;
 import net.fabricmc.api.ClientModInitializer;
@@ -39,5 +40,7 @@ public class HGUIClient implements ClientModInitializer {
 		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			HGUIScreens.init();
 		}
+		
+		HC.LOGGER.info("Initialized '" + HC.GUI_MODULE_ID + "' client module.");
 	}
 }

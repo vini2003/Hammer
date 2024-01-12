@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.preset;
 
 import dev.vini2003.hammer.config.api.common.config.Config;
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.preset.registry.common.HPChannels;
 import dev.vini2003.hammer.preset.registry.common.HPConfig;
 import dev.vini2003.hammer.preset.registry.common.HPEvents;
@@ -43,5 +44,7 @@ public class HP implements ModInitializer {
 		HPEvents.init();
 		HPRoles.init();
 		HPChannels.init();
+		
+		HC.LOGGER.info("Initialized '" + HC.PRESET_MODULE_ID + "' module.");
 	}
 }

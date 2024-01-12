@@ -25,12 +25,19 @@
 package dev.vini2003.hammer.core.registry.client;
 
 import dev.vini2003.hammer.core.api.client.queue.ClientTaskQueue;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.client.MinecraftClient;
 
 import java.util.ArrayList;
 
 public class HCEvents {
 	public static void init() {
+		ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
+			InstanceUtil.setServerSupplier(() -> MinecraftClient.getInstance().getServer());
+		});
+		
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			var tasks = ClientTaskQueue.getTasks();
 			var tasksToRemove = new ArrayList<ClientTaskQueue.Task>();

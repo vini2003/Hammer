@@ -1,4 +1,4 @@
-package dev.vini2003.hammer.preset.impl.mixin;
+package dev.vini2003.hammer.zone.plugin;
 
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.common.util.HammerUtil;
@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
-public class HPMixinPlugin implements IMixinConfigPlugin {
+public class HZMixinPlugin implements IMixinConfigPlugin {
 	@Override
 	public void onLoad(String mixinPackage) {
 	
@@ -22,9 +22,11 @@ public class HPMixinPlugin implements IMixinConfigPlugin {
 	
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		if (!HammerUtil.isModuleEnabled(HC.PRESET_MODULE_ID)) {
+		if (!HammerUtil.isModuleEnabled(HC.ZONE_MODULE_ID)) {
 			return false;
 		}
+		
+		HC.LOGGER.info("Applying '" + HC.ZONE_MODULE_ID + "' module Mixins.");
 		
 		return true;
 	}

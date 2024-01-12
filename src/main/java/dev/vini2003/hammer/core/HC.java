@@ -40,12 +40,24 @@ import org.slf4j.LoggerFactory;
 @ApiStatus.Internal
 public class HC implements ModInitializer {
 	private static final String HAMMER_CHAT_MOD_INITIALIZER = "dev.vini2003.hammer.chat.HC";
+	private static final String HAMMER_CONFIG_MOD_INITIALIZER = "dev.vini2003.hammer.config.HC";
 	private static final String HAMMER_GRAVITY_MOD_INITIALIZER = "dev.vini2003.hammer.gravity.HG";
 	private static final String HAMMER_GUI_MOD_INITIALIZER = "dev.vini2003.hammer.gui.HGUI";
 	private static final String HAMMER_PERMISSION_MOD_INITIALIZER = "dev.vini2003.hammer.permission.HP";
 	private static final String HAMMER_PRESET_MOD_INITIALIZER = "dev.vini2003.hammer.preset.HP";
 	private static final String HAMMER_UTIL_MOD_INITIALIZER = "dev.vini2003.hammer.util.HU";
 	private static final String HAMMER_ZONE_MOD_INITIALIZER = "dev.vini2003.hammer.zone.HZ";
+	
+	public static final String BORDER_MODULE_ID = "border";
+	public static final String CHAT_MODULE_ID = "chat";
+	public static final String CONFIG_MODULE_ID = "config";
+	public static final String CORE_MODULE_ID = "core";
+	public static final String GRAVITY_MODULE_ID = "gravity";
+	public static final String GUI_MODULE_ID = "gui";
+	public static final String PERMISSION_MODULE_ID = "permission";
+	public static final String PRESET_MODULE_ID = "preset";
+	public static final String UTIL_MODULE_ID = "util";
+	public static final String ZONE_MODULE_ID = "zone";
 	
 	public static final String ID = "hammer";
 	
@@ -65,12 +77,16 @@ public class HC implements ModInitializer {
 		HCNetworking.init();
 		HCComponents.init();
 		
-		HammerUtil.initializeIfModuleEnabled("chat", HAMMER_CHAT_MOD_INITIALIZER);
-		HammerUtil.initializeIfModuleEnabled("gravity", HAMMER_GRAVITY_MOD_INITIALIZER);
-		HammerUtil.initializeIfModuleEnabled("gui", HAMMER_GUI_MOD_INITIALIZER);
-		HammerUtil.initializeIfModuleEnabled("permission", HAMMER_PERMISSION_MOD_INITIALIZER);
-		HammerUtil.initializeIfModuleEnabled("preset", HAMMER_PRESET_MOD_INITIALIZER);
-		HammerUtil.initializeIfModuleEnabled("util", HAMMER_UTIL_MOD_INITIALIZER);
-		HammerUtil.initializeIfModuleEnabled("zone", HAMMER_ZONE_MOD_INITIALIZER);
+		HC.LOGGER.info("Initialized '" + HC.CORE_MODULE_ID + "' module.");
+		
+		HammerUtil.initializeIfModuleEnabled(BORDER_MODULE_ID, HAMMER_CHAT_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled(CHAT_MODULE_ID, HAMMER_CHAT_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled(CONFIG_MODULE_ID, HAMMER_CONFIG_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled(GRAVITY_MODULE_ID, HAMMER_GRAVITY_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled(GUI_MODULE_ID, HAMMER_GUI_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled(PERMISSION_MODULE_ID, HAMMER_PERMISSION_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled(PRESET_MODULE_ID, HAMMER_PRESET_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled(UTIL_MODULE_ID, HAMMER_UTIL_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled(ZONE_MODULE_ID, HAMMER_ZONE_MOD_INITIALIZER);
 	}
 }

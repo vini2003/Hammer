@@ -25,6 +25,8 @@
 package dev.vini2003.hammer.border.mixin.common;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
@@ -35,6 +37,7 @@ import net.minecraft.server.command.WorldBorderCommand;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
@@ -45,44 +48,50 @@ public class WorldBorderCommandMixin {
 	private static final SimpleCommandExceptionType CENTER_FAILED_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("commands.worldborder.center.failed"));
 	private static final SimpleCommandExceptionType SET_FAILED_FAR_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("commands.worldborder.set.failed.far", 2.9999984E7));
 	
-	@ModifyArgs(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/command/CommandManager;argument(Ljava/lang/String;Lcom/mojang/brigadier/arguments/ArgumentType;)Lcom/mojang/brigadier/builder/RequiredArgumentBuilder;", ordinal = 4), method = "register")
-	private static void hammer$register$argument$4(Args args) {
-		args.set(1, Vec3ArgumentType.vec3());
+	@ModifyArg(method = "register",
+			at = @At(value = "INVOKE",
+					target = "Lnet/minecraft/server/command/CommandManager;argument(Ljava/lang/String;Lcom/mojang/brigadier/arguments/ArgumentType;)Lcom/mojang/brigadier/builder/RequiredArgumentBuilder;",
+					ordinal = 4),
+			index = 1)
+	private static ArgumentType<?> hammer$modifyArgumentType(ArgumentType<?> original) {
+		return Vec3ArgumentType.vec3();
 	}
 	
-	@ModifyArgs(at = @At(value = "INVOKE", target = "Lcom/mojang/brigadier/builder/RequiredArgumentBuilder;executes(Lcom/mojang/brigadier/Command;)Lcom/mojang/brigadier/builder/ArgumentBuilder;", ordinal = 4), method = "register")
-	private static void hammer$register$executes$4(Args args) {
-		args.set(0, new Command<ServerCommandSource>() {
-			@Override
-			public int run(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-				var source = context.getSource();
-				
-				var pos = Vec3ArgumentType.getVec3(context, "pos");
-				
-				var worldBorder = source.getServer().getOverworld().getWorldBorder();
-				var cubicWorldBorder = (CubicWorldBorder) source.getServer().getOverworld().getWorldBorder();
-				
-				if (worldBorder.getCenterX() == pos.x && cubicWorldBorder.getCenterY() == pos.y && worldBorder.getCenterZ() == pos.z) {
-					throw CENTER_FAILED_EXCEPTION.create();
-				}
-				
-				if (Math.abs(pos.x) > 2.9999984E7 || Math.abs(pos.y) > 2.9999984E7 || Math.abs(pos.z) > 2.9999984E7) {
-					throw SET_FAILED_FAR_EXCEPTION.create();
-				}
-				
-				cubicWorldBorder.setCenter(pos.x, pos.y, pos.z);
-				
-				source.sendFeedback(() -> 
-						Text.translatable("commands.hammer.border.center.success",
-								String.format(Locale.ROOT, "%.2f", (float) pos.x),
-								String.format(Locale.ROOT, "%.2f", (float) pos.y),
-								String.format(Locale.ROOT, "%.2f", (float) pos.z)
-						), 
-						true
-				);
-				
-				return 0;
+	@ModifyArg(method = "register",
+			at = @At(value = "INVOKE",
+					target = "Lcom/mojang/brigadier/builder/RequiredArgumentBuilder;executes(Lcom/mojang/brigadier/Command;)Lcom/mojang/brigadier/builder/ArgumentBuilder;",
+					ordinal = 4),
+			index = 0)
+	private static Command<ServerCommandSource> hammer$modifyExecutes(Command<ServerCommandSource> original) {
+		return context -> {
+			var source = context.getSource();
+			
+			var pos = Vec3ArgumentType.getVec3(context, "pos");
+			
+			var worldBorder = source.getServer().getOverworld().getWorldBorder();
+			var cubicWorldBorder = (CubicWorldBorder) source.getServer().getOverworld().getWorldBorder();
+			
+			if (worldBorder.getCenterX() == pos.x && cubicWorldBorder.getCenterY() == pos.y && worldBorder.getCenterZ() == pos.z) {
+				throw CENTER_FAILED_EXCEPTION.create();
 			}
-		});
+			
+			if (Math.abs(pos.x) > 2.9999984E7 || Math.abs(pos.y) > 2.9999984E7 || Math.abs(pos.z) > 2.9999984E7) {
+				throw SET_FAILED_FAR_EXCEPTION.create();
+			}
+			
+			cubicWorldBorder.setCenter(pos.x, pos.y, pos.z);
+			
+			source.sendFeedback(() ->
+							Text.translatable("commands.hammer.border.center.success",
+									String.format(Locale.ROOT, "%.2f", (float) pos.x),
+									String.format(Locale.ROOT, "%.2f", (float) pos.y),
+									String.format(Locale.ROOT, "%.2f", (float) pos.z)
+							),
+					true
+			);
+			
+			
+			return 0;
+		};
 	}
 }

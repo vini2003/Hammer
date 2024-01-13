@@ -24,39 +24,43 @@
 
 package dev.vini2003.hammer.core.api.client.util;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.api.FabricLoader;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.nio.file.Path;
 import java.util.function.Supplier;
 
 public class InstanceUtil {
 	private static Supplier<Object> SERVER_SUPPLIER = () -> null;
 	
-	public static FabricLoader getFabric() {
-		return FabricLoader.getInstance();
-	}
-	
-	public static Object getGame() {
-		return getFabric().getGameInstance();
+	@ExpectPlatform
+	public static Path getConfigPath() {
+		throw new AssertionError();
 	}
 	
 	public static MinecraftClient getClient() {
-		return (MinecraftClient) getGame();
+		return MinecraftClient.getInstance();
 	}
 	
 	public static MinecraftServer getServer() {
 		return (MinecraftServer) SERVER_SUPPLIER.get();
 	}
 	
+	@ExpectPlatform
 	public static boolean isClient() {
-		return getFabric().getEnvironmentType() == EnvType.CLIENT;
+		throw new AssertionError();
 	}
 	
+	@ExpectPlatform
 	public static boolean isServer() {
-		return getFabric().getEnvironmentType() == EnvType.SERVER;
+		throw new AssertionError();
+	}
+	
+	@ExpectPlatform
+	public static boolean isDevelopmentEnvironment() {
+		throw new AssertionError();
 	}
 	
 	@ApiStatus.Internal

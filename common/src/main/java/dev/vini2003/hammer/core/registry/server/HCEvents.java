@@ -8,7 +8,7 @@ import net.minecraft.server.MinecraftServer;
 public class HCEvents {
 	public static void init() {
 		LifecycleEvent.SERVER_STARTED.register((server) -> {
-			InstanceUtil.setServerSupplier(() -> (MinecraftServer) FabricLoader.getInstance().getGameInstance());
+			InstanceUtil.setServerSupplier(() -> server);
 		});
 	}
 }

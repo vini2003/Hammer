@@ -1,6 +1,7 @@
 package dev.vini2003.hammer.core.mixin.client;
 
 import dev.vini2003.hammer.core.HC;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -29,7 +30,7 @@ public class MinecraftClientMixin {
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Throwable;)V"), method = "createUserApiService")
 	void hammer$createUserApiService(Logger logger, String message, Throwable throwable) {
-		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+		if (InstanceUtil.isDevelopmentEnvironment()) {
 			HC.LOGGER.warn("Yggdrasil authentication is disabled in development environment.");
 		}
 	}

@@ -43,10 +43,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
@@ -314,10 +311,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 		}
 	}
 	
-	@ModifyArgs(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"), method = "damage")
-	private void hammer$damage(Args args) {
-		args.set(1, ((float) args.get(1)) * hammer$getDamageMultiplier());
+	@ModifyArg(method = "damage",
+			at = @At(value = "INVOKE",
+					target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"),
+			index = 1)
+	private float hammer$modifyDamageAmount(float originalDamage) {
+		return originalDamage * hammer$getDamageMultiplier();
 	}
+
 	
 	@Inject(at = @At("HEAD"), method = "addExhaustion", cancellable = true)
 	private void hammer$addExhaustion(float exhaustion, CallbackInfo ci) {

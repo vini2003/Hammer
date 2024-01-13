@@ -1,35 +1,41 @@
 package dev.vini2003.hammer.forge;
 
+import dev.architectury.platform.forge.EventBuses;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.HCClient;
 import dev.vini2003.hammer.core.HCDedicatedServer;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 
 @Mod(HC.ID)
 public class H {
+	private final IEventBus eventBus;
+	
 	public H() {
-		HC.onInitialize(); // Common initialization
+		eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		
+		EventBuses.registerModEventBus(HC.ID, eventBus);
+		
+		eventBus.addListener(this::onCommonSetup);
+		eventBus.addListener(this::onClientSetup);
+		eventBus.addListener(this::onServerSetup);
 	}
 	
-	@EventBusSubscriber(modid = HC.ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
-	public static class Client {
-		@SubscribeEvent
-		public static void onClientSetup(FMLClientSetupEvent event) {
-			HCClient.onInitializeClient();
-		}
+	private void onCommonSetup(FMLCommonSetupEvent event) {
+		HC.onInitialize();
 	}
 	
-	@EventBusSubscriber(modid = HC.ID, value = Dist.DEDICATED_SERVER, bus = EventBusSubscriber.Bus.MOD)
-	public static class Server {
-		@SubscribeEvent
-		public static void onServerSetup(FMLDedicatedServerSetupEvent event) {
-			HCDedicatedServer.onInitializeDedicatedServer();
-		}
+	private void onClientSetup(FMLClientSetupEvent event) {
+		HCClient.onInitializeClient();
+	}
+	
+	private void onServerSetup(FMLDedicatedServerSetupEvent event) {
+		HCDedicatedServer.onInitializeDedicatedServer();
 	}
 }

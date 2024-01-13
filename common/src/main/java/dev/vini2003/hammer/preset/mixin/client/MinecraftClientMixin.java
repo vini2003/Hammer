@@ -42,11 +42,11 @@ public class MinecraftClientMixin {
 		}
 	}
 	
-	@ModifyArgs(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;setIcon(Lnet/minecraft/resource/ResourcePack;Lnet/minecraft/client/util/Icons;)V"), method = "<init>")
-	private void hammer$init$setIcon(Args args) {
-		// TODO: Reimplement this.
-		
-		// args.set(0, HC.class.getResourceAsStream(HP.CONFIG.iconLowResPath));
-		// args.set(1, HC.class.getResourceAsStream(HP.CONFIG.iconHighResPath));
-	}
+//	@ModifyArgs(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Window;setIcon(Lnet/minecraft/resource/ResourcePack;Lnet/minecraft/client/util/Icons;)V"), method = "<init>")
+//	private void hammer$init$setIcon(Args args) {
+//		// TODO: Reimplement this.
+//
+//		// args.set(0, HC.class.getResourceAsStream(HP.CONFIG.iconLowResPath));
+//		// args.set(1, HC.class.getResourceAsStream(HP.CONFIG.iconHighResPath));
+//	}
 }

@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.preset.registry.common;
 
 import dev.architectury.event.events.common.PlayerEvent;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import dev.vini2003.hammer.preset.HP;
 import net.fabricmc.loader.api.FabricLoader;
@@ -41,7 +42,7 @@ public class HPEvents {
 	
 	public static void init() {
 		PlayerEvent.PLAYER_JOIN.register((player) ->  {
-			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+			if (InstanceUtil.isDevelopmentEnvironment()) {
 				player.getServer().getPlayerManager().addToOperators(player.getGameProfile());
 				
 				player.changeGameMode(GameMode.CREATIVE);

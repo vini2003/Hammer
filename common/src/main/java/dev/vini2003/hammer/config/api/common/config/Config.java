@@ -30,7 +30,7 @@ public class Config {
 	}
 	
 	public void load() {
-		var configPath = InstanceUtil.getFabric().getConfigDir();
+		var configPath = InstanceUtil.getConfigPath();
 		var configFilePath = configPath.resolve(path);
 		
 		if (!Files.exists(configFilePath)) {
@@ -51,7 +51,7 @@ public class Config {
 	}
 	
 	public void save() {
-		var configPath = InstanceUtil.getFabric().getConfigDir();
+		var configPath = InstanceUtil.getConfigPath();
 		var configFilePath = configPath.resolve(path);
 		
 		try {

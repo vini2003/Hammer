@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.core.api.common.util;
 
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import net.fabricmc.loader.api.FabricLoader;
@@ -66,16 +67,8 @@ public class TextUtil {
 		return Text.literal((int) (a.floatValue() / b.floatValue() * 100.0F) + "%");
 	}
 	
+	@ExpectPlatform
 	public static MutableText getModId(Identifier id) {
-		var loader = FabricLoader.getInstance();
-		var optionalMod = loader.getModContainer(id.getNamespace());
-		
-		if (optionalMod.isPresent()) {
-			var mod = optionalMod.get();
-			
-			return Text.literal(mod.getMetadata().getName()).formatted(Formatting.BLUE, Formatting.ITALIC);
-		} else {
-			return Text.literal(WordUtils.capitalize(id.getNamespace().replace("_", " ").replace("-", " "))).formatted(Formatting.BLUE, Formatting.ITALIC);
-		}
+		throw new AssertionError();
 	}
 }

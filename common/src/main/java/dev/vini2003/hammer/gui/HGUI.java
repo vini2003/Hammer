@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.gui;
 
 import dev.vini2003.hammer.core.HC;
+import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.gui.registry.common.HGUIEvents;
 import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
 import dev.vini2003.hammer.gui.registry.common.debug.HGUICommands;
@@ -38,7 +39,7 @@ public class HGUI {
 		HGUIEvents.init();
 		HGUINetworking.init();
 		
-		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+		if (InstanceUtil.isDevelopmentEnvironment()) {
 			HGUIScreenHandlerTypes.init();
 			HGUICommands.init();
 		}

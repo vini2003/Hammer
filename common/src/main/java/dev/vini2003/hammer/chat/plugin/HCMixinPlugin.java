@@ -29,15 +29,16 @@ public class HCMixinPlugin implements IMixinConfigPlugin {
 		
 		HC.LOGGER.info("Applying 'chat' module Mixin '" + mixinClassName + "'.");
 		
-		if (ModUtil.isModLoaded("nochatreports")) {
-			if (mixinClassName.equals("dev.vini2003.hammer.chat.mixin.common.ServerMetadataMixin")) {
-				return false;
-			}
-			
-			if (mixinClassName.equals("dev.vini2003.hammer.chat.mixin.common.ServerPlayNetworkHandlerMixin")) {
-				return false;
-			}
-		}
+		// TODO: Fix in Forge. Needs to look through the mod files, because the mod list doesn't exist at this point.
+//		if (ModUtil.isModLoaded("nochatreports")) {
+//			if (mixinClassName.equals("dev.vini2003.hammer.chat.mixin.common.ServerMetadataMixin")) {
+//				return false;
+//			}
+//
+//			if (mixinClassName.equals("dev.vini2003.hammer.chat.mixin.common.ServerPlayNetworkHandlerMixin")) {
+//				return false;
+//			}
+//		}
 		
 		return true;
 	}

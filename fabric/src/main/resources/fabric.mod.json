@@ -13,6 +13,17 @@
   "license": "MIT",
   "icon": "assets/hammer/icon.png",
   "environment": "*",
+  "mixins": [
+    "hammer.border.mixins.json",
+    "hammer.chat.mixins.json",
+    "hammer.core.mixins.json",
+    "hammer.gravity.mixins.json",
+    "hammer.gui.mixins.json",
+    "hammer.permission.mixins.json",
+    "hammer.preset.mixins.json",
+    "hammer.util.mixins.json",
+    "hammer.zone.mixins.json"
+  ],
   "entrypoints": {
     "main": [
       "dev.vini2003.hammer.fabric.H"

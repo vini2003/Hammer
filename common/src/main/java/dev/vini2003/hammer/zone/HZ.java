@@ -28,7 +28,6 @@ import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.zone.registry.common.HZComponents;
 import dev.vini2003.hammer.zone.registry.common.HZEvents;
 import dev.vini2003.hammer.zone.registry.common.HZNetworking;
-import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

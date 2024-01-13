@@ -28,7 +28,6 @@ import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.gravity.registry.common.HGCommands;
 import dev.vini2003.hammer.gravity.registry.common.HGEvents;
 import dev.vini2003.hammer.gravity.registry.common.HGNetworking;
-import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

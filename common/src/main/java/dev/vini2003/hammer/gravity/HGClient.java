@@ -26,7 +26,6 @@ package dev.vini2003.hammer.gravity;
 
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.gravity.registry.client.HGNetworking;
-import net.fabricmc.api.ClientModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

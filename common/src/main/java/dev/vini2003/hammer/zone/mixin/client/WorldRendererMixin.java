@@ -4,6 +4,7 @@ import dev.vini2003.hammer.core.api.client.color.Color;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.zone.api.common.data.ZoneData;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneManager;
 import dev.vini2003.hammer.zone.api.common.util.ZoneDrawingUtil;
 import dev.vini2003.hammer.zone.api.common.zone.Zone;
@@ -73,12 +74,6 @@ public class WorldRendererMixin {
 		var cZ = camera.getPos().getZ();
 		
 		var zonesToRemove = new ArrayList<Zone>();
-		
-		record ZoneData(
-				Zone zone,
-				Direction side,
-				double distance
-		) {}
 		
 		var zoneData = new ArrayList<ZoneData>();
 		
@@ -163,7 +158,7 @@ public class WorldRendererMixin {
 		HZEvents.SELECTED_ZONE_SIDE = null;
 		
 		for (var data : zoneData) {
-			if (data.distance < selectedZoneDistance) {
+			if (data.distance() < selectedZoneDistance) {
 				HZEvents.SELECTED_ZONE = data.zone();
 				HZEvents.SELECTED_ZONE_SIDE = data.side();
 				

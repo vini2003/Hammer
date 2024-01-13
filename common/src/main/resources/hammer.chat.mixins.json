@@ -8,7 +8,6 @@
     "common.MessageCommandMixin",
     "common.PlayerEntityMixin",
     "common.PlayerManagerMixin",
-    "common.SentMessageChatMixin",
     "common.ServerCommandSourceMixin",
     "common.ServerMetadataMixin",
     "common.ServerPlayNetworkHandlerMixin",

@@ -25,7 +25,6 @@
 package dev.vini2003.hammer.core.mixin.common;
 
 import dev.architectury.networking.NetworkManager;
-import dev.architectury.networking.transformers.PacketCollector;
 import dev.vini2003.hammer.core.impl.common.component.holder.ComponentHolder;
 import dev.vini2003.hammer.core.registry.common.HCNetworking;
 import io.netty.buffer.Unpooled;

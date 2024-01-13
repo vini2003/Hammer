@@ -32,10 +32,8 @@ import dev.vini2003.hammer.core.registry.common.HCArgumentTypes;
 import dev.vini2003.hammer.core.registry.common.HCComponents;
 import dev.vini2003.hammer.core.registry.common.HCEvents;
 import dev.vini2003.hammer.core.registry.common.HCNetworking;
-import net.fabricmc.api.ModInitializer;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
@@ -71,9 +69,9 @@ public class HC {
 	
 	public static final Logger LOGGER = LoggerFactory.getLogger("Hammer");
 	
-	public static final DeferredRegister<Item> ITEM_REGISTRY = DeferredRegister.create(ID, RegistryKeys.ITEM);
-	public static final DeferredRegister<Block> BLOCK_REGISTRY = DeferredRegister.create(ID, RegistryKeys.BLOCK);
-	public static final DeferredRegister<ScreenHandlerType<?>> SCREEN_HANDLER_REGISTRY = DeferredRegister.create(ID, RegistryKeys.SCREEN_HANDLER);
+	private static DeferredRegister<Item> ITEM_REGISTRY = null;
+	private static DeferredRegister<Block> BLOCK_REGISTRY = null;
+	private static DeferredRegister<ScreenHandlerType<?>> SCREEN_HANDLER_REGISTRY = null;
 	
 	public static Identifier id(String path) {
 		return new Identifier(ID, path);
@@ -98,8 +96,32 @@ public class HC {
 		HammerUtil.initializeIfModuleEnabled(UTIL_MODULE_ID, HAMMER_UTIL_MOD_INITIALIZER);
 		HammerUtil.initializeIfModuleEnabled(ZONE_MODULE_ID, HAMMER_ZONE_MOD_INITIALIZER);
 		
-		ITEM_REGISTRY.register();
-		BLOCK_REGISTRY.register();
-		SCREEN_HANDLER_REGISTRY.register();
+		getItemRegistry().register();
+		getBlockRegistry().register();
+		getScreenHandlerRegistry().register();
+	}
+	
+	public static DeferredRegister<Item> getItemRegistry() {
+		if (ITEM_REGISTRY == null) {
+			ITEM_REGISTRY = DeferredRegister.create(ID, RegistryKeys.ITEM);
+		}
+		
+		return ITEM_REGISTRY;
+	}
+	
+	public static DeferredRegister<Block> getBlockRegistry() {
+		if (BLOCK_REGISTRY == null) {
+			BLOCK_REGISTRY = DeferredRegister.create(ID, RegistryKeys.BLOCK);
+		}
+		
+		return BLOCK_REGISTRY;
+	}
+	
+	public static DeferredRegister<ScreenHandlerType<?>> getScreenHandlerRegistry() {
+		if (SCREEN_HANDLER_REGISTRY == null) {
+			SCREEN_HANDLER_REGISTRY = DeferredRegister.create(ID, RegistryKeys.SCREEN_HANDLER);
+		}
+		
+		return SCREEN_HANDLER_REGISTRY;
 	}
 }

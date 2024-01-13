@@ -29,7 +29,6 @@ import dev.vini2003.hammer.chat.registry.common.HCCommands;
 import dev.vini2003.hammer.chat.registry.common.HCEvents;
 import dev.vini2003.hammer.chat.registry.common.HCNetworking;
 import dev.vini2003.hammer.config.api.common.config.Config;
-import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

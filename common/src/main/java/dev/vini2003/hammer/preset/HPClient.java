@@ -25,7 +25,6 @@
 package dev.vini2003.hammer.preset;
 
 import dev.vini2003.hammer.core.HC;
-import net.fabricmc.api.ClientModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

@@ -27,7 +27,6 @@ package dev.vini2003.hammer.core;
 import dev.vini2003.hammer.core.api.common.util.HammerUtil;
 import dev.vini2003.hammer.core.registry.client.HCEvents;
 import dev.vini2003.hammer.core.registry.client.HCNetworking;
-import net.fabricmc.api.ClientModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

@@ -25,7 +25,6 @@
 package dev.vini2003.hammer.chat.registry.common;
 
 import dev.architectury.event.events.common.PlayerEvent;
-//import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 
 public class HCEvents {
 	public static void init() {
@@ -40,28 +39,5 @@ public class HCEvents {
 			
 			newPlayer.hammer$setSelectedChannel(oldPlayer.hammer$getSelectedChannel());
 		});
-		
-		// TODO: Ask Daniel.
-//		ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((message, sender, params) -> {
-//			var receiverPlayer = sender; // Fuck you for this, Yarn.
-//
-//			var server = receiverPlayer.getServer();
-//			if (server == null) return false;
-//
-//			var playerManager = server.getPlayerManager();
-//			if (playerManager == null) return false;
-//
-//			var senderPlayer = playerManager.getPlayer(message.getSender());
-//			if (senderPlayer == null) return false;
-//
-//			var receiverChannel = receiverPlayer.hammer$getSelectedChannel();
-//			var senderChannel = senderPlayer.hammer$getSelectedChannel();
-//
-//			if (receiverChannel != senderChannel) {
-//				return false;
-//			}
-//
-//			return true;
-//		});
 	}
 }

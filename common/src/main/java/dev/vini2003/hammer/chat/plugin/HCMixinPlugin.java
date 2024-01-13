@@ -2,7 +2,7 @@ package dev.vini2003.hammer.chat.plugin;
 
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.common.util.HammerUtil;
-import net.fabricmc.loader.api.FabricLoader;
+import dev.vini2003.hammer.core.api.common.util.ModUtil;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -29,9 +29,7 @@ public class HCMixinPlugin implements IMixinConfigPlugin {
 		
 		HC.LOGGER.info("Applying 'chat' module Mixin '" + mixinClassName + "'.");
 		
-		var fabric = FabricLoader.getInstance();
-		
-		if (fabric.isModLoaded("nochatreports")) {
+		if (ModUtil.isModLoaded("nochatreports")) {
 			if (mixinClassName.equals("dev.vini2003.hammer.chat.mixin.common.ServerMetadataMixin")) {
 				return false;
 			}

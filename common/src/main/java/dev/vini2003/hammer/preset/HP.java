@@ -30,7 +30,6 @@ import dev.vini2003.hammer.preset.registry.common.HPChannels;
 import dev.vini2003.hammer.preset.registry.common.HPConfig;
 import dev.vini2003.hammer.preset.registry.common.HPEvents;
 import dev.vini2003.hammer.preset.registry.common.HPRoles;
-import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

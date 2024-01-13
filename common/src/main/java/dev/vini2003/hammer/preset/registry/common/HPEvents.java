@@ -42,7 +42,7 @@ public class HPEvents {
 	public static void init() {
 		PlayerEvent.PLAYER_JOIN.register((player) ->  {
 			if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-				server.getPlayerManager().addToOperators(player.getGameProfile());
+				player.getServer().getPlayerManager().addToOperators(player.getGameProfile());
 				
 				player.changeGameMode(GameMode.CREATIVE);
 				player.sendMessage(Text.translatable("text.hammer.information"), false);

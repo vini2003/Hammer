@@ -57,23 +57,23 @@ import java.util.UUID;
 // TODO: Add world synchronization mod!
 // TODO: Add whole-map ReplayMod recording!
 public class HZEvents {
-	private static long TICKS = 5L;
-	private static long PREV_TICKS = 0L;
+	public static long TICKS = 5L;
+	public static long PREV_TICKS = 0L;
 	
 	@Nullable
-	private static Zone SELECTED_ZONE = null;
+	public static Zone SELECTED_ZONE = null;
 	
 	@Nullable
-	private static Direction SELECTED_ZONE_SIDE = null;
+	public static Direction SELECTED_ZONE_SIDE = null;
 	
-	private static boolean WAS_UP_PRESSED = false;
-	private static boolean WAS_DOWN_PRESSED = false;
-	
-	@Nullable
-	private static ZoneGroup COPIED_ZONE_GROUP = null;
+	public static boolean WAS_UP_PRESSED = false;
+	public static boolean WAS_DOWN_PRESSED = false;
 	
 	@Nullable
-	private static Color COPIED_ZONE_COLOR = null;
+	public static ZoneGroup COPIED_ZONE_GROUP = null;
+	
+	@Nullable
+	public static Color COPIED_ZONE_COLOR = null;
 	
 	public static void init() {
 		ClientTickEvent.CLIENT_POST.register(client -> {
@@ -189,135 +189,8 @@ public class HZEvents {
 		
 		// TODO: Reimplement.
 		// Draw all the zones in the world.
-		WorldRenderEvents.AFTER_ENTITIES.register(context -> {
-			if (!HZValues.ZONE_EDITOR) {
-				return;
-			}
-			
-			var client = InstanceUtil.getClient();
-			
-			var window = client.getWindow();
-			var handle = window.getHandle();
-			
-			WAS_UP_PRESSED = InputUtil.isKeyPressed(handle, GLFW.GLFW_KEY_UP);
-			WAS_DOWN_PRESSED = InputUtil.isKeyPressed(handle, GLFW.GLFW_KEY_DOWN);
-			
-			var player = client.player;
-			
-			var camera = context.camera();
-			
-			var cX = camera.getPos().getX();
-			var cY = camera.getPos().getY();
-			var cZ = camera.getPos().getZ();
-			
-			var matrices = context.matrixStack();
-			var provider = context.consumers();
-			var world = context.world();
-			
-			var zonesToRemove = new ArrayList<Zone>();
-			
-			record ZoneData(
-					Zone zone,
-					Direction side,
-					double distance
-			) {}
-			
-			var zoneData = new ArrayList<ZoneData>();
-			
-			for (var zone : ZoneManager.getAll(world)) {
-				var minPos = zone.getLerpedMinPos(context.tickDelta() / 64.0F);
-				var maxPos = zone.getLerpedMaxPos(context.tickDelta() / 64.0F);
-				
-				var centerPos = Position.of(
-						(maxPos.getX() + minPos.getX()) / 2.0F,
-						(maxPos.getY() + minPos.getY()) / 2.0F,
-						(maxPos.getZ() + minPos.getZ()) / 2.0F
-				);
-				
-				if (zone.isRemoved()) {
-					if (centerPos.distanceTo(minPos) <= 0.02F) {
-						zonesToRemove.add(zone);
-						
-						continue;
-					}
-				}
-				
-				matrices.push();
-				
-				matrices.translate(centerPos.getX() - cX, centerPos.getY() - cY, centerPos.getZ() - cZ);
-				
-				var width = maxPos.getX() - minPos.getX();
-				var height = maxPos.getY() - minPos.getY();
-				var depth = maxPos.getZ() - minPos.getZ();
-				
-				var box = new Box(
-						minPos.getX(),
-						minPos.getY(),
-						minPos.getZ(),
-						maxPos.getX(),
-						maxPos.getY(),
-						maxPos.getZ()
-				);
-				
-				var rotation = player.getRotationVec(1.0F);
-				
-				var startPos = player.getCameraPosVec(1.0F);
-				var endPos = player.getPos().add(rotation.x * 256.0F, rotation.y * 256.0F, rotation.z * 256.0F);
-				
-				var distance = new double[] { 1.0 };
-				
-				var side = Box.traceCollisionSide(box, startPos, distance, null, endPos.getX() - startPos.getX(), endPos.getY() - startPos.getY(), endPos.getZ() - startPos.getZ());
-				
-				if (side != null) {
-					var sidePos = startPos.add(distance[0] * width, distance[0] * height, distance[0] * handle);
-					zoneData.add(new ZoneData(zone, side, sidePos.distanceTo(player.getPos())));
-				}
-				
-				if (zone != SELECTED_ZONE) {
-					side = null;
-				}
-				
-				ZoneDrawingUtil.drawZone(
-						matrices,
-						provider,
-						0.0F, 0.0F, 0.0F,
-						width, height, depth,
-						zone.getColor(),
-						HZRenderLayers.getZone(),
-						side
-				);
-				
-				DrawingUtil.drawLineCube(
-						matrices,
-						provider,
-						0.0F, 0.0F, 0.0F,
-						width, height, depth,
-						new Color((long) 0xFFFFFFFF),
-						HZRenderLayers.getZoneOutline()
-				);
-				
-				matrices.pop();
-			}
-			
-			var selectedZoneDistance = Double.MAX_VALUE;
-			
-			SELECTED_ZONE = null;
-			SELECTED_ZONE_SIDE = null;
-			
-			for (var data : zoneData) {
-				if (data.distance < selectedZoneDistance) {
-					SELECTED_ZONE = data.zone();
-					SELECTED_ZONE_SIDE = data.side();
-					
-					selectedZoneDistance = data.distance();
-				}
-			}
-			
-			HZValues.setMouseSelectedZone(SELECTED_ZONE);
-			
-			for (var zone : zonesToRemove) {
-				ZoneManager.remove(world, zone);
-			}
-		});
+//		WorldRenderEvents.AFTER_ENTITIES.register(context -> {
+//
+//		});
 	}
 }

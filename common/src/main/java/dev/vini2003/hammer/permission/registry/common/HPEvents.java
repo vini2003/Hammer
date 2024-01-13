@@ -24,11 +24,11 @@
 
 package dev.vini2003.hammer.permission.registry.common;
 
+import dev.architectury.event.events.common.PlayerEvent;
 import dev.vini2003.hammer.permission.api.common.manager.RoleManager;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
 public class HPEvents {
 	public static void init() {
-		ServerPlayConnectionEvents.JOIN.register(new RoleManager.JoinListener());
+		PlayerEvent.PLAYER_JOIN.register(new RoleManager.JoinListener());
 	}
 }

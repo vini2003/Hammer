@@ -1,14 +1,15 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "dev.vini2003.hammer.zone.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "required" : true,
+  "minVersion" : "0.8",
+  "package" : "dev.vini2003.hammer.zone.mixin",
+  "compatibilityLevel" : "JAVA_17",
   "plugin" : "dev.vini2003.hammer.zone.plugin.HZMixinPlugin",
-  "mixins": [
+  "mixins" : [
   ],
-  "client": [
+  "client" : [
+    "client.WorldRendererMixin"
   ],
-  "injectors": {
-    "defaultRequire": 1
+  "injectors" : {
+    "defaultRequire" : 1
   }
 }

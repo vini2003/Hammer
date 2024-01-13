@@ -56,7 +56,7 @@ public class HammerUtil {
 	public static void initializeIfModuleEnabled(String moduleId, String initializerClassPath) {
 		executeIfModuleEnabled(moduleId, () -> {
 			try {
-				((ModInitializer) Class.forName(initializerClassPath).newInstance()).onInitialize();
+				Class.forName(initializerClassPath).getMethod("onInitialize").invoke(null);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -66,7 +66,7 @@ public class HammerUtil {
 	public static void initializeClientIfModuleEnabled(String moduleId, String initializerClassPath) {
 		executeIfModuleEnabled(moduleId, () -> {
 			try {
-				((ClientModInitializer) Class.forName(initializerClassPath).newInstance()).onInitializeClient();
+				Class.forName(initializerClassPath).getMethod("onInitializeClient").invoke(null);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -76,7 +76,7 @@ public class HammerUtil {
 	public static void initializeDedicatedServerIfModuleEnabled(String moduleId, String initializerClassPath) {
 		executeIfModuleEnabled(moduleId, () -> {
 			try {
-				((DedicatedServerModInitializer) Class.forName(initializerClassPath).newInstance()).onInitializeServer();
+				Class.forName(initializerClassPath).getMethod("onInitializeDedicatedServer").invoke(null);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

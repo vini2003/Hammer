@@ -31,9 +31,8 @@ import net.fabricmc.api.ClientModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class HCClient implements ClientModInitializer {
-	@Override
-	public void onInitializeClient() {
+public class HCClient {
+	public static void onInitializeClient() {
 		HCNetworking.init();
 		HCKeyBinds.init();
 		

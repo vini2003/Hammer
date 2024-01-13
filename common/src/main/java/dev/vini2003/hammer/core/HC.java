@@ -26,19 +26,25 @@ package dev.vini2003.hammer.core;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.architectury.registry.registries.DeferredRegister;
 import dev.vini2003.hammer.core.api.common.util.HammerUtil;
 import dev.vini2003.hammer.core.registry.common.HCArgumentTypes;
 import dev.vini2003.hammer.core.registry.common.HCComponents;
 import dev.vini2003.hammer.core.registry.common.HCEvents;
 import dev.vini2003.hammer.core.registry.common.HCNetworking;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @ApiStatus.Internal
-public class HC implements ModInitializer {
+public class HC {
 	private static final String HAMMER_CHAT_MOD_INITIALIZER = "dev.vini2003.hammer.chat.HC";
 	private static final String HAMMER_CONFIG_MOD_INITIALIZER = "dev.vini2003.hammer.config.HC";
 	private static final String HAMMER_GRAVITY_MOD_INITIALIZER = "dev.vini2003.hammer.gravity.HG";
@@ -65,12 +71,15 @@ public class HC implements ModInitializer {
 	
 	public static final Logger LOGGER = LoggerFactory.getLogger("Hammer");
 	
+	public static final DeferredRegister<Item> ITEM_REGISTRY = DeferredRegister.create(ID, RegistryKeys.ITEM);
+	public static final DeferredRegister<Block> BLOCK_REGISTRY = DeferredRegister.create(ID, RegistryKeys.BLOCK);
+	public static final DeferredRegister<ScreenHandlerType<?>> SCREEN_HANDLER_REGISTRY = DeferredRegister.create(ID, RegistryKeys.SCREEN_HANDLER);
+	
 	public static Identifier id(String path) {
 		return new Identifier(ID, path);
 	}
 	
-	@Override
-	public void onInitialize() {
+	public static void onInitialize() {
 		HCArgumentTypes.init();
 		HCEvents.init();
 		// HCItemGroups.init();
@@ -88,5 +97,9 @@ public class HC implements ModInitializer {
 		HammerUtil.initializeIfModuleEnabled(PRESET_MODULE_ID, HAMMER_PRESET_MOD_INITIALIZER);
 		HammerUtil.initializeIfModuleEnabled(UTIL_MODULE_ID, HAMMER_UTIL_MOD_INITIALIZER);
 		HammerUtil.initializeIfModuleEnabled(ZONE_MODULE_ID, HAMMER_ZONE_MOD_INITIALIZER);
+		
+		ITEM_REGISTRY.register();
+		BLOCK_REGISTRY.register();
+		SCREEN_HANDLER_REGISTRY.register();
 	}
 }

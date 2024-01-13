@@ -33,13 +33,12 @@ import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class HC implements ModInitializer {
+public class HC {
 	public static final String ID = "hammer-chat";
 	
 	public static final HCConfig CONFIG = Config.load(ID, HCConfig.class);
 	
-	@Override
-	public void onInitialize() {
+	public static void onInitialize() {
 		HCCommands.init();
 		HCEvents.init();
 		HCNetworking.init();

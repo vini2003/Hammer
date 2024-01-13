@@ -32,9 +32,8 @@ import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class HU implements ModInitializer {
-	@Override
-	public void onInitialize() {
+public class HU {
+	public static void onInitialize() {
 		HUCommands.init();
 		HUNetworking.init();
 		HUItems.init();

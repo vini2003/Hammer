@@ -34,13 +34,12 @@ import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class HP implements ModInitializer {
+public class HP {
 	public static final String ID = "hammer-preset";
 	
 	public static final HPConfig CONFIG = Config.load(ID, HPConfig.class);
 	
-	@Override
-	public void onInitialize() {
+	public static void onInitialize() {
 		HPEvents.init();
 		HPRoles.init();
 		HPChannels.init();

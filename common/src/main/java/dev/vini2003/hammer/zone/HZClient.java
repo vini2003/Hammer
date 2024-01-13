@@ -31,11 +31,11 @@ import net.fabricmc.api.ClientModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class HZClient implements ClientModInitializer {
-	@Override
-	public void onInitializeClient() {
+public class HZClient {
+	public static void onInitializeClient() {
 		HZEvents.init();
-		HZCommands.init();
+		// TODO: Reimplement!
+//		HZCommands.init();
 		
 		HC.LOGGER.info("Initialized '" + HC.ZONE_MODULE_ID + "' client module.");
 	}

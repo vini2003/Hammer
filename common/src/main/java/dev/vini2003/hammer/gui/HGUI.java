@@ -34,9 +34,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class HGUI implements ModInitializer {
-	@Override
-	public void onInitialize() {
+public class HGUI {
+	public static void onInitialize() {
 		HGUIEvents.init();
 		HGUINetworking.init();
 		

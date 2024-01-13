@@ -31,7 +31,7 @@ import net.fabricmc.api.ClientModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class HCClient implements ClientModInitializer {
+public class HCClient {
 	private static final String HAMMER_CHAT_CLIENT_MOD_INITIALIZER = "dev.vini2003.hammer.chat.HCClient";
 	private static final String HAMMER_GRAVITY_CLIENT_MOD_INITIALIZER = "dev.vini2003.hammer.gravity.HGClient";
 	private static final String HAMMER_GUI_CLIENT_MOD_INITIALIZER = "dev.vini2003.hammer.gui.HGUIClient";
@@ -40,8 +40,7 @@ public class HCClient implements ClientModInitializer {
 	private static final String HAMMER_UTIL_CLIENT_MOD_INITIALIZER = "dev.vini2003.hammer.util.HUClient";
 	private static final String HAMMER_ZONE_CLIENT_MOD_INITIALIZER = "dev.vini2003.hammer.zone.HZClient";
 	
-	@Override
-	public void onInitializeClient() {
+	public static void onInitializeClient() {
 		HCEvents.init();
 		HCNetworking.init();
 		

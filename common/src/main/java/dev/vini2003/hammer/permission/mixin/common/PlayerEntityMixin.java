@@ -34,6 +34,7 @@ import dev.vini2003.hammer.permission.api.common.util.PermUtil;
 import dev.vini2003.hammer.permission.impl.common.accessor.PlayerEntityAccessor;
 import dev.vini2003.hammer.permission.registry.common.HPNetworking;
 import io.netty.buffer.Unpooled;
+import net.luckperms.api.node.Node;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

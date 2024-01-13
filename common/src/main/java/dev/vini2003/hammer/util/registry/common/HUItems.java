@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.util.registry.common;
 
+import dev.architectury.registry.registries.RegistrySupplier;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.registry.common.HCConfig;
 import dev.vini2003.hammer.util.api.common.item.TriggerItem;
@@ -35,8 +36,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 
 public class HUItems {
-	public static final Item FREEZE = Registry.register(Registries.ITEM, HC.id("freeze"),
-			TriggerItem.builder()
+	public static final RegistrySupplier<Item> FREEZE = HC.ITEM_REGISTRY.register(HC.id("freeze"),
+			() -> TriggerItem.builder()
 					 .trigger((world, user, hand, hit) -> {
 						if (hit instanceof EntityHitResult entityHit) {
 							var entity = entityHit.getEntity();
@@ -57,8 +58,8 @@ public class HUItems {
 					.build()
 	);
 	
-	public static final Item MUTE = Registry.register(Registries.ITEM, HC.id("mute"),
-			TriggerItem.builder()
+	public static final RegistrySupplier<Item> MUTE = HC.ITEM_REGISTRY.register(HC.id("mute"),
+			() -> TriggerItem.builder()
 					.trigger((world, user, hand, hit) -> {
 						if (hit instanceof EntityHitResult entityHit) {
 							var entity = entityHit.getEntity();
@@ -79,8 +80,8 @@ public class HUItems {
 					.build()
 	);
 	
-	public static final Item HEAL = Registry.register(Registries.ITEM, HC.id("heal"),
-			TriggerItem.builder()
+	public static final RegistrySupplier<Item> HEAL = HC.ITEM_REGISTRY.register(HC.id("heal"),
+			() -> TriggerItem.builder()
 					.trigger((world, user, hand) -> {
 						user.setHealth(user.getMaxHealth());
 				
@@ -100,8 +101,8 @@ public class HUItems {
 					.build()
 	);
 	
-	public static final Item SATIATE = Registry.register(Registries.ITEM, HC.id("satiate"),
-			TriggerItem.builder()
+	public static final RegistrySupplier<Item> SATIATE = HC.ITEM_REGISTRY.register(HC.id("satiate"),
+			() -> TriggerItem.builder()
 					   .trigger((world, user, hand) -> {
 						   user.getHungerManager().setFoodLevel(20);
 						   user.getHungerManager().setSaturationLevel(20.0F);
@@ -123,8 +124,8 @@ public class HUItems {
 					   .build()
 	);
 	
-	public static final Item TOGGLE_END = Registry.register(Registries.ITEM, HC.id("toggle_end"),
-			TriggerItem.builder()
+	public static final RegistrySupplier<Item> TOGGLE_END = HC.ITEM_REGISTRY.register(HC.id("toggle_end"),
+			() -> TriggerItem.builder()
 					   .trigger((world, user, hand) -> {
 						   HCConfig.ENABLE_END = !HCConfig.ENABLE_END;
 						
@@ -136,8 +137,8 @@ public class HUItems {
 					   .build()
 	);
 	
-	public static final Item TOGGLE_NETHER = Registry.register(Registries.ITEM, HC.id("toggle_nether"),
-			TriggerItem.builder()
+	public static final RegistrySupplier<Item> TOGGLE_NETHER = HC.ITEM_REGISTRY.register(HC.id("toggle_nether"),
+			() -> TriggerItem.builder()
 					   .trigger((world, user, hand) -> {
 						   HCConfig.ENABLE_NETHER = !HCConfig.ENABLE_NETHER;
 				

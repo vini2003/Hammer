@@ -32,9 +32,8 @@ import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class HG implements ModInitializer {
-	@Override
-	public void onInitialize() {
+public class HG {
+	public static void onInitialize() {
 		HGCommands.init();
 		HGEvents.init();
 		HGNetworking.init();

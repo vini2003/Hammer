@@ -29,9 +29,8 @@ import net.fabricmc.api.ClientModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class HPClient implements ClientModInitializer {
-	@Override
-	public void onInitializeClient() {
+public class HPClient {
+	public static void onInitializeClient() {
 		HC.LOGGER.info("Initialized '" + HC.PRESET_MODULE_ID + "' client module.");
 	}
 }

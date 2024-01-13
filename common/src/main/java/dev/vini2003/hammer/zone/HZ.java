@@ -32,9 +32,8 @@ import net.fabricmc.api.ModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class HZ implements ModInitializer {
-	@Override
-	public void onInitialize() {
+public class HZ {
+	public static void onInitialize() {
 		HZEvents.init();
 		HZComponents.init();
 		HZNetworking.init();

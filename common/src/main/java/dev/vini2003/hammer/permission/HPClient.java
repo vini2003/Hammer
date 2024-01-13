@@ -30,9 +30,8 @@ import net.fabricmc.api.ClientModInitializer;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class HPClient implements ClientModInitializer {
-	@Override
-	public void onInitializeClient() {
+public class HPClient {
+	public static void onInitializeClient() {
 		HPNetworking.init();
 		
 		HC.LOGGER.info("Initialized '" + HC.PERMISSION_MODULE_ID + "' client module.");

@@ -32,9 +32,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
-public class HGUIClient implements ClientModInitializer {
-	@Override
-	public void onInitializeClient() {
+public class HGUIClient {
+	public static void onInitializeClient() {
 		HGUIEvents.init();
 		
 		if (FabricLoader.getInstance().isDevelopmentEnvironment()) {

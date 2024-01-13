@@ -8,7 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class DebugScreenHandler extends BaseScreenHandler {
 	public DebugScreenHandler(int syncId, PlayerEntity player) {
-		super(HGUIScreenHandlerTypes.DEBUG, syncId, player);
+		super(HGUIScreenHandlerTypes.DEBUG.get(), syncId, player);
 	}
 	
 	@Override

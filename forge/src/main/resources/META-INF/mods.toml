@@ -1,35 +1,35 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
-#issueTrackerURL = ""
-license = "Insert License Here"
+license = "MIT"
 
 [[mods]]
-modId = "examplemod"
+modId = "hammer"
 version = "${version}"
-displayName = "Example Mod"
-authors = "Me!"
+displayName = "Hammer"
+authors = ["vini2003"]
 description = '''
-This is an example description! Tell everyone what your mod is about!
+A library module.
 '''
-#logoFile = ""
+logoFile = "assets/hammer/icon.png"
 
-[[dependencies.examplemod]]
+[[dependencies.hammer]]
 modId = "forge"
 mandatory = true
 versionRange = "[47,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.hammer]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.20.1,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.hammer]]
 modId = "architectury"
 mandatory = true
 versionRange = "[9.1.12,)"
 ordering = "AFTER"
 side = "BOTH"
+

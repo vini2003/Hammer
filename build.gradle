@@ -24,9 +24,6 @@ subprojects {
 		modImplementation("com.google.code.findbugs:jsr305:${findBugsVersion}")
 
 //		modApi "teamreborn:energy:${energyVersion}"
-
-//		modApi "net.luckperms:api:${luckPermsVersion}"
-//		include "net.luckperms:api:${luckPermsVersion}"
 	}
 }
 

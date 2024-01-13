@@ -1,3 +1,15 @@
 {
-  "accessWidener": "hammer.accesswidener"
+  "accessWidener": "hammer.accesswidener",
+  "injected_interfaces": {
+    "net/minecraft/class_1657": [
+      "dev/vini2003/hammer/core/impl/common/accessor/PlayerEntityAccessor",
+      "dev/vini2003/hammer/permission/impl/common/accessor/PlayerEntityAccessor",
+      "dev/vini2003/hammer/chat/impl/common/accessor/PlayerEntityAccessor"
+    ],
+    "net/minecraft/class_2487": ["dev/vini2003/hammer/core/impl/common/accessor/NbtCompoundAccessor"],
+    "net/minecraft/class_2540": ["dev/vini2003/hammer/core/impl/common/accessor/PacketByteBufAccessor"],
+    "net/minecraft/class_3222": ["dev/vini2003/hammer/core/impl/common/accessor/ServerPlayerEntityAccessor"],
+    "net/minecraft/class_2784": ["dev/vini2003/hammer/border/impl/common/accessor/WorldBorderAccessor"],
+    "net/minecraft/server/MinecraftServer": ["dev/vini2003/hammer/core/impl/common/accessor/MinecraftServerAccessor"]
+  }
 }

@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 
 public class HGUIScreens {
 	public static void init() {
-		HandledScreens.register(HGUIScreenHandlerTypes.DEBUG, DebugScreen::new);
+		// TODO: Ask Daniel.
+//		HandledScreens.register(HGUIScreenHandlerTypes.DEBUG, DebugScreen::new);
 	}
 }

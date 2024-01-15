@@ -60,7 +60,7 @@ public class FluidTextUtil {
 		
 		tooltip.add(FluidStackHooks.getName(FluidStack.create(fluid, 1_000)).copy().styled(style -> style.withColor(color)));
 		
-		var tooltipContext = MinecraftClient.getInstance().options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.BASIC;
+		var tooltipContext = MinecraftClient.getInstance().options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL;
 		
 		if (tooltipContext.isAdvanced()) {
 			tooltip.add(Text.literal(Registry.FLUID.getId(fluid).toString()).formatted(Formatting.DARK_GRAY));

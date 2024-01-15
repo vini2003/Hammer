@@ -32,7 +32,7 @@ import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.zone.api.common.manager.ZoneGroupManager;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.registry.RegistryKey;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -234,7 +234,7 @@ public class Zone {
 		
 		if (object.has("group_id")) {
 			zone = new Zone(
-					RegistryKey.of(RegistryKeys.WORLD, new Identifier(object.get("world_id").getAsString())),
+					RegistryKey.of(Registry.WORLD_KEY, new Identifier(object.get("world_id").getAsString())),
 					new Identifier(object.get("id").getAsString()),
 					ZoneGroupManager.getOrCreate(new Identifier(object.get("zone_id").getAsString())),
 					StaticPosition.fromJson(object.get("min_pos")),
@@ -242,7 +242,7 @@ public class Zone {
 			);
 		} else {
 			zone = new Zone(
-					RegistryKey.of(RegistryKeys.WORLD, new Identifier(object.get("world_id").getAsString())),
+					RegistryKey.of(Registry.WORLD_KEY, new Identifier(object.get("world_id").getAsString())),
 					new Identifier(object.get("id").getAsString()),
 					StaticPosition.fromJson(object.get("min_pos")),
 					StaticPosition.fromJson(object.get("max_pos"))

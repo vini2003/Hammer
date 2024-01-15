@@ -28,6 +28,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.screen.option.VideoOptionsScreen;
 import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -41,7 +42,7 @@ public abstract class VideoOptionsScreenMixin extends GameOptionsScreen {
 	}
 	
 	@Inject(at = @At("RETURN"), method = "render")
-	private void hammer$render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-		context.drawCenteredTextWithShadow(this.textRenderer, Text.translatable("text.hammer.fabulous_graphics_warning"), this.width / 2, 5 + 9 + 5 + 18, 0xFF5370);
+	private void hammer$render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+		drawCenteredText(matrices, this.textRenderer, Text.translatable("text.hammer.fabulous_graphics_warning"), this.width / 2, 5 + 9 + 5, 0xFF5370);
 	}
 }

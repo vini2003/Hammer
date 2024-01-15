@@ -113,6 +113,8 @@ accessible field net/minecraft/screen/slot/Slot inventory Lnet/minecraft/invento
 accessible field net/minecraft/screen/slot/Slot x I
 accessible field net/minecraft/screen/slot/Slot y I
 accessible field net/minecraft/world/gen/WorldPreset dimensions Ljava/util/Map;
+accessible field net/minecraft/client/render/entity/model/PlayerEntityModel ear Lnet/minecraft/client/model/ModelPart;
+accessible field net/minecraft/client/render/entity/model/PlayerEntityModel cloak Lnet/minecraft/client/model/ModelPart;
 
 accessible method net/minecraft/client/gui/hud/InGameHud getHeartCount (Lnet/minecraft/entity/LivingEntity;)I
 accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;

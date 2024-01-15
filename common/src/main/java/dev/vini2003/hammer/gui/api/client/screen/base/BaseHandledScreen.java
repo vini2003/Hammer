@@ -34,12 +34,12 @@ import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import org.joml.Vector2i;
 
 public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends HandledScreen<T> {
 	public BaseHandledScreen(T screenHandler, PlayerInventory playerInventory, Text text) {
@@ -77,17 +77,18 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to initialize!").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			handler.onClosed(handler.getPlayer());
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			handler.close(handler.getPlayer());
 		}
 	}
 	
 	@Override
-	protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
+	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
 	
 	}
 	
 	@Override
-	protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
+	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 	
 	}
 	
@@ -117,7 +118,8 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			handler.onClosed(handler.getPlayer());
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			handler.close(handler.getPlayer());
 			
 			return false;
 		}
@@ -138,7 +140,8 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			handler.onClosed(handler.getPlayer());
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			handler.close(handler.getPlayer());
 			
 			return false;
 		}
@@ -159,7 +162,8 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			handler.onClosed(handler.getPlayer());
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			handler.close(handler.getPlayer());
 			
 			return false;
 		}
@@ -180,7 +184,8 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			handler.onClosed(handler.getPlayer());
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			handler.close(handler.getPlayer());
 		}
 	}
 	
@@ -199,7 +204,8 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			handler.onClosed(handler.getPlayer());
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			handler.close(handler.getPlayer());
 			
 			return false;
 		}
@@ -232,7 +238,8 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			handler.onClosed(handler.getPlayer());
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			handler.close(handler.getPlayer());
 			
 			return false;
 		}
@@ -253,7 +260,8 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			handler.onClosed(handler.getPlayer());
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			handler.close(handler.getPlayer());
 			
 			return false;
 		}
@@ -274,16 +282,17 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			handler.onClosed(handler.getPlayer());
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			handler.close(handler.getPlayer());
 			
 			return false;
 		}
 	}
 	
 	@Override
-	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 		try {
-			renderBackground(context);
+			super.renderBackground(matrices);
 			
 			var client = InstanceUtil.getClient();
 			
@@ -291,7 +300,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			
 			for (var child : handler.getChildren()) {
 				if (!child.isHidden()) {
-					child.draw(context, delta);
+					child.draw(matrices, provider, delta);
 				}
 			}
 			
@@ -310,15 +319,14 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			}
 			
 			if (minChild != null) {
-				// TODO: Fix this, it's very bad.
-				context.drawTooltip(textRenderer, minChild.getTooltip(), ($, $$, $$$, $$$$, $$$$$, $$$$$$) -> new Vector2i(mouseX + 12, mouseY - 12), mouseX, mouseY);
+				renderOrderedTooltip(matrices, minChild.getTooltip(), mouseX, mouseY);
 			}
 			
 			provider.draw();
 			
-			super.render(context, mouseX, mouseY, delta);
+			super.render(matrices, mouseX, mouseY, delta);
 			
-			super.drawMouseoverTooltip(context, mouseX, mouseY);
+			super.drawMouseoverTooltip(matrices, mouseX, mouseY);
 		} catch (Exception e) {
 			HC.LOGGER.error("A screen failed to render!");
 			e.printStackTrace();
@@ -326,7 +334,8 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to render!").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			handler.onClosed(handler.getPlayer());
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			handler.close(handler.getPlayer());
 		}
 	}
 }

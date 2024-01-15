@@ -79,7 +79,7 @@ public class WorldBorderRenderer {
 			var blue = (color & 0xFF) / 255.0F;
 			
 			RenderSystem.setShaderColor(red, green, blue, (float) scaledDistanceToBorder);
-			RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			RenderSystem.polygonOffset(-3.0F, -3.0F);
 			RenderSystem.enablePolygonOffset();
 			RenderSystem.disableCull();
@@ -128,7 +128,7 @@ public class WorldBorderRenderer {
 			
 			var builtBuffer = bufferBuilder.end();
 			
-			BufferRenderer.drawWithGlobalProgram(builtBuffer);
+			BufferRenderer.drawWithShader(builtBuffer);
 			RenderSystem.enableCull();
 			RenderSystem.polygonOffset(0.0F, 0.0F);
 			RenderSystem.disablePolygonOffset();
@@ -136,7 +136,6 @@ public class WorldBorderRenderer {
 			
 			matrices.pop();
 			
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem.applyModelViewMatrix();
 			RenderSystem.depthMask(true);
 		}

@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GravityManager {
-	private static final Map<RegsitryKey<World>, Float> GRAVITIES = new ConcurrentHashMap<>();
+	private static final Map<RegistryKey<World>, Float> GRAVITIES = new ConcurrentHashMap<>();
 	
 	public static float get(World world) {
 		return get(world.getRegistryKey());

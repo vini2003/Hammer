@@ -27,7 +27,8 @@ public class PlayerManagerMixin {
 			return;
 		}
 		
-		var senderPlayer = playerManager.getPlayer(message.getSender());
+		// TODO: Check if this is equivalent to the 1.20.1 code.
+		var senderPlayer = playerManager.getPlayer(message.signedHeader().sender());
 		if (senderPlayer == null) {
 			ci.cancel();
 			return;

@@ -36,7 +36,7 @@ public class HZRenderLayers {
 			false,
 			RenderLayer.MultiPhaseParameters.builder()
 											.cull(RenderPhase.ENABLE_CULLING)
-											.program(new RenderPhase.ShaderProgram(GameRenderer::getPositionColorProgram))
+											.shader(new RenderPhase.Shader(GameRenderer::getPositionColorShader))
 											.depthTest(RenderPhase.LEQUAL_DEPTH_TEST)
 											.transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
 											.lineWidth(RenderPhase.FULL_LINE_WIDTH)
@@ -52,7 +52,7 @@ public class HZRenderLayers {
 			false,
 			RenderLayer.MultiPhaseParameters.builder()
 											.cull(RenderPhase.DISABLE_CULLING)
-											.program(RenderPhase.LINES_PROGRAM)
+											.shader(RenderPhase.LINES_SHADER)
 											.lineWidth(RenderPhase.FULL_LINE_WIDTH)
 											.build(false)
 	);

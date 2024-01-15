@@ -53,7 +53,7 @@ public class SpriteTexture implements Texture {
 		DrawingUtil.drawTexturedQuad(
 				matrices,
 				provider,
-				sprite.getAtlasId(),
+				sprite.getId(),
 				scaledX, scaledY, 0.0F,
 				width, height,
 				sprite.getMinU(), sprite.getMinV(),

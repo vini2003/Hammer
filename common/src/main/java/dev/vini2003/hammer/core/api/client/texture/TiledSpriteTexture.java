@@ -78,7 +78,7 @@ public class TiledSpriteTexture implements Texture {
 		DrawingUtil.drawTiledTexturedQuad(
 				matrices,
 				provider,
-				sprite.getAtlasId(),
+				sprite.getId(),
 				scaledX, scaledY, 0.0F,
 				width, height,
 				// TODO: Check if this is equivalent to the 1.19.2 code. This assume the sprite must be 16x16 for tiling;

@@ -95,7 +95,8 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 		} catch (Exception e) {
 			e.printStackTrace();
 			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
-			onClosed(player);
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			close(player);
 		}
 	}
 	
@@ -113,7 +114,8 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 		} catch (Exception e) {
 			e.printStackTrace();
 			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
-			onClosed(player);
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			close(player);
 		}
 	}
 	
@@ -168,7 +170,8 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 		} catch (Exception e) {
 			e.printStackTrace();
 			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
-			onClosed(player);
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			close(player);
 		}
 	}
 	
@@ -182,7 +185,8 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 		}  catch (Exception e) {
 			e.printStackTrace();
 			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
-			onClosed(player);
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			close(player);
 		}
 	}
 	
@@ -211,7 +215,8 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 		}  catch (Exception e) {
 			e.printStackTrace();
 			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
-			onClosed(player);
+			// TODO: Check if this is equivalent to the 1.20.1 code.
+			close(player);
 		}
 	}
 	
@@ -248,7 +253,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 	}
 	
 	@Override
-	public ItemStack quickMove(PlayerEntity player, int index) {
+	public ItemStack transferSlot(PlayerEntity player, int index) {
 		onSlotClick(index, GLFW.GLFW_MOUSE_BUTTON_1, SlotActionType.QUICK_MOVE, player);
 		return ItemStack.EMPTY;
 	}

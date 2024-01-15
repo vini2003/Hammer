@@ -121,7 +121,8 @@ public class HC {
 	public static DeferredRegister<ScreenHandlerType<?>> getScreenHandlerRegistry() {
 		if (SCREEN_HANDLER_REGISTRY == null) {
 			// TODO: Check if this works. Registry ID may not be correct.
-			SCREEN_HANDLER_REGISTRY = DeferredRegister.create(ID, RegistryKey.ofRegistry(new Identifier("screen_handler_type")));
+			// Turns out the ID is "menu".
+			SCREEN_HANDLER_REGISTRY = DeferredRegister.create(ID, Registry.MENU_KEY);
 		}
 		
 		return SCREEN_HANDLER_REGISTRY;

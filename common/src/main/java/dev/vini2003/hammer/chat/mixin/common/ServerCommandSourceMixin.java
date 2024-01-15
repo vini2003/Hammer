@@ -46,7 +46,7 @@ public abstract class ServerCommandSourceMixin {
 	private CommandOutput output;
 	
 	@Inject(at = @At("HEAD"), method = "sendFeedback", cancellable = true)
-	private void hammer$sendFeedback(Supplier<Text> feedbackSupplier, boolean broadcastToOps, CallbackInfo ci) {
+	private void hammer$sendFeedback(Text message, boolean broadcastToOps, CallbackInfo ci) {
 		if (output instanceof PlayerEntity player) {
 			if (!player.hammer$shouldShowCommandFeedback()) {
 				ci.cancel();

@@ -69,12 +69,26 @@ publishing {
 	publications {
 		mavenFabric(MavenPublication) {
 			artifactId = rootProject.projectId + "-" + project.name
+			groupId = projectGroup
+			version = projectVersion
+
 			from components.java
 		}
 	}
 
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 	repositories {
-		// Add repositories to publish to here.
+		maven {
+			name = "vini2003"
+			url = "https://maven.vini2003.dev/releases"
+
+			credentials {
+				username = System.getenv("MVN_USERNAME")
+				password = System.getenv("MVN_TOKEN")
+			}
+
+			authentication {
+				basic(BasicAuthentication)
+			}
+		}
 	}
 }

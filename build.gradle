@@ -49,38 +49,4 @@ allprojects {
 		maven { url "https://maven.fabricmc.net/" }
 		maven { url "https://maven.enginehub.org/repo/" }
 	}
-//
-//	publishing {
-//		publications {
-//			mavenJava(MavenPublication) {
-//				artifactId = archivesBaseName
-//				groupId = projectGroup
-//				version = projectVersion
-//
-//				artifact(remapJar) {
-//					builtBy remapJar
-//				}
-//
-//				artifact(sourcesJar) {
-//					builtBy remapSourcesJar
-//				}
-//			}
-//		}
-//
-//		repositories {
-//			maven {
-//				name = "vini2003"
-//				url = "https://maven.vini2003.dev/releases"
-//
-//				credentials {
-//					username = System.getenv("MVN_USERNAME")
-//					password = System.getenv("MVN_TOKEN")
-//				}
-//
-//				authentication {
-//					basic(BasicAuthentication)
-//				}
-//			}
-//		}
-//	}
 }

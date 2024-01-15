@@ -2,7 +2,7 @@ package dev.vini2003.hammer.preset.mixin.common;
 
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.preset.HP;
-import net.minecraft.registry.Registries;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -35,7 +35,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
 			
 			playerEntity.getWorld().getPlayers().forEach(player -> {
 				player.sendMessage(Text.literal("A player failed to tick!").formatted(Formatting.RED, Formatting.BOLD), false);
-				player.sendMessage(player.getDisplayName().copy().append(Text.literal(Registries.ENTITY_TYPE.getId(playerEntity.getType()) + " at " + playerEntity.getBlockPos().toString() + " with UUID " + playerEntity.getUuidAsString()).formatted(Formatting.RED)), false);
+				player.sendMessage(player.getDisplayName().copy().append(Text.literal(Registry.ENTITY_TYPE.getId(playerEntity.getType()) + " at " + playerEntity.getBlockPos().toString() + " with UUID " + playerEntity.getUuidAsString()).formatted(Formatting.RED)), false);
 			});
 
 			disconnect(Text.of("Your player failed to tick!"));

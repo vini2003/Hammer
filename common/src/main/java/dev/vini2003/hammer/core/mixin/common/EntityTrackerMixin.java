@@ -32,7 +32,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.Packet;
+import net.minecraft.network.Packet;
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
@@ -55,7 +55,7 @@ public abstract class EntityTrackerMixin {
 	protected abstract void sendSyncPacket(Packet<?> packet);
 	
 	@Inject(at = @At("HEAD"), method = "sendPackets")
-	private void hammer$sendPackets(ServerPlayerEntity player, Consumer<Packet<ClientPlayPacketListener>> sender, CallbackInfo ci) {
+	private void hammer$sendPackets(Consumer<Packet<?>> sender, CallbackInfo ci) {
 		var packet = hammer$createSyncPacket();
 		
 		if (packet != null) {

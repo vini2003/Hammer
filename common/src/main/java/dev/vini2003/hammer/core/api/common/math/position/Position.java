@@ -25,9 +25,8 @@
 package dev.vini2003.hammer.core.api.common.math.position;
 
 import dev.vini2003.hammer.core.api.common.supplier.FloatSupplier;
+import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.util.math.*;
-import org.joml.Vector3d;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -145,8 +144,8 @@ public abstract class Position implements PositionHolder {
 	 * @param vec3f the Vector3f to convert.
 	 * @return a new StaticPosition instance with coordinates corresponding to the Vector3f.
 	 */
-	public static StaticPosition of(Vector3f vec3f) {
-		return new StaticPosition(vec3f.x(), vec3f.y(), vec3f.z());
+	public static StaticPosition of(Vec3f vec3f) {
+		return new StaticPosition(vec3f.getX(), vec3f.getY(), vec3f.getZ());
 	}
 	
 	/**
@@ -166,7 +165,7 @@ public abstract class Position implements PositionHolder {
 	 * @return a new StaticPosition instance with coordinates corresponding to the Vector3d.
 	 */
 	public static StaticPosition of(Vector3d vector3d) {
-		return new StaticPosition((float) vector3d.x(), (float) vector3d.y(), (float) vector3d.z());
+		return new StaticPosition((float) vector3d.x, (float) vector3d.y, (float) vector3d.z);
 	}
 	
 	/**
@@ -227,11 +226,11 @@ public abstract class Position implements PositionHolder {
 	}
 	
 	/**
-	 * Converts this position to a {@link Vector3f}.
+	 * Converts this position to a {@link Vec3f}.
 	 * @return The vector.
 	 */
-	public Vector3f toVector3f() {
-		return new Vector3f(getX(), getY(), getZ());
+	public Vec3f toVector3f() {
+		return new Vec3f(getX(), getY(), getZ());
 	}
 	
 	/**

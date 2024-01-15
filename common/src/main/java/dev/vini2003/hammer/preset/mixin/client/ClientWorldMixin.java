@@ -3,7 +3,7 @@ package dev.vini2003.hammer.preset.mixin.client;
 import dev.vini2003.hammer.core.HC;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.registry.Registries;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,7 +22,7 @@ public class ClientWorldMixin {
 			
 			instance.getWorld().getPlayers().forEach(player -> {
 				player.sendMessage(Text.literal("An entity failed to tick!").formatted(Formatting.RED, Formatting.BOLD), false);
-				player.sendMessage(Text.literal(Registries.ENTITY_TYPE.getId(instance.getType()) + " at " + instance.getBlockPos().toString() + " with UUID " + instance.getUuidAsString()).formatted(Formatting.RED), false);
+				player.sendMessage(Text.literal(Registry.ENTITY_TYPE.getId(instance.getType()) + " at " + instance.getBlockPos().toString() + " with UUID " + instance.getUuidAsString()).formatted(Formatting.RED), false);
 			});
 			
 			instance.remove(Entity.RemovalReason.DISCARDED);

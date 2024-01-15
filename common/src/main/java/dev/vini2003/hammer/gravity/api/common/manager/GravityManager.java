@@ -31,8 +31,8 @@ import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.gravity.registry.common.HGNetworking;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GravityManager {
-	private static final Map<RegistryKey<World>, Float> GRAVITIES = new ConcurrentHashMap<>();
+	private static final Map<RegsitryKey<World>, Float> GRAVITIES = new ConcurrentHashMap<>();
 	
 	public static float get(World world) {
 		return get(world.getRegistryKey());

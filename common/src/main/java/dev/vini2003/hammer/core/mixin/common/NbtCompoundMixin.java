@@ -2,14 +2,10 @@ package dev.vini2003.hammer.core.mixin.common;
 
 import dev.vini2003.hammer.core.impl.common.accessor.NbtCompoundAccessor;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
-import org.joml.Quaternionf;
-import org.joml.Vector3d;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
+import net.minecraft.util.registry.RegistryKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -138,15 +134,15 @@ public abstract class NbtCompoundMixin implements NbtCompoundAccessor {
 	}
 	
 	@Override
-	public void hammer$putVector3f(String key, Vector3f value) {
-		putFloat(key + "X", value.x());
-		putFloat(key + "Y", value.y());
-		putFloat(key + "Z", value.z());
+	public void hammer$putVector3f(String key, Vec3f value) {
+		putFloat(key + "X", value.getX());
+		putFloat(key + "Y", value.getY());
+		putFloat(key + "Z", value.getZ());
 	}
 	
 	@Override
-	public Vector3f hammer$getVector3f(String key) {
-		return new Vector3f(
+	public Vec3f hammer$getVector3f(String key) {
+		return new Vec3f(
 				getFloat(key + "X"),
 				getFloat(key + "Y"),
 				getFloat(key + "Z")
@@ -170,15 +166,15 @@ public abstract class NbtCompoundMixin implements NbtCompoundAccessor {
 	}
 	
 	@Override
-	public void hammer$putVector3d(String key, Vector3d value) {
+	public void hammer$putVector3d(String key, Vec3d value) {
 		putDouble(key + "X", value.x);
 		putDouble(key + "Y", value.y);
 		putDouble(key + "Z", value.z);
 	}
 	
 	@Override
-	public Vector3d hammer$getVector3d(String key) {
-		return new Vector3d(
+	public Vec3d hammer$getVector3d(String key) {
+		return new Vec3d(
 				getDouble(key + "X"),
 				getDouble(key + "Y"),
 				getDouble(key + "Z")
@@ -187,10 +183,10 @@ public abstract class NbtCompoundMixin implements NbtCompoundAccessor {
 	
 	@Override
 	public void hammer$putVector4f(String key, Vector4f value) {
-		putFloat(key + "X", value.x());
-		putFloat(key + "Y", value.y());
-		putFloat(key + "Z", value.z());
-		putFloat(key + "W", value.w());
+		putFloat(key + "X", value.getX());
+		putFloat(key + "Y", value.getY());
+		putFloat(key + "Z", value.getZ());
+		putFloat(key + "W", value.getW());
 	}
 	
 	@Override
@@ -204,16 +200,16 @@ public abstract class NbtCompoundMixin implements NbtCompoundAccessor {
 	}
 	
 	@Override
-	public void hammer$putQuaternionf(String key, Quaternionf value) {
-		putFloat(key + "X", value.x());
-		putFloat(key + "Y", value.y());
-		putFloat(key + "Z", value.z());
-		putFloat(key + "W", value.w());
+	public void hammer$putQuaternionf(String key, Quaternion value) {
+		putFloat(key + "X", value.getX());
+		putFloat(key + "Y", value.getY());
+		putFloat(key + "Z", value.getZ());
+		putFloat(key + "W", value.getW());
 	}
 	
 	@Override
-	public Quaternionf hammer$getQuaternionf(String key) {
-		return new Quaternionf(
+	public Quaternion hammer$getQuaternionf(String key) {
+		return new Quaternion(
 				getFloat(key + "X"),
 				getFloat(key + "Y"),
 				getFloat(key + "Z"),

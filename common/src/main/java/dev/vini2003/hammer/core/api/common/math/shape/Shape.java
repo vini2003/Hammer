@@ -31,7 +31,7 @@ import dev.vini2003.hammer.core.api.common.math.shape.modifier.NoiseModifier;
 import dev.vini2003.hammer.core.api.common.math.shape.modifier.RotateModifier;
 import dev.vini2003.hammer.core.api.common.math.shape.modifier.TranslateModifier;
 import dev.vini2003.hammer.core.api.common.math.size.SizeHolder;
-import org.joml.Quaternionf;
+import net.minecraft.util.math.Quaternion;
 
 import java.util.Collection;
 import java.util.Random;
@@ -173,7 +173,7 @@ public class Shape implements SizeHolder {
 	 *
 	 * @return a new shape with the modifier.
 	 */
-	public Shape rotate(Quaternionf rotation) {
+	public Shape rotate(Quaternion rotation) {
 		return applyModifier(new RotateModifier(rotation));
 	}
 	

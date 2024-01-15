@@ -4,12 +4,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.math.*;
-import org.joml.Quaternionf;
-import org.joml.Vector3d;
-import org.joml.Vector3f;
 
 import java.util.function.Function;
 
@@ -147,12 +145,12 @@ public class StaticPosition extends Position {
 	}
 	
 	/**
-	 * Converts a {@link Vector3f} to a static position.
+	 * Converts a {@link Vec3f} to a static position.
 	 * @param vec3f The vector.
 	 * @return The position.
 	 */
-	public StaticPosition(Vector3f vec3f) {
-		this(vec3f.x(), vec3f.y(), vec3f.z());
+	public StaticPosition(Vec3f vec3f) {
+		this(vec3f.getX(), vec3f.getY(), vec3f.getZ());
 	}
 	
 	/**
@@ -170,7 +168,7 @@ public class StaticPosition extends Position {
 	 * @return The position.
 	 */
 	public StaticPosition(Vector3d vector3d) {
-		this((float) vector3d.x(), (float) vector3d.y(), (float) vector3d.z());
+		this((float) vector3d.x, (float) vector3d.y, (float) vector3d.z);
 	}
 	
 	/**
@@ -295,16 +293,14 @@ public class StaticPosition extends Position {
 	 *
 	 * @return the resulting position.
 	 */
-	public StaticPosition rotate(Quaternionf quaternion) {
-		// TODO: Check if this is equivalent to the 1.19.2 code.
-		
-		var q1 = new Quaternionf(quaternion);
-		q1.mul(new Quaternionf(this.getX(), this.getY(), this.getZ(), 0.0F));
-		var q2 = new Quaternionf(quaternion);
+	public Position rotate(Quaternion quaternion) {
+		var q1 = new Quaternion(quaternion);
+		q1.hamiltonProduct(new Quaternion(this.getX(), this.getY(), this.getZ(), 0.0F));
+		var q2 = new Quaternion(quaternion);
 		q2.conjugate();
-		q1.mul(q2);
+		q1.hamiltonProduct(q2);
 		
-		return new StaticPosition(q1.x(), q1.y(), q1.z());
+		return new StaticPosition(q1.getX(), q1.getY(), q1.getZ());
 	}
 	
 	/**

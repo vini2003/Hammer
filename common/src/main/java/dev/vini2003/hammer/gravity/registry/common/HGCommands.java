@@ -53,7 +53,7 @@ public class HGCommands {
 		
 		GravityManager.set(world, gravity);
 		
-		source.sendFeedback(() -> Text.translatable("command.hammer.gravity", world.getRegistryKey().toString(), gravity), true);
+		source.sendFeedback(Text.translatable("command.hammer.gravity", world.getRegistryKey().toString(), gravity), true);
 		
 		return Command.SINGLE_SUCCESS;
 	}

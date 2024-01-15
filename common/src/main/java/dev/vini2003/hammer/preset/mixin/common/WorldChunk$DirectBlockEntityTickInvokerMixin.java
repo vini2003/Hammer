@@ -5,7 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.registry.Registries;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
@@ -27,7 +27,7 @@ public class WorldChunk$DirectBlockEntityTickInvokerMixin {
 			
 			world.getPlayers().forEach(player -> {
 				player.sendMessage(Text.literal("A block entity failed to tick!").formatted(Formatting.RED, Formatting.BOLD), false);
-				player.sendMessage(Text.literal(Registries.BLOCK_ENTITY_TYPE.getId(blockEntity.getType()) + " at " + blockEntity.getPos().toString()).formatted(Formatting.RED), false);
+				player.sendMessage(Text.literal(Registry.BLOCK_ENTITY_TYPE.getId(blockEntity.getType()) + " at " + blockEntity.getPos().toString()).formatted(Formatting.RED), false);
 			});
 			
 			world.setBlockState(blockPos, Blocks.AIR.getDefaultState());

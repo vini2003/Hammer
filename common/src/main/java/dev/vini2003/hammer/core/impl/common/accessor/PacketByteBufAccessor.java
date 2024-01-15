@@ -1,15 +1,10 @@
 package dev.vini2003.hammer.core.impl.common.accessor;
 
 import dev.vini2003.hammer.core.api.common.exception.NoMixinException;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.math.Vec2f;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
-import org.joml.Quaternionf;
-import org.joml.Vector3d;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
+import net.minecraft.client.util.math.Vector3d;
+import net.minecraft.tag.TagKey;
+import net.minecraft.util.math.*;
+import net.minecraft.util.registry.RegistryKey;
 
 public interface PacketByteBufAccessor {
 	default <T> void hammer$writeRegistryKey(RegistryKey<T> value) {
@@ -44,11 +39,11 @@ public interface PacketByteBufAccessor {
 		throw new NoMixinException();
 	}
 	
-	default void hammer$writeVector3f(Vector3f value) {
+	default void hammer$writeVector3f(Vec3f value) {
 		throw new NoMixinException();
 	}
 	
-	default Vector3f hammer$readVector3f() {
+	default Vec3f hammer$readVector3f() {
 		throw new NoMixinException();
 	}
 	
@@ -76,11 +71,11 @@ public interface PacketByteBufAccessor {
 		throw new NoMixinException();
 	}
 	
-	default void hammer$writeQuaternionf(Quaternionf value) {
+	default void hammer$writeQuaternionf(Quaternion value) {
 		throw new NoMixinException();
 	}
 	
-	default Quaternionf hammer$readQuaternionf() {
+	default Quaternion hammer$readQuaternionf() {
 		throw new NoMixinException();
 	}
 }

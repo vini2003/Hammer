@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.core.api.common.math.shape.modifier;
 
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 
@@ -55,7 +56,7 @@ public class TranslateModifier implements Modifier {
 	 * @return the modified shape.
 	 */
 	@Override
-	public StaticPosition modifyStartPos(Shape shape) {
+	public Position modifyStartPos(Shape shape) {
 		return shape.getStartPos().offset(x, y, z);
 	}
 	
@@ -65,7 +66,7 @@ public class TranslateModifier implements Modifier {
 	 * @return the modified shape.
 	 */
 	@Override
-	public StaticPosition modifyEndPos(Shape shape) {
+	public Position modifyEndPos(Shape shape) {
 		return shape.getEndPos().offset(x, y, z);
 	}
 	
@@ -75,7 +76,7 @@ public class TranslateModifier implements Modifier {
 	 * @return the modified position.
 	 */
 	@Override
-	public StaticPosition modifyEquation(StaticPosition pos) {
-		return Position.of(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
+	public Position modifyEquation(Position pos) {
+		return new StaticPosition(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
 	}
 }

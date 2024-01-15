@@ -33,7 +33,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.registry.Registries;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
@@ -63,7 +63,7 @@ public class FluidTextUtil {
 		var tooltipContext = MinecraftClient.getInstance().options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.BASIC;
 		
 		if (tooltipContext.isAdvanced()) {
-			tooltip.add(Text.literal(Registries.FLUID.getId(fluid).toString()).formatted(Formatting.DARK_GRAY));
+			tooltip.add(Text.literal(Registry.FLUID.getId(fluid).toString()).formatted(Formatting.DARK_GRAY));
 		}
 		
 		return tooltip;
@@ -72,7 +72,7 @@ public class FluidTextUtil {
 	}
 	
 	public static List<Text> getTooltip(Fluid fluid, long amount, long capacity) {
-		var fluidId = Registries.FLUID.getId(fluid);
+		var fluidId = Registry.FLUID.getId(fluid);
 		
 		var tooltips = new ArrayList<Text>();
 		
@@ -90,7 +90,7 @@ public class FluidTextUtil {
 	}
 	
 	public static List<Text> getDetailedStorageTooltips(Fluid fluid, long amount, long capacity) {
-		var fluidId = Registries.FLUID.getId(fluid);
+		var fluidId = Registry.FLUID.getId(fluid);
 		
 		var tooltips = new ArrayList<Text>();
 		

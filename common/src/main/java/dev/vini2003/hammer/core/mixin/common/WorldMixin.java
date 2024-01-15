@@ -28,10 +28,9 @@ import dev.vini2003.hammer.core.impl.common.component.container.ComponentContain
 import dev.vini2003.hammer.core.impl.common.component.holder.ComponentHolder;
 import dev.vini2003.hammer.core.impl.common.state.ComponentPersistentState;
 import dev.vini2003.hammer.core.impl.common.util.ComponentUtil;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -50,7 +49,7 @@ public class WorldMixin implements ComponentHolder {
 	}
 	
 	@Inject(at = @At("RETURN"), method = "<init>")
-	private void hammer$init(MutableWorldProperties properties, RegistryKey registryRef, DynamicRegistryManager registryManager, RegistryEntry dimensionEntry, Supplier profiler, boolean isClient, boolean debugWorld, long biomeAccess, int maxChainedNeighborUpdates, CallbackInfo ci) {
+	private void hammer$init(MutableWorldProperties properties, RegistryKey registryRef, RegistryEntry dimension, Supplier profiler, boolean isClient, boolean debugWorld, long seed, int maxChainedNeighborUpdates, CallbackInfo ci) {
 		if (!(hammer$self() instanceof ServerWorld)) {
 			ComponentUtil.attachToWorld(hammer$self());
 		}

@@ -25,7 +25,7 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -152,7 +152,7 @@ public class WidgetUtil {
 		var inventory = new SimpleInventory(9 * 6);
 		for (var i = 0; i < inventory.size(); ++i) {
 			// get random from registry item and set stack
-			var randomItem = Registries.ITEM.getRandom(Random.create()).orElse(Items.AIR.getRegistryEntry()).value();
+			var randomItem = Registry.ITEM.getRandom(Random.create()).orElse(Items.AIR.getRegistryEntry()).value();
 			inventory.setStack(i, new ItemStack(randomItem, (int) (Math.random() * 64)));
 		}
 		

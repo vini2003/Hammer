@@ -89,14 +89,14 @@ public abstract class PacketByteBufMixin implements PacketByteBufAccessor {
 	}
 	
 	@Override
-	public void hammer$writeVector3f(Vec3f value) {
+	public void hammer$writeVec3f(Vec3f value) {
 		writeFloat(value.getX());
 		writeFloat(value.getY());
 		writeFloat(value.getZ());
 	}
 	
 	@Override
-	public Vec3f hammer$readVector3f() {
+	public Vec3f hammer$readVec3f() {
 		return new Vec3f(readFloat(), readFloat(), readFloat());
 	}
 	
@@ -138,7 +138,7 @@ public abstract class PacketByteBufMixin implements PacketByteBufAccessor {
 	}
 	
 	@Override
-	public void hammer$writeQuaternionf(Quaternion value) {
+	public void hammer$writeQuaternion(Quaternion value) {
 		writeFloat(value.getX());
 		writeFloat(value.getY());
 		writeFloat(value.getZ());
@@ -146,7 +146,7 @@ public abstract class PacketByteBufMixin implements PacketByteBufAccessor {
 	}
 	
 	@Override
-	public Quaternion hammer$readQuaternionf() {
+	public Quaternion hammer$readQuaternion() {
 		return new Quaternion(readFloat(), readFloat(), readFloat(), readFloat());
 	}
 }

@@ -134,14 +134,14 @@ public abstract class NbtCompoundMixin implements NbtCompoundAccessor {
 	}
 	
 	@Override
-	public void hammer$putVector3f(String key, Vec3f value) {
+	public void hammer$putVec3f(String key, Vec3f value) {
 		putFloat(key + "X", value.getX());
 		putFloat(key + "Y", value.getY());
 		putFloat(key + "Z", value.getZ());
 	}
 	
 	@Override
-	public Vec3f hammer$getVector3f(String key) {
+	public Vec3f hammer$getVec3f(String key) {
 		return new Vec3f(
 				getFloat(key + "X"),
 				getFloat(key + "Y"),
@@ -200,7 +200,7 @@ public abstract class NbtCompoundMixin implements NbtCompoundAccessor {
 	}
 	
 	@Override
-	public void hammer$putQuaternionf(String key, Quaternion value) {
+	public void hammer$putQuaternion(String key, Quaternion value) {
 		putFloat(key + "X", value.getX());
 		putFloat(key + "Y", value.getY());
 		putFloat(key + "Z", value.getZ());
@@ -208,7 +208,7 @@ public abstract class NbtCompoundMixin implements NbtCompoundAccessor {
 	}
 	
 	@Override
-	public Quaternion hammer$getQuaternionf(String key) {
+	public Quaternion hammer$getQuaternion(String key) {
 		return new Quaternion(
 				getFloat(key + "X"),
 				getFloat(key + "Y"),

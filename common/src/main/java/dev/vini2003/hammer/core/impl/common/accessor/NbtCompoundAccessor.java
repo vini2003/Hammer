@@ -63,11 +63,11 @@ public interface NbtCompoundAccessor {
 		throw new NoMixinException();
 	}
 	
-	default void hammer$putVector3f(String key, Vec3f value) {
+	default void hammer$putVec3f(String key, Vec3f value) {
 		throw new NoMixinException();
 	}
 	
-	default Vec3f hammer$getVector3f(String key) {
+	default Vec3f hammer$getVec3f(String key) {
 		throw new NoMixinException();
 	}
 	
@@ -95,11 +95,11 @@ public interface NbtCompoundAccessor {
 		throw new NoMixinException();
 	}
 	
-	default void hammer$putQuaternionf(String key, Quaternion value) {
+	default void hammer$putQuaternion(String key, Quaternion value) {
 		throw new NoMixinException();
 	}
 	
-	default Quaternion hammer$getQuaternionf(String key) {
+	default Quaternion hammer$getQuaternion(String key) {
 		throw new NoMixinException();
 	}
 }

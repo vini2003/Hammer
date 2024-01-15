@@ -39,11 +39,11 @@ public interface PacketByteBufAccessor {
 		throw new NoMixinException();
 	}
 	
-	default void hammer$writeVector3f(Vec3f value) {
+	default void hammer$writeVec3f(Vec3f value) {
 		throw new NoMixinException();
 	}
 	
-	default Vec3f hammer$readVector3f() {
+	default Vec3f hammer$readVec3f() {
 		throw new NoMixinException();
 	}
 	
@@ -71,11 +71,11 @@ public interface PacketByteBufAccessor {
 		throw new NoMixinException();
 	}
 	
-	default void hammer$writeQuaternionf(Quaternion value) {
+	default void hammer$writeQuaternion(Quaternion value) {
 		throw new NoMixinException();
 	}
 	
-	default Quaternion hammer$readQuaternionf() {
+	default Quaternion hammer$readQuaternion() {
 		throw new NoMixinException();
 	}
 }

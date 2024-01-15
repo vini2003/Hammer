@@ -139,10 +139,10 @@ public abstract class Position implements PositionHolder {
 	}
 	
 	/**
-	 * A factory for creating a StaticPosition from a Vector3f.
+	 * A factory for creating a StaticPosition from a Vec3f.
 	 *
-	 * @param vec3f the Vector3f to convert.
-	 * @return a new StaticPosition instance with coordinates corresponding to the Vector3f.
+	 * @param vec3f the Vec3f to convert.
+	 * @return a new StaticPosition instance with coordinates corresponding to the Vec3f.
 	 */
 	public static StaticPosition of(Vec3f vec3f) {
 		return new StaticPosition(vec3f.getX(), vec3f.getY(), vec3f.getZ());
@@ -229,7 +229,7 @@ public abstract class Position implements PositionHolder {
 	 * Converts this position to a {@link Vec3f}.
 	 * @return The vector.
 	 */
-	public Vec3f toVector3f() {
+	public Vec3f toVec3f() {
 		return new Vec3f(getX(), getY(), getZ());
 	}
 	

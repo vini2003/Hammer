@@ -37,8 +37,9 @@ import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 
@@ -83,11 +84,8 @@ public class ButtonWidget extends Widget implements EnabledTextureProvider, Disa
 	
 	@Override 
 	@Environment(EnvType.CLIENT)
-	public void draw(DrawContext context, float tickDelta) {
-		onBeginDraw(context, tickDelta);
-		
-		var matrices = context.getMatrices();
-		var provider = context.getVertexConsumers();
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		onBeginDraw(matrices, provider, tickDelta);
 		
 		var texture = (Texture) null;
 		
@@ -101,15 +99,19 @@ public class ButtonWidget extends Widget implements EnabledTextureProvider, Disa
 		
 		texture.draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
 		
-		provider.draw();
+		if (provider instanceof VertexConsumerProvider.Immediate immediate) {
+			immediate.draw();
+		}
 		
 		var label = this.label.get();
 		
 		if (label != null) {
-			context.drawTextWithShadow(DrawingUtil.getTextRenderer(), label.asOrderedText(), (int) (getX() + (getWidth() / 2.0F - TextUtil.getWidth(label) / 2.0F)), (int) (getY() + (getHeight() / 2.0F - TextUtil.getHeight(label) / 2.0F)), 0xFCFCFC);
+			var textRenderer = DrawingUtil.getTextRenderer();
+			
+			textRenderer.drawWithShadow(matrices, label, getX() + (getWidth() / 2.0F - TextUtil.getWidth(label) / 2.0F), getY() + (getHeight() / 2.0F - TextUtil.getHeight(label) / 2.0F), 0xFCFCFC);
 		}
 		
-		onEndDraw(context, tickDelta);
+		onEndDraw(matrices, provider, tickDelta);
 	}
 	
 	@Environment(EnvType.CLIENT)

@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.gui.api.common.widget.item;
 
 import com.google.common.collect.ImmutableList;
+import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
@@ -32,15 +33,18 @@ import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.ItemProvider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class ItemWidget extends Widget implements ItemProvider {
 	public static final Size STANDARD_SIZE = Size.of(18.0F, 18.0F);
@@ -62,7 +66,7 @@ public class ItemWidget extends Widget implements ItemProvider {
 		} else {
 			var client = InstanceUtil.getClient();
 			
-			return item.getDefaultStack().getTooltip(client.player, client.options.advancedItemTooltips ? TooltipContext.ADVANCED : TooltipContext.BASIC).stream().map(Text::asOrderedText).toList();
+			return item.getDefaultStack().getTooltip(client.player, () -> client.options.advancedItemTooltips).stream().map(Text::asOrderedText).collect(Collectors.toList());
 		}
 	}
 	
@@ -73,8 +77,8 @@ public class ItemWidget extends Widget implements ItemProvider {
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void draw(DrawContext context, float tickDelta) {
-		onBeginDraw(context, tickDelta);
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		onBeginDraw(matrices, provider, tickDelta);
 		
 		if (!initializedTooltip) {
 			initializedTooltip = true;
@@ -82,9 +86,11 @@ public class ItemWidget extends Widget implements ItemProvider {
 			setTooltip(this::getTooltipOnClient);
 		}
 		
-		context.drawItem(item.get().getDefaultStack(), (int) getX(), (int) getY());
+		var itemRenderer = DrawingUtil.getItemRenderer();
 		
-		onEndDraw(context, tickDelta);
+		itemRenderer.renderInGui(new ItemStack(item.get()), (int) getX(), (int) getY());
+		
+		onEndDraw(matrices, provider, tickDelta);
 	}
 	
 	@Override

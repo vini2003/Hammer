@@ -132,3 +132,7 @@ accessible class net/minecraft/client/render/RenderPhase$LineWidth
 accessible class net/minecraft/world/chunk/WorldChunk$DirectBlockEntityTickInvoker
 accessible class net/minecraft/entity/mob/SpiderEntity$AttackGoal
 accessible class net/minecraft/entity/mob/SpiderEntity$TargetGoal
+
+mutable field net/minecraft/screen/slot/Slot index I
+mutable field net/minecraft/screen/slot/Slot x I
+mutable field net/minecraft/screen/slot/Slot y I

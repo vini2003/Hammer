@@ -30,8 +30,9 @@ import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.gui.api.common.widget.provider.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.function.Supplier;
 
@@ -52,11 +53,8 @@ public class SpriteBarWidget extends BarWidget implements ForegroundSpriteProvid
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void draw(DrawContext context, float tickDelta) {
-		onBeginDraw(context, tickDelta);
-		
-		var matrices = context.getMatrices();
-		var provider = context.getVertexConsumers();
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		onBeginDraw(matrices, provider, tickDelta);
 		
 		var foregroundWidth = getWidth() / getMaximum().getAsDouble() * getCurrent().getAsDouble();
 		var foregroundHeight = getHeight() / getMaximum().getAsDouble() * getCurrent().getAsDouble();
@@ -125,7 +123,7 @@ public class SpriteBarWidget extends BarWidget implements ForegroundSpriteProvid
 			}
 		}
 		
-		onEndDraw(context, tickDelta);
+		onEndDraw(matrices, provider, tickDelta);
 	}
 	
 	@Override

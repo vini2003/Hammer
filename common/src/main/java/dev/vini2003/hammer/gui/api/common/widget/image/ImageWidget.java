@@ -8,7 +8,8 @@ import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.TextureProvider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.function.Supplier;
 
@@ -26,15 +27,12 @@ public class ImageWidget extends Widget implements TextureProvider {
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void draw(DrawContext context, float tickDelta) {
-		onBeginDraw(context, tickDelta);
-		
-		var matrices = context.getMatrices();
-		var provider = context.getVertexConsumers();
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		onBeginDraw(matrices, provider, tickDelta);
 		
 		texture.get().draw(matrices, provider, getX(), getY(), getWidth(), getHeight());
 		
-		onEndDraw(context, tickDelta);
+		onEndDraw(matrices, provider, tickDelta);
 	}
 	
 	@Override

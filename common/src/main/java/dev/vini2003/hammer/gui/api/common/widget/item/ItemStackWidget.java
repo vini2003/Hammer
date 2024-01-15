@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.gui.api.common.widget.item;
 
 import com.google.common.collect.ImmutableList;
+import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.math.size.Size;
 import dev.vini2003.hammer.core.api.common.util.TextUtil;
@@ -32,14 +33,16 @@ import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.ItemStackProvider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class ItemStackWidget extends Widget implements ItemStackProvider {
 	public static final Size STANDARD_SIZE = Size.of(18.0F, 18.0F);
@@ -61,7 +64,7 @@ public class ItemStackWidget extends Widget implements ItemStackProvider {
 		} else {
 			var client = InstanceUtil.getClient();
 			
-			return stack.getTooltip(client.player, client.options.advancedItemTooltips ? TooltipContext.ADVANCED : TooltipContext.BASIC).stream().map(Text::asOrderedText).toList();
+			return stack.getTooltip(client.player, () -> client.options.advancedItemTooltips).stream().map(Text::asOrderedText).collect(Collectors.toList());
 		}
 	}
 	
@@ -72,8 +75,8 @@ public class ItemStackWidget extends Widget implements ItemStackProvider {
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void draw(DrawContext context, float tickDelta) {
-		onBeginDraw(context, tickDelta);
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		onBeginDraw(matrices, provider, tickDelta);
 		
 		if (!initializedTooltip) {
 			initializedTooltip = true;
@@ -81,9 +84,11 @@ public class ItemStackWidget extends Widget implements ItemStackProvider {
 			setTooltip(this::getTooltipOnClient);
 		}
 		
-		context.drawItem(stack.get(), (int) getX(), (int) getY());
+		var itemRenderer = DrawingUtil.getItemRenderer();
 		
-		onEndDraw(context, tickDelta);
+		itemRenderer.renderInGui(stack.get(), (int) getX(), (int) getY());
+		
+		onEndDraw(matrices, provider, tickDelta);
 	}
 	
 	@Override

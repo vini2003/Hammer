@@ -41,7 +41,8 @@ import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
@@ -289,9 +290,9 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 	 * @param tickDelta the tick delta.
 	 */
 	@Environment(EnvType.CLIENT)
-	public void onBeginDraw(DrawContext context, float tickDelta) {
-		context.getMatrices().push();
-		context.getMatrices().translate(0.0F, 0.0F, getZ());
+	public void onBeginDraw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		matrices.push();
+		matrices.translate(0.0F, 0.0F, getZ());
 	}
 	
 	/**
@@ -301,8 +302,8 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 	 * @param tickDelta the tick delta.
 	 */
 	@Environment(EnvType.CLIENT)
-	public void onEndDraw(DrawContext context, float tickDelta) {
-		context.getMatrices().pop();
+	public void onEndDraw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		matrices.pop();
 	}
 	
 	/**
@@ -312,18 +313,18 @@ public abstract class Widget implements Positioned, Sized, EventListener, Ticks 
 	 * @param tickDelta	the tick delta.
 	 */
 	@Environment(EnvType.CLIENT)
-	public void draw(DrawContext context, float tickDelta) {
-		onBeginDraw(context, tickDelta);
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		onBeginDraw(matrices, provider, tickDelta);
 		
 		if (this instanceof WidgetCollection collection) {
 			for (var child : collection.getChildren()) {
 				if (!child.isHidden()) {
-					child.draw(context, tickDelta);
+					child.draw(matrices, provider, tickDelta);
 				}
 			}
 		}
 		
-		onEndDraw(context, tickDelta);
+		onEndDraw(matrices, provider, tickDelta);
 	}
 	
 	@Deprecated

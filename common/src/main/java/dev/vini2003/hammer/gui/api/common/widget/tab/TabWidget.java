@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.texture.ImageTexture;
 import dev.vini2003.hammer.core.api.client.texture.base.Texture;
+import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.PositionUtil;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
@@ -42,7 +43,8 @@ import dev.vini2003.hammer.gui.api.common.widget.panel.PanelWidget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
@@ -219,15 +221,16 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 	
 	@Override 
 	@Environment(EnvType.CLIENT)
-	public void draw(DrawContext context, float tickDelta) {
-		onBeginDraw(context, tickDelta);
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		onBeginDraw(matrices, provider, tickDelta);
 		
-		var matrices = context.getMatrices();
-		var provider = context.getVertexConsumers();
+		var itemRenderer = DrawingUtil.getItemRenderer();
 		
 		texture.get().draw(matrices, provider, getX(), getY() + 25.0F, getWidth(), getHeight() - 25.0F);
 		
-		provider.draw();
+		if (provider instanceof VertexConsumerProvider.Immediate immediate) {
+			immediate.draw();
+		}
 		
 		var tabIndex = 0;
 		
@@ -251,14 +254,14 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 			}
 			
 			
-			context.drawItem(tabSymbols.get(tabIndex).get(), (int) (getX() + (26.0F * tabIndex) + 4.5F), (int) (getY() + 7));
+			itemRenderer.renderGuiItemIcon(tabSymbols.get(tabIndex).get(), (int) (getX() + (26.0F * tabIndex) + 4.5F), (int) (getY() + 7));
 			
 			tabIndex += 1;
 		}
 		
-		super.draw(context, tickDelta);
+		super.draw(matrices, provider, tickDelta);
 		
-		onEndDraw(context, tickDelta);
+		onEndDraw(matrices, provider, tickDelta);
 	}
 	
 	public static class TabCollection extends Widget implements WidgetCollection {
@@ -288,17 +291,18 @@ public class TabWidget extends Widget implements WidgetCollection, ActiveLeftTex
 		}
 		
 		@Override
-		public void draw(DrawContext context, float tickDelta) {
-			onBeginDraw(context, tickDelta);
+		public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+			onBeginDraw(matrices, provider, tickDelta);
 			
-			context.drawHorizontalLine((int) getX(), (int) (getX() + getWidth()), (int) getY(), 0xFF000000);
-			context.drawHorizontalLine((int) getX(), (int) (getX() + getWidth()), (int) (getY() + getHeight()), 0xFF000000);
-			context.drawVerticalLine((int) getX(), (int) getY(), (int) (getY() + getHeight()), 0xFF000000);
-			context.drawVerticalLine((int) (getX() + getWidth()), (int) getY(), (int) (getY() + getHeight()), 0xFF000000);
+			// TODO: Check if this was necessary. I do not believe so.
+//			context.drawHorizontalLine((int) getX(), (int) (getX() + getWidth()), (int) getY(), 0xFF000000);
+//			context.drawHorizontalLine((int) getX(), (int) (getX() + getWidth()), (int) (getY() + getHeight()), 0xFF000000);
+//			context.drawVerticalLine((int) getX(), (int) getY(), (int) (getY() + getHeight()), 0xFF000000);
+//			context.drawVerticalLine((int) (getX() + getWidth()), (int) getY(), (int) (getY() + getHeight()), 0xFF000000);
 			
-			super.draw(context, tickDelta);
+			super.draw(matrices, provider, tickDelta);
 			
-			onEndDraw(context, tickDelta);
+			onEndDraw(matrices, provider, tickDelta);
 		}
 	}
 	

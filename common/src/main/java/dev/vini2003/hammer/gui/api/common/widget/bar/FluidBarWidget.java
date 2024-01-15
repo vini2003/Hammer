@@ -35,8 +35,9 @@ import dev.vini2003.hammer.gui.api.common.widget.provider.SmoothProvider;
 import dev.vini2003.hammer.gui.api.common.widget.provider.TiledProvider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 import java.util.function.Supplier;
@@ -76,11 +77,8 @@ public class FluidBarWidget extends BarWidget implements SmoothProvider, TiledPr
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void draw(DrawContext context, float tickDelta) {
-		onBeginDraw(context, tickDelta);
-		
-		var matrices = context.getMatrices();
-		var provider = context.getVertexConsumers();
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		onBeginDraw(matrices, provider, tickDelta);
 		
 		var foregroundWidth = (getWidth() / getMaximum().getAsDouble() * getCurrent().getAsDouble());
 		var foregroundHeight = (getHeight() / getMaximum().getAsDouble() * getCurrent().getAsDouble());
@@ -113,7 +111,7 @@ public class FluidBarWidget extends BarWidget implements SmoothProvider, TiledPr
 			scissors.destroy();
 		}
 		
-		onEndDraw(context, tickDelta);
+		onEndDraw(matrices, provider, tickDelta);
 	}
 	
 	public void setStack(Supplier<FluidStack> stackSuppleir) {

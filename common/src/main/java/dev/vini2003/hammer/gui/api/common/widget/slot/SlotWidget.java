@@ -39,8 +39,9 @@ import dev.vini2003.hammer.gui.api.common.widget.Widget;
 import dev.vini2003.hammer.gui.api.common.widget.provider.TextureProvider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.slot.Slot;
 
@@ -177,11 +178,8 @@ public class SlotWidget extends Widget implements TextureProvider {
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void draw(DrawContext context, float tickDelta) {
-		onBeginDraw(context, tickDelta);
-		
-		var matrices = context.getMatrices();
-		var provider = context.getVertexConsumers();
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		onBeginDraw(matrices, provider, tickDelta);
 		
 		var client = InstanceUtil.getClient();
 		
@@ -189,7 +187,7 @@ public class SlotWidget extends Widget implements TextureProvider {
 		
 		texture.get().draw(matrices, provider, Math.round(slot.x + screen.x) - 1.0F, Math.round(slot.y + screen.y) - 1.0F, Math.round(getWidth()), Math.round(getHeight()));
 		
-		onEndDraw(context, tickDelta);
+		onEndDraw(matrices, provider, tickDelta);
 	}
 	
 	public Slot getSlot() {

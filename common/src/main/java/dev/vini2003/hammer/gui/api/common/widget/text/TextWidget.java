@@ -34,7 +34,8 @@ import dev.vini2003.hammer.gui.api.common.widget.provider.ShadowProvider;
 import dev.vini2003.hammer.gui.api.common.widget.provider.TextProvider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 import java.util.function.Supplier;
@@ -60,17 +61,20 @@ public class TextWidget extends Widget implements TextProvider, ShadowProvider, 
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void draw(DrawContext context, float tickDelta) {
-		onBeginDraw(context, tickDelta);
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		onBeginDraw(matrices, provider, tickDelta);
 		
 		var textRenderer = DrawingUtil.getTextRenderer();
 		
 		if (text.get() != null) {
-			// TODO: Check if this is equivalent to the 1.19.2 code.
-			context.drawText(textRenderer, text.get().asOrderedText(), (int) getX(), (int) getY(), color.toRgb(), shadow);
+			if (shadow) {
+				textRenderer.drawWithShadow(matrices, text.get(), getX(), getY(), color.toRgb());
+			} else {
+				textRenderer.draw(matrices, text.get(), getX(), getY(), color.toRgb());
+			}
 		}
 		
-		onEndDraw(context, tickDelta);
+		onEndDraw(matrices, provider, tickDelta);
 	}
 	
 	@Override

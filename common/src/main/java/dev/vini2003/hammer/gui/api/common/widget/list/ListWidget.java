@@ -41,7 +41,8 @@ import dev.vini2003.hammer.gui.api.common.widget.provider.ScrollbarTextureProvid
 import dev.vini2003.hammer.gui.api.common.widget.provider.ScrollerTextureProvider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
@@ -228,12 +229,9 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void draw(DrawContext context, float tickDelta) {
-		onBeginDraw(context, tickDelta);
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		onBeginDraw(matrices, provider, tickDelta);
 //		super.draw(context, tickDelta);
-		
-		var matrices = context.getMatrices();
-		var provider = context.getVertexConsumers();
 		
 		scrollbarTexture.get().draw(matrices, provider, getX() + getWidth() - 18.0F, getY(), 18.0F, getHeight());
 		
@@ -249,13 +247,13 @@ public class ListWidget extends Widget implements WidgetCollection, ScrollbarTex
 		
 		for (var child : getChildren()) {
 //			if (!child.isHidden()) {
-				child.draw(context, tickDelta);
+				child.draw(matrices, provider, tickDelta);
 //			}
 		}
 		
 		scissors.destroy();
 		
-		onEndDraw(context, tickDelta);
+		onEndDraw(matrices, provider, tickDelta);
 	}
 	
 	@Override

@@ -31,7 +31,8 @@ import dev.vini2003.hammer.gui.api.common.widget.provider.ScissorProvider;
 import dev.vini2003.hammer.gui.api.common.widget.provider.SmoothProvider;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 
 public class ImageBarWidget extends BarWidget implements SmoothProvider, ScissorProvider, InvertProvider {
 	public static final Size STANDARD_VERTICAL_SIZE = Size.of(24.0F, 48.0F);
@@ -48,11 +49,8 @@ public class ImageBarWidget extends BarWidget implements SmoothProvider, Scissor
 	
 	@Override
 	@Environment(EnvType.CLIENT)
-	public void draw(DrawContext context, float tickDelta) {
-		onBeginDraw(context, tickDelta);
-		
-		var matrices = context.getMatrices();
-		var provider = context.getVertexConsumers();
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, float tickDelta) {
+		onBeginDraw(matrices, provider, tickDelta);
 	
 		var foregroundWidth = getWidth() / getMaximum().getAsDouble() * getCurrent().getAsDouble();
 		var foregroundHeight = getHeight() / getMaximum().getAsDouble() * getCurrent().getAsDouble();
@@ -105,7 +103,7 @@ public class ImageBarWidget extends BarWidget implements SmoothProvider, Scissor
 			}
 		}
 		
-		onEndDraw(context, tickDelta);
+		onEndDraw(matrices, provider, tickDelta);
 	}
 	
 	@Override

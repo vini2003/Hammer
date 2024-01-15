@@ -1,18 +1,27 @@
 package dev.vini2003.hammer.core.registry.common;
 
+import com.mojang.brigadier.arguments.ArgumentType;
+import dev.architectury.registry.registries.RegistrySupplier;
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.common.command.argument.ColorArgumentType;
 import dev.vini2003.hammer.core.api.common.command.argument.PositionArgumentType;
 import dev.vini2003.hammer.core.api.common.command.argument.SizeArgumentType;
 import dev.vini2003.hammer.core.api.common.manager.CommandManager;
 import net.minecraft.command.argument.*;
+import net.minecraft.command.argument.serialize.ArgumentSerializer;
 import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
 import net.minecraft.util.registry.Registry;
 
 public class HCArgumentTypes {
+	public static <A extends ArgumentType<?>, T extends ArgumentSerializer.ArgumentTypeProperties<A>> RegistrySupplier<ArgumentSerializer<A, T>> register(String id, Class<? extends A> clazz, ArgumentSerializer<A, T> serializer) {
+		ArgumentTypes.CLASS_MAP.put(clazz, serializer);
+		return HC.getArgumentSerializerRegistry().register(id, () -> serializer);
+	}
+	
 	public static void init() {
-		ArgumentTypes.register(Registry.COMMAND_ARGUMENT_TYPE, "hammer:color", ColorArgumentType.class, ConstantArgumentSerializer.of(ColorArgumentType::color));
-		ArgumentTypes.register(Registry.COMMAND_ARGUMENT_TYPE, "hammer:position", PositionArgumentType.class, ConstantArgumentSerializer.of(PositionArgumentType::position));
-		ArgumentTypes.register(Registry.COMMAND_ARGUMENT_TYPE, "hammer:size", SizeArgumentType.class, ConstantArgumentSerializer.of(SizeArgumentType::size));
+		register("color", ColorArgumentType.class, ConstantArgumentSerializer.of(ColorArgumentType::color));
+		register("position", PositionArgumentType.class, ConstantArgumentSerializer.of(PositionArgumentType::position));
+		register("size", SizeArgumentType.class, ConstantArgumentSerializer.of(SizeArgumentType::size));
 		
 		CommandManager.registerArgumentType(PositionArgumentType.class, PositionArgumentType::position);
 		

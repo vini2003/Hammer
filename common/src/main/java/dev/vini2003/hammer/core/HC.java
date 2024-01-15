@@ -33,9 +33,9 @@ import dev.vini2003.hammer.core.registry.common.HCComponents;
 import dev.vini2003.hammer.core.registry.common.HCEvents;
 import dev.vini2003.hammer.core.registry.common.HCNetworking;
 import net.minecraft.block.Block;
+import net.minecraft.command.argument.serialize.ArgumentSerializer;
 import net.minecraft.item.Item;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
@@ -73,6 +73,7 @@ public class HC {
 	private static DeferredRegister<Item> ITEM_REGISTRY = null;
 	private static DeferredRegister<Block> BLOCK_REGISTRY = null;
 	private static DeferredRegister<ScreenHandlerType<?>> SCREEN_HANDLER_REGISTRY = null;
+	private static DeferredRegister<ArgumentSerializer<?, ?>> ARGUMENT_TYPE_REGISTRY = null;
 	
 	public static Identifier id(String path) {
 		return new Identifier(ID, path);
@@ -100,6 +101,7 @@ public class HC {
 		getItemRegistry().register();
 		getBlockRegistry().register();
 		getScreenHandlerRegistry().register();
+		getArgumentSerializerRegistry().register();
 	}
 	
 	public static DeferredRegister<Item> getItemRegistry() {
@@ -126,5 +128,13 @@ public class HC {
 		}
 		
 		return SCREEN_HANDLER_REGISTRY;
+	}
+	
+	public static DeferredRegister<ArgumentSerializer<?, ?>> getArgumentSerializerRegistry() {
+		if (ARGUMENT_TYPE_REGISTRY == null) {
+			ARGUMENT_TYPE_REGISTRY = DeferredRegister.create(ID, Registry.COMMAND_ARGUMENT_TYPE_KEY);
+		}
+		
+		return ARGUMENT_TYPE_REGISTRY;
 	}
 }

@@ -12,8 +12,6 @@ subprojects {
 
 	loom {
 		silentMojangMappingsLicense()
-
-//		accessWidenerPath = file("common/src/main/resources/hammer.accesswidener")
 	}
 
 	dependencies {

@@ -14,15 +14,15 @@ loom {
 		convertAccessWideners = true
 		extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
 
-//		mixinConfig "hammer.border.mixins.json"
-//		mixinConfig "hammer.chat.mixins.json"
-//		mixinConfig "hammer.core.mixins.json"
-//		mixinConfig "hammer.gravity.mixins.json"
-//		mixinConfig "hammer.gui.mixins.json"
-//		mixinConfig "hammer.permission.mixins.json"
-//		mixinConfig "hammer.preset.mixins.json"
-//		mixinConfig "hammer.util.mixins.json"
-//		mixinConfig "hammer.zone.mixins.json"
+		mixinConfig "hammer.border.mixins.json"
+		mixinConfig "hammer.chat.mixins.json"
+		mixinConfig "hammer.core.mixins.json"
+		mixinConfig "hammer.gravity.mixins.json"
+		mixinConfig "hammer.gui.mixins.json"
+		mixinConfig "hammer.permission.mixins.json"
+		mixinConfig "hammer.preset.mixins.json"
+		mixinConfig "hammer.util.mixins.json"
+		mixinConfig "hammer.zone.mixins.json"
 	}
 }
 

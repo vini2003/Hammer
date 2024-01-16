@@ -39,7 +39,7 @@ public abstract class EggEntityMixin extends Entity {
 		super(entityType, world);
 	}
 	
-	@ModifyConstant(method = "handleStatus(B)V", constant = @Constant(doubleValue = 0.08D))
+	@ModifyConstant(method = "handleStatus(B)V", constant = @Constant(doubleValue = 0.08D), require = 0)
 	double getGravity(double original) {
 		var gravity = GravityManager.get(getWorld().getRegistryKey());
 		

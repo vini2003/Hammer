@@ -34,7 +34,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(HoneyBlock.class)
 public class HoneyBlockMixin {
-	@ModifyConstant(method = "isSliding(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/Entity;)Z", constant = @Constant(doubleValue = -0.08D))
+	@ModifyConstant(method = "isSliding(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/Entity;)Z", constant = @Constant(doubleValue = -0.08D), require = 0)
 	double getGravity(double original, BlockPos pos, Entity entity) {
 		var gravity = GravityManager.get(entity.getWorld().getRegistryKey());
 		

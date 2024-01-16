@@ -39,7 +39,7 @@ public abstract class SquidEntityMixin extends Entity {
 		super(entityType, world);
 	}
 	
-	@ModifyConstant(method = "tickMovement", constant = @Constant(doubleValue = 0.08D))
+	@ModifyConstant(method = "tickMovement", constant = @Constant(doubleValue = 0.08D), require = 0)
 	double getGravity(double original) {
 		var gravity = GravityManager.get(getWorld().getRegistryKey());
 		

@@ -39,7 +39,7 @@ public class StepAndDestroyBlockGoalMixin {
 	@Final
 	private MobEntity stepAndDestroyMob;
 	
-	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.08D))
+	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = 0.08D), require = 0)
 	double getGravity(double original) {
 		var gravity = GravityManager.get(stepAndDestroyMob.getWorld().getRegistryKey());
 		

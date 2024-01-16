@@ -39,7 +39,7 @@ public abstract class ShulkerBulletEntityMixin extends Entity {
 		super(entityType, world);
 	}
 	
-	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = -0.04D))
+	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = -0.04D), require = 0)
 	double getGravity(double original) {
 		var gravity = GravityManager.get(getWorld().getRegistryKey());
 		

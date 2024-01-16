@@ -38,7 +38,7 @@ public abstract class CurrentDownParticleMixin extends Particle {
 		super(world, x, y, z);
 	}
 	
-	@ModifyConstant(method = "tick()V", constant = @Constant(floatValue = 0.08F))
+	@ModifyConstant(method = "tick()V", constant = @Constant(floatValue = 0.08F), require = 0)
 	float getGravity(float original) {
 		var gravity = GravityManager.get(world.getRegistryKey());
 		

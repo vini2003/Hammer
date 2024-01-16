@@ -49,7 +49,6 @@ public class WorldRendererMixin {
 		this.hammer$world = InstanceUtil.getClient().world;
 	}
 	
-	
 	@Inject(method = "render", at = @At(value = "CONSTANT", args = "stringValue=blockentities", ordinal = 0))
 	private void hammer$render$blockentities$afterEntities(CallbackInfo ci) {
 		if (!HZValues.ZONE_EDITOR) {

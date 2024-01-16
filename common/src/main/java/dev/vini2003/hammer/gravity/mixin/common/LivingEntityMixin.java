@@ -41,7 +41,7 @@ public abstract class LivingEntityMixin extends Entity {
 		super(entityType, world);
 	}
 	
-	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FFLnet/minecraft/entity/damage/DamageSource;)Z", index = 1)
+	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FFLnet/minecraft/entity/damage/DamageSource;)Z", index = 1, require = 0)
 	float hammer$handleFallDamage$getDamageMultiplier(float damageMultiplier) {
 		var gravity = GravityManager.get(getWorld().getRegistryKey());
 		
@@ -52,7 +52,7 @@ public abstract class LivingEntityMixin extends Entity {
 		return damageMultiplier;
 	}
 	
-	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D, ordinal = 0))
+	@ModifyConstant(method = "travel(Lnet/minecraft/util/math/Vec3d;)V", constant = @Constant(doubleValue = 0.08D, ordinal = 0), require = 0)
 	private double hammer$travel(double original) {
 		var gravity = GravityManager.get(getWorld().getRegistryKey());
 		

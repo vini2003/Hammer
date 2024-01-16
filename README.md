@@ -1,1 +1,0 @@
-// TODO: Migrate Vector3f -> Vec3f, Vector3i -> Vec3i, Vector3d -> Vec3d, etc.

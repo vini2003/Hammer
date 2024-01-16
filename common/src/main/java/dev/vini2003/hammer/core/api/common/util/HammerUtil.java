@@ -11,7 +11,7 @@ public class HammerUtil {
 	
 	@ExpectPlatform
 	public static boolean isModuleEnabled(String moduleId) {
-		throw new AssertionError();
+		return true;
 	}
 	
 	public static void initializeIfModuleEnabled(String moduleId, String initializerClassPath) {

@@ -73,8 +73,6 @@ public class LootTableUtil {
 		}
 		
 		public LootContext build() {
-			// TODO: Check if this is equivalent to the 1.19.2 code.
-			
 			return new LootContext.Builder(contextBuilder.build(LootContextTypes.CHEST)).build(null);
 		}
 	}

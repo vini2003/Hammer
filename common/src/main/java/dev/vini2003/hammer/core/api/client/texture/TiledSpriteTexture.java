@@ -81,8 +81,6 @@ public class TiledSpriteTexture implements Texture {
 				sprite.getAtlasId(),
 				scaledX, scaledY, 0.0F,
 				width, height,
-				// TODO: Check if this is equivalent to the 1.19.2 code. This assume the sprite must be 16x16 for tiling;
-				// TODO: but it may have a different size! How to circumvent?
 				16, 16,
 				Integer.MAX_VALUE, Integer.MAX_VALUE,
 				0.0F, 0.0F,

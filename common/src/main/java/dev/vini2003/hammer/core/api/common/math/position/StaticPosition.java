@@ -296,8 +296,6 @@ public class StaticPosition extends Position {
 	 * @return the resulting position.
 	 */
 	public StaticPosition rotate(Quaternionf quaternion) {
-		// TODO: Check if this is equivalent to the 1.19.2 code.
-		
 		var q1 = new Quaternionf(quaternion);
 		q1.mul(new Quaternionf(this.getX(), this.getY(), this.getZ(), 0.0F));
 		var q2 = new Quaternionf(quaternion);

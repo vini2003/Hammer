@@ -39,12 +39,6 @@ import java.io.IOException;
 public class ZoneReloadListener implements SynchronousResourceReloader {
 	private static final Identifier ID = HC.id("zone_reload");
 	
-	// TODO: Register this! ReloadListenerRegistry
-//	@Override
-//	public Identifier getFabricId() {
-//		return ID;
-//	}
-	
 	@Override
 	public void reload(ResourceManager manager) {
 		var resources = manager.findResources("zones", (resource) -> resource.getPath().endsWith(".json"));

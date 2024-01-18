@@ -120,8 +120,6 @@ public class FluidBarWidget extends BarWidget implements SmoothProvider, TiledPr
 		if (stackSuppleir.get() != null) {
 			this.stack = stackSuppleir;
 			
-			// TODO: Ask Daniel.
-//			this.maximum = () -> (float) stackSuppleir.get().getCapacity();
 			this.current = () -> (float) stackSuppleir.get().getAmount();
 			
 			this.foregroundTexture = () -> new TiledFluidTexture(stackSuppleir.get().getFluid());

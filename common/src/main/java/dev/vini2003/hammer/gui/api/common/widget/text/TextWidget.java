@@ -66,7 +66,6 @@ public class TextWidget extends Widget implements TextProvider, ShadowProvider, 
 		var textRenderer = DrawingUtil.getTextRenderer();
 		
 		if (text.get() != null) {
-			// TODO: Check if this is equivalent to the 1.19.2 code.
 			context.drawText(textRenderer, text.get().asOrderedText(), (int) getX(), (int) getY(), color.toRgb(), shadow);
 		}
 		

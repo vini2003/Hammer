@@ -129,8 +129,7 @@ public class Shape implements SizeHolder {
 	public Shape applyModifier(Modifier modifier) {
 		var chainEquation = equation;
 		
-		// TODO: Check if this is equivalent to the 1.20.1 code.
-		return new Shape((StaticPosition) modifier.modifyStartPos(this), (StaticPosition) modifier.modifyEndPos(this), (shape, pos) -> chainEquation.test(this, (StaticPosition) modifier.modifyEquation(pos)));
+		return new Shape(modifier.modifyStartPos(this), modifier.modifyEndPos(this), (shape, pos) -> chainEquation.test(this, modifier.modifyEquation(pos)));
 	}
 	
 	/**

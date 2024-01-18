@@ -110,7 +110,6 @@ public class ToggleWidget extends Widget implements EnabledTextureProvider, Disa
 		if (label != null) {
 			var textRenderer = DrawingUtil.getTextRenderer();
 			
-			// TODO: Check if this is equivalent to the 1.19.2 code.
 			context.drawTextWithShadow(textRenderer, label.asOrderedText(), (int) (getX() + (getWidth() / 2.0F - TextUtil.getWidth(label) / 2.0F)), (int) (getY() + (getHeight() / 2.0F - TextUtil.getHeight(label) / 2.0F)), 0xFCFCFC);
 		}
 		

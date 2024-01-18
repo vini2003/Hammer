@@ -28,12 +28,10 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.exception.NoPlatformImplementationException;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import org.apache.commons.lang3.text.WordUtils;
 
 public class TextUtil {
 	public static MutableText getEmpty() {

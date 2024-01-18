@@ -28,7 +28,6 @@ import dev.architectury.event.events.common.PlayerEvent;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import dev.vini2003.hammer.core.api.common.queue.ServerTaskQueue;
 import dev.vini2003.hammer.preset.HP;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
 

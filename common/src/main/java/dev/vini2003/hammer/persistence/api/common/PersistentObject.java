@@ -2,7 +2,6 @@ package dev.vini2003.hammer.persistence.api.common;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

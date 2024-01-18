@@ -2,12 +2,12 @@ package dev.vini2003.hammer.preset.mixin.common;
 
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.preset.HP;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

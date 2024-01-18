@@ -31,7 +31,6 @@ import dev.vini2003.hammer.core.api.common.math.shape.modifier.NoiseModifier;
 import dev.vini2003.hammer.core.api.common.math.shape.modifier.RotateModifier;
 import dev.vini2003.hammer.core.api.common.math.shape.modifier.TranslateModifier;
 import dev.vini2003.hammer.core.api.common.math.size.SizeHolder;
-import net.minecraft.stat.Stat;
 import net.minecraft.util.math.Quaternion;
 
 import java.util.Collection;

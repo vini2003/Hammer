@@ -25,7 +25,6 @@
 package dev.vini2003.hammer.core.mixin.client;
 
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
-import dev.vini2003.hammer.core.impl.common.accessor.PlayerEntityAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.WorldRenderer;

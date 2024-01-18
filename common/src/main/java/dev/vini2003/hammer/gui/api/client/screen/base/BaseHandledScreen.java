@@ -37,9 +37,9 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.registry.Registry;
 
 public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends HandledScreen<T> {
 	public BaseHandledScreen(T screenHandler, PlayerInventory playerInventory, Text text) {

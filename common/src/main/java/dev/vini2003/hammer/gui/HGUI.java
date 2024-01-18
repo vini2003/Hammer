@@ -30,7 +30,6 @@ import dev.vini2003.hammer.gui.registry.common.HGUIEvents;
 import dev.vini2003.hammer.gui.registry.common.HGUINetworking;
 import dev.vini2003.hammer.gui.registry.common.debug.HGUICommands;
 import dev.vini2003.hammer.gui.registry.common.debug.HGUIScreenHandlerTypes;
-import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal

@@ -2,10 +2,10 @@ package dev.vini2003.hammer.preset.mixin.common;
 
 import dev.vini2003.hammer.core.HC;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;

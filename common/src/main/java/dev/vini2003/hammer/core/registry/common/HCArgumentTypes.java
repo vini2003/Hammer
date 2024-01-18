@@ -10,7 +10,6 @@ import dev.vini2003.hammer.core.api.common.manager.CommandManager;
 import net.minecraft.command.argument.*;
 import net.minecraft.command.argument.serialize.ArgumentSerializer;
 import net.minecraft.command.argument.serialize.ConstantArgumentSerializer;
-import net.minecraft.util.registry.Registry;
 
 public class HCArgumentTypes {
 	public static <A extends ArgumentType<?>, T extends ArgumentSerializer.ArgumentTypeProperties<A>> RegistrySupplier<ArgumentSerializer<A, T>> register(String id, Class<? extends A> clazz, ArgumentSerializer<A, T> serializer) {

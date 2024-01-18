@@ -55,7 +55,6 @@ public class FluidTextUtil {
 		
 		var color = TextColor.fromRgb(overrideColor != null ? overrideColor.toRgb() : FluidStackHooks.getColor(fluid));
 		
-		// Re-implementation of FluidVariantRendering in Fabric.
 		var tooltip = new ArrayList<Text>();
 		
 		tooltip.add(FluidStackHooks.getName(FluidStack.create(fluid, 1_000)).copy().styled(style -> style.withColor(color)));
@@ -67,8 +66,6 @@ public class FluidTextUtil {
 		}
 		
 		return tooltip;
-		
-//		return FluidVariantRendering.getTooltip(fluidVariant).stream().map(text -> (MutableText) text).map(text -> text.styled(style -> style.withColor(color))).collect(Collectors.toList());
 	}
 	
 	public static List<Text> getTooltip(Fluid fluid, long amount, long capacity) {

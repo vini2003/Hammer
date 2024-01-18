@@ -1,8 +1,8 @@
 package dev.vini2003.hammer.preset.registry.common;
 
-import dev.vini2003.hammer.config.api.common.config.Config;
+import dev.vini2003.hammer.persistence.api.common.PersistentObject;
 
-public class HPConfig extends Config {
+public class HPConfig extends PersistentObject {
 	public boolean disableToasts = true;
 	public boolean disableSinglePlayer = false;
 	

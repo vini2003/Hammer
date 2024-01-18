@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
 @ApiStatus.Internal
 public class HC {
 	private static final String HAMMER_CHAT_MOD_INITIALIZER = "dev.vini2003.hammer.chat.HC";
-	private static final String HAMMER_CONFIG_MOD_INITIALIZER = "dev.vini2003.hammer.config.HC";
+	private static final String HAMMER_PERSISTENCE_MOD_INITIALIZER = "dev.vini2003.hammer.persistence.HP";
 	private static final String HAMMER_GRAVITY_MOD_INITIALIZER = "dev.vini2003.hammer.gravity.HG";
 	private static final String HAMMER_GUI_MOD_INITIALIZER = "dev.vini2003.hammer.gui.HGUI";
 	private static final String HAMMER_PERMISSION_MOD_INITIALIZER = "dev.vini2003.hammer.permission.HP";
@@ -54,7 +54,7 @@ public class HC {
 	
 	public static final String BORDER_MODULE_ID = "border";
 	public static final String CHAT_MODULE_ID = "chat";
-	public static final String CONFIG_MODULE_ID = "config";
+	public static final String PERSISTENCE_MODULE_ID = "persistence";
 	public static final String CORE_MODULE_ID = "core";
 	public static final String GRAVITY_MODULE_ID = "gravity";
 	public static final String GUI_MODULE_ID = "gui";
@@ -88,7 +88,7 @@ public class HC {
 		
 		HammerUtil.initializeIfModuleEnabled(BORDER_MODULE_ID, HAMMER_CHAT_MOD_INITIALIZER);
 		HammerUtil.initializeIfModuleEnabled(CHAT_MODULE_ID, HAMMER_CHAT_MOD_INITIALIZER);
-		HammerUtil.initializeIfModuleEnabled(CONFIG_MODULE_ID, HAMMER_CONFIG_MOD_INITIALIZER);
+		HammerUtil.initializeIfModuleEnabled(PERSISTENCE_MODULE_ID, HAMMER_PERSISTENCE_MOD_INITIALIZER);
 		HammerUtil.initializeIfModuleEnabled(GRAVITY_MODULE_ID, HAMMER_GRAVITY_MOD_INITIALIZER);
 		HammerUtil.initializeIfModuleEnabled(GUI_MODULE_ID, HAMMER_GUI_MOD_INITIALIZER);
 		HammerUtil.initializeIfModuleEnabled(PERMISSION_MODULE_ID, HAMMER_PERMISSION_MOD_INITIALIZER);

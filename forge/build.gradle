@@ -41,9 +41,6 @@ dependencies {
 
 	common(project(path: ":common", configuration: "namedElements")) { transitive false }
 	shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
-
-	modApi "net.luckperms:api:${luckPermsVersion}"
-	include "net.luckperms:api:${luckPermsVersion}"
 }
 
 processResources {

@@ -24,13 +24,6 @@
 
 package dev.vini2003.hammer.permission.api.common.role;
 
-import dev.vini2003.hammer.core.api.common.cache.Cached;
-import dev.vini2003.hammer.permission.api.common.util.PermUtil;
-import net.luckperms.api.model.group.Group;
-import net.luckperms.api.node.types.InheritanceNode;
-import net.luckperms.api.node.types.PermissionNode;
-import net.luckperms.api.node.types.PrefixNode;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
@@ -41,40 +34,6 @@ public class Role {
 	
 	private int prefixWeight = -1;
 	private int prefixColor = -1;
-	
-	private boolean init = false;
-	
-	private final Cached<Group> group = new Cached<>(() -> {
-		if (!init) {
-			init();
-		}
-		
-		return PermUtil.getOrCreateGroup(name);
-	});
-	
-	private final Cached<InheritanceNode> inheritanceNode = new Cached<>(() -> {
-		if (!init) {
-			init();
-		}
-		
-		return InheritanceNode.builder(group.get()).build();
-	});
-	
-	private final Cached<PermissionNode> permissionNode = new Cached<>(() -> {
-		if (!init) {
-			init();
-		}
-		
-		return PermissionNode.builder("hammer." + name).value(true).build();
-	});
-	
-	private final Cached<PrefixNode> prefixNode = new Cached<>(() -> {
-		if (!init) {
-			init();
-		}
-		
-		return PrefixNode.builder(prefix, prefixWeight).build();
-	});
 	
 	private final Collection<UUID> holders = new ArrayList<>();
 	
@@ -88,21 +47,6 @@ public class Role {
 		
 		this.prefixWeight = prefixWeight;
 		this.prefixColor = prefixColor;
-	}
-	
-	public void init() {
-		init = true;
-		
-		var data = group.get().data();
-		
-		if (prefixNode.get() != null) {
-			data.add(prefixNode.get());
-		}
-		
-		data.add(permissionNode.get());
-		data.add(inheritanceNode.get());
-		
-		PermUtil.saveGroup(group.get());
 	}
 	
 	public String getName() {
@@ -119,22 +63,6 @@ public class Role {
 	
 	public int getPrefixColor() {
 		return prefixColor;
-	}
-	
-	public Cached<Group> getGroup() {
-		return group;
-	}
-	
-	public Cached<InheritanceNode> getInheritanceNode() {
-		return inheritanceNode;
-	}
-	
-	public Cached<PermissionNode> getPermissionNode() {
-		return permissionNode;
-	}
-	
-	public Cached<PrefixNode> getPrefixNode() {
-		return prefixNode;
 	}
 	
 	public Collection<UUID> getHolders() {

@@ -26,6 +26,8 @@ subprojects {
 		mappings("net.fabricmc:yarn:${yarnVersion}:v2")
 
 		modImplementation("com.google.code.findbugs:jsr305:${findBugsVersion}")
+
+//		modApi "teamreborn:energy:${energyVersion}"
 	}
 }
 

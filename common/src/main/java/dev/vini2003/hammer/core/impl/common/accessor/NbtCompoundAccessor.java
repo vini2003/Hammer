@@ -1,10 +1,14 @@
 package dev.vini2003.hammer.core.impl.common.accessor;
 
 import dev.vini2003.hammer.core.api.common.exception.NoMixinException;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
-import net.minecraft.util.registry.RegistryKey;
+import org.joml.Quaternionf;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public interface NbtCompoundAccessor {
 	default void hammer$putBlockPos(String key, BlockPos value) {
@@ -63,11 +67,11 @@ public interface NbtCompoundAccessor {
 		throw new NoMixinException();
 	}
 	
-	default void hammer$putVector3f(String key, Vec3f value) {
+	default void hammer$putVector3f(String key, Vector3f value) {
 		throw new NoMixinException();
 	}
 	
-	default Vec3f hammer$getVector3f(String key) {
+	default Vector3f hammer$getVector3f(String key) {
 		throw new NoMixinException();
 	}
 	
@@ -79,11 +83,11 @@ public interface NbtCompoundAccessor {
 		throw new NoMixinException();
 	}
 	
-	default void hammer$putVector3d(String key, Vec3d value) {
+	default void hammer$putVector3d(String key, Vector3d value) {
 		throw new NoMixinException();
 	}
 	
-	default Vec3d hammer$getVector3d(String key) {
+	default Vector3d hammer$getVector3d(String key) {
 		throw new NoMixinException();
 	}
 	
@@ -95,11 +99,11 @@ public interface NbtCompoundAccessor {
 		throw new NoMixinException();
 	}
 	
-	default void hammer$putQuaternionf(String key, Quaternion value) {
+	default void hammer$putQuaternionf(String key, Quaternionf value) {
 		throw new NoMixinException();
 	}
 	
-	default Quaternion hammer$getQuaternionf(String key) {
+	default Quaternionf hammer$getQuaternionf(String key) {
 		throw new NoMixinException();
 	}
 }

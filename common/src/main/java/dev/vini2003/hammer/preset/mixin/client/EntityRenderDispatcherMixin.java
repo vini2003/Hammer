@@ -6,7 +6,7 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,7 +29,7 @@ public class EntityRenderDispatcherMixin {
 			
 			entity.getWorld().getPlayers().forEach(player -> {
 				player.sendMessage(Text.literal("An entity failed to render!").formatted(Formatting.RED, Formatting.BOLD), false);
-				player.sendMessage(Text.literal(Registry.ENTITY_TYPE.getId(entity.getType()) + " at " + entity.getBlockPos().toString() + " with UUID " + entity.getUuidAsString()).formatted(Formatting.RED), false);
+				player.sendMessage(Text.literal(Registries.ENTITY_TYPE.getId(entity.getType()) + " at " + entity.getBlockPos().toString() + " with UUID " + entity.getUuidAsString()).formatted(Formatting.RED), false);
 			});
 			
 			entity.remove(Entity.RemovalReason.DISCARDED);

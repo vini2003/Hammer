@@ -24,7 +24,6 @@
 
 package dev.vini2003.hammer.core.api.common.math.shape.modifier;
 
-import dev.vini2003.hammer.core.api.common.math.position.Position;
 import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 
@@ -39,7 +38,7 @@ public interface Modifier {
 	 * @param shape the shape to modify.
 	 * @return the modified shape.
 	 */
-	default Position modifyStartPos(Shape shape) {
+	default StaticPosition modifyStartPos(Shape shape) {
 		return shape.getStartPos();
 	}
 	
@@ -49,7 +48,7 @@ public interface Modifier {
 	 * @param shape the shape to modify.
 	 * @return the modified shape.
 	 */
-	default Position modifyEndPos(Shape shape) {
+	default StaticPosition modifyEndPos(Shape shape) {
 		return shape.getEndPos();
 	}
 	
@@ -58,5 +57,5 @@ public interface Modifier {
 	 * @param pos the position to modify.
 	 * @return the modified position.
 	 */
-	Position modifyEquation(Position pos);
+	StaticPosition modifyEquation(StaticPosition pos);
 }

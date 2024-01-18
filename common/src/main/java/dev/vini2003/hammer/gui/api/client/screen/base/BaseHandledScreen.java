@@ -37,7 +37,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.joml.Vector2i;
@@ -76,7 +76,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			e.printStackTrace();
 			
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to initialize!").formatted(Formatting.RED, Formatting.BOLD));
-			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
 			handler.onClosed(handler.getPlayer());
 		}
@@ -116,7 +116,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			e.printStackTrace();
 			
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
-			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
 			handler.onClosed(handler.getPlayer());
 			
@@ -137,7 +137,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			e.printStackTrace();
 			
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
-			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
 			handler.onClosed(handler.getPlayer());
 			
@@ -158,7 +158,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			e.printStackTrace();
 			
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
-			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
 			handler.onClosed(handler.getPlayer());
 			
@@ -179,7 +179,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			e.printStackTrace();
 			
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
-			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
 			handler.onClosed(handler.getPlayer());
 		}
@@ -198,7 +198,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			e.printStackTrace();
 			
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
-			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
 			handler.onClosed(handler.getPlayer());
 			
@@ -231,7 +231,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			e.printStackTrace();
 			
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
-			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
 			handler.onClosed(handler.getPlayer());
 			
@@ -252,7 +252,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			e.printStackTrace();
 			
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
-			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
 			handler.onClosed(handler.getPlayer());
 			
@@ -273,7 +273,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			e.printStackTrace();
 			
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
-			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
 			handler.onClosed(handler.getPlayer());
 			
@@ -325,7 +325,7 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			e.printStackTrace();
 			
 			handler.getPlayer().sendMessage(Text.literal("A screen failed to render!").formatted(Formatting.RED, Formatting.BOLD));
-			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.literal(Registries.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
 			handler.onClosed(handler.getPlayer());
 		}

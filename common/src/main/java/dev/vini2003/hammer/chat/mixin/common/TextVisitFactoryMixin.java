@@ -24,9 +24,9 @@
 
 package dev.vini2003.hammer.chat.mixin.common;
 
-import net.minecraft.client.font.TextVisitFactory;
 import net.minecraft.text.CharacterVisitor;
 import net.minecraft.text.Style;
+import net.minecraft.text.TextVisitFactory;
 import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

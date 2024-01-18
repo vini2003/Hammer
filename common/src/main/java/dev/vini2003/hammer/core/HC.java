@@ -34,8 +34,7 @@ import dev.vini2003.hammer.core.registry.common.HCEvents;
 import dev.vini2003.hammer.core.registry.common.HCNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
@@ -104,7 +103,7 @@ public class HC {
 	
 	public static DeferredRegister<Item> getItemRegistry() {
 		if (ITEM_REGISTRY == null) {
-			ITEM_REGISTRY = DeferredRegister.create(ID, Registry.ITEM_KEY);
+			ITEM_REGISTRY = DeferredRegister.create(ID, RegistryKeys.ITEM);
 		}
 		
 		return ITEM_REGISTRY;
@@ -112,7 +111,7 @@ public class HC {
 	
 	public static DeferredRegister<Block> getBlockRegistry() {
 		if (BLOCK_REGISTRY == null) {
-			BLOCK_REGISTRY = DeferredRegister.create(ID, Registry.BLOCK_KEY);
+			BLOCK_REGISTRY = DeferredRegister.create(ID, RegistryKeys.BLOCK);
 		}
 		
 		return BLOCK_REGISTRY;
@@ -120,8 +119,7 @@ public class HC {
 	
 	public static DeferredRegister<ScreenHandlerType<?>> getScreenHandlerRegistry() {
 		if (SCREEN_HANDLER_REGISTRY == null) {
-			// TODO: Check if this works. Registry ID may not be correct.
-			SCREEN_HANDLER_REGISTRY = DeferredRegister.create(ID, RegistryKey.ofRegistry(new Identifier("screen_handler_type")));
+			SCREEN_HANDLER_REGISTRY = DeferredRegister.create(ID, RegistryKeys.SCREEN_HANDLER);
 		}
 		
 		return SCREEN_HANDLER_REGISTRY;

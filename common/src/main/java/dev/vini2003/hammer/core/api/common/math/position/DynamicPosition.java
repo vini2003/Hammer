@@ -25,7 +25,7 @@
 package dev.vini2003.hammer.core.api.common.math.position;
 
 import dev.vini2003.hammer.core.api.common.supplier.FloatSupplier;
-import net.minecraft.util.math.Quaternion;
+import org.joml.Quaternionf;
 
 import java.util.function.Function;
 
@@ -145,35 +145,34 @@ public class DynamicPosition extends Position {
 	 *
 	 * @return the resulting position.
 	 */
-	public DynamicPosition rotate(Quaternion quaternion) {
-		// TODO: Check if this works.
+	public DynamicPosition rotate(Quaternionf quaternion) {
 		return new DynamicPosition(
 				() -> {
-					var q1 = new Quaternion(quaternion);
-					q1.hamiltonProduct(new Quaternion(this.getX(), this.getY(), this.getZ(), 0.0F));
-					var q2 = new Quaternion(quaternion);
+					var q1 = new Quaternionf(quaternion);
+					q1.mul(new Quaternionf(this.getX(), this.getY(), this.getZ(), 0.0F));
+					var q2 = new Quaternionf(quaternion);
 					q2.conjugate();
-					q1.hamiltonProduct(q2);
+					q1.mul(q2);
 					
-					return q1.getX();
+					return q1.x();
 				},
 				() -> {
-					var q1 = new Quaternion(quaternion);
-					q1.hamiltonProduct(new Quaternion(this.getX(), this.getY(), this.getZ(), 0.0F));
-					var q2 = new Quaternion(quaternion);
+					var q1 = new Quaternionf(quaternion);
+					q1.mul(new Quaternionf(this.getX(), this.getY(), this.getZ(), 0.0F));
+					var q2 = new Quaternionf(quaternion);
 					q2.conjugate();
-					q1.hamiltonProduct(q2);
+					q1.mul(q2);
 					
-					return q1.getY();
+					return q1.y();
 				},
 				() -> {
-					var q1 = new Quaternion(quaternion);
-					q1.hamiltonProduct(new Quaternion(this.getX(), this.getY(), this.getZ(), 0.0F));
-					var q2 = new Quaternion(quaternion);
+					var q1 = new Quaternionf(quaternion);
+					q1.mul(new Quaternionf(this.getX(), this.getY(), this.getZ(), 0.0F));
+					var q2 = new Quaternionf(quaternion);
 					q2.conjugate();
-					q1.hamiltonProduct(q2);
+					q1.mul(q2);
 					
-					return q1.getZ();
+					return q1.z();
 				}
 		);
 	}

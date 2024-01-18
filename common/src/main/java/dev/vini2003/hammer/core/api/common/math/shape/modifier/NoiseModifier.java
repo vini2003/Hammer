@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.core.api.common.math.shape.modifier;
 
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
 
 import java.util.Random;
@@ -55,7 +56,7 @@ public class NoiseModifier implements Modifier {
 	 * @return the modified position.
 	 */
 	@Override
-	public Position modifyEquation(Position pos) {
+	public StaticPosition modifyEquation(StaticPosition pos) {
 		return Position.of(
 				pos.getX() + (random.nextFloat() * magnitude) * (random.nextFloat() * magnitude),
 				pos.getY() + (random.nextFloat() * magnitude) * (random.nextFloat() * magnitude),

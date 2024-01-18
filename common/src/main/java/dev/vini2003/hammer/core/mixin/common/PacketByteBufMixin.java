@@ -2,12 +2,17 @@ package dev.vini2003.hammer.core.mixin.common;
 
 import dev.vini2003.hammer.core.impl.common.accessor.PacketByteBufAccessor;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.util.math.Vector3d;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.*;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
+import org.joml.Quaternionf;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -89,15 +94,15 @@ public abstract class PacketByteBufMixin implements PacketByteBufAccessor {
 	}
 	
 	@Override
-	public void hammer$writeVector3f(Vec3f value) {
-		writeFloat(value.getX());
-		writeFloat(value.getY());
-		writeFloat(value.getZ());
+	public void hammer$writeVector3f(Vector3f value) {
+		writeFloat(value.x());
+		writeFloat(value.y());
+		writeFloat(value.z());
 	}
 	
 	@Override
-	public Vec3f hammer$readVector3f() {
-		return new Vec3f(readFloat(), readFloat(), readFloat());
+	public Vector3f hammer$readVector3f() {
+		return new Vector3f(readFloat(), readFloat(), readFloat());
 	}
 	
 	@Override
@@ -126,10 +131,10 @@ public abstract class PacketByteBufMixin implements PacketByteBufAccessor {
 	
 	@Override
 	public void hammer$writeVector4f(Vector4f value) {
-		writeFloat(value.getX());
-		writeFloat(value.getY());
-		writeFloat(value.getZ());
-		writeFloat(value.getW());
+		writeFloat(value.x());
+		writeFloat(value.y());
+		writeFloat(value.z());
+		writeFloat(value.w());
 	}
 	
 	@Override
@@ -138,15 +143,15 @@ public abstract class PacketByteBufMixin implements PacketByteBufAccessor {
 	}
 	
 	@Override
-	public void hammer$writeQuaternionf(Quaternion value) {
-		writeFloat(value.getX());
-		writeFloat(value.getY());
-		writeFloat(value.getZ());
-		writeFloat(value.getY());
+	public void hammer$writeQuaternionf(Quaternionf value) {
+		writeFloat(value.x());
+		writeFloat(value.y());
+		writeFloat(value.z());
+		writeFloat(value.w());
 	}
 	
 	@Override
-	public Quaternion hammer$readQuaternionf() {
-		return new Quaternion(readFloat(), readFloat(), readFloat(), readFloat());
+	public Quaternionf hammer$readQuaternionf() {
+		return new Quaternionf(readFloat(), readFloat(), readFloat(), readFloat());
 	}
 }

@@ -47,7 +47,7 @@ public class MessageCommandMixin {
 		
 		for (var target : targets) {
 			if (!target.hammer$shouldShowCommandFeedback()) {
-				source.sendFeedback(Text.translatable("text.hammer.message_command.direct_messages_disabled", target.getDisplayName()), false);
+				source.sendFeedback(() -> Text.translatable("text.hammer.message_command.direct_messages_disabled", target.getDisplayName()), false);
 				
 				targetsToRemove.add(target);
 			}

@@ -25,8 +25,6 @@
 package dev.vini2003.hammer.border.mixin.common;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.ArgumentType;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
@@ -34,10 +32,11 @@ import dev.vini2003.hammer.border.impl.common.border.CubicWorldBorder;
 import net.minecraft.command.argument.Vec3ArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.command.WorldBorderCommand;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
@@ -81,7 +80,7 @@ public class WorldBorderCommandMixin {
 			
 			cubicWorldBorder.setCenter(pos.x, pos.y, pos.z);
 			
-			source.sendFeedback(
+			source.sendFeedback(() ->
 							Text.translatable("commands.hammer.border.center.success",
 									String.format(Locale.ROOT, "%.2f", (float) pos.x),
 									String.format(Locale.ROOT, "%.2f", (float) pos.y),

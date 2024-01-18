@@ -24,23 +24,23 @@
 
 package dev.vini2003.hammer.core.api.common.math.shape.modifier;
 
-import dev.vini2003.hammer.core.api.common.math.position.DynamicPosition;
 import dev.vini2003.hammer.core.api.common.math.position.Position;
+import dev.vini2003.hammer.core.api.common.math.position.StaticPosition;
 import dev.vini2003.hammer.core.api.common.math.shape.Shape;
-import net.minecraft.util.math.Quaternion;
+import org.joml.Quaternionf;
 
 /**
  * A {@link RotateModifier} is a {@link Shape} modifier that applies a rotation to blocks inside the shape.
  */
 public class RotateModifier implements Modifier {
-	private final Quaternion rotation;
+	private final Quaternionf rotation;
 	
 	/**
 	 * Constructs a rotation modifier.
 	 * @param rotation the rotation to use.
 	 * @return the modifier.
 	 */
-	public RotateModifier(Quaternion rotation) {
+	public RotateModifier(Quaternionf rotation) {
 		this.rotation = rotation;
 	}
 	
@@ -50,7 +50,7 @@ public class RotateModifier implements Modifier {
 	 * @return the modified shape.
 	 */
 	@Override
-	public Position modifyStartPos(Shape shape) {
+	public StaticPosition modifyStartPos(Shape shape) {
 		var minPos = Position.of(Float.MAX_VALUE, Float.MAX_VALUE);
 		
 		for (var p : shape.getPositions()) {
@@ -72,7 +72,7 @@ public class RotateModifier implements Modifier {
 	 * @return the modified shape.
 	 */
 	@Override
-	public Position modifyEndPos(Shape shape) {
+	public StaticPosition modifyEndPos(Shape shape) {
 		var maxPos = Position.of(Float.MIN_VALUE, Float.MIN_VALUE);
 		
 		for (var p : shape.getPositions()) {
@@ -94,8 +94,7 @@ public class RotateModifier implements Modifier {
 	 * @return the modified position.
 	 */
 	@Override
-	public Position modifyEquation(Position pos) {
-		// TODO: Check if this works.
-		return new DynamicPosition(pos::getX, pos::getY, pos::getZ).rotate(rotation);
+	public StaticPosition modifyEquation(StaticPosition pos) {
+		return pos.rotate(rotation);
 	}
 }

@@ -37,7 +37,7 @@ public class WorldRendererMixin {
 			ordinal = 3
 	)
 	private boolean hammer$render$getEntityVertexConsumers(boolean original) {
-		// TODO: FIX.
+		// TODO: Fix.
 		return true;
 	}
 }

@@ -33,6 +33,6 @@ public class HUClient {
 	public static void onInitializeClient() {
 		HUNetworking.init();
 		
-		HC.LOGGER.info("Initialized '" + HC.UTIL_MODULE_ID + "' client module.");
+		HC.LOGGER.info("Initialized [" + HC.UTIL_MODULE_ID + "] client module.");
 	}
 }

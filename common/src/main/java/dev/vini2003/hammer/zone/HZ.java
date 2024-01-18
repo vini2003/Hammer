@@ -37,6 +37,6 @@ public class HZ {
 		HZComponents.init();
 		HZNetworking.init();
 		
-		HC.LOGGER.info("Initialized '" + HC.ZONE_MODULE_ID + "' module.");
+		HC.LOGGER.info("Initialized [" + HC.ZONE_MODULE_ID + "] module.");
 	}
 }

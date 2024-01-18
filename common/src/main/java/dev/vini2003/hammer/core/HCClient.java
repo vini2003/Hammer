@@ -43,7 +43,7 @@ public class HCClient {
 		HCEvents.init();
 		HCNetworking.init();
 		
-		HC.LOGGER.info("Initialized '" + HC.CORE_MODULE_ID + "' client module.");
+		HC.LOGGER.info("Initialized [" + HC.CORE_MODULE_ID + "] client module.");
 		
 		HammerUtil.initializeClientIfModuleEnabled("chat", HAMMER_CHAT_CLIENT_MOD_INITIALIZER);
 		HammerUtil.initializeClientIfModuleEnabled("gravity", HAMMER_GRAVITY_CLIENT_MOD_INITIALIZER);

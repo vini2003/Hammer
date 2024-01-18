@@ -6,6 +6,6 @@ public class HCDedicatedServer {
 	public static void onInitializeDedicatedServer() {
 		HCEvents.init();
 		
-		HC.LOGGER.info("Initialized '" + HC.CORE_MODULE_ID + "' server module.");
+		HC.LOGGER.info("Initialized [" + HC.CORE_MODULE_ID + "] server module.");
 	}
 }

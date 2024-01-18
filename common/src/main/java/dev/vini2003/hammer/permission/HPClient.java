@@ -33,6 +33,6 @@ public class HPClient {
 	public static void onInitializeClient() {
 		HPNetworking.init();
 		
-		HC.LOGGER.info("Initialized '" + HC.PERMISSION_MODULE_ID + "' client module.");
+		HC.LOGGER.info("Initialized [" + HC.PERMISSION_MODULE_ID + "] client module.");
 	}
 }

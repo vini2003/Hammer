@@ -35,6 +35,6 @@ public class HCClient {
 		HCNetworking.init();
 		HCKeyBinds.init();
 		
-		HC.LOGGER.info("Initialized '" + dev.vini2003.hammer.core.HC.CHAT_MODULE_ID + "' client module.");
+		HC.LOGGER.info("Initialized '" + dev.vini2003.hammer.core.HC.CHAT_MODULE_ID + "] client module.");
 	}
 }

@@ -42,7 +42,7 @@ import java.util.Collection;
 @Mixin(MessageCommand.class)
 public class MessageCommandMixin {
 	@Inject(at = @At("HEAD"), method = "execute")
-	private static void hammer$execute(ServerCommandSource source, Collection<ServerPlayerEntity> targets, MessageArgumentType.SignedMessage signedMessage, CallbackInfoReturnable<Integer> cir) {
+	private static void hammer$execute(ServerCommandSource source, Collection<ServerPlayerEntity> targets, SignedMessage message, CallbackInfo ci) {
 		var targetsToRemove = new ArrayList<ServerPlayerEntity>();
 		
 		for (var target : targets) {

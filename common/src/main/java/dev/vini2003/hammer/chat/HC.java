@@ -28,7 +28,6 @@ import dev.vini2003.hammer.chat.impl.common.config.HCConfig;
 import dev.vini2003.hammer.chat.registry.common.HCCommands;
 import dev.vini2003.hammer.chat.registry.common.HCEvents;
 import dev.vini2003.hammer.chat.registry.common.HCNetworking;
-import dev.vini2003.hammer.persistence.api.common.PersistentObject;
 import dev.vini2003.hammer.persistence.api.common.config.Config;
 import org.jetbrains.annotations.ApiStatus;
 

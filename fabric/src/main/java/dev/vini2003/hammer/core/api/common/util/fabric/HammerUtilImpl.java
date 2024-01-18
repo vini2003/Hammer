@@ -2,7 +2,6 @@ package dev.vini2003.hammer.core.api.common.util.fabric;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
-import net.fabricmc.loader.api.metadata.CustomValue;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;

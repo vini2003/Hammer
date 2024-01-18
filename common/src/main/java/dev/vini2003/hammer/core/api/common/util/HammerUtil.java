@@ -1,7 +1,6 @@
 package dev.vini2003.hammer.core.api.common.util;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import dev.architectury.platform.Platform;
 
 public class HammerUtil {
 	public static void executeIfModuleEnabled(String moduleId, Runnable runnable) {

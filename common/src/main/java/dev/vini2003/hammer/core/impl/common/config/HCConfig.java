@@ -1,7 +1,6 @@
 package dev.vini2003.hammer.core.impl.common.config;
 
 import dev.architectury.injectables.targets.ArchitecturyTarget;
-import dev.vini2003.hammer.persistence.api.common.PersistentObject;
 import dev.vini2003.hammer.persistence.api.common.config.Config;
 
 public class HCConfig extends Config {

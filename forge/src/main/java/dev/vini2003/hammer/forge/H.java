@@ -4,14 +4,12 @@ import dev.architectury.platform.forge.EventBuses;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.HCClient;
 import dev.vini2003.hammer.core.HCDedicatedServer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.eventbus.api.IEventBus;
 
 @Mod(HC.ID)
 public class H {

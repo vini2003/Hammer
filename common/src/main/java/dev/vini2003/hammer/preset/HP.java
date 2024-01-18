@@ -24,7 +24,6 @@
 
 package dev.vini2003.hammer.preset;
 
-import dev.vini2003.hammer.persistence.api.common.PersistentObject;
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.persistence.api.common.config.Config;
 import dev.vini2003.hammer.preset.registry.common.HPChannels;

@@ -40,6 +40,11 @@ public class InstanceUtil {
 		throw new AssertionError();
 	}
 	
+	@ExpectPlatform
+	public static Path getPersistentObjectPath() {
+		throw new AssertionError();
+	}
+	
 	public static MinecraftClient getClient() {
 		return MinecraftClient.getInstance();
 	}

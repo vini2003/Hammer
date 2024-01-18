@@ -11,6 +11,10 @@ public class InstanceUtilImpl {
 		return FMLPaths.CONFIGDIR.get();
 	}
 	
+	public static Path getPersistentObjectPath() {
+		return FMLPaths.GAMEDIR.get().resolve("persistent");
+	}
+	
 	public static boolean isClient() {
 		return FMLEnvironment.dist == Dist.CLIENT;
 	}

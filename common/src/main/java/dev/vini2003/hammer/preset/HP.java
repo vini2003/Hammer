@@ -24,8 +24,9 @@
 
 package dev.vini2003.hammer.preset;
 
-import dev.vini2003.hammer.config.api.common.config.Config;
+import dev.vini2003.hammer.persistence.api.common.PersistentObject;
 import dev.vini2003.hammer.core.HC;
+import dev.vini2003.hammer.persistence.api.common.config.Config;
 import dev.vini2003.hammer.preset.registry.common.HPChannels;
 import dev.vini2003.hammer.preset.registry.common.HPConfig;
 import dev.vini2003.hammer.preset.registry.common.HPEvents;
@@ -36,7 +37,7 @@ import org.jetbrains.annotations.ApiStatus;
 public class HP {
 	public static final String ID = "hammer-preset";
 	
-	public static final HPConfig CONFIG = Config.load(ID, HPConfig.class);
+	public static final HPConfig CONFIG = Config.getOrCreate(ID, HPConfig.class);
 	
 	public static void onInitialize() {
 		HPEvents.init();

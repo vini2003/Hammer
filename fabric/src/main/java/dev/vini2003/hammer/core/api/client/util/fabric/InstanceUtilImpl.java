@@ -10,6 +10,10 @@ public class InstanceUtilImpl {
 		return FabricLoader.getInstance().getConfigDir();
 	}
 	
+	public static Path getPersistentObjectPath() {
+		return FabricLoader.getInstance().getGameDir().resolve("persistent");
+	}
+	
 	public static boolean isClient() {
 		return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
 	}

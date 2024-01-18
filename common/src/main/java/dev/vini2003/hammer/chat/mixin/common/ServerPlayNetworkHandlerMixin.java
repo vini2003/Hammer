@@ -29,7 +29,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
 	}
 	
 	@Inject(method = "sendPacket(Lnet/minecraft/network/Packet;)V", at = @At("HEAD"), cancellable = true)
-	private void onSend(Packet<?> packet, CallbackInfo info) {
+	private void hammer$sendPacket(Packet<?> packet, CallbackInfo info) {
 		if (HC.CONFIG.disableChatSigning) {
 			if (packet instanceof MessageHeaderS2CPacket) {
 				info.cancel();
@@ -48,7 +48,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
 	}
 	
 	@Inject(method = "sendPacket(Lnet/minecraft/network/Packet;Lnet/minecraft/network/PacketCallbacks;)V", at = @At("HEAD"), cancellable = true)
-	private void onSend(Packet<?> packet, @Nullable PacketCallbacks packetSendListener, CallbackInfo info) {
+	private void hammer$sendPacket(Packet<?> packet, @Nullable PacketCallbacks packetSendListener, CallbackInfo info) {
 		if (HC.CONFIG.disableChatSigning) {
 			if (packet instanceof MessageHeaderS2CPacket) {
 				info.cancel();

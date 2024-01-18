@@ -82,12 +82,12 @@ public class EntityMixin implements ComponentHolder {
 	}
 	
 	@Inject(method = "readNbt", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;readCustomDataFromNbt(Lnet/minecraft/nbt/NbtCompound;)V"))
-	public void readNbt(NbtCompound nbt, CallbackInfo ci) {
+	public void hammer$readNbt$readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
 		hammer$componentContainer.readFromNbt(nbt);
 	}
 	
 	@Inject(method = "writeNbt", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;writeCustomDataToNbt(Lnet/minecraft/nbt/NbtCompound;)V"))
-	public void writeNbt(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir) {
+	public void hammer$writeNbt$writeCustomDataToNbt(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir) {
 		hammer$componentContainer.writeToNbt(nbt);
 	}
 	

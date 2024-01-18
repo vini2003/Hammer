@@ -26,7 +26,7 @@ public class HZMixinPlugin implements IMixinConfigPlugin {
 			return false;
 		}
 		
-		HC.LOGGER.info("Applying '" + HC.ZONE_MODULE_ID + "' module Mixin '" + mixinClassName + "'.");
+		HC.LOGGER.info("Applying [" + HC.ZONE_MODULE_ID + "] module Mixin '" + mixinClassName + "'.");
 		
 		return true;
 	}

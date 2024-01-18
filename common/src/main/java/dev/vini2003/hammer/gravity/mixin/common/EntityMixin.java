@@ -37,8 +37,8 @@ public abstract class EntityMixin {
 	@Shadow
 	public World world;
 	
-	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FFLnet/minecraft/entity/damage/DamageSource;)Z", index = 1, require = 0)
-	float hammer$handleFallDamage$getDamageMultiplier(float damageMultiplier) {
+	@ModifyVariable(at = @At("HEAD"), method = "handleFallDamage(FFLnet/minecraft/entity/damage/DamageSource;)Z", index = 1, require = 0, argsOnly = true)
+	private float hammer$handleFallDamage(float damageMultiplier) {
 		var gravity = GravityManager.get(world.getRegistryKey());
 		
 		if (gravity != 0.08F) {

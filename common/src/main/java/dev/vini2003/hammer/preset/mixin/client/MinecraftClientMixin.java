@@ -61,15 +61,11 @@ public class MinecraftClientMixin {
 		if (!HP.CONFIG.windowName.isEmpty()) {
 			cir.setReturnValue(HP.CONFIG.windowName + " - " + cir.getReturnValue());
 		}
-		
-		if (!HP.CONFIG.windowIcon.isEmpty()) {
-		
-		}
 	}
 
 
 	@Inject(at = @At("RETURN"), method = "<init>")
-	private void hammer$init$setIcon(RunArgs args, CallbackInfo ci) {
+	private void hammer$init(RunArgs args, CallbackInfo ci) {
 		if (!HP.CONFIG.windowIcon.isEmpty()) {
 			try {
 				hammer$setIconFromUrl(HP.CONFIG.windowIcon);

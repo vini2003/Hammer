@@ -107,7 +107,7 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), method = "heal")
-	private void hammer$heal_setHealth(LivingEntity instance, float health) {
+	private void hammer$heal$setHealth(LivingEntity instance, float health) {
 		if (hammer$self() instanceof PlayerEntity player) {
 			var amount = health - instance.getHealth();
 			

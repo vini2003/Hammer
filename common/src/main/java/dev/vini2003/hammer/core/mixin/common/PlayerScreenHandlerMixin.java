@@ -23,7 +23,7 @@ public abstract class PlayerScreenHandlerMixin extends ScreenHandler {
 	}
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/PlayerScreenHandler;addSlot(Lnet/minecraft/screen/slot/Slot;)Lnet/minecraft/screen/slot/Slot;", ordinal = 5), method = "<init>")
-	private Slot hammer$addSlot(PlayerScreenHandler playerScreenHandler, Slot slot) {
+	private Slot hammer$init$addSlot(PlayerScreenHandler playerScreenHandler, Slot slot) {
 		if (owner.hammer$hasLeftArm()) {
 			return addSlot(slot);
 		}

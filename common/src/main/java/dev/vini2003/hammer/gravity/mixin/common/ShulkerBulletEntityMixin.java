@@ -40,7 +40,7 @@ public abstract class ShulkerBulletEntityMixin extends Entity {
 	}
 	
 	@ModifyConstant(method = "tick()V", constant = @Constant(doubleValue = -0.04D), require = 0)
-	double getGravity(double original) {
+	private double hammer$tick(double original) {
 		var gravity = GravityManager.get(getWorld().getRegistryKey());
 		
 		return -gravity * 0.5F;

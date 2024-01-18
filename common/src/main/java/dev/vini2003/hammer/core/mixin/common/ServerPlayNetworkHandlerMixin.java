@@ -44,6 +44,7 @@ public class ServerPlayNetworkHandlerMixin {
 	public ServerPlayerEntity player;
 	
 	// Stop movement speed warnings!
+	// TODO: Add config.
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;isHost()Z"), method = "onPlayerMove")
 	private boolean hammer$onPlayerMove$isHost(ServerPlayNetworkHandler instance) {
 		return true;

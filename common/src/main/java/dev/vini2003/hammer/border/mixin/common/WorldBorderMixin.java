@@ -277,7 +277,7 @@ public abstract class WorldBorderMixin implements CubicWorldBorder, WorldBorderA
 	}
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/border/WorldBorder;setCenter(DD)V"), method = "load")
-	private void hammer$load_setCenter(WorldBorder instance, double x, double z) {
+	private void hammer$load$setCenter(WorldBorder instance, double x, double z) {
 		instance.setCenter(x, z);
 	}
 	

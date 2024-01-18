@@ -64,7 +64,7 @@ public abstract class EntityTrackerMixin {
 	}
 	
 	@Inject(method = "syncEntityData", at = @At("HEAD"))
-	public void sync(CallbackInfo ci) {
+	public void hammer$syncEntityData(CallbackInfo ci) {
 		var packet = this.hammer$createSyncPacket();
 		
 		if (packet != null) {

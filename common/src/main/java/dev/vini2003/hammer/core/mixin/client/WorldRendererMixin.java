@@ -43,7 +43,7 @@ public class WorldRendererMixin {
 	private void hammer$drawBlockOutline(MatrixStack matrices, VertexConsumer vertexConsumer, Entity entity, double d, double e, double f, BlockPos pos, BlockState state, CallbackInfo ci) {
 		var client = InstanceUtil.getClient();
 		
-		if (((PlayerEntityAccessor) client.player).hammer$isFrozen()) {
+		if (client.player.hammer$isFrozen()) {
 			ci.cancel();
 		}
 	}

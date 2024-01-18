@@ -24,40 +24,62 @@
 
 package dev.vini2003.hammer.permission.api.common.manager;
 
-import com.google.common.collect.ImmutableList;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.networking.NetworkManager;
 import dev.vini2003.hammer.permission.api.common.role.Role;
 import dev.vini2003.hammer.permission.registry.common.HPNetworking;
+import dev.vini2003.hammer.persistence.api.common.PersistentObject;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TextColor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public class RoleManager {
-	private static final List<Role> ROLES = new ArrayList<>();
-	private static final Map<String, Role> ROLES_BY_NAME = new HashMap<>();
+	private static class PersistentData extends PersistentObject {
+		public List<Role> roles = new ArrayList<>();
+		public Map<String, Role> rolesByName = new HashMap<>();
+	}
 	
-	public static void register(Role role) {
-		ROLES.add(role);
-		ROLES_BY_NAME.put(role.getName(), role);
+	private static final PersistentData PERSISTENT_DATA = PersistentObject.getOrCreate("roles", PersistentData.class);
+	
+	public static void createRole(Role role) {
+		getRoles().add(role);
+		getRolesByName().put(role.getName(), role);
+		
+		PERSISTENT_DATA.save();
+	}
+	
+	public static void createRole(String name, @Nullable String prefix, @Nullable Integer prefixWeight, @Nullable Integer prefixColor) {
+		createRole(new Role(name, prefix, prefixWeight, prefixColor));
+	}
+	
+	public static void deleteRole(Role role) {
+		getRoles().remove(role);
+		getRolesByName().remove(role.getName());
+		
+		PERSISTENT_DATA.save();
 	}
 	
 	public static Collection<Role> getRoles() {
-		return ROLES;
+		return PERSISTENT_DATA.roles;
+	}
+	
+	public static Map<String, Role> getRolesByName() {
+		return PERSISTENT_DATA.rolesByName;
 	}
 	
 	public static Role getRoleByName(String name) {
-		return ROLES_BY_NAME.get(name);
+		return getRolesByName().get(name);
 	}
 	
 	public static String getRolePrefix(PlayerEntity player) {
 		Role maxRole = null;
 		
-		for (var role : ROLES) {
+		for (var role : getRoles()) {
 			if (player.hammer$hasRole(role)) {
 				if (maxRole == null || role.getPrefixWeight() > maxRole.getPrefixWeight()) {
 					maxRole = role;
@@ -71,7 +93,7 @@ public class RoleManager {
 	public static TextColor getRolePrefixColor(PlayerEntity player) {
 		Role maxRole = null;
 		
-		for (var role : ROLES) {
+		for (var role : getRoles()) {
 			if (player.hammer$hasRole(role)) {
 				if (maxRole == null || role.getPrefixWeight() > maxRole.getPrefixWeight()) {
 					maxRole = role;
@@ -82,12 +104,8 @@ public class RoleManager {
 		return maxRole != null ? TextColor.fromRgb(maxRole.getPrefixColor()) : null;
 	}
 	
-	public static Collection<Role> roles() {
-		return ROLES;
-	}
-	
-	private static void syncWith(List<ServerPlayerEntity> players) {
-		for (var role : ROLES) {
+	private static void syncWith(Collection<ServerPlayerEntity> players) {
+		for (var role : getRoles()) {
 			var buf = new PacketByteBuf(Unpooled.buffer());
 			buf.writeString(role.getName());
 			
@@ -108,9 +126,10 @@ public class RoleManager {
 		@Override
 		public void join(ServerPlayerEntity player) {
 			// TODO: Verify.
-			var players = ImmutableList.<ServerPlayerEntity>builder().addAll(player.getServer().getPlayerManager().getPlayerList()).add(player).build();
+			var server = player.getServer();
+			if (server == null) return;
 			
-			syncWith(players);
+			syncWith(server.hammer$getPlayers());
 		}
 	}
 }

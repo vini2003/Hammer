@@ -35,9 +35,9 @@ public class HPRoles {
 	
 	public static void init() {
 		if (HP.CONFIG.enableRoles) {
-			RoleManager.register(PARTICIPANT);
-			RoleManager.register(SPECTATOR);
-			RoleManager.register(STAFF);
+			RoleManager.createRole(PARTICIPANT);
+			RoleManager.createRole(SPECTATOR);
+			RoleManager.createRole(STAFF);
 		}
 	}
 }

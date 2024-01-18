@@ -30,9 +30,10 @@ public class MinecraftClientMixin {
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Throwable;)V"), method = "createUserApiService")
 	void hammer$createUserApiService(Logger logger, String message, Throwable throwable) {
-		// TODO: Add config!
-		if (InstanceUtil.isDevelopmentEnvironment()) {
-			HC.LOGGER.warn("Yggdrasil authentication is disabled in development environment.");
+		if (HC.CONFIG.disableYggdrasilInDevelopmentEnvironment) {
+			if (InstanceUtil.isDevelopmentEnvironment()) {
+				HC.LOGGER.warn("Yggdrasil authentication is disabled in development environment.");
+			}
 		}
 	}
 }

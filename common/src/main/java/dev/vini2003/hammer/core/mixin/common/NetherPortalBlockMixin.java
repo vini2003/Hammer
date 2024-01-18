@@ -24,7 +24,7 @@
 
 package dev.vini2003.hammer.core.mixin.common;
 
-import dev.vini2003.hammer.core.registry.common.HCConfig;
+import dev.vini2003.hammer.core.HC;
 import net.minecraft.block.NetherPortalBlock;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,6 +35,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class NetherPortalBlockMixin {
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;canUsePortals()Z"), method = "onEntityCollision")
 	private boolean hammer$onEntityCollision$canUsePortal(Entity instance) {
-		return instance.canUsePortals() && HCConfig.ENABLE_END;
+		return instance.canUsePortals() && !HC.CONFIG.disableNether;
 	}
 }

@@ -27,8 +27,8 @@ package dev.vini2003.hammer.core.api.common.util;
 import com.google.common.collect.ImmutableList;
 import dev.architectury.fluid.FluidStack;
 import dev.architectury.hooks.fluid.FluidStackHooks;
+import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.core.api.client.color.Color;
-import dev.vini2003.hammer.core.registry.common.HCConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.fluid.Fluid;
@@ -76,7 +76,7 @@ public class FluidTextUtil {
 		
 		var tooltips = new ArrayList<Text>();
 		
-		if (HCConfig.USE_DROPLETS) {
+		if (HC.CONFIG.useDroplets) {
 			tooltips.addAll(getTooltip(fluid));
 			tooltips.add(Text.literal(NumberUtil.getPrettyShortenedString(amount, "d") + " / " + NumberUtil.getPrettyShortenedString(capacity, "d")).formatted(Formatting.GRAY));
 			tooltips.add(TextUtil.getModId(fluidId));
@@ -94,7 +94,7 @@ public class FluidTextUtil {
 		
 		var tooltips = new ArrayList<Text>();
 		
-		if (HCConfig.USE_DROPLETS) {
+		if (HC.CONFIG.useDroplets) {
 			tooltips.addAll(getTooltip(fluid));
 			tooltips.add(Text.literal(NumberUtil.getPrettyString(amount, "d") + " / " + NumberUtil.getPrettyString(capacity, "d")).formatted(Formatting.GRAY));
 			tooltips.add(TextUtil.getModId(fluidId));

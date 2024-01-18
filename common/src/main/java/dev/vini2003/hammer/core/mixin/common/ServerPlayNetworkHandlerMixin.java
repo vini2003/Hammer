@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.core.mixin.common;
 
+import dev.vini2003.hammer.core.HC;
 import net.minecraft.network.packet.c2s.play.PlayerInteractBlockC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
@@ -39,15 +40,20 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayNetworkHandler.class)
-public class ServerPlayNetworkHandlerMixin {
+public abstract class ServerPlayNetworkHandlerMixin {
 	@Shadow
 	public ServerPlayerEntity player;
 	
-	// Stop movement speed warnings!
-	// TODO: Add config.
+	@Shadow
+	protected abstract boolean isHost();
+	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;isHost()Z"), method = "onPlayerMove")
 	private boolean hammer$onPlayerMove$isHost(ServerPlayNetworkHandler instance) {
-		return true;
+		if (HC.CONFIG.disableMovementSpeedWarning) {
+			return true;
+		}
+		
+		return isHost();
 	}
 	
 	@Inject(at = @At("HEAD"), method = "onPlayerMove", cancellable = true)

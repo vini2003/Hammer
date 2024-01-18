@@ -21,7 +21,7 @@ public class ClientWorldMixin {
 			e.printStackTrace();
 			
 			instance.getWorld().getPlayers().forEach(player -> {
-				player.sendMessage(Text.literal("An entity failed to tick!").formatted(Formatting.RED, Formatting.BOLD), false);
+				player.sendMessage(Text.translatable("warning.hammer.entity_failed_to_tick").formatted(Formatting.RED, Formatting.BOLD), false);
 				player.sendMessage(Text.literal(Registries.ENTITY_TYPE.getId(instance.getType()) + " at " + instance.getBlockPos().toString() + " with UUID " + instance.getUuidAsString()).formatted(Formatting.RED), false);
 			});
 			

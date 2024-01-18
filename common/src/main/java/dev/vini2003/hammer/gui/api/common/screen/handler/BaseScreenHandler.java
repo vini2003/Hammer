@@ -94,7 +94,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			player.sendMessage(Text.translatable("warning.hammer.screen_generic_error").formatted(Formatting.RED, Formatting.BOLD));
 			onClosed(player);
 		}
 	}
@@ -112,7 +112,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 			screen.backgroundHeight = (int) shape.getHeight();
 		} catch (Exception e) {
 			e.printStackTrace();
-			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			player.sendMessage(Text.translatable("warning.hammer.screen_generic_error").formatted(Formatting.RED, Formatting.BOLD));
 			onClosed(player);
 		}
 	}
@@ -167,7 +167,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			player.sendMessage(Text.translatable("warning.hammer.screen_generic_error").formatted(Formatting.RED, Formatting.BOLD));
 			onClosed(player);
 		}
 	}
@@ -181,7 +181,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 			Root.super.add(child);
 		}  catch (Exception e) {
 			e.printStackTrace();
-			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			player.sendMessage(Text.translatable("warning.hammer.screen_generic_error").formatted(Formatting.RED, Formatting.BOLD));
 			onClosed(player);
 		}
 	}
@@ -210,7 +210,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 			}
 		}  catch (Exception e) {
 			e.printStackTrace();
-			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
+			player.sendMessage(Text.translatable("warning.hammer.screen_generic_error").formatted(Formatting.RED, Formatting.BOLD));
 			onClosed(player);
 		}
 	}

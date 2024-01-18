@@ -33,6 +33,6 @@ public class HGClient {
 	public static void onInitializeClient() {
 		HGNetworking.init();
 		
-		HC.LOGGER.info("Initialized '" + HC.GRAVITY_MODULE_ID + "' client module.");
+		HC.LOGGER.info("Initialized [" + HC.GRAVITY_MODULE_ID + "] client module.");
 	}
 }

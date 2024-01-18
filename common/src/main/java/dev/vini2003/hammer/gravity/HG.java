@@ -37,6 +37,6 @@ public class HG {
 		HGEvents.init();
 		HGNetworking.init();
 		
-		HC.LOGGER.info("Initialized '" + HC.GRAVITY_MODULE_ID + "' module.");
+		HC.LOGGER.info("Initialized [" + HC.GRAVITY_MODULE_ID + "] module.");
 	}
 }

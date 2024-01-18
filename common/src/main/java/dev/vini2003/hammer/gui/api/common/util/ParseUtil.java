@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 public class ParseUtil {
 	private boolean has(Identifier screenId, JsonObject object, String fieldName) {
 		if (!object.has(fieldName)) {
-			HC.LOGGER.error("Resource for screen '" + screenId + "' did not contain '" + fieldName + "'!");
+			HC.LOGGER.error("Resource for screen '" + screenID + "] did not contain '" + fieldName + "'!");
 			
 			return false;
 		} else {

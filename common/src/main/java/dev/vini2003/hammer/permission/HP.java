@@ -37,6 +37,6 @@ public class HP {
 		HPNetworking.init();
 		HPCommands.init();
 		
-		HC.LOGGER.info("Initialized '" + HC.PERMISSION_MODULE_ID + "' module.");
+		HC.LOGGER.info("Initialized [" + HC.PERMISSION_MODULE_ID + "] module.");
 	}
 }

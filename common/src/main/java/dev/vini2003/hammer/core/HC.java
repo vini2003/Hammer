@@ -88,7 +88,7 @@ public class HC {
 		HCNetworking.init();
 		HCComponents.init();
 		
-		HC.LOGGER.info("Initialized '" + HC.CORE_MODULE_ID + "' module.");
+		HC.LOGGER.info("Initialized [" + HC.CORE_MODULE_ID + "] module.");
 		
 		HammerUtil.initializeIfModuleEnabled(BORDER_MODULE_ID, HAMMER_CHAT_MOD_INITIALIZER);
 		HammerUtil.initializeIfModuleEnabled(CHAT_MODULE_ID, HAMMER_CHAT_MOD_INITIALIZER);

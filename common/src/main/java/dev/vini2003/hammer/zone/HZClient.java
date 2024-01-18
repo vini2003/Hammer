@@ -35,6 +35,6 @@ public class HZClient {
 		// TODO: Reimplement!
 //		HZCommands.init();
 		
-		HC.LOGGER.info("Initialized '" + HC.ZONE_MODULE_ID + "' client module.");
+		HC.LOGGER.info("Initialized [" + HC.ZONE_MODULE_ID + "] client module.");
 	}
 }

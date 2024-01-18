@@ -39,6 +39,6 @@ public class HGUIClient {
 			HGUIScreens.init();
 		}
 		
-		HC.LOGGER.info("Initialized '" + HC.GUI_MODULE_ID + "' client module.");
+		HC.LOGGER.info("Initialized [" + HC.GUI_MODULE_ID + "] client module.");
 	}
 }

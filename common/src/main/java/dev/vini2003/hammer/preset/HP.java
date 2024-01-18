@@ -43,6 +43,6 @@ public class HP {
 		HPRoles.init();
 		HPChannels.init();
 		
-		HC.LOGGER.info("Initialized '" + HC.PRESET_MODULE_ID + "' module.");
+		HC.LOGGER.info("Initialized [" + HC.PRESET_MODULE_ID + "] module.");
 	}
 }

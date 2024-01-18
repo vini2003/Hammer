@@ -43,6 +43,6 @@ public class HGUI {
 			HGUICommands.init();
 		}
 		
-		HC.LOGGER.info("Initialized '" + HC.GUI_MODULE_ID + "' module.");
+		HC.LOGGER.info("Initialized [" + HC.GUI_MODULE_ID + "] module.");
 	}
 }

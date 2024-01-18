@@ -30,6 +30,6 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.Internal
 public class HPClient {
 	public static void onInitializeClient() {
-		HC.LOGGER.info("Initialized '" + HC.PRESET_MODULE_ID + "' client module.");
+		HC.LOGGER.info("Initialized [" + HC.PRESET_MODULE_ID + "] client module.");
 	}
 }

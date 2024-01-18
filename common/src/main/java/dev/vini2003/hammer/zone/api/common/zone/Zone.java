@@ -445,7 +445,6 @@ public class Zone {
 		this.setMinPos(centerPos);
 		this.setMaxPos(centerPos);
 		
-		// TODO: Check if this works as expected.
 		this.setGroup(null);
 	}
 	

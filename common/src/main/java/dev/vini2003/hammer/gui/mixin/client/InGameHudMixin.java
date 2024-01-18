@@ -125,7 +125,6 @@ public abstract class InGameHudMixin implements WidgetCollection, WidgetCollecti
 			}
 		}
 		
-		// TODO: Check if this is equivalent to the 1.19.2 code.
 		getChildren().stream()
 					 .filter(widget -> !widget.isHidden())
 					 .forEach(widget -> widget.draw(matrices, provider, tickDelta));

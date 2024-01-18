@@ -150,7 +150,6 @@ public class HCArgumentTypes {
 			}
 		});
 		
-		// TODO: Check if this is equivalent to the 1.19.2 code.
 		CommandManager.registerArgumentTypeGetter(EntityArgumentType.class, (context, name) -> {
 			try {
 				return EntityArgumentType.getEntity(context, name);

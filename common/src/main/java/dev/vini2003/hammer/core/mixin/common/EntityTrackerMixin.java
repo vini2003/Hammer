@@ -83,7 +83,6 @@ public abstract class EntityTrackerMixin {
 			buf.writeNbt(containerNbt);
 			buf.writeInt(entity.getId());
 			
-			// TODO: Ask Daniel.
 			return (Packet<ClientPlayPacketListener>) NetworkManager.toPacket(NetworkManager.Side.S2C, HCNetworking.SYNC_COMPONENT_CONTAINER, buf);
 		}
 		

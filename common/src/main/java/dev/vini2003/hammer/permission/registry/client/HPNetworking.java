@@ -48,7 +48,6 @@ public class HPNetworking {
 				holders.add(buf.readUuid());
 			}
 			
-			// TODO: Use List setter.
 			client.execute(() -> {
 				var role = RoleManager.getRoleByName(name);
 				

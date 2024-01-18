@@ -30,7 +30,6 @@ public class HCEvents {
 	public static void init() {
 		PlayerEvent.PLAYER_CLONE.register((oldPlayer, newPlayer, alive) -> {
 			newPlayer.hammer$setShowChat(oldPlayer.hammer$shouldShowChat());
-			newPlayer.hammer$setShowGlobalChat(oldPlayer.hammer$shouldShowGlobalChat());
 			newPlayer.hammer$setShowCommandFeedback(oldPlayer.hammer$shouldShowCommandFeedback());
 			newPlayer.hammer$setShowWarnings(oldPlayer.hammer$shouldShowWarnings());
 			newPlayer.hammer$setShowDirectMessages(oldPlayer.hammer$shouldShowDirectMessages());

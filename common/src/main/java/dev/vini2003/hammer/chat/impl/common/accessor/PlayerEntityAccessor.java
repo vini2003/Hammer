@@ -38,14 +38,6 @@ public interface PlayerEntityAccessor {
 		throw new NoMixinException();
 	}
 	
-	default void hammer$setShowGlobalChat(boolean showGlobalChat) {
-		throw new NoMixinException();
-	}
-	
-	default boolean hammer$shouldShowGlobalChat() {
-		throw new NoMixinException();
-	}
-	
 	default void hammer$setShowCommandFeedback(boolean showFeedback) {
 		throw new NoMixinException();
 	}

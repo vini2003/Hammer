@@ -47,7 +47,7 @@ public class ChatHudMixin {
 		var player = client.player;
 		if (player == null) return;
 		
-		if (!player.hammer$shouldShowChat() || !player.hammer$shouldShowGlobalChat()) {
+		if (!player.hammer$shouldShowChat()) {
 			ci.cancel();
 		}
 	}

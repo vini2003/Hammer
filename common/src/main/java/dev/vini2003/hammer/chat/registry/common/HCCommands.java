@@ -258,33 +258,6 @@ public class HCCommands {
 		return executeChannelSelect(context, getPlayers(context, "players"));
 	}
 	
-	// Enables or disables the global chat.
-	private static int executeShowGlobalChat(CommandContext<ServerCommandSource> context) {
-		var source = context.getSource();
-		var server = source.getServer();
-		
-		var playerManager = server.getPlayerManager();
-		var players = playerManager.getPlayerList();
-		
-		var ref = new Object() {
-			boolean state;
-		};
-		
-		try {
-			ref.state = BoolArgumentType.getBool(context, "state");
-		} catch (Exception e) {
-			ref.state = !players.iterator().next().hammer$shouldShowGlobalChat();
-		}
-		
-		for (var player : players) {
-			player.hammer$setShowGlobalChat(ref.state);
-		}
-		
-		source.sendFeedback(Text.translatable("command.hammer.show_global_chat", ref.state ? Text.translatable("text.hammer.enabled.lower_case") : Text.translatable("text.hammer.disabled.lower_case")), true);
-		
-		return Command.SINGLE_SUCCESS;
-	}
-	
 	// Enables or disables the chat.
 	private static int executeShowChat(CommandContext<ServerCommandSource> context, Collection<ServerPlayerEntity> players) {
 		var ref = new Object() {
@@ -613,14 +586,6 @@ public class HCCommands {
 											).executes(HCCommands::executeChannelSelectPlayer)
 			);
 			
-			var showGlobalChatNode =
-					literal("global_chat")
-							.requires(HCCommands::requiresOp)
-							.then(
-									argument("state", bool())
-											.executes(HCCommands::executeShowGlobalChat)
-							);
-			
 			var showChatNode =
 					literal("chat")
 							.then(
@@ -707,7 +672,6 @@ public class HCCommands {
 			channelNode.then(channelDeleteNode);
 			channelNode.then(channelSelectNode);
 			
-			dispatcher.register(showGlobalChatNode);
 			dispatcher.register(showChatNode);
 			dispatcher.register(showWarningsNode);
 			dispatcher.register(showCommandFeedbackNode);

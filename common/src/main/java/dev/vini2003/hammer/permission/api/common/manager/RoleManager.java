@@ -39,9 +39,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class RoleManager {
-	private static class PersistentData extends PersistentObject {
+	public static class PersistentData extends PersistentObject {
 		public List<Role> roles = new ArrayList<>();
 		public Map<String, Role> rolesByName = new HashMap<>();
+		
+		public PersistentData() {
+		}
 	}
 	
 	private static final PersistentData PERSISTENT_DATA = PersistentObject.getOrCreate("roles", PersistentData.class);
@@ -125,7 +128,6 @@ public class RoleManager {
 	public static final class JoinListener implements PlayerEvent.PlayerJoin {
 		@Override
 		public void join(ServerPlayerEntity player) {
-			// TODO: Verify.
 			var server = player.getServer();
 			if (server == null) return;
 			

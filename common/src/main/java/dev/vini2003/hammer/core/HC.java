@@ -28,10 +28,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.vini2003.hammer.core.api.common.util.HammerUtil;
-import dev.vini2003.hammer.core.registry.common.HCArgumentTypes;
-import dev.vini2003.hammer.core.registry.common.HCComponents;
-import dev.vini2003.hammer.core.registry.common.HCEvents;
-import dev.vini2003.hammer.core.registry.common.HCNetworking;
+import dev.vini2003.hammer.core.impl.common.config.HCConfig;
+import dev.vini2003.hammer.core.registry.common.*;
+import dev.vini2003.hammer.persistence.api.common.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.command.argument.serialize.ArgumentSerializer;
 import net.minecraft.item.Item;
@@ -65,6 +64,8 @@ public class HC {
 	public static final String ZONE_MODULE_ID = "zone";
 	
 	public static final String ID = "hammer";
+	
+	public static final HCConfig CONFIG = Config.getOrCreate(ID, HCConfig.class);
 	
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	

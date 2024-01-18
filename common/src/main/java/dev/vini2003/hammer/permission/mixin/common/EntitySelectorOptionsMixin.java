@@ -45,7 +45,7 @@ public abstract class EntitySelectorOptionsMixin {
 	
 	@Shadow
 	private static void putOption(String id, EntitySelectorOptions.SelectorHandler handler, Predicate<EntitySelectorReader> condition, Text description) {
-		throw new AssertionError("");
+		throw new AssertionError();
 	}
 	
 	@Inject(at = @At("RETURN"), method = "register")

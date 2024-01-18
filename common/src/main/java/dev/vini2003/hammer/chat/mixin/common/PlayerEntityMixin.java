@@ -45,7 +45,6 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	public abstract void remove(RemovalReason reason);
 	
 	private final TrackedDataHandler<Boolean> hammer$showChat = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true,"ShowChat");
-	private final TrackedDataHandler<Boolean> hammer$showGlobalChat = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "ShowGlobalChat");
 	private final TrackedDataHandler<Boolean> hammer$showCommandFeedback = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "ShowCommandFeedback");
 	private final TrackedDataHandler<Boolean> hammer$showWarnings = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "ShowWarnings");
 	private final TrackedDataHandler<Boolean> hammer$showDirectMessages = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "ShowDirectMessages");
@@ -74,16 +73,6 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	@Override
 	public boolean hammer$shouldShowChat() {
 		return hammer$showChat.get();
-	}
-	
-	@Override
-	public void hammer$setShowGlobalChat(boolean showGlobalChat) {
-		hammer$showGlobalChat.set(showGlobalChat);
-	}
-	
-	@Override
-	public boolean hammer$shouldShowGlobalChat() {
-		return hammer$showGlobalChat.get();
 	}
 	
 	@Override

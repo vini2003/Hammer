@@ -62,7 +62,6 @@ public class HPEvents {
 			player.hammer$setShowWarnings(HP.CONFIG.defaultShowWarnings);
 			player.hammer$setShowCommandFeedback(HP.CONFIG.defaultShowCommandFeedback);
 			player.hammer$setShowChat(HP.CONFIG.defaultShowChat);
-			player.hammer$setShowGlobalChat(HP.CONFIG.defaultShowGlobalChat);
 			
 			player.hammer$setFastChatFade(HP.CONFIG.defaultFastChatFade);
 			

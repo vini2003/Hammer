@@ -16,7 +16,6 @@ public class HPConfig extends Config {
 	public boolean defaultShowWarnings = false;
 	public boolean defaultShowCommandFeedback = false;
 	public boolean defaultShowChat = true;
-	public boolean defaultShowGlobalChat = true;
 	
 	public boolean defaultFastChatFade = false;
 	

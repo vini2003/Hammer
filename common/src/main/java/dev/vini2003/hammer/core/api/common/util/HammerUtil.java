@@ -1,6 +1,7 @@
 package dev.vini2003.hammer.core.api.common.util;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import dev.vini2003.hammer.core.api.common.exception.NoPlatformImplementationException;
 
 public class HammerUtil {
 	public static void executeIfModuleEnabled(String moduleId, Runnable runnable) {
@@ -11,7 +12,7 @@ public class HammerUtil {
 	
 	@ExpectPlatform
 	public static boolean isModuleEnabled(String moduleId) {
-		throw new AssertionError();
+		throw new NoPlatformImplementationException();
 	}
 	
 	public static void initializeIfModuleEnabled(String moduleId, String initializerClassPath) {

@@ -27,6 +27,7 @@ package dev.vini2003.hammer.core.api.common.util;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.vini2003.hammer.core.api.client.util.DrawingUtil;
 import dev.vini2003.hammer.core.api.client.util.InstanceUtil;
+import dev.vini2003.hammer.core.api.common.exception.NoPlatformImplementationException;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -67,6 +68,6 @@ public class TextUtil {
 	
 	@ExpectPlatform
 	public static MutableText getModId(Identifier id) {
-		throw new AssertionError();
+		throw new NoPlatformImplementationException();
 	}
 }

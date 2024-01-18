@@ -25,6 +25,7 @@
 package dev.vini2003.hammer.core.api.client.util;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import dev.vini2003.hammer.core.api.common.exception.NoPlatformImplementationException;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.ApiStatus;
@@ -37,12 +38,12 @@ public class InstanceUtil {
 	
 	@ExpectPlatform
 	public static Path getConfigPath() {
-		throw new AssertionError();
+		throw new NoPlatformImplementationException();
 	}
 	
 	@ExpectPlatform
 	public static Path getPersistentObjectPath() {
-		throw new AssertionError();
+		throw new NoPlatformImplementationException();
 	}
 	
 	public static MinecraftClient getClient() {
@@ -55,17 +56,17 @@ public class InstanceUtil {
 	
 	@ExpectPlatform
 	public static boolean isClient() {
-		throw new AssertionError();
+		throw new NoPlatformImplementationException();
 	}
 	
 	@ExpectPlatform
 	public static boolean isServer() {
-		throw new AssertionError();
+		throw new NoPlatformImplementationException();
 	}
 	
 	@ExpectPlatform
 	public static boolean isDevelopmentEnvironment() {
-		throw new AssertionError();
+		throw new NoPlatformImplementationException();
 	}
 	
 	@ApiStatus.Internal

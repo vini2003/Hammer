@@ -84,13 +84,13 @@ public class MinecraftClientMixin {
 			
 			try (var nativeImage = NativeImage.read(is)) {
 				if (MinecraftClient.IS_SYSTEM_MAC) {
-					MacWindowUtil.setApplicationIconImage(() -> is);
+					MacWindowUtil.setApplicationIconImage(is);
 				} else {
 					try (var memoryStack = MemoryStack.stackPush()) {
 						var buffer = GLFWImage.malloc(1, memoryStack);
 						
 						var byteBuffer = MemoryUtil.memAlloc(nativeImage.getWidth() * nativeImage.getHeight() * 4);
-						byteBuffer.asIntBuffer().put(nativeImage.copyPixelsRgba());
+						byteBuffer.asIntBuffer().put(nativeImage.makePixelArray());
 						
 						buffer.position(0);
 						buffer.width(nativeImage.getWidth());

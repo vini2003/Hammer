@@ -6,9 +6,9 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,7 +29,7 @@ public class BlockEntityRenderDispatcherMixin {
 			
 			blockEntity.getWorld().getPlayers().forEach(player -> {
 				player.sendMessage(Text.translatable("warning.hammer.block_entity_failed_to_render").formatted(Formatting.RED, Formatting.BOLD), false);
-				player.sendMessage(Text.literal(Registries.BLOCK_ENTITY_TYPE.getId(blockEntity.getType()) + " at " + blockEntity.getPos().toString()).formatted(Formatting.RED), false);
+				player.sendMessage(Text.literal(Registry.BLOCK_ENTITY_TYPE.getId(blockEntity.getType()) + " at " + blockEntity.getPos().toString()).formatted(Formatting.RED), false);
 			});
 			
 			blockEntity.markRemoved();

@@ -30,7 +30,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.networking.NetworkManager;
-import dev.vini2003.hammer.core.registry.common.HCConfig;
+import dev.vini2003.hammer.core.HC;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.command.ServerCommandSource;
@@ -56,9 +56,9 @@ public class HUCommands {
 	private static int executeToggleEnd(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
 		
-		HCConfig.ENABLE_END = !HCConfig.ENABLE_END;
+		HC.CONFIG.disableEnd = !HC.CONFIG.disableEnd;
 		
-		source.sendFeedback(() -> Text.translatable("command.hammer." + (HCConfig.ENABLE_END ? "enable" : "disable") + "_end"), true);
+		source.sendFeedback(() -> Text.translatable("command.hammer." + (!HC.CONFIG.disableEnd ? "enable" : "disable") + "_end"), true);
 		
 		return Command.SINGLE_SUCCESS;
 	}
@@ -66,10 +66,10 @@ public class HUCommands {
 	// Enables or disables the Nether.
 	private static int executeToggleNether(CommandContext<ServerCommandSource> context) {
 		var source = context.getSource();
+
+		HC.CONFIG.disableNether = !HC.CONFIG.disableNether;
 		
-		HCConfig.ENABLE_NETHER = !HCConfig.ENABLE_NETHER;
-		
-		source.sendFeedback(() -> Text.translatable("command.hammer." + (HCConfig.ENABLE_NETHER ? "enable" : "disable") + "_nether"), true);
+		source.sendFeedback(() -> Text.translatable("command.hammer." + (!HC.CONFIG.disableNether ? "enable" : "disable") + "_nether"), true);
 		
 		return Command.SINGLE_SUCCESS;
 	}

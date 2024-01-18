@@ -26,7 +26,6 @@ package dev.vini2003.hammer.util.registry.common;
 
 import dev.architectury.registry.registries.RegistrySupplier;
 import dev.vini2003.hammer.core.HC;
-import dev.vini2003.hammer.core.registry.common.HCConfig;
 import dev.vini2003.hammer.util.api.common.item.TriggerItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -125,9 +124,9 @@ public class HUItems {
 	public static final RegistrySupplier<Item> TOGGLE_END = HC.getItemRegistry().register(HC.id("toggle_end"),
 			() -> TriggerItem.builder()
 					   .trigger((world, user, hand) -> {
-						   HCConfig.ENABLE_END = !HCConfig.ENABLE_END;
+						   HC.CONFIG.disableEnd = !HC.CONFIG.disableEnd;
 						
-						   user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer." + (HCConfig.ENABLE_END ? "enable" : "disable") + "_end"), true);
+						   user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer." + (!HC.CONFIG.disableEnd ? "enable" : "disable") + "_end"), true);
 					   })
 					   .side(false, true)
 					   .raycast(false, false)
@@ -138,9 +137,9 @@ public class HUItems {
 	public static final RegistrySupplier<Item> TOGGLE_NETHER = HC.getItemRegistry().register(HC.id("toggle_nether"),
 			() -> TriggerItem.builder()
 					   .trigger((world, user, hand) -> {
-						   HCConfig.ENABLE_NETHER = !HCConfig.ENABLE_NETHER;
+						   HC.CONFIG.disableNether = !HC.CONFIG.disableNether;
 				
-						   user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer." + (HCConfig.ENABLE_NETHER ? "enable" : "disable") + "_nether"), true);
+						   user.getCommandSource().sendFeedback(() -> Text.translatable("command.hammer." + (!HC.CONFIG.disableNether ? "enable" : "disable") + "_nether"), true);
 					   })
 					   .side(false, true)
 					   .raycast(false, false)

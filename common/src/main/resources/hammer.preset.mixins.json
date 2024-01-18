@@ -18,8 +18,7 @@
     "client.MinecraftClientMixin",
     "client.PlayerListHudMixin",
     "client.TitleScreenMixin",
-    "client.ToastManagerMixin",
-    "client.VideoOptionsScreenMixin"
+    "client.ToastManagerMixin"
   ],
   "injectors" : {
     "defaultRequire" : 1

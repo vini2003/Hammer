@@ -4,7 +4,6 @@ import dev.vini2003.hammer.config.api.common.config.Config;
 
 public class HPConfig extends Config {
 	public boolean disableToasts = true;
-	public boolean disableFabulousGraphics = true;
 	public boolean disableSinglePlayer = false;
 	
 	public boolean hideServerAddress = true;
@@ -23,9 +22,7 @@ public class HPConfig extends Config {
 	
 	public boolean disableJoinMessages = false;
 	public boolean disableLeaveMessages = false;
-	
-	public String iconLowResPath = "/assets/hammer/icons/icon_16x16.png";
-	public String iconHighResPath = "/assets/hammer/icons/icon_32x32.png";
-	
+
 	public String windowName = "";
+	public String windowIcon = "";
 }

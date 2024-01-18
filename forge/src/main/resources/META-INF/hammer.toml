@@ -1,1 +1,1 @@
-modules = [ "Ana Castela", "gravity" ]
+modules = [ "core", "permission", "chat", "border", "gravity", "gui", "preset", "util", "zone" ]

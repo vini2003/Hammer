@@ -34,11 +34,11 @@ public abstract class ServerPlayNetworkHandlerMixin {
 			e.printStackTrace();
 			
 			playerEntity.getWorld().getPlayers().forEach(player -> {
-				player.sendMessage(Text.literal("A player failed to tick!").formatted(Formatting.RED, Formatting.BOLD), false);
+				player.sendMessage(Text.translatable("warning.hammer.player_failed_to_tick").formatted(Formatting.RED, Formatting.BOLD), false);
 				player.sendMessage(player.getDisplayName().copy().append(Text.literal(Registry.ENTITY_TYPE.getId(playerEntity.getType()) + " at " + playerEntity.getBlockPos().toString() + " with UUID " + playerEntity.getUuidAsString()).formatted(Formatting.RED)), false);
 			});
 
-			disconnect(Text.of("Your player failed to tick!"));
+			disconnect(Text.translatable("warning.hammer.own_player_failed_to_tick"));
 		}
 	}
 }

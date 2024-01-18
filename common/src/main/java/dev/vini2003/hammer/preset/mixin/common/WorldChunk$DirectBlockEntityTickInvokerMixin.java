@@ -26,7 +26,7 @@ public class WorldChunk$DirectBlockEntityTickInvokerMixin {
 			e.printStackTrace();
 			
 			world.getPlayers().forEach(player -> {
-				player.sendMessage(Text.literal("A block entity failed to tick!").formatted(Formatting.RED, Formatting.BOLD), false);
+				player.sendMessage(Text.translatable("warning.hammer.block_entity_failed_to_tick").formatted(Formatting.RED, Formatting.BOLD), false);
 				player.sendMessage(Text.literal(Registry.BLOCK_ENTITY_TYPE.getId(blockEntity.getType()) + " at " + blockEntity.getPos().toString()).formatted(Formatting.RED), false);
 			});
 			

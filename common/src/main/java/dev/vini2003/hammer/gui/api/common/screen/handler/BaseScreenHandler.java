@@ -94,8 +94,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
-			// TODO: Check if this is equivalent to the 1.20.1 code.
+			player.sendMessage(Text.translatable("warning.hammer.screen_generic_error").formatted(Formatting.RED, Formatting.BOLD));
 			close(player);
 		}
 	}
@@ -113,8 +112,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 			screen.backgroundHeight = (int) shape.getHeight();
 		} catch (Exception e) {
 			e.printStackTrace();
-			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
-			// TODO: Check if this is equivalent to the 1.20.1 code.
+			player.sendMessage(Text.translatable("warning.hammer.screen_generic_error").formatted(Formatting.RED, Formatting.BOLD));
 			close(player);
 		}
 	}
@@ -169,8 +167,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
-			// TODO: Check if this is equivalent to the 1.20.1 code.
+			player.sendMessage(Text.translatable("warning.hammer.screen_generic_error").formatted(Formatting.RED, Formatting.BOLD));
 			close(player);
 		}
 	}
@@ -184,8 +181,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 			Root.super.add(child);
 		}  catch (Exception e) {
 			e.printStackTrace();
-			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
-			// TODO: Check if this is equivalent to the 1.20.1 code.
+			player.sendMessage(Text.translatable("warning.hammer.screen_generic_error").formatted(Formatting.RED, Formatting.BOLD));
 			close(player);
 		}
 	}
@@ -214,8 +210,7 @@ public abstract class BaseScreenHandler extends ScreenHandler implements WidgetC
 			}
 		}  catch (Exception e) {
 			e.printStackTrace();
-			player.sendMessage(Text.literal("An error has occurred with this screen, please check your logs for more information.").formatted(Formatting.RED, Formatting.BOLD));
-			// TODO: Check if this is equivalent to the 1.20.1 code.
+			player.sendMessage(Text.translatable("warning.hammer.screen_generic_error").formatted(Formatting.RED, Formatting.BOLD));
 			close(player);
 		}
 	}

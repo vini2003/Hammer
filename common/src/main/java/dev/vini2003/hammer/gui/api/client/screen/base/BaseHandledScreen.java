@@ -74,10 +74,9 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			HC.LOGGER.error("A screen failed to initialize!");
 			e.printStackTrace();
 			
-			handler.getPlayer().sendMessage(Text.literal("A screen failed to initialize!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.translatable("warning.hammer.screen_initialization_failed").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			// TODO: Check if this is equivalent to the 1.20.1 code.
 			handler.close(handler.getPlayer());
 		}
 	}
@@ -115,10 +114,9 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
 			
-			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.translatable("warning.hammer.screen_failed_to_handle_event").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			// TODO: Check if this is equivalent to the 1.20.1 code.
 			handler.close(handler.getPlayer());
 			
 			return false;
@@ -137,10 +135,9 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
 			
-			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.translatable("warning.hammer.screen_failed_to_handle_event").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			// TODO: Check if this is equivalent to the 1.20.1 code.
 			handler.close(handler.getPlayer());
 			
 			return false;
@@ -159,10 +156,9 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
 			
-			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.translatable("warning.hammer.screen_failed_to_handle_event").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			// TODO: Check if this is equivalent to the 1.20.1 code.
 			handler.close(handler.getPlayer());
 			
 			return false;
@@ -181,10 +177,9 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
 			
-			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.translatable("warning.hammer.screen_failed_to_handle_event").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			// TODO: Check if this is equivalent to the 1.20.1 code.
 			handler.close(handler.getPlayer());
 		}
 	}
@@ -201,10 +196,9 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
 			
-			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.translatable("warning.hammer.screen_failed_to_handle_event").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			// TODO: Check if this is equivalent to the 1.20.1 code.
 			handler.close(handler.getPlayer());
 			
 			return false;
@@ -235,10 +229,9 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
 			
-			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.translatable("warning.hammer.screen_failed_to_handle_event").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			// TODO: Check if this is equivalent to the 1.20.1 code.
 			handler.close(handler.getPlayer());
 			
 			return false;
@@ -257,10 +250,9 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
 			
-			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.translatable("warning.hammer.screen_failed_to_handle_event").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			// TODO: Check if this is equivalent to the 1.20.1 code.
 			handler.close(handler.getPlayer());
 			
 			return false;
@@ -279,10 +271,9 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			HC.LOGGER.error("A screen failed to handle an event!");
 			e.printStackTrace();
 			
-			handler.getPlayer().sendMessage(Text.literal("A screen failed to handle an event!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.translatable("warning.hammer.screen_failed_to_handle_event").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			// TODO: Check if this is equivalent to the 1.20.1 code.
 			handler.close(handler.getPlayer());
 			
 			return false;
@@ -331,10 +322,9 @@ public abstract class BaseHandledScreen<T extends BaseScreenHandler> extends Han
 			HC.LOGGER.error("A screen failed to render!");
 			e.printStackTrace();
 			
-			handler.getPlayer().sendMessage(Text.literal("A screen failed to render!").formatted(Formatting.RED, Formatting.BOLD));
+			handler.getPlayer().sendMessage(Text.translatable("warning.hammer.screen_failed_to_render").formatted(Formatting.RED, Formatting.BOLD));
 			handler.getPlayer().sendMessage(Text.literal(Registry.SCREEN_HANDLER.getId(handler.getType()) + " ").formatted(Formatting.RED, Formatting.BOLD));
 			
-			// TODO: Check if this is equivalent to the 1.20.1 code.
 			handler.close(handler.getPlayer());
 		}
 	}

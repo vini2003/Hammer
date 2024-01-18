@@ -28,12 +28,13 @@ public class EntityRenderDispatcherMixin {
 			e.printStackTrace();
 			
 			entity.getWorld().getPlayers().forEach(player -> {
-				player.sendMessage(Text.literal("An entity failed to render!").formatted(Formatting.RED, Formatting.BOLD), false);
+				player.sendMessage(Text.translatable("warning.hammer.entity_failed_to_render").formatted(Formatting.RED, Formatting.BOLD), false);
 				player.sendMessage(Text.literal(Registry.ENTITY_TYPE.getId(entity.getType()) + " at " + entity.getBlockPos().toString() + " with UUID " + entity.getUuidAsString()).formatted(Formatting.RED), false);
 			});
 			
 			entity.remove(Entity.RemovalReason.DISCARDED);
 			
+			matrices.pop();
 			hammer$cancelRender = true;
 		}
 	}

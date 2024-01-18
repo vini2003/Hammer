@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(PlayerManager.class)
 public class PlayerManagerMixin {
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;broadcast(Lnet/minecraft/text/Text;Z)V"), method = "onPlayerConnect")
-	private void hammer$onPlayerConnect(PlayerManager instance, Text message, boolean overlay) {
+	private void hammer$onPlayerConnect$broadcast(PlayerManager instance, Text message, boolean overlay) {
 		if (!HP.CONFIG.disableJoinMessages) {
 			instance.broadcast(message, overlay);
 		}

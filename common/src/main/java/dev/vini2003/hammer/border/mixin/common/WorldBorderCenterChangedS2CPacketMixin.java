@@ -39,14 +39,14 @@ public class WorldBorderCenterChangedS2CPacketMixin implements CubicWorldBorderC
 	private double centerY;
 	
 	@Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/world/border/WorldBorder;)V")
-	private void hammer$init_0(WorldBorder border, CallbackInfo ci) {
+	private void hammer$init$0(WorldBorder border, CallbackInfo ci) {
 		var extendedBorder = (CubicWorldBorder) border;
 		
 		centerY = extendedBorder.getCenterY();
 	}
 	
 	@Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/network/PacketByteBuf;)V")
-	private void hammer$init_1(PacketByteBuf buf, CallbackInfo ci) {
+	private void hammer$init$1(PacketByteBuf buf, CallbackInfo ci) {
 		centerY = buf.readDouble();
 	}
 	

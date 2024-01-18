@@ -54,7 +54,7 @@ public class WorldBorderCommandMixin {
 					target = "Lnet/minecraft/server/command/CommandManager;argument(Ljava/lang/String;Lcom/mojang/brigadier/arguments/ArgumentType;)Lcom/mojang/brigadier/builder/RequiredArgumentBuilder;",
 					ordinal = 4),
 			index = 1)
-	private static ArgumentType<?> hammer$modifyArgumentType(ArgumentType<?> original) {
+	private static ArgumentType<?> hammer$register$argument(ArgumentType<?> original) {
 		return Vec3ArgumentType.vec3();
 	}
 	
@@ -63,7 +63,7 @@ public class WorldBorderCommandMixin {
 					target = "Lcom/mojang/brigadier/builder/RequiredArgumentBuilder;executes(Lcom/mojang/brigadier/Command;)Lcom/mojang/brigadier/builder/ArgumentBuilder;",
 					ordinal = 4),
 			index = 0)
-	private static Command<ServerCommandSource> hammer$modifyExecutes(Command<ServerCommandSource> original) {
+	private static Command<ServerCommandSource> hammer$register$executes(Command<ServerCommandSource> original) {
 		return context -> {
 			var source = context.getSource();
 			

@@ -19,7 +19,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
 	public abstract void disconnect(Text reason);
 	
 	@Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;broadcast(Lnet/minecraft/text/Text;Z)V"), method = "onDisconnected")
-	private void hammer$onDisconnected(PlayerManager instance, Text message, boolean overlay) {
+	private void hammer$onDisconnected$broadcast(PlayerManager instance, Text message, boolean overlay) {
 		if (!HP.CONFIG.disableLeaveMessages) {
 			instance.broadcast(message, overlay);
 		}

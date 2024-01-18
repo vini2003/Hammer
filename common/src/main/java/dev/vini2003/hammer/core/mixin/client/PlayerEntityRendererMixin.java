@@ -19,7 +19,6 @@ public class PlayerEntityRendererMixin {
 	void hammer$setModelPose(AbstractClientPlayerEntity player, CallbackInfo ci) {
 		var model = hammer$self().getModel();
 		
-		
 		model.head.visible = player.hammer$hasHead();
 		model.hat.visible = player.hammer$hasHead() && InstanceUtil.getClient().options.isPlayerModelPartEnabled(PlayerModelPart.HAT);
 		model.ear.visible = player.hammer$hasHead();

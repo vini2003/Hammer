@@ -1,8 +1,10 @@
 package dev.vini2003.hammer.core.api.common.util;
 
+import dev.architectury.injectables.annotations.ExpectPlatform;
+
 public class FluidUtil {
+	@ExpectPlatform
 	public static long getBucketCapacity() {
-		// TODO: Change based on Fabric or Forge.
-		return 81_000L;
+		throw new AssertionError();
 	}
 }

@@ -5,7 +5,7 @@ import dev.vini2003.hammer.config.api.common.config.Config;
 public class HPConfig extends Config {
 	public boolean disableToasts = true;
 	public boolean disableFabulousGraphics = true;
-	public boolean disableSinglePlayer = true;
+	public boolean disableSinglePlayer = false;
 	
 	public boolean hideServerAddress = true;
 	

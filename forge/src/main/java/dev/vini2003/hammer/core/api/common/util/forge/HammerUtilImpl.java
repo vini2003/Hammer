@@ -14,56 +14,69 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.ZipFile;
 
 public class HammerUtilImpl {
+	@Nullable
+	private static Set<String> enabledModules = null;
+	
 	public static boolean isModuleEnabled(String moduleId) {
-		return LoadingModList.get()
-					  .getModFiles()
-					  .stream()
-					  .map(ModFileInfo::getFile)
-					  .map(ModFile::getFilePath)
-					  .anyMatch(path -> {
-						  @Nullable
-						  File file;
-						  
-						  try {
-							  file = path.toFile();
-						  } catch (Exception e) {
-							  return false;
-						  }
-						  
-						  @Nullable CommentedConfig hammerToml = null;
-						  
-						  if (file.isDirectory()) {
-							  var hammerTomlPath = Path.of(file.getAbsolutePath(), "META-INF", "hammer.toml");
+		if (enabledModules == null) {
+			enabledModules = new HashSet<>();
+			
+			LoadingModList.get()
+						  .getModFiles()
+						  .stream()
+						  .map(ModFileInfo::getFile)
+						  .map(ModFile::getFilePath)
+						  .forEach(path -> {
+							  @Nullable
+							  File file;
 							  
-							  if (hammerTomlPath.toFile().exists()) {
-								  try (var hammerTomlInputStream = new FileInputStream(hammerTomlPath.toFile())) {
-									  hammerToml = new TomlParser().parse(new BufferedReader(new InputStreamReader(hammerTomlInputStream, StandardCharsets.UTF_8)));
+							  try {
+								  file = path.toFile();
+							  } catch (Exception e) {
+								  return;
+							  }
+							  
+							  @Nullable CommentedConfig hammerToml = null;
+							  
+							  if (file.isDirectory()) {
+								  var hammerTomlPath = Path.of(file.getAbsolutePath(), "META-INF", "hammer.toml");
+								  
+								  if (hammerTomlPath.toFile().exists()) {
+									  try (var hammerTomlInputStream = new FileInputStream(hammerTomlPath.toFile())) {
+										  hammerToml = new TomlParser().parse(new BufferedReader(new InputStreamReader(hammerTomlInputStream, StandardCharsets.UTF_8)));
+									  } catch (Exception ignored) {
+									  }
+								  }
+							  } else {
+								  try (var zipFile = new ZipFile(file)) {
+									  var hammerTomlEntry = zipFile.getEntry("META-INF/mods.toml");
+									  
+									  if (hammerTomlEntry != null) {
+										  try (var hammerTomlInputStream = zipFile.getInputStream(hammerTomlEntry)) {
+											  hammerToml = new TomlParser().parse(new BufferedReader(new InputStreamReader(hammerTomlInputStream, StandardCharsets.UTF_8)));
+										  }
+									  }
 								  } catch (Exception ignored) {
 								  }
 							  }
-						  } else {
-							  try (var zipFile = new ZipFile(file)) {
-								  var hammerTomlEntry = zipFile.getEntry("META-INF/mods.toml");
-								  
-								  if (hammerTomlEntry != null) {
-									  try (var hammerTomlInputStream = zipFile.getInputStream(hammerTomlEntry)) {
-										  hammerToml = new TomlParser().parse(new BufferedReader(new InputStreamReader(hammerTomlInputStream, StandardCharsets.UTF_8)));
-									  }
-								  }
-							  } catch (Exception ignored) {
+							  
+							  if (hammerToml == null) {
+								  return;
 							  }
-						  }
-						  
-						  if (hammerToml == null) {
-							  return false;
-						  }
-						  
-						  var modules = hammerToml.getOrElse("modules", Collections.emptyList());
-						  
-						  return modules.contains(moduleId);
-					  });
+							  
+							  var modules = hammerToml.getOrElse("modules", Collections.emptyList());
+							  
+							  modules.stream()
+									  .map(Object::toString)
+									  .forEach(enabledModules::add);
+						  });
+		}
+		
+		return enabledModules.contains(moduleId);
 	}
 }

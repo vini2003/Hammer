@@ -32,7 +32,6 @@ public class HammerUtilImpl {
 						  .map(ModFileInfo::getFile)
 						  .map(ModFile::getFilePath)
 						  .forEach(path -> {
-							  @Nullable
 							  File file;
 							  
 							  try {
@@ -41,7 +40,7 @@ public class HammerUtilImpl {
 								  return;
 							  }
 							  
-							  @Nullable CommentedConfig hammerToml = null;
+							  CommentedConfig hammerToml = null;
 							  
 							  if (file.isDirectory()) {
 								  var hammerTomlPath = Path.of(file.getAbsolutePath(), "META-INF", "hammer.toml");
@@ -54,7 +53,7 @@ public class HammerUtilImpl {
 								  }
 							  } else {
 								  try (var zipFile = new ZipFile(file)) {
-									  var hammerTomlEntry = zipFile.getEntry("META-INF/mods.toml");
+									  var hammerTomlEntry = zipFile.getEntry("META-INF/hammer.toml");
 									  
 									  if (hammerTomlEntry != null) {
 										  try (var hammerTomlInputStream = zipFile.getInputStream(hammerTomlEntry)) {
@@ -72,8 +71,10 @@ public class HammerUtilImpl {
 							  var modules = hammerToml.getOrElse("modules", Collections.emptyList());
 							  
 							  modules.stream()
-									  .map(Object::toString)
-									  .forEach(enabledModules::add);
+									 .map(Object::toString)
+									 .forEach(module -> {
+										 enabledModules.add(module);
+									 });
 						  });
 		}
 		

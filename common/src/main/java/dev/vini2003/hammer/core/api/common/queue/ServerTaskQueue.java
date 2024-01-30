@@ -27,17 +27,21 @@ package dev.vini2003.hammer.core.api.common.queue;
 import net.minecraft.server.MinecraftServer;
 
 import java.util.Collection;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 
 public class ServerTaskQueue {
-	private static final ThreadLocal<Queue<Task>> TASKS = ThreadLocal.withInitial(() -> new ConcurrentLinkedQueue<>());
+	private static final ThreadLocal<Collection<Task>> TASKS = ThreadLocal.withInitial(ConcurrentLinkedQueue::new);
 	
-	public static void enqueue(Consumer<MinecraftServer> action, long delay) {
+	@Deprecated
+	public static void enqueue(Consumer<MinecraftServer> action, long ticksRemaining) {
+		execute(action, ticksRemaining);
+	}
+	
+	public static void execute(Consumer<MinecraftServer> action, long ticksRemaining) {
 		var actions = getTasks();
 		
-		actions.add(new Task(action, delay));
+		actions.add(new Task(action, ticksRemaining));
 	}
 	
 	public static Collection<Task> getTasks() {
@@ -45,27 +49,24 @@ public class ServerTaskQueue {
 	}
 	
 	public static class Task {
-		private Consumer<MinecraftServer> action;
+		private final Consumer<MinecraftServer> action;
 		
-		private long delay;
+		private long ticksRemaining;
 		
-		private long remaining;
-		
-		public Task(Consumer<MinecraftServer> action, long delay) {
+		public Task(Consumer<MinecraftServer> action, long ticksRemaining) {
 			this.action = action;
-			this.delay = delay;
 			
-			this.remaining = delay;
+			this.ticksRemaining = ticksRemaining;
 		}
 		
 		public Consumer<MinecraftServer> getAction() {
 			return action;
 		}
 		
-		public long getRemaining() {
-			remaining -= 1;
+		public long getTicksRemaining() {
+			ticksRemaining -= 1;
 			
-			return remaining;
+			return ticksRemaining;
 		}
 	}
 }

@@ -43,7 +43,7 @@ public class HCEvents {
 			var tasksToRemove = new ArrayList<ClientTaskQueue.Task>();
 			
 			for (var task : tasks) {
-				if (task.getRemaining() <= 0) {
+				if (task.getTicksRemaining() <= 0) {
 					tasksToRemove.add(task);
 					
 					task.getAction().accept(client);

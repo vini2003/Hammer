@@ -28,15 +28,21 @@ import net.minecraft.client.MinecraftClient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 
 public class ClientTaskQueue {
-	private static final ThreadLocal<Collection<Task>> TASKS = ThreadLocal.withInitial(() -> new ArrayList());
+	private static final ThreadLocal<Collection<Task>> TASKS = ThreadLocal.withInitial(ConcurrentLinkedQueue::new);
 	
-	public static void enqueue(Consumer<MinecraftClient> action, long delay) {
+	@Deprecated
+	public static void enqueue(Consumer<MinecraftClient> action, long ticksRemaining) {
+		execute(action, ticksRemaining);
+	}
+	
+	public static void execute(Consumer<MinecraftClient> action, long ticksRemaining) {
 		var actions = getTasks();
 		
-		actions.add(new Task(action, delay));
+		actions.add(new Task(action, ticksRemaining));
 	}
 	
 	public static Collection<Task> getTasks() {
@@ -44,27 +50,24 @@ public class ClientTaskQueue {
 	}
 	
 	public static class Task {
-		private Consumer<MinecraftClient> action;
+		private final Consumer<MinecraftClient> action;
 		
-		private long delay;
+		private long ticksRemaining;
 		
-		private long remaining;
-		
-		public Task(Consumer<MinecraftClient> action, long delay) {
+		public Task(Consumer<MinecraftClient> action, long ticksRemaining) {
 			this.action = action;
-			this.delay = delay;
 			
-			this.remaining = delay;
+			this.ticksRemaining = ticksRemaining;
 		}
 		
 		public Consumer<MinecraftClient> getAction() {
 			return action;
 		}
 		
-		public long getRemaining() {
-			remaining -= 1;
+		public long getTicksRemaining() {
+			ticksRemaining -= 1;
 			
-			return remaining;
+			return ticksRemaining;
 		}
 	}
 }

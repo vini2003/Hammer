@@ -44,14 +44,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	@Shadow
 	public abstract void remove(RemovalReason reason);
 	
-	private final TrackedDataHandler<Boolean> hammer$showChat = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true,"ShowChat");
-	private final TrackedDataHandler<Boolean> hammer$showCommandFeedback = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "ShowCommandFeedback");
-	private final TrackedDataHandler<Boolean> hammer$showWarnings = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "ShowWarnings");
-	private final TrackedDataHandler<Boolean> hammer$showDirectMessages = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "ShowDirectMessages");
+	private final TrackedDataHandler<Boolean> hammer$showChat = hammer$registerTrackedData(true,"ShowChat");
+	private final TrackedDataHandler<Boolean> hammer$showCommandFeedback = hammer$registerTrackedData(false, "ShowCommandFeedback");
+	private final TrackedDataHandler<Boolean> hammer$showWarnings = hammer$registerTrackedData(false, "ShowWarnings");
+	private final TrackedDataHandler<Boolean> hammer$showDirectMessages = hammer$registerTrackedData(true, "ShowDirectMessages");
 	
-	private final TrackedDataHandler<Boolean> hammer$fastChatFade = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "FastChatFade");
+	private final TrackedDataHandler<Boolean> hammer$fastChatFade = hammer$registerTrackedData(false, "FastChatFade");
 	
-	private final TrackedDataHandler<Boolean> hammer$muted = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "Muted");
+	private final TrackedDataHandler<Boolean> hammer$muted = hammer$registerTrackedData(false, "Muted");
 	
 	private Channel hammer$selectedChannel = null;
 	

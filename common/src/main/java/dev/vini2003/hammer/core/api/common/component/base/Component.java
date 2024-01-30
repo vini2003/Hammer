@@ -27,6 +27,7 @@ package dev.vini2003.hammer.core.api.common.component.base;
 import dev.vini2003.hammer.core.api.common.manager.ComponentManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.world.World;
 
 /**
@@ -42,6 +43,14 @@ import net.minecraft.world.World;
  * <ul>
  *     <li>{@link #readFromNbt(NbtCompound)} - from {@link NbtCompound} to {@link Component}.</li>
  * </ul>
+ *
+ * <ul>
+ *     <li>{@link #writeToBuf(PacketByteBuf)} ()} - from {@link Component} to {@link PacketByteBuf}.</li>
+ * </ul>
+ *
+ * <ul>
+ *     <li>{@link #readFromBuf(PacketByteBuf)} - from {@link PacketByteBuf} to {@link Component}.</li>
+ * </ul>
  */
 public interface Component {
 	/**
@@ -55,4 +64,39 @@ public interface Component {
 	 * @param nbt the NBT tag.
 	 */
 	void readFromNbt(NbtCompound nbt);
+	
+	/**
+	 * Writes this component to a {@link PacketByteBuf}
+	 * for synchronization. This method is called because
+	 * often times, you wish to handle serialization to disk
+	 * and network synchronization differently, and
+	 * {@link NbtCompound} is not as space-efficient.
+	 *
+	 * Defaults to synchronizing using {@link #writeToNbt(NbtCompound)},
+	 * and then writing the NBT to the packet byte buffer.
+	 *
+	 * @return the packet byte buffer.
+	 */
+	default void writeToBuf(PacketByteBuf buf) {
+		var nbt = new NbtCompound();
+		writeToNbt(nbt);
+		buf.writeNbt(nbt);
+	}
+	
+	/**
+	 * Reads this component from a {@link PacketByteBuf}
+	 * for synchronization. This method is called because
+	 * often times, you wish to handle serialization to disk
+	 * and network synchronization differently, and
+	 * {@link NbtCompound} is not as space-efficient.
+	 *
+	 * Defaults to reading the NBT from the packet byte buffer,
+	 * and then deserializing using {@link #readFromNbt(NbtCompound)}.
+	 *
+	 * @param buf the packet byte buffer.
+	 */
+	default void readFromBuf(PacketByteBuf buf) {
+		var nbt = buf.readNbt();
+		readFromNbt(nbt);
+	}
 }

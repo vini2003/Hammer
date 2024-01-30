@@ -10,9 +10,10 @@ import static dev.vini2003.hammer.core.registry.common.HCNetworking.SYNC_COMPONE
 
 public class HCNetworking {
 	public static void init() {
+		// Note that this is not called often. Using a PacketByteBuf is not necessary
+		// to achieve reasonable performance here.
 		NetworkManager.registerReceiver(NetworkManager.Side.S2C, SYNC_COMPONENT_CONTAINER, (buf, context) -> {
 			var client = InstanceUtil.getClient();
-			var handler = client.getNetworkHandler();
 			
 			var compHolder = buf.readInt();
 			var containerNbt = buf.readNbt();
@@ -40,12 +41,12 @@ public class HCNetworking {
 		
 		NetworkManager.registerReceiver(NetworkManager.Side.S2C, SYNC_COMPONENT, (buf, context) -> {
 			var client = InstanceUtil.getClient();
-			var handler = client.getNetworkHandler();
 			
 			var compId = buf.readIdentifier();
 			var compKey = ComponentManager.getKey(compId);
 			var compHolder = buf.readInt();
-			var compNbt = buf.readNbt();
+			
+			buf.retain();
 			
 			switch (compHolder) {
 				case ComponentHolder.ENTITY -> {
@@ -54,7 +55,7 @@ public class HCNetworking {
 					client.execute(() -> {
 						if (client.world.getEntityById(entityId) instanceof ComponentHolder holder) {
 							var component = holder.getComponentContainer().get(compKey);
-							component.readFromNbt(compNbt);
+							component.readFromBuf(buf);
 						}
 					});
 				}
@@ -63,7 +64,7 @@ public class HCNetworking {
 					client.execute(() -> {
 						if (client.world instanceof ComponentHolder holder) {
 							var component = holder.getComponentContainer().get(compKey);
-							component.readFromNbt(compNbt);
+							component.readFromBuf(buf);
 						}
 					});
 				}

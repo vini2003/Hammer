@@ -49,7 +49,7 @@ import java.util.Collection;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEntityAccessor {
-	private final TrackedDataHandler<Boolean> hammer$roleOutline = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "RoleOutline");
+	private final TrackedDataHandler<Boolean> hammer$roleOutline = hammer$registerTrackedData(false, "RoleOutline");
 	
 	private PlayerEntity hammer$self() {
 		return (PlayerEntity) (Object) this;

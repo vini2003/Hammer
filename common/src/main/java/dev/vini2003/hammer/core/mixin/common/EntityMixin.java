@@ -24,6 +24,9 @@
 
 package dev.vini2003.hammer.core.mixin.common;
 
+import dev.vini2003.hammer.core.api.common.component.TrackedDataComponent;
+import dev.vini2003.hammer.core.api.common.data.TrackedDataHandler;
+import dev.vini2003.hammer.core.impl.common.accessor.EntityAccessor;
 import dev.vini2003.hammer.core.impl.common.component.container.ComponentContainer;
 import dev.vini2003.hammer.core.impl.common.component.holder.ComponentHolder;
 import dev.vini2003.hammer.core.impl.common.util.ComponentUtil;
@@ -41,12 +44,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
-public class EntityMixin implements ComponentHolder {
+public class EntityMixin implements ComponentHolder, EntityAccessor {
 	@Shadow
 	private Vec3d velocity;
 	
 	private Entity hammer$self() {
 		return (Entity) (Object) this;
+	}
+	
+	@Override
+	public <T> TrackedDataHandler<T> hammer$registerTrackedData(T defaultValue, String id) {
+		return TrackedDataComponent.get(this).register((Class<T>) defaultValue.getClass(), defaultValue, id);
 	}
 	
 	@Inject(at = @At("HEAD"), method = "setVelocity(Lnet/minecraft/util/math/Vec3d;)V", cancellable = true)

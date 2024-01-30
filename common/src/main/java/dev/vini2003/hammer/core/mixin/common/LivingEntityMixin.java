@@ -24,6 +24,7 @@
 
 package dev.vini2003.hammer.core.mixin.common;
 
+import dev.vini2003.hammer.core.impl.common.accessor.EntityAccessor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

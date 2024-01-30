@@ -64,25 +64,26 @@ public abstract class PlayerEntityMixin extends LivingEntity implements PlayerEn
 	@Shadow
 	@Final
 	private static Map<EntityPose, EntityDimensions> POSE_DIMENSIONS;
-	private final TrackedDataHandler<Boolean> hammer$frozen = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, false, "Frozen");
 	
-	private final TrackedDataHandler<Float> hammer$attackDamageMultiplier = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Float.class, 1.0F,"AttackDamageMultiplier");
-	private final TrackedDataHandler<Float> hammer$damageMultiplier = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Float.class, 1.0F, "DamageMultiplier");
-	private final TrackedDataHandler<Float> hammer$fallDamageMultiplier = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Float.class, 1.0F, "FallDamageMultiplier");
-	private final TrackedDataHandler<Float> hammer$movementSpeedMultiplier = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Float.class, 1.0F, "MovementSpeedMultiplier");
-	private final TrackedDataHandler<Float> hammer$jumpMultiplier = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Float.class, 1.0F, "JumpMultiplier");
-	private final TrackedDataHandler<Float> hammer$healMultiplier = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Float.class, 1.0F, "HealMultiplier");
-	private final TrackedDataHandler<Float> hammer$exhaustionMultiplier = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Float.class, 1.0F, "ExhaustionMultiplier");
+	private final TrackedDataHandler<Boolean> hammer$frozen = hammer$registerTrackedData(false, "Frozen");
 	
-	private final TrackedDataHandler<Boolean> hammer$head = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "Head");
-	private final TrackedDataHandler<Boolean> hammer$torso = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "Torso");
-	private final TrackedDataHandler<Boolean> hammer$leftArm = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "LeftArm");
-	private final TrackedDataHandler<Boolean> hammer$rightArm = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "RightArm");
-	private final TrackedDataHandler<Boolean> hammer$leftLeg = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "LeftLeg");
-	private final TrackedDataHandler<Boolean> hammer$rightLeg = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "RightLeg");
+	private final TrackedDataHandler<Float> hammer$attackDamageMultiplier = hammer$registerTrackedData(1.0F,"AttackDamageMultiplier");
+	private final TrackedDataHandler<Float> hammer$damageMultiplier = hammer$registerTrackedData(1.0F, "DamageMultiplier");
+	private final TrackedDataHandler<Float> hammer$fallDamageMultiplier = hammer$registerTrackedData(1.0F, "FallDamageMultiplier");
+	private final TrackedDataHandler<Float> hammer$movementSpeedMultiplier = hammer$registerTrackedData(1.0F, "MovementSpeedMultiplier");
+	private final TrackedDataHandler<Float> hammer$jumpMultiplier = hammer$registerTrackedData(1.0F, "JumpMultiplier");
+	private final TrackedDataHandler<Float> hammer$healMultiplier = hammer$registerTrackedData(1.0F, "HealMultiplier");
+	private final TrackedDataHandler<Float> hammer$exhaustionMultiplier = hammer$registerTrackedData(1.0F, "ExhaustionMultiplier");
 	
-	private final TrackedDataHandler<Boolean> hammer$allowMovement = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "AllowMovement");
-	private final TrackedDataHandler<Boolean> hammer$allowInteraction = new TrackedDataHandler<>(() -> TrackedDataComponent.get(this), Boolean.class, true, "AllowInteraction");
+	private final TrackedDataHandler<Boolean> hammer$head = hammer$registerTrackedData(true, "Head");
+	private final TrackedDataHandler<Boolean> hammer$torso = hammer$registerTrackedData(true, "Torso");
+	private final TrackedDataHandler<Boolean> hammer$leftArm = hammer$registerTrackedData(true, "LeftArm");
+	private final TrackedDataHandler<Boolean> hammer$rightArm = hammer$registerTrackedData(true, "RightArm");
+	private final TrackedDataHandler<Boolean> hammer$leftLeg = hammer$registerTrackedData(true, "LeftLeg");
+	private final TrackedDataHandler<Boolean> hammer$rightLeg = hammer$registerTrackedData(true, "RightLeg");
+	
+	private final TrackedDataHandler<Boolean> hammer$allowMovement = hammer$registerTrackedData(true, "AllowMovement");
+	private final TrackedDataHandler<Boolean> hammer$allowInteraction = hammer$registerTrackedData(true, "AllowInteraction");
 
 	protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
 		super(entityType, world);

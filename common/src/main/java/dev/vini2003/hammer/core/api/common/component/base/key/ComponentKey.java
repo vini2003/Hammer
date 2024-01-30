@@ -29,7 +29,6 @@ import dev.vini2003.hammer.core.impl.common.component.holder.ComponentHolder;
 import dev.vini2003.hammer.core.impl.common.util.ComponentUtil;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -76,9 +75,6 @@ public class ComponentKey<C extends Component> {
 		if (obj instanceof ComponentHolder holder) {
 			var component = holder.getComponentContainer().get(this);
 			
-			var componentNbt = new NbtCompound();
-			component.writeToNbt(componentNbt);
-			
 			var buf = new PacketByteBuf(Unpooled.buffer());
 			buf.writeIdentifier(id);
 			
@@ -90,7 +86,7 @@ public class ComponentKey<C extends Component> {
 				buf.writeInt(ComponentHolder.WORLD);
 			}
 			
-			buf.writeNbt(componentNbt);
+			component.writeToBuf(buf);
 			
 			if (obj instanceof Entity entity) {
 				buf.writeInt(entity.getId());

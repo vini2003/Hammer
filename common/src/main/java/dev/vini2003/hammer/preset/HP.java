@@ -26,10 +26,7 @@ package dev.vini2003.hammer.preset;
 
 import dev.vini2003.hammer.core.HC;
 import dev.vini2003.hammer.persistence.api.common.config.Config;
-import dev.vini2003.hammer.preset.registry.common.HPChannels;
-import dev.vini2003.hammer.preset.registry.common.HPConfig;
-import dev.vini2003.hammer.preset.registry.common.HPEvents;
-import dev.vini2003.hammer.preset.registry.common.HPRoles;
+import dev.vini2003.hammer.preset.registry.common.*;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
@@ -42,6 +39,7 @@ public class HP {
 		HPEvents.init();
 		HPRoles.init();
 		HPChannels.init();
+		HPCommands.init();
 		
 		HC.LOGGER.info("Initialized [" + HC.PRESET_MODULE_ID + "] module.");
 	}

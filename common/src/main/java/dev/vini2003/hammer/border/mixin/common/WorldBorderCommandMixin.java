@@ -77,7 +77,7 @@ public class WorldBorderCommandMixin {
 			cubicWorldBorder.setCenter(pos.x, pos.y, pos.z);
 			
 			source.sendFeedback(() ->
-							Text.translatable("commands.hammer.border.center.success",
+							Text.translatable("command.hammer.border.center.success",
 									String.format(Locale.ROOT, "%.2f", (float) pos.x),
 									String.format(Locale.ROOT, "%.2f", (float) pos.y),
 									String.format(Locale.ROOT, "%.2f", (float) pos.z)

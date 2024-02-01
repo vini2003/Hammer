@@ -45,7 +45,7 @@ public class TrackedDataHandler<T> {
 			data = defaultValue;
 		}
 		
-		return (T) data;
+		return data;
 	}
 	
 	/**
